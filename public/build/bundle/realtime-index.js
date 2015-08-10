@@ -9211,5 +9211,61 @@ return jQuery;
 }));
 
 },{}],2:[function(require,module,exports){
-var $ = window.$ = window.jQuery = require('jquery');
-},{"jquery":1}]},{},[2]);
+'use strict';
+
+/**
+ * url.js
+ *
+ * @author  Leo ChenTsu Lin
+ *
+ */
+
+exports = module.exports = {};
+
+var hostname      = exports.hostname = 'localhost';
+
+var port          = exports.port = 3000;
+
+var protocol      = exports.protocol = 'http';
+
+var portDisplay   = (port === 80) ? '' : ':' + port;
+
+var base          = exports.baseUrl = `${protocol}://${hostname}${portDisplay}`;
+
+// var projectName   = exports.projectName = 'backend';
+
+// var restNamespace = exports.restNamespace = 'rest';
+
+// exports.usersUrl     = `${base}/${projectName}/${restNamespace}/users/`;
+// exports.membersUrl   = `${base}/${projectName}/${restNamespace}/members/`;
+// exports.productsUrl  = `${base}/${projectName}/${restNamespace}/products/`;
+// exports.devicesUrl   = `${base}/${projectName}/${restNamespace}/devices/`;
+// exports.firmwaresUrl = `${base}/${projectName}/${restNamespace}/firmwares/`;
+// exports.languagesUrl = `${base}/${projectName}/${restNamespace}/languages/`;
+// exports.eventsUrl    = `${base}/${projectName}/${restNamespace}/events/`;
+// exports.publishesUrl = `${base}/${projectName}/${restNamespace}/publishes/`;
+
+exports.realtimeUrl  = `${base}/realtime/`;
+exports.injectionUrl = `${base}/injection/`;
+exports.workorderUrl = `${base}/workorder/`;
+exports.moldUrl   	 = `${base}/mold/`;
+exports.unusualUrl 	 = `${base}/unusual/`;
+exports.accountUrl 	 = `${base}/account/`;
+exports.historyUrl   = `${base}/history/`;
+
+exports.headerUrl = `${base}/views/includes/header/main.html`;
+
+exports.imageUrl = `${base}/images/`;
+},{}],3:[function(require,module,exports){
+'use strict';
+
+var $ = window.jQuery = require('jquery');
+var config = require('../config/url');
+var $header = $("#header");
+
+
+
+$(function(){ console.log('111');
+	$header.load(config.headerUrl)
+});
+},{"../config/url":2,"jquery":1}]},{},[3]);

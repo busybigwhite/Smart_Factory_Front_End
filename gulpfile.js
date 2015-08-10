@@ -19,7 +19,7 @@ var paths = {
 	destJsGlob: base + 'build/bundle/*.js'
 };
 
-gulp.task('server', function () {
+gulp.task('connect', function () {
 	connect.server({livereload: true});
 });
 
@@ -51,3 +51,5 @@ gulp.task('watch', function () {
 	gulp.watch(paths.mainLess, ['less']);
 	gulp.watch(paths.jsGlob, ['bundle']);
 });
+
+gulp.task('default', ['connect', 'watch']);
