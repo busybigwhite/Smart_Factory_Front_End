@@ -33,13 +33,12 @@ var base          = exports.baseUrl = `${protocol}://${hostname}${portDisplay}`;
 // exports.publishesUrl = `${base}/${projectName}/${restNamespace}/publishes/`;
 
 exports.realtimeUrl  = `${base}/realtime/`;
-exports.injectionUrl = `${base}/injection/`;
+exports.machineUrl 	 = `${base}/machine/`;
 exports.workorderUrl = `${base}/workorder/`;
 exports.moldUrl   	 = `${base}/mold/`;
 exports.unusualUrl 	 = `${base}/unusual/`;
-exports.accountUrl 	 = `${base}/account/`;
+exports.memberUrl 	 = `${base}/member/`;
 exports.historyUrl   = `${base}/history/`;
+exports.headerUrl 	 = `${base}/views/includes/header/main.html`;
 
-exports.headerUrl = `${base}/views/includes/header/main.html`;
-
-exports.imageUrl = `${base}/images/`;
+exports.imageUrl 	 = `${base}/images/`;

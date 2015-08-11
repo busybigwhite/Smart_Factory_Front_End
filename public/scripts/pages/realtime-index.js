@@ -1,9 +1,9 @@
 'use strict';
+var header = require('../includes/header');
 
-var $ = window.jQuery = require('jquery');
-var config = require('../config/url');
-var $header = $("#header");
+initialize();
 
-
-
-$(function(){ $header.load(config.headerUrl)});
+function initialize() {
+	header.include();
+	// bindEvents();
+}

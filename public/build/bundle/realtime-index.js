@@ -9246,26 +9246,34 @@ var base          = exports.baseUrl = `${protocol}://${hostname}${portDisplay}`;
 // exports.publishesUrl = `${base}/${projectName}/${restNamespace}/publishes/`;
 
 exports.realtimeUrl  = `${base}/realtime/`;
-exports.injectionUrl = `${base}/injection/`;
+exports.machineUrl 	 = `${base}/machine/`;
 exports.workorderUrl = `${base}/workorder/`;
 exports.moldUrl   	 = `${base}/mold/`;
 exports.unusualUrl 	 = `${base}/unusual/`;
-exports.accountUrl 	 = `${base}/account/`;
+exports.memberUrl 	 = `${base}/member/`;
 exports.historyUrl   = `${base}/history/`;
+exports.headerUrl 	 = `${base}/views/includes/header/main.html`;
 
-exports.headerUrl = `${base}/views/includes/header/main.html`;
-
-exports.imageUrl = `${base}/images/`;
+exports.imageUrl 	 = `${base}/images/`;
 },{}],3:[function(require,module,exports){
 'use strict';
 
 var $ = window.jQuery = require('jquery');
 var config = require('../config/url');
-var $header = $("#header");
 
+exports = module.exports = {};
 
+exports.include = function(){
+	$("#header").load(config.headerUrl);
+}
+},{"../config/url":2,"jquery":1}],4:[function(require,module,exports){
+'use strict';
+var header = require('../includes/header');
 
-$(function(){ console.log('111');
-	$header.load(config.headerUrl)
-});
-},{"../config/url":2,"jquery":1}]},{},[3]);
+initialize();
+
+function initialize() {
+	header.include();
+	// bindEvents();
+}
+},{"../includes/header":3}]},{},[4]);
