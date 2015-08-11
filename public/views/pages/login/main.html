@@ -3,15 +3,38 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Smart Factory</title>
+	<link rel="stylesheet" type="text/css" href="../../../build/style.css">
 </head>
-<body>
+<body class="login-background">
 
 <div id="header"></div>
 
 <div>
-	<input type="text">
-	<input type="text">
-	<button>Sign in</button>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6 col-xs-offset-3" style="z-index: 1;">
+                <div class="login-header text-center">
+                    <img src="../../../assets/images/con.png" alt="" width="90%">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-xs-offset-3">
+                <div class="login-panel">
+                    <h3 class="text-center">登入</h3>   
+                    <form>
+                      <div class="form-group">
+                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                      </div>
+                      <div class="form-group text-center">
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                      </div>
+                      <button type="submit" class="btn btn-block">SUBMIT</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="../../../build/bundle/login-index.js"></script>
