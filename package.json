@@ -30,7 +30,9 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "gulp"
+    "start": "node server.js",
+    "build": "gulp",
+    "clean": "rm -r public/build"
   },
   "keywords": [
     "smart",
