@@ -27,17 +27,17 @@ DELETE  host/machine/:auth?id=M150001               刪除機台編號 M150001
 GET     host/machine/maintenance/main/:auth?id=M150001          大保養清單(TBD)
 PUT     host/machine/maintenance/main/edit/:auth?id=M150001     編輯大保養清單(TBD)
 POST    host/machine/maintenance/main/new/:auth?id=M150001      新增大保養清單(TBD)
-DELETE  host/machine/maintenance/main/delete/:auth?id=M150001   刪除大保養清單(TBD)
+DELETE  host/machine/maintenance/main/:auth?id=M150001          刪除大保養清單(TBD)
 
 GET     host/machine/maintenance/minor/:auth?id=M150001        小保養清單(TBD)
 PUT     host/machine/maintenance/minor/edit/:auth?id=M150001   編輯小保養清單(TBD)
 POST    host/machine/maintenance/minor/new/:auth?id=M150001    新增小保養清單(TBD)
-DELETE  host/machine/maintenance/minor/delete/:auth?id=M150001 刪除小保養清單(TBD)
+DELETE  host/machine/maintenance/minor/:auth?id=M150001        刪除小保養清單(TBD)
 
 GET     host/machine/record/:auth?id=M150001         異常維修紀錄清單(TBD)
 PUT     host/machine/record/edit/:auth?id=M150001    編輯異常維修紀錄清單(TBD)
 POST    host/machine/record/new/:auth?id=M150001     新增異常維修紀錄清單(TBD)
-DELETE  host/machine/record/delete/:auth?id=M150001  刪除異常維修紀錄清單(TBD)
+DELETE  host/machine/record/:auth?id=M150001         刪除異常維修紀錄清單(TBD)
 ```
 
 ### __模具管理__
@@ -53,7 +53,7 @@ POST    host/mold/info/image/:auth?id=1234    編輯模具 1234 圖檔 (TBD)
 GET     host/mold/maintenance/main/:auth?id=1234          保養清單(TBD)
 PUT     host/mold/maintenance/main/edit/:auth?id=1234     編輯保養清單(TBD)
 POST    host/mold/maintenance/main/new/:auth?id=1234      新增保養清單(TBD)
-DELETE  host/mold/maintenance/main/delete/:auth?id=1234   刪除保養清單(TBD)
+DELETE  host/mold/maintenance/main/:auth?id=1234          刪除保養清單(TBD)
 ```
 
 ### __工單管理__
