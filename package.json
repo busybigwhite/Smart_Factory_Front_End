@@ -21,8 +21,11 @@
     "hbs": "^3.1.0",
     "jquery": "^2.1.4",
     "lazypipe": "^1.0.1",
+    "lodash": "^3.10.1",
     "mkdirp": "^0.5.1",
+    "object-assign": "^3.0.0",
     "path": "^0.11.14",
+    "qs": "^4.0.0",
     "run-sequence": "^1.1.2",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"

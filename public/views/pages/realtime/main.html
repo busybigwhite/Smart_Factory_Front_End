@@ -11,25 +11,53 @@
 
 <div class="main-container">
 
-    <div class="pull-left">
-        <select name="" id="">
-            <option value="">中山廠</option>
-        </select>
-        <select name="" id="">
-            <option value="">列表模式</option>
-        </select>
-    </div>
-
-    <div class="pull-right">
-        <select name="" id="">
-            <option value="">工單編號</option>
-        </select>
-    </div>
-
     <div id="realtime-panel" class="row">
-        <div class="col-xs-12">
+    	<div id="realtime-select-block">
+    		<div class="col-xs-8">
+	    		<div class="realtime-dropdown">
+					<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						<span id="realtime-factory-focus"></span>
+						<span class="caret"></span>
+					</button>
+					<ul id="realtime-factory-list" class="dropdown-menu"></ul>
+				</div>
+				<div class="realtime-dropdown">
+					<button id="realtime-mode" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						<span id="realtime-mode-focus"></span>
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+						<li><a id="table-mode-switcher" data-mode="0">列表模式</a></li>
+						<li><a id="image-mode-switcher" data-mode="1">圖片模式</a></li>
+					</ul>
+				</div>
+    		</div>
+    		<div class="col-xs-4">
+    			<div class="input-group pull-right">
+					<input id="realtime-search-input" type="text" class="form-control" placeholder="Search for...">
+					<span class="input-group-btn">
+						<button id="realtime-search-btn" class="btn btn-info">
+							<i class="fa fa-search"></i>
+						</button>
+					</span>
+				</div>
+				<div class="realtime-dropdown pull-right">
+					<button id="realtime-filter" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						<span id="realtime-filter-focus"></span>
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+						<li><a class="filter-item" data-id="WorkOrder_ID">工單編號</a></li>
+						<li><a class="filter-item" data-id="Machine_ID">射出機台編號</a></li>
+						<li><a class="filter-item" data-id="Mold_ID">模具編號</a></li>
+						<li><a class="filter-item" data-id="Customer_ID">客戶名稱</a></li>
+					</ul>
+				</div>
+			</div>
+    	</div>
 
-        	<ul id="realtime-table">
+        <div id="realtime-list-block">
+        	<ul id="realtime-table-mode">
 				<li class="table-header">
 					<div class="table-col">工單編號</div>
                 	<div class="table-col">射出機台編號</div>
@@ -41,39 +69,12 @@
                 	<div class="table-col-sm">不良品數量</div>
                 	<div class="table-col">圖像列表</div>
 				</li>
-
-				<li class="table-item">
-					<div class="table-col">0031</div>
-                	<div class="table-col">M150001</div>
-                	<div class="table-col">123456</div>
-                	<div class="table-col">moremote</div>
-                	<div class="table-col-sm">1000</div>
-                	<div class="table-col-sm">2015/07/10</div>
-                	<div class="table-col-sm">500/15</div>
-                	<div class="table-col-sm">15</div>
-                	<div class="table-col">
-                		<span class="btn btn-default">即時</span>
-	                	<span class="btn btn-default">安全</span>
-	                	<span class="btn btn-default">異常</span>
-                	</div>
-				</li>
-				<li class="table-item">
-					<div class="table-col">0031</div>
-                	<div class="table-col">M150001</div>
-                	<div class="table-col">123456</div>
-                	<div class="table-col">moremote</div>
-                	<div class="table-col-sm">1000</div>
-                	<div class="table-col-sm">2015/07/10</div>
-                	<div class="table-col-sm">500/15</div>
-                	<div class="table-col-sm">15</div>
-                	<div class="table-col">
-                		<span class="btn btn-default">即時</span>
-	                	<span class="btn btn-default">安全</span>
-	                	<span class="btn btn-default">異常</span>
-                	</div>
-				</li>
-
+				<div class="realtime-table-body"></div>
 			</ul>
+
+			<div id="realtime-img-mode" class="hidden">
+
+			</div>
         </div>
     </div>
 </div>

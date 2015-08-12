@@ -1,17 +1,66 @@
 #realtime-panel {
 	.make-row();
 
-	#realtime-table {
-		.custom-table();
+	#realtime-select-block {
+		.make-xs-column(12);
+		padding: 0;
 
-		.table-col {
-			.custom-table-col(12%);
+		.realtime-dropdown {
+			.custom-dropdown();
 		}
 
-		.table-col-sm {
-			.custom-table-col(9%);
-			text-align: right;
+		.input-group {
+			max-width: 250px;
+			height: 36px;
+			padding: 0;
+
+    		input {
+				height: inherit;
+			}
+
+			.input-group-btn {
+				height: inherit;
+
+				#realtime-search-btn {
+					height: inherit;
+
+					.fa {
+						font-size: @font-lg-size;
+					}
+				}
+			}
 		}
 	}
 
+	#realtime-list-block {
+		.make-xs-column(12);
+
+		#realtime-table-mode {
+			.custom-table();
+
+			.table-col {
+				.custom-table-col(12%);
+			}
+
+			.table-col-sm {
+				.custom-table-col(9%);
+				text-align: right;
+			}
+
+			.realtime-show-live-pic-btn {
+				.btn;
+				.btn-info;
+			}
+
+			.realtime-show-sample-pic-btn {
+				.btn;
+				.btn-success;
+			}
+
+			.realtime-show-err-pic-btn {
+				.btn;
+				.btn-danger;
+			}
+		}
+	}
 }
