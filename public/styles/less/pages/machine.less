@@ -1,8 +1,13 @@
-.machine-list {
-	width: inherit;
+#machine-table {
+	.custom-table;
 
-	.list-column {
-		width: 20%;
-		vertical-align: middle;
+	.table-col {
+		.custom-table-col(20%);
+
+		&:last-of-type {
+			/* if columns sum equal to 100% & html tag with \n, it will seprate to two line */
+			.custom-table-col(19%);
+			text-align: center;
+		}
 	}
 }
