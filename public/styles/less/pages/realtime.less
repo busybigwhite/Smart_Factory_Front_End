@@ -3,6 +3,21 @@
     margin: 100px 20px 0;
 }
 
-.table > thead > tr > th {
-    padding: 10px 0;
+#real-time-panel {
+	.make-row();
+
+	th,
+	td {
+		vertical-align: middle;
+    	padding: 10px;
+
+    	&.small {
+    		width: 65px;
+    	}
+
+    	&.large {
+    		width: 125px;
+    	}
+    }
+
 }

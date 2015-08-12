@@ -26,22 +26,45 @@
         </select>
     </div>
 
-    <div class="row">
+    <div id="real-time-panel" class="row">
         <div class="col-xs-12">
+
             <table class="table table-striped">
-            <thead>
-                <tr><th>工單編號</th><th>射出機台編號</th><th>模具編號</th><th>客戶名稱</th><th>預計生產總數量</th><th>本次開始生產時間</th><th>目前正常/異常數量</th><th>不良品數量</th><th>圖像列表</th></tr>
-            </thead>
-            <tbody>￼
-                <tr><td>0031</td><td>M150001</td><td>1234</td><td>moremote</td><td>1000</td><td>2015/07/10</td><td>500/15</td><td>15</td><td><span class="label label-default">即時</span> <span class="label label-default">安全</span> <span class="label label-default">異常</span></tr>
-                <tr><td>0031</td><td>M150001</td><td>1234</td><td>moremote</td><td>1000</td><td>2015/07/10</td><td>500/15</td><td>15</td><td><span class="label label-default">即時</span> <span class="label label-default">安全</span> <span class="label label-default">異常</span></tr>
-                <tr><td>0031</td><td>M150001</td><td>1234</td><td>moremote</td><td>1000</td><td>2015/07/10</td><td>500/15</td><td>15</td><td><span class="label label-default">即時</span> <span class="label label-default">安全</span> <span class="label label-default">異常</span></tr>
-                <tr><td>0031</td><td>M150001</td><td>1234</td><td>moremote</td><td>1000</td><td>2015/07/10</td><td>500/15</td><td>15</td><td><span class="label label-default">即時</span> <span class="label label-default">安全</span> <span class="label label-default">異常</span></tr>
-                <tr><td>0031</td><td>M150001</td><td>1234</td><td>moremote</td><td>1000</td><td>2015/07/10</td><td>500/15</td><td>15</td><td><span class="label label-default">即時</span> <span class="label label-default">安全</span> <span class="label label-default">異常</span></tr>
-                <tr><td>0031</td><td>M150001</td><td>1234</td><td>moremote</td><td>1000</td><td>2015/07/10</td><td>500/15</td><td>15</td><td><span class="label label-default">即時</span> <span class="label label-default">安全</span> <span class="label label-default">異常</span></tr>
-            </tbody>
+	            <thead>
+	                <tr>
+	                	<th>工單編號</th>
+	                	<th>射出機台編號</th>
+	                	<th>模具編號</th>
+	                	<th>客戶名稱</th>
+	                	<th class="small">預計生產總數量</th>
+	                	<th>本次開始生產時間</th>
+	                	<th class="small">目前正常/異常數量</th>
+	                	<th class="small">不良品數量</th>
+	                	<th>圖像列表</th>
+	                </tr>
+	            </thead>
+
+	            <tbody>
+	                <tr class="real-time-item">
+	                	<td>0031</td>
+	                	<td>M150001</td>
+	                	<td>1234</td>
+	                	<td>moremote</td>
+	                	<td>1000</td>
+	                	<td>2015/07/10</td>
+	                	<td>500/15</td>
+	                	<td>15</td>
+	                	<td>
+	                		<span class="btn btn-default">即時</span>
+	                		<span class="btn btn-default">安全</span>
+	                		<span class="btn btn-default">異常</span>
+	                	</td>
+	                </tr>
+
+	            </tbody>
             </table>
-        </div>    
+
+        </div>
     </div>
 </div>
 
