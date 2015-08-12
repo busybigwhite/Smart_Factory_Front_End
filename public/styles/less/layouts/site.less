@@ -1,0 +1,71 @@
+ol, ul {
+    list-style: none outside none;
+}
+
+body {
+    font-size:   @font-size;
+    font-family: @font-family;
+    font-weight: @font-weight;
+    line-height: @line-height;
+
+    color: @font-default-color;
+    background-color: @bg-default-color;
+}
+
+button {
+    border: 0;
+    outline: none;
+    background-color: transparent;
+}
+
+label {
+    margin-bottom: 0;
+}
+
+a {
+    text-decoration: none;
+    outline: none;
+
+    &:hover,
+    &:visited,
+    &:active,
+    &:link {
+        text-decoration: none;
+    }
+
+    &:hover,
+    &:active {
+        cursor: pointer;
+    }
+}
+
+.centered {
+    float: none;
+    margin: 0 auto;
+}
+
+.main-container {
+    min-width: 1200px;
+    margin: 100px 20px 0;
+}
+
+.table {
+    margin: 20px 0;
+
+    thead {
+        tr {
+            th {
+                vertical-align: middle;
+                padding: 10px;
+            }
+        }
+    }
+    tbody {
+        tr {
+            td {
+                vertical-align: middle;
+                padding: 10px;
+            }
+        }
+    }
+}

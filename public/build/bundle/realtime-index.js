@@ -9255,6 +9255,7 @@ exports.historyUrl   = `${base}/history/`;
 exports.headerUrl 	 = `${base}/views/includes/header/main.html`;
 
 exports.imageUrl 	 = `${base}/images/`;
+
 },{}],3:[function(require,module,exports){
 'use strict';
 
@@ -9268,12 +9269,22 @@ exports.include = function(){
 }
 },{"../config/url":2,"jquery":1}],4:[function(require,module,exports){
 'use strict';
+var $ = window.jQuery = require('jquery');
 var header = require('../includes/header');
 
 initialize();
 
 function initialize() {
 	header.include();
-	// bindEvents();
+	test();
 }
-},{"../includes/header":3}]},{},[4]);
+
+function test() {
+	$.ajax({
+		url: 'http://smartfactory.moremote.com/api/version',
+		contentType: 'application/json',
+		dataType: 'json',
+		success: function(error){ console.log('test API success!!!') }
+	});
+}
+},{"../includes/header":3,"jquery":1}]},{},[4]);
