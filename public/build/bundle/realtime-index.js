@@ -9222,9 +9222,9 @@ return jQuery;
 
 exports = module.exports = {};
 
-var hostname      = exports.hostname = 'localhost';
+var hostname      = exports.hostname = location.hostname;
 
-var port          = exports.port = 3000;
+var port          = exports.port = location.port;
 
 var protocol      = exports.protocol = 'http';
 
@@ -9281,10 +9281,10 @@ function initialize() {
 
 function test() {
 	$.ajax({
-		url: 'http://smartfactory.moremote.com/api/version',
+		url: '',
 		contentType: 'application/json',
 		dataType: 'json',
-		success: function(error){ console.log('test API success!!!') }
+		success: function(){ console.log('test API success!!!') }
 	});
 }
 },{"../includes/header":3,"jquery":1}]},{},[4]);

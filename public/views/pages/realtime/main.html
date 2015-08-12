@@ -26,50 +26,54 @@
         </select>
     </div>
 
-    <div id="real-time-panel" class="row">
+    <div id="realtime-panel" class="row">
         <div class="col-xs-12">
 
-            <table id="real-time-table" class="table table-striped">
-	            <thead>
-	                <tr>
-	                	<th>工單編號</th>
-	                	<th>射出機台編號</th>
-	                	<th>模具編號</th>
-	                	<th>客戶名稱</th>
-	                	<th class="sm">
-	                		<span>預計生產</span><span>總數量</span>
-	                	</th>
-	                	<th>本次開始生產時間</th>
-	                	<th class="sm">
-	                		<span>目前正常/</span><span>異常數量</span>
-	                	</th>
-	                	<th class="sm">
-	                		<span>不良品</span><span>數量</span>
-	                	</th>
-	                	<th>圖像列表</th>
-	                </tr>
-	            </thead>
+        	<ul id="realtime-table">
+				<li class="table-header">
+					<div class="table-col">工單編號</div>
+                	<div class="table-col">射出機台編號</div>
+                	<div class="table-col">模具編號</div>
+                	<div class="table-col">客戶名稱</div>
+                	<div class="table-col-sm">預計生產總數量</div>
+                	<div class="table-col-sm">本次開始生產時間</div>
+                	<div class="table-col-sm">目前正常/異常數量</div>
+                	<div class="table-col-sm">不良品數量</div>
+                	<div class="table-col">圖像列表</div>
+				</li>
 
-	            <tbody>
-	                <tr class="real-time-item">
-	                	<td>0031</td>
-	                	<td>M150001</td>
-	                	<td>1234</td>
-	                	<td>moremote</td>
-	                	<td>1000</td>
-	                	<td>2015/07/10</td>
-	                	<td>500/15</td>
-	                	<td>15</td>
-	                	<td>
-	                		<span class="btn btn-default">即時</span>
-	                		<span class="btn btn-default">安全</span>
-	                		<span class="btn btn-default">異常</span>
-	                	</td>
-	                </tr>
+				<li class="table-item">
+					<div class="table-col">0031</div>
+                	<div class="table-col">M150001</div>
+                	<div class="table-col">123456</div>
+                	<div class="table-col">moremote</div>
+                	<div class="table-col-sm">1000</div>
+                	<div class="table-col-sm">2015/07/10</div>
+                	<div class="table-col-sm">500/15</div>
+                	<div class="table-col-sm">15</div>
+                	<div class="table-col">
+                		<span class="btn btn-default">即時</span>
+	                	<span class="btn btn-default">安全</span>
+	                	<span class="btn btn-default">異常</span>
+                	</div>
+				</li>
+				<li class="table-item">
+					<div class="table-col">0031</div>
+                	<div class="table-col">M150001</div>
+                	<div class="table-col">123456</div>
+                	<div class="table-col">moremote</div>
+                	<div class="table-col-sm">1000</div>
+                	<div class="table-col-sm">2015/07/10</div>
+                	<div class="table-col-sm">500/15</div>
+                	<div class="table-col-sm">15</div>
+                	<div class="table-col">
+                		<span class="btn btn-default">即時</span>
+	                	<span class="btn btn-default">安全</span>
+	                	<span class="btn btn-default">異常</span>
+                	</div>
+				</li>
 
-	            </tbody>
-            </table>
-
+			</ul>
         </div>
     </div>
 </div>

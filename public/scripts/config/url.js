@@ -9,9 +9,9 @@
 
 exports = module.exports = {};
 
-var hostname      = exports.hostname = 'localhost';
+var hostname      = exports.hostname = location.hostname;
 
-var port          = exports.port = 3000;
+var port          = exports.port = location.port;
 
 var protocol      = exports.protocol = 'http';
 

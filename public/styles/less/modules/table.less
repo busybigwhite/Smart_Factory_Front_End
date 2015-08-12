@@ -1,0 +1,30 @@
+.custom-table {
+	margin: 20px 0;
+	padding: 0;
+
+	.table-header {
+		height: 40px;
+		border-bottom: 2px solid #ddd;
+		line-height: 2.3em;
+	}
+
+	.table-item {
+		height: 48px;
+		border-bottom: 1px solid #ddd;
+		line-height: 2.8em;
+
+		&:nth-child(odd) {
+		    background-color: #f9f9f9;
+		}
+
+		&:last-child {
+			border-bottom: none;
+		}
+	}
+}
+
+.custom-table-col(@width) {
+	width: @width;
+    padding: 0 10px;
+	display: inline-block;
+}

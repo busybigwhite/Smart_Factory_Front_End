@@ -11,9 +11,9 @@ function initialize() {
 
 function test() {
 	$.ajax({
-		url: 'http://smartfactory.moremote.com/api/version',
+		url: '',
 		contentType: 'application/json',
 		dataType: 'json',
-		success: function(error){ console.log('test API success!!!') }
+		success: function(){ console.log('test API success!!!') }
 	});
 }

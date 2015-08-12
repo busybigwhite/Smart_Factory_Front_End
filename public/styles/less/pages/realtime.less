@@ -1,18 +1,17 @@
-#real-time-panel {
+#realtime-panel {
 	.make-row();
 
-	#real-time-table {
-		th,td {
-			width: 12%;
+	#realtime-table {
+		.custom-table();
 
-	    	&.sm {
-	    		width: 10%;
+		.table-col {
+			.custom-table-col(12%);
+		}
 
-	    		span {
-	    			display: block;
-	    		}
-	    	}
-	    }
+		.table-col-sm {
+			.custom-table-col(9%);
+			text-align: right;
+		}
 	}
 
 }
