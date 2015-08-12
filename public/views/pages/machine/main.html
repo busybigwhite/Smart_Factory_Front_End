@@ -12,7 +12,7 @@
 <div class="main-container">
     <div class="row">
         <div class="col-xs-12">
-            <button class="new-button">新增機台</button>
+            <button class="new-button" id="machine-new-button">新增機台</button>
             <table class="table table-striped">
                 <thead>
                     <tr class="machine-list">
@@ -21,25 +21,25 @@
                         <td class="list-column">噸數</td>
                         <td class="list-column">設備稼動率</td>
                         <td class="list-column"></td>
-                    </tr>                    
+                    </tr>
                 </thead>
-                <tbody>                    
+                <tbody id="machine-tbody">
                     <tr class="machine-list">
                         <td class="list-column">M150001</td>
                         <td class="list-column">台中精機S150</td>
                         <td class="list-column">150</td>
                         <td class="list-column">20%</td>
                         <td class="list-column">
-                            <button class="detail-info-button">詳細資訊</button>
+                            <button class="detail-info-button" data-id="test-M150001">詳細資訊</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
-        </div>    
+        </div>
     </div>
 </div>
 
-<script src="../../../build/bundle/realtime-index.js"></script>
+<script src="../../../build/bundle/machine-index.js"></script>
 
 </body>
 </html>
