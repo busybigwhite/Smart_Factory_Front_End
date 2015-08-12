@@ -9,7 +9,7 @@
 
 exports = module.exports = {};
 
-var hostname      = exports.hostname = 'http://smartfactory.moremote.com/';
+var hostname      = exports.hostname = 'smartfactory.moremote.com';
 
 var port          = exports.port = 3000;
 
