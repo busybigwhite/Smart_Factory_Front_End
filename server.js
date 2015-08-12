@@ -28,6 +28,8 @@ app.get('/realtime/liveinfo', function(req, res) {
 });
 
 app.get('/machine', function(req, res) { res.render('pages/machine/main'); });
+app.get('/machine/new', function(req, res) { res.render('pages/machine/new'); });
+app.get('/machine/info', function(req, res) { res.render('pages/machine/info'); });
 app.get('/workorder', function(req, res) { res.render('pages/workorder/main'); });
 app.get('/mold', function(req, res) { res.render('pages/mold/main'); });
 app.get('/unusual', function(req, res) { res.render('pages/unusual/main'); });
