@@ -5,12 +5,90 @@
 	<title>Smart Factory</title>
 	<link rel="stylesheet" type="text/css" href="../../../build/style.css">
 </head>
-<body>
+<body class="detail-page-html-body">
 
 <div id="header"></div>
 
-<div class="main-container">
-
+<div class="detail-page-container" id="machine-detail-page">
+	<div class="base-action-panel">
+		<button class="info-delete-button" id="machine-delete-button">刪除</button>
+		<button class="info-edit-button" id="machine-edit-button">編輯</button>
+		<button class="info-save-button" id="machine-save-button">儲存</button>
+		<button class="info-cancel-button" id="machine-cancel-button">取消</button>
+	</div>
+	<div class="base-info-panel">
+		<ul>
+			<li>
+				<span class="info-name">射出機台編號</span>
+				<span class="info-value">
+					<p class="view-mode">M150001</p>
+					<input class="edit-mode" type="text" value="M150001">
+				</span>
+			</li>
+			<li>
+				<span class="info-name">機種名稱</span>
+				<span class="info-value">
+					<p class="view-mode">台中精機S150</p>
+					<input class="edit-mode" type="text" value="台中精機S150">
+				</span>
+			</li>
+			<li>
+				<span class="info-name">噸數</span>
+				<span class="info-value">
+					<p class="view-mode">150</p>
+					<input class="edit-mode" type="text" value="150">
+				</span>
+			</li>
+			<li>
+				<span class="info-name">機台稼動率</span>
+				<span class="info-value">
+					<p class="view-mode">20%</p>
+					<input class="edit-mode" type="text" value="20%">
+				</span>
+			</li>
+		</ul>
+	</div>
+	<section class="production-resume-panel">
+		<h3 class="resume-header">生產履歷</h3>
+		<ul>
+			<li>
+				<span class="resume-name">保養通知</span>
+				<span class="resume-value">
+				<p class="view-mode">Moremote</p>
+				<input class="edit-mode" type="text" value="Moremote">
+				</span>
+			</li>
+			<li>
+				<span class="resume-name">小保養週期</span>
+				<span class="resume-value">
+				<p class="view-mode">3天</p>
+				<input class="edit-mode" type="text" value="3天">
+				</span>
+			</li>
+			<li>
+				<span class="resume-name">小保養紀錄</span>
+				<span class="resume-value">
+				</span>
+			</li>
+			<li>
+				<span class="resume-name">大保養週期</span>
+				<span class="resume-value">
+				<p class="view-mode">30天</p>
+				<input class="edit-mode" type="text" value="30天">
+				</span>
+			</li>
+			<li>
+				<span class="resume-name">大保養紀錄</span>
+				<span class="resume-value">
+				</span>
+			</li>
+			<li>
+				<span class="resume-name">異常維修紀錄</span>
+				<span class="resume-value">
+				</span>
+			</li>
+		</ul>
+	</section>
 </div>
 
 <script src="../../../build/bundle/machine-index.js"></script>
