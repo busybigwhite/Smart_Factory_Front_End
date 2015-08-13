@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Smart Factory</title>
+	<link rel="stylesheet" type="text/css" href="../../../build/style.css">
+</head>
+<body>
+
+<div id="header"></div>
+
+<div class="main-container">
+
+    <div id="realtime-panel" class="row">
+    	<div id="realtime-select-block">
+    		<div class="col-xs-8">
+	    		<div class="realtime-dropdown">
+					<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						<span id="realtime-factory-focus"></span>
+						<span class="caret"></span>
+					</button>
+					<ul id="realtime-factory-list" class="dropdown-menu"></ul>
+				</div>
+				<div class="realtime-dropdown">
+					<button id="realtime-mode" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						<span id="realtime-mode-focus"></span>
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+						<li><a id="table-mode-switcher" data-mode="0">列表模式</a></li>
+						<li><a id="image-mode-switcher" data-mode="1">圖片模式</a></li>
+					</ul>
+				</div>
+    		</div>
+    		<div class="col-xs-4">
+    			<div class="input-group pull-right">
+					<input id="realtime-search-input" type="text" class="form-control" placeholder="Search for...">
+					<span class="input-group-btn">
+						<button id="realtime-search-btn" class="btn btn-info">
+							<i class="fa fa-search"></i>
+						</button>
+					</span>
+				</div>
+				<div class="realtime-dropdown pull-right">
+					<button id="realtime-filter" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						<span id="realtime-filter-focus"></span>
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+						<li><a class="filter-item" data-id="workOrder_id">工單編號</a></li>
+						<li><a class="filter-item" data-id="machine_id">射出機台編號</a></li>
+						<li><a class="filter-item" data-id="mold_id">模具編號</a></li>
+						<li><a class="filter-item" data-id="customer_id">客戶名稱</a></li>
+					</ul>
+				</div>
+			</div>
+    	</div>
+
+        <div id="realtime-list-block">
+        	<ul id="realtime-table-mode">
+				<li class="table-header">
+					<div class="table-col">工單編號</div>
+                	<div class="table-col">射出機台編號</div>
+                	<div class="table-col">模具編號</div>
+                	<div class="table-col">客戶名稱</div>
+                	<div class="table-col-sm">預計生產總數量</div>
+                	<div class="table-col-sm">本次開始生產時間</div>
+                	<div class="table-col-sm">目前正常/異常數量</div>
+                	<div class="table-col-sm">不良品數量</div>
+                	<div class="table-col">圖像列表</div>
+				</li>
+				<div class="realtime-table-body"></div>
+			</ul>
+
+			<div id="realtime-img-mode" class="hidden">
+
+			</div>
+        </div>
+    </div>
+</div>
+
+<!-- <script src="../../../build/bundle/realtime-index.js"></script> -->
+
+</body>
+</html>

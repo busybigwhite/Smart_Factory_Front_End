@@ -8,7 +8,6 @@ var queryParameter = require('../lib/helper/query-parameter');
 var redirect = require('../lib/helper/redirect');
 
 require('bootstrap/js/dropdown');
-// require('../realtime/listpic');
 
 var isImageMode = false;
 var focusFactoryId = undefined;
