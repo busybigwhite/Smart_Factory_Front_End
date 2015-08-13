@@ -5,11 +5,11 @@ var config = require('../config/url');
 require('bootstrap/js/dropdown');
 
 /* DOM */
-var $editBtn = $('#machine-edit-button');
+var $editBtn   = $('#machine-edit-button');
 var $cancelBtn = $('#machine-cancel-button');
-var $saveBtn = $('#machine-save-button');
+var $saveBtn   = $('#machine-save-button');
 var $deleteBtn = $('#machine-delete-button');
-var $machineDetailPage = $('#machine-detail-page');
+var $machineDetailPage  = $('#machine-detail-page');
 var $viewModeCollection = $machineDetailPage.find('.view-mode');
 var $editModeCollection = $machineDetailPage.find('.edit-mode');
 
