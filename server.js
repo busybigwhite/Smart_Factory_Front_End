@@ -18,13 +18,19 @@ app.engine('html', hbs.__express);
 app.get('/', function(req, res) { res.render('index') });
 app.get('/login', function(req, res) { res.render('pages/login/main'); });
 
+// realtime
 app.get('/realtime', function(req, res) { res.render('pages/realtime/main'); });
-app.get('/realtime/listfactory', function(req, res) {
+app.get('/realtime/listpic', function(req, res) {
+	res.render('pages/realtime/listpic');
+});
+app.get('/api/factory/list', function(req, res) {
 	res.send(data.factories);
 });
-app.get('/realtime/liveinfo', function(req, res) {
-	console.log(req.query.factory);
+app.get('/api/workorder/list', function(req, res) {
 	res.send(data.liveinfos);
+});
+app.get('/api/realtime/listpic', function(req, res) {
+	res.send(data.listpics);
 });
 
 app.get('/machine', function(req, res) { res.render('pages/machine/main'); });

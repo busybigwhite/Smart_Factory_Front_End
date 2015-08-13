@@ -22341,16 +22341,18 @@ var base          = exports.baseUrl = `${protocol}://${hostname}${portDisplay}`;
 // exports.eventsUrl    = `${base}/${projectName}/${restNamespace}/events/`;
 // exports.publishesUrl = `${base}/${projectName}/${restNamespace}/publishes/`;
 
-exports.realtimeUrl  = `${base}/realtime/`;
-exports.machineUrl 	 = `${base}/machine/`;
-exports.workorderUrl = `${base}/workorder/`;
-exports.moldUrl   	 = `${base}/mold/`;
-exports.unusualUrl 	 = `${base}/unusual/`;
-exports.memberUrl 	 = `${base}/member/`;
-exports.historyUrl   = `${base}/history/`;
-exports.headerUrl 	 = `${base}/views/includes/header/main.html`;
+exports.realtimeUrl  	= `${base}/realtime/`;
+exports.realtimePicUrl  = `${base}/realtime/listpic`;
+exports.machineUrl 	 	= `${base}/machine/`;
+exports.workorderUrl 	= `${base}/workorder/`;
+exports.moldUrl   	 	= `${base}/mold/`;
+exports.unusualUrl 	 	= `${base}/unusual/`;
+exports.memberUrl 	 	= `${base}/member/`;
+exports.historyUrl   	= `${base}/history/`;
+exports.headerUrl 	 	= `${base}/views/includes/header/main.html`;
 
-exports.imageUrl 	 = `${base}/images/`;
+exports.APIUrl  		= `${base}/api/`;
+exports.imageUrl 	 	= `${base}/images/`;
 
 },{}],11:[function(require,module,exports){
 'use strict';
@@ -22404,16 +22406,38 @@ function getQueryString() {
 
 },{"object-assign":4,"qs":5}],13:[function(require,module,exports){
 'use strict';
+
+var qs = require('qs');
+var urlConfig = require('../../config/url');
+
+exports = module.exports = redirect;
+
+function redirect(where, queries) {
+  var url = urlConfig[`${where}Url`];
+  if ( ! url) {
+    throw new Error('Undefined Url');
+  }
+  if (queries) {
+    url = url + '?' + qs.stringify(queries);
+  }
+  window.location.href = url;
+}
+
+},{"../../config/url":10,"qs":5}],14:[function(require,module,exports){
+'use strict';
 var $ = window.jQuery = require('jquery');
 var header = require('../includes/header');
 var userId = require('../config/auth');
 var config = require('../config/url');
 var templates = require('../realtime/templates');
 var queryParameter = require('../lib/helper/query-parameter');
+var redirect = require('../lib/helper/redirect');
 
 require('bootstrap/js/dropdown');
+// require('../realtime/listpic');
 
 var isImageMode = false;
+var focusFactoryId = undefined;
 
 /* DOM */
 var $factoryFocus = $('#realtime-factory-focus');
@@ -22428,9 +22452,6 @@ var $filterFocus = $('#realtime-filter-focus');
 var $filterItem = $('.filter-item');
 var $searchInput = $('#realtime-search-input');
 var $searchBtn = $('#realtime-search-btn');
-var $showLivePicBtn = $('.realtime-show-live-pic-btn');
-var $showSamplePicBtn = $('.realtime-show-sample-pic-btn');
-var $showErrPicBtn = $('.realtime-show-err-pic-btn');
 
 initialize();
 
@@ -22469,17 +22490,16 @@ function bindSearchByFilterOnButton() {
 }
 
 function bindLinkToPicturesPageOnButton() {
-	$showLivePicBtn.on('click', getPictures);
-	$showSamplePicBtn.on('click', getPictures);
-	$showErrPicBtn.on('click', getPictures);
+	$tableListBlock.on('click', '.realtime-showpic-btn', redirectToPicPage);
+	// $imageListBlock.on('click', '.realtime-showpic-btn', redirectToPicPage);
 }
 
 function selectFactory(target){
-	var factoryId = target.type==='click' ? $(this).data('id') : target.ID;
-	var factoryName = target.type==='click' ? $(this).text() : target.Name;
+	focusFactoryId = target.type==='click' ? $(this).data('id') : target.id;
+	var factoryName = target.type==='click' ? $(this).text() : target.name;
 
 	$factoryFocus.text(factoryName);
-	createRealtimeListThenRenderRows(factoryId);
+	createRealtimeListThenRenderRows();
 }
 
 function switchViewMode(){
@@ -22506,10 +22526,14 @@ function selectFilter(){
 
 function searchByFilter(){
 	var type = $filterFocus.data('type');
-	var content = $searchInput.val();
+	var searchKey = $searchInput.val();
 
-	// $.get(config.realtimeUrl + 'searchinfo/:' + userId + '?type=' + type + '&content=' + content)
-	$.get(config.realtimeUrl + 'searchinfo/?type=' + type + '&content=' + content)
+	createRealtimeListThenRenderRows(type, searchKey)
+}
+
+function createRealtimeListThenRenderRows(type, searchKey) {
+	// $.get(config.APIUrl + 'workorder/list/:' + userId + '?factory_id=' + focusFactoryId + 'type=' + type + '&search_key=' + searchKey)
+	$.get(config.APIUrl + 'workorder/list/?factory_id=' + focusFactoryId + 'type=' + type + '&search_key=' + searchKey)
 	 .done(function(response){
 		var tableListRows = templates.renderTableList({ infos : response });
 		// var imageListRows = templates.renderImageList({ infos : response });
@@ -22519,31 +22543,17 @@ function searchByFilter(){
 	 });
 }
 
-function createRealtimeListThenRenderRows(factoryId) {
-	// $.get(config.realtimeUrl + 'liveinfo/:' + userId + '?factory=' + factoryId)
-	$.get(config.realtimeUrl + 'liveinfo/?factory=' + factoryId)
-	 .done(function(response){
-		var tableListRows = templates.renderTableList({ infos : response });
-		// var imageListRows = templates.renderImageList({ infos : response });
+function redirectToPicPage() {
+	var title = $(this).data('info');
+	var workorder_id = title.split('/')[0];
+	var type = $(this).data('type');
 
-		$tableBody.empty().append( tableListRows );
-		// $imageListBlock.empty().html( imageListRows );
-	 });
-}
-
-function getPictures() {
-	// $.ajax({
-	// 	url: '',
-	// 	data: '',
-	// 	success: function(urlArr){
-	// 		console.log(urlArr);
-	// 	}
-	// });
+	redirect('realtimePic', {workorder_id, type, title});
 }
 
 function createFactoryListThenRenderRows() {
-	// $.get(config.realtimeUrl + '/ListFactory/:' + userId)
-	$.get(config.realtimeUrl + 'listfactory')
+	// $.get(config.APIUrl + 'factory/list/:' + userId)
+	$.get(config.APIUrl + 'factory/list')
 	 .done(function(response){
 		var factoryListRows = templates.renderFactoryDropdown({ factories : response });
 
@@ -22557,7 +22567,7 @@ function createFactoryListThenRenderRows() {
 
 
 
-},{"../config/auth":9,"../config/url":10,"../includes/header":11,"../lib/helper/query-parameter":12,"../realtime/templates":14,"bootstrap/js/dropdown":1,"jquery":2}],14:[function(require,module,exports){
+},{"../config/auth":9,"../config/url":10,"../includes/header":11,"../lib/helper/query-parameter":12,"../lib/helper/redirect":13,"../realtime/templates":15,"bootstrap/js/dropdown":1,"jquery":2}],15:[function(require,module,exports){
 'use strict';
 
 var _ = require('lodash');
@@ -22568,8 +22578,8 @@ exports.renderFactoryDropdown = function(factories) {
 
   var menuTemp = _.template(
 	 `<% _.forEach(factories, function(factory) {  %>
-      <li><a class="realtime-factory-item" data-id=<%= factory.ID %>>
-      		<%= factory.Name %>
+      <li><a class="realtime-factory-item" data-id=<%= factory.id %>>
+      		<%= factory.name %>
       </a></li>
     <% });                                          %>`
 	);
@@ -22581,25 +22591,43 @@ exports.renderTableList = function(infos) {
 
   var menuTemp = _.template(
 	 `<% _.forEach(infos, function(info) {  %>
-      	<li class="table-item">
-			<div class="table-col"><%= info.WorkOrder_ID %></div>
-        	<div class="table-col"><%= info.Machine_ID %></div>
-        	<div class="table-col"><%= info.Mold_ID %></div>
-        	<div class="table-col"><%= info.Customer_ID %></div>
-        	<div class="table-col-sm"><%= info.Target_Num %></div>
-        	<div class="table-col-sm"><%= info.Start_Date %></div>
-        	<div class="table-col-sm"><%= info.Current_Fail_Num %>/<%= info.Current_Num %></div>
-        	<div class="table-col-sm"><%= info.Current_Fail_Num %></div>
-        	<div class="table-col">
-        		<button class="realtime-show-live-pic-btn" data-id=<%= info.Machine_ID %>>即時</button>
-            	<button class="realtime-show-sample-pic-btn" data-id=<%= info.Machine_ID %>>安全</button>
-            	<button class="realtime-show-err-pic-btn" data-id=<%= info.Machine_ID %>>異常</button>
-        	</div>
-		</li>
+      <li class="table-item">
+        <div class="table-col"><%= info.workorder_id %></div>
+      	<div class="table-col"><%= info.machine_id %></div>
+      	<div class="table-col"><%= info.mold_id %></div>
+      	<div class="table-col"><%= info.customer_id %></div>
+      	<div class="table-col-sm"><%= info.target_num %></div>
+      	<div class="table-col-sm"><%= info.start_date %></div>
+      	<div class="table-col-sm"><%= info.current_fail_num %>/<%= info.current_num %></div>
+      	<div class="table-col-sm"><%= info.abnormal_num %></div>
+      	<div class="table-col">
+      		<button class="realtime-showpic-btn" data-type="current" data-info=<%= info.workorder_id %>/<%= info.machine_id %>/<%= info.mold_id %>>即時</button>
+        	<button class="realtime-showpic-btn" data-type="safety" data-info=<%= info.workorder_id %>/<%= info.machine_id %>/<%= info.mold_id %>>安全</button>
+        	<button class="realtime-showpic-btn" data-type="error" data-info=<%= info.workorder_id %>/<%= info.machine_id %>/<%= info.mold_id %>>異常</button>
+      	</div>
+		  </li>
     <% });                                          %>`
 	);
 
   return menuTemp(infos);
 }
 
-},{"lodash":3}]},{},[13]);
+exports.renderPicList = function(pictures) {
+
+  var menuTemp = _.template(
+   `<% _.forEach(pictures, function(picture) {  %>
+      <div class="realtime-pic-item">
+        <a class="thumbnail" title= <%= picture.date %> >
+          <img src= <%= picture.url %> >
+        </a>
+        <div class="realtime-pic-label">
+          <span><%= picture.date %></span>
+        </div>
+      </div>
+
+    <% });                                          %>`
+  );
+
+  return menuTemp(pictures);
+}
+},{"lodash":3}]},{},[14]);
