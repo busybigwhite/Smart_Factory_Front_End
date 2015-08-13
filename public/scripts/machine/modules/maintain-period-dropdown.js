@@ -3,18 +3,37 @@
 var $ = window.jQuery = require('jquery');
 
 var $maintainPeriod = $('#machine-maintain-period');
-var $maintainPeriodDropdown = $('#machine-maintain-period-dropdown');
+var $periodView   = $maintainPeriod.find('.view-mode').eq(0);
+var $periodInput  = $maintainPeriod.find('.edit-mode').eq(0);
+var $typeView     = $maintainPeriod.find('.view-mode').eq(1);
+var $selectedType = $('#machine-maintain-period-dropdown').find('.selected-option');
+var $typeDropdownList = $('ul[aria-labelledby="machine-maintain-period-dropdown"]').find('.option');
 
-exports.init = initMaintainPeriod;
+exports.init     = initMaintainPeriod;
+exports.getValue = getValue;
+exports.getType  = getType;
 
 function initMaintainPeriod(val, type) {
-	$maintainPeriod.find('.view-mode').eq(0).text(val);
-	$maintainPeriod.find('.view-mode').eq(1).text(type);
-	$maintainPeriod.find('.edit-mode').eq(0).val(val);
-	$maintainPeriodDropdown.find('.selected-option').text(type);
+	$periodView.text(val);
+	$periodInput.val(val);
+	$typeView.text(type);
+	$selectedType.text(type);
 	bindEvents();
 }
 
 function bindEvents() {
-	// TODO
+	$typeDropdownList.on('click', changeType);
+}
+
+function changeType() {
+	var type = $(this).attr('type');
+	$selectedType.text(type);
+}
+
+function getValue() {
+	return $periodInput.val();
+}
+
+function getType() {
+	return $selectedType.text();
 }
