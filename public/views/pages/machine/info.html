@@ -14,36 +14,37 @@
 		<button class="info-delete-button" id="machine-delete-button">刪除</button>
 		<button class="info-edit-button" id="machine-edit-button">編輯</button>
 		<button class="info-save-button" id="machine-save-button">儲存</button>
+		<button class="info-back-button" id="machine-back-button">回列表</button>
 		<button class="info-cancel-button" id="machine-cancel-button">取消</button>
 	</div>
 	<div class="base-info-panel">
 		<ul>
-			<li>
+			<li id="machine-id">
 				<span class="info-name">射出機台編號</span>
 				<span class="info-value">
-					<p class="view-mode">M150001</p>
-					<input class="edit-mode" type="text" value="M150001">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" value="">
 				</span>
 			</li>
-			<li>
+			<li id="machine-name">
 				<span class="info-name">機種名稱</span>
 				<span class="info-value">
-					<p class="view-mode">台中精機S150</p>
-					<input class="edit-mode" type="text" value="台中精機S150">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" value="">
 				</span>
 			</li>
-			<li>
+			<li id="machine-weight">
 				<span class="info-name">噸數</span>
 				<span class="info-value">
-					<p class="view-mode">150</p>
-					<input class="edit-mode" type="text" value="150">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" value="">
 				</span>
 			</li>
-			<li>
+			<li><!-- TODO: add id -->
 				<span class="info-name">機台稼動率</span>
 				<span class="info-value">
-					<p class="view-mode">20%</p>
-					<input class="edit-mode" type="text" value="20%">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" value="">
 				</span>
 			</li>
 		</ul>
@@ -51,18 +52,49 @@
 	<section class="production-resume-panel">
 		<h3 class="resume-header">生產履歷</h3>
 		<ul>
-			<li>
+			<li id="machine-noticed-person">
 				<span class="resume-name">保養通知</span>
 				<span class="resume-value">
-				<p class="view-mode">Moremote</p>
-				<input class="edit-mode" type="text" value="Moremote">
+					<p class="view-mode"></p>
+					<div class="edit-mode dropdown">
+						<button class="btn btn-default dropdown-toggle"
+										id="machine-notice-dropdown"
+										data-toggle="dropdown"
+										aria-haspopup="true"
+										aria-expanded="true">
+							<span class="selected-option"></span>
+							<span class="caret"></span>
+						</button>
+						<!-- TODO: add real id -->
+						<ul class="dropdown-menu" aria-labelledby="machine-notice-dropdown">
+							<li><a>1</a></li>
+							<li><a>2</a></li>
+							<li><a>3</a></li>
+						</ul>
+					</div>
 				</span>
 			</li>
-			<li>
+			<li id="machine-check-period">
 				<span class="resume-name">小保養週期</span>
 				<span class="resume-value">
-				<p class="view-mode">3天</p>
-				<input class="edit-mode" type="text" value="3天">
+					<span class="view-mode"></span>
+					<span class="view-mode"></span>
+					<input class="edit-mode" type="text" value="">
+					<div class="edit-mode dropdown">
+						<button class="btn btn-default dropdown-toggle"
+										id="machine-check-period-dropdown"
+										data-toggle="dropdown"
+										aria-haspopup="true"
+										aria-expanded="true">
+							<span class="selected-option"></span>
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="machine-check-period-dropdown">
+							<li><a class="option" type="天">天</a></li>
+							<li><a class="option" type="週">週</a></li>
+							<li><a class="option" type="月">月</a></li>
+						</ul>
+					</div>
 				</span>
 			</li>
 			<li>
@@ -70,11 +102,27 @@
 				<span class="resume-value">
 				</span>
 			</li>
-			<li>
+			<li id="machine-maintain-period">
 				<span class="resume-name">大保養週期</span>
 				<span class="resume-value">
-				<p class="view-mode">30天</p>
-				<input class="edit-mode" type="text" value="30天">
+					<span class="view-mode"></span>
+					<span class="view-mode"></span>
+					<input class="edit-mode" type="text" value="">
+					<div class="edit-mode dropdown">
+						<button class="btn btn-default dropdown-toggle"
+										id="machine-maintain-period-dropdown"
+										data-toggle="dropdown"
+										aria-haspopup="true"
+										aria-expanded="true">
+							<span class="selected-option"></span>
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="machine-maintain-period-dropdown">
+							<li><a class="option" type="週">週</a></li>
+							<li><a class="option" type="月">月</a></li>
+							<li><a class="option" type="年">年</a></li>
+						</ul>
+					</div>
 				</span>
 			</li>
 			<li>
