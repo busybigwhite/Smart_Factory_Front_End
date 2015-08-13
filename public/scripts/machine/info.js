@@ -4,7 +4,11 @@ var $ = window.jQuery = require('jquery');
 var config = require('../config/url');
 var api = require('../machine/api');
 var queryParameter = require('../lib/helper/query-parameter');
+
 require('bootstrap/js/dropdown');
+var noticeedPersonDropdown = require('./modules/noticed-person-dropdown');
+var checkPeriodDropdown = require('./modules/check-period-dropdown');
+var maintainPeriodDropdown = require('./modules/maintain-period-dropdown');
 
 /* DOM */
 var $editBtn   = $('#machine-edit-button');
@@ -21,18 +25,9 @@ var $name = $('#machine-name');
 var $weight = $('#machine-weight');
 // TODO: 機台稼動率
 
-var $noticedPerson = $('#machine-noticed-person');
-var $noticedPersonDropdown = $('#machine-notice-dropdown');
-
-var $checkPeriod = $('#machine-check-period');
-var $checkPeriodDropdown = $('#machine-check-period-dropdown');
 // TODO: 小保養紀錄
-
-var $maintainPeriod = $('#machine-maintain-period');
-var $maintainPeriodDropdown = $('#machine-maintain-period-dropdown');
 // TODO: 大保養紀錄
 // TODO: 異常維修紀錄
-
 
 var isEditMode = false;
 
@@ -98,10 +93,10 @@ function goToMachineIndex() {
 
 function initialView(data) {
 	initBaseInfo(data);
-	initNoticeedPerson(data['admin_id']);
+	noticeedPersonDropdown.init(data['admin_id']);
 	// ToFix: data type params
-	initCheckPeriod(data['check_period'], '天');
-	initMaintainPeriod(data['maintain_period'], '年');
+	checkPeriodDropdown.init(data['check_period'], '天');
+	maintainPeriodDropdown.init(data['maintain_period'], '年');
 }
 
 function initBaseInfo(data) {
@@ -115,23 +110,4 @@ function initBaseInfo(data) {
 	$weight.find('.edit-mode').val(data['weight']);
 
 	// TODO: 機台稼動率
-}
-
-function initNoticeedPerson(id) {
-	$noticedPerson.find('.view-mode').text(id);
-	$noticedPersonDropdown.find('.selected-option').text(id);
-}
-
-function initCheckPeriod(val, type) {
-	$checkPeriod.find('.view-mode').eq(0).text(val);
-	$checkPeriod.find('.view-mode').eq(1).text(type);
-	$checkPeriod.find('.edit-mode').eq(0).val(val);
-	$checkPeriodDropdown.find('.selected-option').text(type);
-}
-
-function initMaintainPeriod(val, type) {
-	$maintainPeriod.find('.view-mode').eq(0).text(val);
-	$maintainPeriod.find('.view-mode').eq(1).text(type);
-	$maintainPeriod.find('.edit-mode').eq(0).val(val);
-	$maintainPeriodDropdown.find('.selected-option').text(type);
 }
