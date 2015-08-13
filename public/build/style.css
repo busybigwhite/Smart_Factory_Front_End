@@ -8836,7 +8836,7 @@ a:active {
 }
 .main-container {
   min-width: 1200px;
-  margin: 100px 20px 0;
+  padding: 100px 20px;
 }
 .detail-page-html-body {
   background-color: whitesmoke;
@@ -9976,127 +9976,7 @@ fieldset[disabled] .info-back-button.active {
   display: inline-block;
   text-align: right;
 }
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn {
-  display: inline-block;
-  margin-bottom: 0;
-  font-weight: normal;
-  text-align: center;
-  vertical-align: middle;
-  touch-action: manipulation;
-  cursor: pointer;
-  background-image: none;
-  border: 1px solid transparent;
-  white-space: nowrap;
-  padding: 6px 12px;
-  font-size: 14px;
-  line-height: 1.42857143;
-  border-radius: 4px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  color: #ffffff;
-  background-color: #5bc0de;
-  border-color: #46b8da;
-}
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn:active:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.active:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn:active.focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.active.focus {
-  outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
-}
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn:hover,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.focus {
-  color: #333333;
-  text-decoration: none;
-}
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn:active,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.active {
-  outline: 0;
-  background-image: none;
-  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-}
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.disabled,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn[disabled],
-fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn {
-  cursor: not-allowed;
-  opacity: 0.65;
-  filter: alpha(opacity=65);
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-a#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.disabled,
-fieldset[disabled] a#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn {
-  pointer-events: none;
-}
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.focus {
-  color: #ffffff;
-  background-color: #31b0d5;
-  border-color: #1b6d85;
-}
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn:hover {
-  color: #ffffff;
-  background-color: #31b0d5;
-  border-color: #269abc;
-}
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn:active,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.active,
-.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn {
-  color: #ffffff;
-  background-color: #31b0d5;
-  border-color: #269abc;
-}
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn:active:hover,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.active:hover,
-.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn:hover,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn:active:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.active:focus,
-.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn:active.focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.active.focus,
-.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.focus {
-  color: #ffffff;
-  background-color: #269abc;
-  border-color: #1b6d85;
-}
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn:active,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.active,
-.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn {
-  background-image: none;
-}
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.disabled,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn[disabled],
-fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.disabled:hover,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn[disabled]:hover,
-fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn:hover,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.disabled:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn[disabled]:focus,
-fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.disabled.focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn[disabled].focus,
-fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.disabled:active,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn[disabled]:active,
-fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn:active,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.disabled.active,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn[disabled].active,
-fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn.active {
-  background-color: #5bc0de;
-  border-color: #46b8da;
-}
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-live-pic-btn .badge {
-  color: #5bc0de;
-  background-color: #ffffff;
-}
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn {
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn {
   display: inline-block;
   margin-bottom: 0;
   font-weight: normal;
@@ -10119,222 +9999,277 @@ fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .re
   background-color: #5cb85c;
   border-color: #4cae4c;
 }
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn:active:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.active:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn:active.focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.active.focus {
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:active:focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.active:focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:active.focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.active.focus {
   outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn:hover,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.focus {
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:hover,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.focus {
   color: #333333;
   text-decoration: none;
 }
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn:active,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.active {
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:active,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.active {
   outline: 0;
   background-image: none;
   -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.disabled,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn[disabled],
-fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn {
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.disabled,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn[disabled],
+fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn {
   cursor: not-allowed;
   opacity: 0.65;
   filter: alpha(opacity=65);
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-a#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.disabled,
-fieldset[disabled] a#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn {
+a#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.disabled,
+fieldset[disabled] a#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn {
   pointer-events: none;
 }
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.focus {
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.focus {
   color: #ffffff;
   background-color: #449d44;
   border-color: #255625;
 }
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn:hover {
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:hover {
   color: #ffffff;
   background-color: #449d44;
   border-color: #398439;
 }
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn:active,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.active,
-.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn {
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:active,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.active,
+.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn {
   color: #ffffff;
   background-color: #449d44;
   border-color: #398439;
 }
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn:active:hover,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.active:hover,
-.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn:hover,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn:active:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.active:focus,
-.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn:active.focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.active.focus,
-.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.focus {
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:active:hover,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.active:hover,
+.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:hover,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:active:focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.active:focus,
+.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:active.focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.active.focus,
+.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.focus {
   color: #ffffff;
   background-color: #398439;
   border-color: #255625;
 }
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn:active,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.active,
-.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn {
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:active,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.active,
+.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn {
   background-image: none;
 }
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.disabled,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn[disabled],
-fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.disabled:hover,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn[disabled]:hover,
-fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn:hover,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.disabled:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn[disabled]:focus,
-fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.disabled.focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn[disabled].focus,
-fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.disabled:active,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn[disabled]:active,
-fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn:active,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.disabled.active,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn[disabled].active,
-fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn.active {
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.disabled,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn[disabled],
+fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.disabled:hover,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn[disabled]:hover,
+fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:hover,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.disabled:focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn[disabled]:focus,
+fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.disabled.focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn[disabled].focus,
+fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.disabled:active,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn[disabled]:active,
+fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:active,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.disabled.active,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn[disabled].active,
+fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn.active {
   background-color: #5cb85c;
   border-color: #4cae4c;
 }
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-sample-pic-btn .badge {
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn .badge {
   color: #5cb85c;
   background-color: #ffffff;
 }
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn {
-  display: inline-block;
-  margin-bottom: 0;
-  font-weight: normal;
-  text-align: center;
-  vertical-align: middle;
-  touch-action: manipulation;
-  cursor: pointer;
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child {
+  color: #ffffff;
+  background-color: #5bc0de;
+  border-color: #46b8da;
+}
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child:focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child.focus {
+  color: #ffffff;
+  background-color: #31b0d5;
+  border-color: #1b6d85;
+}
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child:hover {
+  color: #ffffff;
+  background-color: #31b0d5;
+  border-color: #269abc;
+}
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child:active,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child.active,
+.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child {
+  color: #ffffff;
+  background-color: #31b0d5;
+  border-color: #269abc;
+}
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child:active:hover,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child.active:hover,
+.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child:hover,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child:active:focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child.active:focus,
+.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child:focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child:active.focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child.active.focus,
+.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child.focus {
+  color: #ffffff;
+  background-color: #269abc;
+  border-color: #1b6d85;
+}
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child:active,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child.active,
+.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child {
   background-image: none;
-  border: 1px solid transparent;
-  white-space: nowrap;
-  padding: 6px 12px;
-  font-size: 14px;
-  line-height: 1.42857143;
-  border-radius: 4px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+}
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child.disabled,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child[disabled],
+fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child.disabled:hover,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child[disabled]:hover,
+fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child:hover,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child.disabled:focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child[disabled]:focus,
+fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child:focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child.disabled.focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child[disabled].focus,
+fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child.focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child.disabled:active,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child[disabled]:active,
+fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child:active,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child.disabled.active,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child[disabled].active,
+fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child.active {
+  background-color: #5bc0de;
+  border-color: #46b8da;
+}
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:first-child .badge {
+  color: #5bc0de;
+  background-color: #ffffff;
+}
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child {
   color: #ffffff;
   background-color: #d9534f;
   border-color: #d43f3a;
 }
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn:active:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.active:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn:active.focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.active.focus {
-  outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
-}
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn:hover,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.focus {
-  color: #333333;
-  text-decoration: none;
-}
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn:active,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.active {
-  outline: 0;
-  background-image: none;
-  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-}
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.disabled,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn[disabled],
-fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn {
-  cursor: not-allowed;
-  opacity: 0.65;
-  filter: alpha(opacity=65);
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-a#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.disabled,
-fieldset[disabled] a#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn {
-  pointer-events: none;
-}
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.focus {
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child:focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child.focus {
   color: #ffffff;
   background-color: #c9302c;
   border-color: #761c19;
 }
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn:hover {
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child:hover {
   color: #ffffff;
   background-color: #c9302c;
   border-color: #ac2925;
 }
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn:active,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.active,
-.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn {
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child:active,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child.active,
+.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child {
   color: #ffffff;
   background-color: #c9302c;
   border-color: #ac2925;
 }
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn:active:hover,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.active:hover,
-.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn:hover,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn:active:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.active:focus,
-.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn:active.focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.active.focus,
-.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.focus {
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child:active:hover,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child.active:hover,
+.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child:hover,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child:active:focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child.active:focus,
+.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child:focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child:active.focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child.active.focus,
+.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child.focus {
   color: #ffffff;
   background-color: #ac2925;
   border-color: #761c19;
 }
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn:active,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.active,
-.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn {
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child:active,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child.active,
+.open > .dropdown-toggle#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child {
   background-image: none;
 }
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.disabled,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn[disabled],
-fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.disabled:hover,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn[disabled]:hover,
-fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn:hover,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.disabled:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn[disabled]:focus,
-fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn:focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.disabled.focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn[disabled].focus,
-fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.focus,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.disabled:active,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn[disabled]:active,
-fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn:active,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.disabled.active,
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn[disabled].active,
-fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn.active {
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child.disabled,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child[disabled],
+fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child.disabled:hover,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child[disabled]:hover,
+fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child:hover,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child.disabled:focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child[disabled]:focus,
+fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child:focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child.disabled.focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child[disabled].focus,
+fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child.focus,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child.disabled:active,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child[disabled]:active,
+fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child:active,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child.disabled.active,
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child[disabled].active,
+fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child.active {
   background-color: #d9534f;
   border-color: #d43f3a;
 }
-#realtime-panel #realtime-list-block #realtime-table-mode .realtime-show-err-pic-btn .badge {
+#realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn:last-child .badge {
   color: #d9534f;
   background-color: #ffffff;
+}
+#realtime-panel #realtime-pic-block {
+  width: 100%;
+  max-width: 1200px;
+  min-height: 800px;
+  margin: -30px auto 0;
+  padding: 20px;
+  box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.3);
+}
+#realtime-panel #realtime-pic-block #realtime-pic-title {
+  width: 100%;
+  height: 70px;
+  padding: 0 25px;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 4em;
+}
+#realtime-panel #realtime-pic-block .realtime-pic-item {
+  position: relative;
+  float: left;
+  width: 25%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding: 0;
+}
+#realtime-panel #realtime-pic-block .realtime-pic-item .thumbnail {
+  width: 240px;
+  max-height: 180px;
+  margin: 10px auto;
+  padding: 6px;
+  overflow: hidden;
+  -webkit-box-shadow: 1px 3px 5px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 1px 3px 5px 0px rgba(0, 0, 0, 0.3);
+  -webkit-border-radius: 0;
+  border-radius: 0;
+}
+#realtime-panel #realtime-pic-block .realtime-pic-label {
+  width: 100%;
+  height: 50px;
+  padding: 0 10px;
+  text-align: center;
+  line-height: 2em;
 }
 #machine-table {
   margin: 20px 0;
