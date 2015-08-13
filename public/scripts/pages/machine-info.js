@@ -4,10 +4,10 @@ var $ = window.jQuery = require('jquery');
 var config = require('../config/url');
 
 /* DOM */
-var $machineDeleteBtn = $('#machine-delete-button');
-var $machineEditBtn = $('#machine-edit-button');
-var $machineCancelBtn = $('#machine-cancel-button');
-var $machineSaveBtn = $('#machine-save-button');
+var $deleteBtn = $('#machine-delete-button');
+var $editBtn = $('#machine-edit-button');
+var $cancelBtn = $('#machine-cancel-button');
+var $saveBtn = $('#machine-save-button');
 var $machineDetailPage = $('#machine-detail-page');
 var $viewModeCollection = $machineDetailPage.find('.view-mode');
 var $editModeCollection = $machineDetailPage.find('.edit-mode');
@@ -18,34 +18,43 @@ exports.init = initialize;
 
 function initialize() {
 	console.log('machine info init');
+	getInitialData();
 	bindEvents();
 }
 
+function getInitialData() {
+	// TODO
+}
+
 function bindEvents() {
-	$machineDeleteBtn.on('click', deleteMachine);
-	$machineEditBtn.on('click', showEditMode);
-	$machineCancelBtn.on('click', hideEditMode);
-	$machineSaveBtn.on('click', saveChangedData);
+	$deleteBtn.on('click', deleteMachine);
+	$editBtn.on('click', showEditMode);
+	$cancelBtn.on('click', hideEditMode);
+	$saveBtn.on('click', saveChangedData);
 }
 
 function showEditMode() {
 	isEditMode = true;
-	$machineDeleteBtn.hide();
-	$machineEditBtn.hide();
-	$machineSaveBtn.show();
+	$deleteBtn.hide();
+	$editBtn.hide();
+	$saveBtn.show();
 	$viewModeCollection.addClass('editting');
 	$editModeCollection.addClass('editting');
 }
 
 function hideEditMode() {
 	isEditMode = false;
-	$machineDeleteBtn.show();
-	$machineEditBtn.show();
-	$machineSaveBtn.hide();
+	$deleteBtn.show();
+	$editBtn.show();
+	$saveBtn.hide();
 	$viewModeCollection.removeClass('editting');
 	$editModeCollection.removeClass('editting');
 }
 
 function deleteMachine() {
+	// TODO
+}
+
+function saveChangedData() {
 	// TODO
 }
