@@ -2,12 +2,13 @@
 
 var $ = window.jQuery = require('jquery');
 var config = require('../config/url');
+require('bootstrap/js/dropdown');
 
 /* DOM */
-var $deleteBtn = $('#machine-delete-button');
 var $editBtn = $('#machine-edit-button');
 var $cancelBtn = $('#machine-cancel-button');
 var $saveBtn = $('#machine-save-button');
+var $deleteBtn = $('#machine-delete-button');
 var $machineDetailPage = $('#machine-detail-page');
 var $viewModeCollection = $machineDetailPage.find('.view-mode');
 var $editModeCollection = $machineDetailPage.find('.edit-mode');
@@ -27,34 +28,34 @@ function getInitialData() {
 }
 
 function bindEvents() {
-	$deleteBtn.on('click', deleteMachine);
 	$editBtn.on('click', showEditMode);
 	$cancelBtn.on('click', hideEditMode);
 	$saveBtn.on('click', saveChangedData);
+	$deleteBtn.on('click', deleteMachine);
 }
 
 function showEditMode() {
 	isEditMode = true;
-	$deleteBtn.hide();
 	$editBtn.hide();
 	$saveBtn.show();
+	$deleteBtn.hide();
 	$viewModeCollection.addClass('editting');
 	$editModeCollection.addClass('editting');
 }
 
 function hideEditMode() {
 	isEditMode = false;
-	$deleteBtn.show();
 	$editBtn.show();
 	$saveBtn.hide();
+	$deleteBtn.show();
 	$viewModeCollection.removeClass('editting');
 	$editModeCollection.removeClass('editting');
 }
 
-function deleteMachine() {
+function saveChangedData() {
 	// TODO
 }
 
-function saveChangedData() {
+function deleteMachine() {
 	// TODO
 }

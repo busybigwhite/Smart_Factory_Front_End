@@ -54,15 +54,30 @@
 			<li>
 				<span class="resume-name">保養通知</span>
 				<span class="resume-value">
-				<p class="view-mode">Moremote</p>
-				<input class="edit-mode" type="text" value="Moremote">
+					<p class="view-mode">Moremote</p>
+
+					<div class="edit-mode dropdown">
+						<button class="btn btn-default dropdown-toggle"
+										id="machine-notice-dropdown"
+										data-toggle="dropdown"
+										aria-haspopup="true"
+										aria-expanded="true">
+							<span id="machine-notice">Moremote</span>
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="machine-notice-dropdown">
+							<li><a data-mode="0">Moremote</a></li>
+							<li><a data-mode="1">Moremote-Test</a></li>
+						</ul>
+					</div>
+
 				</span>
 			</li>
 			<li>
 				<span class="resume-name">小保養週期</span>
 				<span class="resume-value">
-				<p class="view-mode">3天</p>
-				<input class="edit-mode" type="text" value="3天">
+					<p class="view-mode">3天</p>
+					<input class="edit-mode" type="text" value="3天">
 				</span>
 			</li>
 			<li>
@@ -73,8 +88,8 @@
 			<li>
 				<span class="resume-name">大保養週期</span>
 				<span class="resume-value">
-				<p class="view-mode">30天</p>
-				<input class="edit-mode" type="text" value="30天">
+					<p class="view-mode">30天</p>
+					<input class="edit-mode" type="text" value="30天">
 				</span>
 			</li>
 			<li>
