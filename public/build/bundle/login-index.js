@@ -9300,7 +9300,7 @@ function userLogin(e){
 	} else {
 
 		$.ajax({
-			url: config.baseUrl + "/login",
+			url: config.baseUrl + "api/auth/login",
 			type: "POST",
 			data: "name=" + $userName.val() + "&password=" + $userPassword.val() + "&_token=" + $csrfToken.val(),
 			success: function(res){
