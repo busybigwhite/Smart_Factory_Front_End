@@ -30,27 +30,35 @@ var $weight = $('#machine-weight');
 // TODO: 異常維修紀錄
 
 var isEditMode = false;
+var isCreateMode = false;
+var machineId;
 
 
 initialize();
 
 function initialize() {
 	header.include();
+	if (queryParameter.get('new') === 'true') {
+		isCreateMode = true;
+		showCreateMode();
+	}
 	getInitialData();
 	bindEvents();
 }
 
 function getInitialData() {
-	 var machineId = queryParameter.get('ID');
-	 api.getMachineInfo(machineId)
-	 		.done(initialView)
-	 		.fail(function(err) { console.log("error: ", err); });
+	machineId = queryParameter.get('ID');
+	api.getMachineInfo(machineId)
+			.done(initialView)
+			.fail(function(err) { console.log("error: ", err); });
+/*	var fakeResponse = {"id":"1","name":"\u6e2c\u8a66\u6a5f\u578b01","weight":"10","date":"2015\/08\/14 14:00:00","acquisition_date":"2015\/08\/15 14:00:00","admin_id":"U0001","check_period":"3","maintain_period":"10"};
+	initialView(fakeResponse); */
 }
 
 function bindEvents() {
 	$editBtn.on('click', showEditMode);
 	$cancelBtn.on('click', hideEditMode);
-	$saveBtn.on('click', saveChangedData);
+	$saveBtn.on('click', saveData);
 	$deleteBtn.on('click', deleteMachine);
 	$backBtn.on('click', api.goToMachineIndex);
 }
@@ -77,20 +85,43 @@ function hideEditMode() {
 	$editModeCollection.removeClass('editting');
 }
 
-function saveChangedData() {
-	// TODO
+function showCreateMode() {
+	$editBtn.hide();
+	$cancelBtn.hide();
+	$saveBtn.show();
+	$deleteBtn.hide();
+	$backBtn.show();
+	$viewModeCollection.addClass('editting');
+	$editModeCollection.addClass('editting');
+}
+
+function saveData() {
+	var data = getChangedData();
+
+	if (isEditMode && !isCreateMode) {
+		api.editMachineInfo(machineId, data)
+			 .done(function(data) { console.log("EDIT Machine Info res: ", data); })
+			 .fail(function(err) { console.log("EDIT Machine Info error: ", err); });
+
+	} else if (!isEditMode && isCreateMode) {
+		api.createMachine(machineId, data)
+		 .done(function(data) { console.log("DELETE Machine res: ", data); })
+		 .fail(function(err) { console.log("DELETE Machine error: ", err); });
+
+	} else {
+		console.log('machine info page has error: Undefined Mode');
+	}
 }
 
 function deleteMachine() {
-	// TODO
+	api.deleteMachine(machineId)
+		 .done(function(data) { console.log("DELETE Machine res: ", data); })
+		 .fail(function(err) { console.log("DELETE Machine error: ", err); });
 }
 
 function initialView(data) {
 	initBaseInfo(data);
-	noticeedPersonDropdown.init(data['admin_id']);
-	// ToFix: data type params
-	checkPeriodDropdown.init(data['check_period'], '天');
-	maintainPeriodDropdown.init(data['maintain_period'], '年');
+	initResumeInfo(data);
 }
 
 function initBaseInfo(data) {
@@ -104,4 +135,20 @@ function initBaseInfo(data) {
 	$weight.find('.edit-mode').val(data['weight']);
 
 	// TODO: 機台稼動率
+}
+
+function initResumeInfo(data) {
+	noticeedPersonDropdown.init(data['admin_id']);
+	// ToFix: data type params
+	checkPeriodDropdown.init(data['check_period'], '天');
+	maintainPeriodDropdown.init(data['maintain_period'], '年');
+	// TODO: 小保養紀錄
+	// TODO: 大保養紀錄
+	// TODO: 異常維修紀錄
+}
+
+function getChangedData() {
+	var newData = {};
+		// TODO
+	return newData;
 }
