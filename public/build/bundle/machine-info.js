@@ -9973,16 +9973,18 @@ var base          = exports.baseUrl = `${protocol}://${hostname}${portDisplay}`;
 // exports.eventsUrl    = `${base}/${projectName}/${restNamespace}/events/`;
 // exports.publishesUrl = `${base}/${projectName}/${restNamespace}/publishes/`;
 
-exports.realtimeUrl  = `${base}/realtime/`;
-exports.machineUrl 	 = `${base}/machine/`;
-exports.workorderUrl = `${base}/workorder/`;
-exports.moldUrl   	 = `${base}/mold/`;
-exports.unusualUrl 	 = `${base}/unusual/`;
-exports.memberUrl 	 = `${base}/member/`;
-exports.historyUrl   = `${base}/history/`;
-exports.headerUrl 	 = `${base}/views/includes/header/main.html`;
+exports.realtimeUrl  	= `${base}/realtime/`;
+exports.realtimePicUrl  = `${base}/realtime/listpic`;
+exports.machineUrl 	 	= `${base}/machine/`;
+exports.workorderUrl 	= `${base}/workorder/`;
+exports.moldUrl   	 	= `${base}/mold/`;
+exports.unusualUrl 	 	= `${base}/unusual/`;
+exports.memberUrl 	 	= `${base}/member/`;
+exports.historyUrl   	= `${base}/history/`;
+exports.headerUrl 	 	= `${base}/views/includes/header/main.html`;
 
-exports.imageUrl 	 = `${base}/images/`;
+exports.APIUrl  		= `${base}/api/`;
+exports.imageUrl 	 	= `${base}/images/`;
 
 },{}],9:[function(require,module,exports){
 'use strict';
@@ -10040,23 +10042,85 @@ function getQueryString() {
 var $ = window.jQuery = require('jquery');
 var config = require('../config/url');
 
+var machineApiUrl  = config.APIUrl + 'machine/';
+var machinePageUrl = config.machineUrl;
+
 exports = module.exports = {
 	goToMachineIndex: goToMachineIndex,
+	goToMachineInfo: goToMachineInfo,
+	getMachineList: getMachineList,
+	createMachine: createMachine,
+	deleteMachine: deleteMachine,
 	getMachineInfo: getMachineInfo,
+	editMachineInfo: editMachineInfo,
 };
 
 function goToMachineIndex() {
-	window.location.href = config.machineUrl;
+	window.location.href = machinePageUrl;
+}
+
+function goToMachineInfo(type, ID) {
+	var action = '';
+	switch(type) {
+		case 'new':
+			action = '?new=true';
+		break;
+
+		case 'detail':
+		default:
+			action = '?ID=' + ID;
+	}
+	window.location.href = machinePageUrl + 'info' + action;
+}
+
+function getMachineList() {
+	return getData(machineApiUrl + 'list');
+};
+
+function createMachine(data) {
+	return createData(machineApiUrl, data);
+}
+
+function deleteMachine(id) {
+	return deleteData(machineApiUrl + id);
 }
 
 function getMachineInfo(id) {
-	// return getData(config.machineUrl + 'api/machine/' + id);
-	return getData('http://smartfactory.moremote.com/api/machine/info' + id);
+	return getData(machineApiUrl + 'info/' + id);
 };
 
-function getData(url) {
-	return $.get(url, { crossDomain: true });
+function editMachineInfo(id, data) {
+	return editData(machineApiUrl + 'info/' + id);
 }
+
+
+/* private */
+function getData(url) {
+	return ajax('GET', url);
+}
+
+function editData(url, data) {
+	return ajax('PUT', url, data);
+}
+
+function createData(url, data) {
+	return ajax('POST', url, data);
+}
+
+function deleteData(url) {
+	return ajax('DELETE', url);
+}
+
+function ajax(method, url, data) {
+	return $.ajax({
+		method: method,
+		url: url,
+		data: data,
+		// cache: false, //aviod ie bug if necessary
+		// timeout: 30000, //ms
+	});
+}
+
 
 },{"../config/url":8,"jquery":2}],12:[function(require,module,exports){
 'use strict';
@@ -10167,7 +10231,7 @@ var queryParameter = require('../lib/helper/query-parameter');
 
 require('bootstrap/js/dropdown');
 var noticeedPersonDropdown = require('../machine/modules/noticed-person-dropdown');
-var checkPeriodDropdown = require('../machine/modules/check-period-dropdown');
+var checkPeriodDropdown    = require('../machine/modules/check-period-dropdown');
 var maintainPeriodDropdown = require('../machine/modules/maintain-period-dropdown');
 
 /* DOM */
@@ -10189,68 +10253,109 @@ var $weight = $('#machine-weight');
 // TODO: 大保養紀錄
 // TODO: 異常維修紀錄
 
-var isEditMode = false;
+var isEditMode   = false;
+var isCreateMode = false;
+var machineId;
 
 
 initialize();
 
 function initialize() {
 	header.include();
+	if (queryParameter.get('new') === 'true') {
+		isCreateMode = true;
+		showCreateMode();
+	}
 	getInitialData();
 	bindEvents();
 }
 
 function getInitialData() {
-	 var machineId = queryParameter.get('ID');
-	 api.getMachineInfo(machineId)
-	 		.done(initialView)
-	 		.fail(function(err) { console.log("error: ", err); });
+	machineId = queryParameter.get('ID');
+	api.getMachineInfo(machineId)
+		 .done(initialView)
+		 .fail(function(err) { console.log("GET Machine Info error: ", err); });
+	// var fakeResponse = {"id":"1","name":"\u6e2c\u8a66\u6a5f\u578b01","weight":"10","date":"2015\/08\/14 14:00:00","acquisition_date":"2015\/08\/15 14:00:00","admin_id":"U0001","check_period":"3","maintain_period":"10"};
+	// initialView(fakeResponse);
 }
 
 function bindEvents() {
-	$editBtn.on('click', showEditMode);
+	$editBtn  .on('click', showEditMode);
 	$cancelBtn.on('click', hideEditMode);
-	$saveBtn.on('click', saveChangedData);
 	$deleteBtn.on('click', deleteMachine);
-	$backBtn.on('click', api.goToMachineIndex);
+	$backBtn  .on('click', api.goToMachineIndex);
+	$machineDetailPage.submit(saveData);
 }
 
 function showEditMode() {
 	isEditMode = true;
-	$editBtn.hide();
+	$editBtn  .hide();
 	$cancelBtn.show();
-	$saveBtn.show();
+	$saveBtn  .show();
 	$deleteBtn.hide();
-	$backBtn.hide();
+	$backBtn  .hide();
 	$viewModeCollection.addClass('editting');
 	$editModeCollection.addClass('editting');
 }
 
 function hideEditMode() {
 	isEditMode = false;
-	$editBtn.show();
+	$editBtn  .show();
 	$cancelBtn.hide();
-	$saveBtn.hide();
+	$saveBtn  .hide();
 	$deleteBtn.show();
-	$backBtn.show();
+	$backBtn  .show();
 	$viewModeCollection.removeClass('editting');
 	$editModeCollection.removeClass('editting');
 }
 
-function saveChangedData() {
-	// TODO
+function showCreateMode() {
+	$editBtn  .hide();
+	$cancelBtn.hide();
+	$saveBtn  .show();
+	$deleteBtn.hide();
+	$backBtn  .show();
+	$viewModeCollection.addClass('editting');
+	$editModeCollection.addClass('editting');
+}
+
+function saveData() {
+	var data = getChangedData();
+	console.log('Changed or New Data : ', data);
+
+	if (isEditMode && !isCreateMode) {
+		saveChangedData(data);
+
+	} else if (!isEditMode && isCreateMode) {
+		saveNewData(data);
+
+	} else {
+		console.log('machine info page has error: Undefined Mode');
+	}
+	return false;
+}
+
+function saveChangedData(data) {
+	api.editMachineInfo(machineId, data)
+		 .done(function(data) { console.log("EDIT Machine Info res: ", data); })
+		 .fail(function(err) { console.log("EDIT Machine Info error: ", err); });
+}
+
+function saveNewData(data) {
+	api.createMachine(data)
+		 .done(function(data) { console.log("CREATE Machine res: ", data); })
+		 .fail(function(err) { console.log("CREATE Machine error: ", err); });
 }
 
 function deleteMachine() {
-	// TODO
+	api.deleteMachine(machineId)
+		 .done(function(data) { console.log("DELETE Machine res: ", data); })
+		 .fail(function(err) { console.log("DELETE Machine error: ", err); });
 }
 
 function initialView(data) {
 	initBaseInfo(data);
-	noticeedPersonDropdown.init(data['admin_id']);
-	// ToFix: data type params
-	checkPeriodDropdown.init(data['check_period'], '天');
-	maintainPeriodDropdown.init(data['maintain_period'], '年');
+	initResumeInfo(data);
 }
 
 function initBaseInfo(data) {
@@ -10266,4 +10371,36 @@ function initBaseInfo(data) {
 	// TODO: 機台稼動率
 }
 
+function initResumeInfo(data) {
+	noticeedPersonDropdown.init(data['admin_id']);
+	// ToFix: data type params
+	checkPeriodDropdown   .init(data['check_period'], '天');
+	maintainPeriodDropdown.init(data['maintain_period'], '年');
+	// TODO: 小保養紀錄
+	// TODO: 大保養紀錄
+	// TODO: 異常維修紀錄
+}
+
+function getChangedData() {
+	var newData = {};
+	$editModeCollection.each(function(index, el) {
+		var name  = $(el).attr('name');
+		var value = $(el).val();
+		var $dropdownSelected = $(el).find('.selected-option');
+
+		if (name) {
+			value = value ? value : '';
+			newData[name] = value;
+
+		} else if ($dropdownSelected) {
+			var selectedName  = $dropdownSelected.attr('name');
+			var selectedValue = $dropdownSelected.text();
+			newData[selectedName] = selectedValue;
+
+		} else {
+			console.log('getChangedData error: missing some value');
+		}
+	});
+	return newData;
+}
 },{"../includes/header":9,"../lib/helper/query-parameter":10,"../machine/api":11,"../machine/modules/check-period-dropdown":12,"../machine/modules/maintain-period-dropdown":13,"../machine/modules/noticed-person-dropdown":14,"bootstrap/js/dropdown":1,"jquery":2}]},{},[15]);
