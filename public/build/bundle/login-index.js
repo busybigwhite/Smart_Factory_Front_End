@@ -9284,7 +9284,7 @@ function bindEvents() {
 function getToken(){
 	$.get( config.baseUrl + "/api/token" )
   .done(function(res) {
-    $csrfToken.val(res);
+    $csrfToken.val(res.csrf_token);
   });
 }
 
@@ -9304,7 +9304,8 @@ function userLogin(e){
 			type: "POST",
 			data: "name=" + $userName.val() + "&password=" + $userPassword.val() + "&_token=" + $csrfToken.val(),
 			success: function(res){
-			  document.cookie = res;
+			  document.cookie = res.csrf_token;
+			  window.location.href = config.realtimeUrl;
 			}
 		});		
 	}

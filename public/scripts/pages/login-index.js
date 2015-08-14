@@ -43,7 +43,7 @@ function userLogin(e){
 			type: "POST",
 			data: "name=" + $userName.val() + "&password=" + $userPassword.val() + "&_token=" + $csrfToken.val(),
 			success: function(res){
-			  document.cookie = res;
+			  document.cookie = res.csrf_token;
 			  window.location.href = config.realtimeUrl;
 			}
 		});		
