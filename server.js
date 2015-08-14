@@ -23,9 +23,6 @@ app.get('/realtime', function(req, res) { res.render('pages/realtime/main'); });
 app.get('/realtime/listpic', function(req, res) {
 	res.render('pages/realtime/listpic');
 });
-app.get('/api/factory/list', function(req, res) {
-	res.send(data.factories);
-});
 app.get('/api/workorder/list', function(req, res) {
 	res.send(data.liveinfos);
 });
@@ -40,6 +37,25 @@ app.get('/workorder', function(req, res) { res.render('pages/workorder/main'); }
 app.get('/mold', function(req, res) { res.render('pages/mold/main'); });
 app.get('/unusual', function(req, res) { res.render('pages/unusual/main'); });
 app.get('/member', function(req, res) { res.render('pages/member/main'); });
+
+// history
 app.get('/history', function(req, res) { res.render('pages/history/main'); });
+app.get('/api/history/list', function(req, res) {
+	switch(req.query.type){
+		case "machine":
+			res.send(data.machineLists);
+		break;
+		case "mold":
+			res.send(data.moldLists);
+		break;
+		default:
+			res.send({});
+		break;
+	}
+});
+
+app.get('/api/factory/list', function(req, res) {
+	res.send(data.factories);
+});
 
 app.listen(app.get('port'));

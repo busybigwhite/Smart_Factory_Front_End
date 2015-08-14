@@ -11,53 +11,54 @@
 
 <div class="main-container">
 
-    <div id="realtime-panel" class="row">
-    	<div id="realtime-select-block">
+    <div id="history-panel">
+    	<div id="history-select-block">
     		<div class="col-xs-8">
-	    		<div class="realtime-dropdown">
-					<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    			<div class="dropdown-factory-filter">
+					<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 						<span id="realtime-factory-focus"></span>
 						<span class="caret"></span>
 					</button>
 					<ul id="realtime-factory-list" class="dropdown-menu"></ul>
 				</div>
-				<div class="realtime-dropdown">
-					<button id="realtime-mode" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-						<span id="realtime-mode-focus"></span>
+	    		<div id="dropdown-history-filter">
+					<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						<span id="filter-focus-item-name" class="dropdown-focus-name"></span>
 						<span class="caret"></span>
 					</button>
-					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-						<li><a id="table-mode-switcher" data-mode="0">列表模式</a></li>
-						<li><a id="image-mode-switcher" data-mode="1">圖片模式</a></li>
+					<ul class="dropdown-menu">
+						<li><a class="option-item" data-id="workorder_id">工單編號</a></li>
+						<li><a class="option-item" data-id="machine_id">射出機台編號</a></li>
+						<li><a class="option-item" data-id="mold_id">模具編號</a></li>
+						<li><a class="option-item" data-id="customer_id">客戶名稱</a></li>
+						<li><a class="option-item" data-id="date_period">時間區間</a></li>
 					</ul>
+				</div>
+				<div id="dropdown-value-list">
+					<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						<span id="focus-value" class="dropdown-focus-name"></span>
+						<span class="caret"></span>
+					</button>
+					<ul id="filter-value-list" class="dropdown-menu"></ul>
 				</div>
     		</div>
     		<div class="col-xs-4">
-    			<div class="input-group pull-right">
-					<input id="realtime-search-input" type="text" class="form-control" placeholder="Search for...">
+    			<!-- <div class="input-group pull-right">
+					<input id="history-search-input" type="text" class="form-control" placeholder="Search for...">
 					<span class="input-group-btn">
-						<button id="realtime-search-btn" class="btn btn-info">
+						<button id="history-search-btn" class="btn btn-info">
 							<i class="fa fa-search"></i>
 						</button>
 					</span>
-				</div>
-				<div class="realtime-dropdown pull-right">
-					<button id="realtime-filter" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-						<span id="realtime-filter-focus"></span>
-						<span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-						<li><a class="filter-item" data-id="workOrder_id">工單編號</a></li>
-						<li><a class="filter-item" data-id="machine_id">射出機台編號</a></li>
-						<li><a class="filter-item" data-id="mold_id">模具編號</a></li>
-						<li><a class="filter-item" data-id="customer_id">客戶名稱</a></li>
-					</ul>
-				</div>
+				</div> -->
+
 			</div>
     	</div>
 
-        <div id="realtime-list-block">
-        	<ul id="realtime-table-mode">
+        <div id="history-list-block" class="hidden">
+        	<div id="history-img-block" class="hidden"></div>
+
+        	<ul id="history-table-block">
 				<li class="table-header">
 					<div class="table-col">工單編號</div>
                 	<div class="table-col">射出機台編號</div>
@@ -69,17 +70,14 @@
                 	<div class="table-col-sm">不良品數量</div>
                 	<div class="table-col-lg">圖像列表</div>
 				</li>
-				<div class="realtime-table-body"></div>
+				<div class="history-table-body"></div>
 			</ul>
-
-			<div id="realtime-img-mode" class="hidden">
-
-			</div>
         </div>
+
     </div>
 </div>
 
-<!-- <script src="../../../build/bundle/realtime-index.js"></script> -->
+<script src="../../../build/bundle/history-index.js"></script>
 
 </body>
 </html>

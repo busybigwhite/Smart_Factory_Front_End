@@ -81,10 +81,24 @@ var listpics = [
                 'date': '2015/08/11 00:00:00',
                 'url': '../../../images/sample/sample.jpg'
             }
-        ]
+]
+
+var machineLists = [
+    {'id': 'M001','name': 'machine001'},
+    {'id': 'M002','name': 'machine002'},
+    {'id': 'M003','name': 'machine003'}
+]
+
+var moldLists = [
+    {'id': 'Mold001','name': 'mold00001'},
+    {'id': 'Mold002','name': 'mold00002'},
+    {'id': 'Mold003','name': 'mold00003'}
+]
 
 module.exports = {
       factories: factories,
       liveinfos: liveinfos,
-      listpics: listpics
+      listpics: listpics,
+      machineLists: machineLists,
+      moldLists: moldLists
 };

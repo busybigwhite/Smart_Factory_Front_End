@@ -6505,7 +6505,9 @@ button.close {
 .modal-footer:before,
 .modal-footer:after,
 #realtime-panel:before,
-#realtime-panel:after {
+#realtime-panel:after,
+#history-panel:before,
+#history-panel:after {
   content: " ";
   display: table;
 }
@@ -6524,7 +6526,8 @@ button.close {
 .pager:after,
 .panel-body:after,
 .modal-footer:after,
-#realtime-panel:after {
+#realtime-panel:after,
+#history-panel:after {
   clear: both;
 }
 .center-block {
@@ -9761,6 +9764,10 @@ fieldset[disabled] .info-back-button.active {
   min-width: 100px;
   font-size: 16px;
 }
+.custom-dropdown .dropdown-toggle .dropdown-focus-name {
+  min-width: 80px;
+  display: inline-block;
+}
 .custom-dropdown .dropdown-toggle .caret {
   margin-left: 10px;
 }
@@ -9913,6 +9920,10 @@ fieldset[disabled] .info-back-button.active {
 #realtime-panel #realtime-select-block .realtime-dropdown .dropdown-toggle {
   min-width: 100px;
   font-size: 16px;
+}
+#realtime-panel #realtime-select-block .realtime-dropdown .dropdown-toggle .dropdown-focus-name {
+  min-width: 80px;
+  display: inline-block;
 }
 #realtime-panel #realtime-select-block .realtime-dropdown .dropdown-toggle .caret {
   margin-left: 10px;
@@ -10353,4 +10364,374 @@ fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .re
   text-overflow: ellipsis;
   white-space: nowrap;
   text-align: center;
+}
+#history-panel {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+#history-panel #history-select-block {
+  position: relative;
+  float: left;
+  width: 100%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding: 0;
+}
+#history-panel #history-select-block #dropdown-history-filter,
+#history-panel #history-select-block #dropdown-value-list {
+  position: relative;
+  padding: 0;
+  margin-right: 10px;
+  display: inline-block;
+}
+#history-panel #history-select-block #dropdown-history-filter .dropdown-toggle,
+#history-panel #history-select-block #dropdown-value-list .dropdown-toggle {
+  min-width: 100px;
+  font-size: 16px;
+}
+#history-panel #history-select-block #dropdown-history-filter .dropdown-toggle .dropdown-focus-name,
+#history-panel #history-select-block #dropdown-value-list .dropdown-toggle .dropdown-focus-name {
+  min-width: 80px;
+  display: inline-block;
+}
+#history-panel #history-select-block #dropdown-history-filter .dropdown-toggle .caret,
+#history-panel #history-select-block #dropdown-value-list .dropdown-toggle .caret {
+  margin-left: 10px;
+}
+#history-panel #history-select-block #dropdown-history-filter .dropdown-menu,
+#history-panel #history-select-block #dropdown-value-list .dropdown-menu {
+  font-size: 16px;
+}
+#history-panel #history-list-block {
+  position: relative;
+  float: left;
+  width: 100%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+#history-panel #history-list-block #history-table-mode {
+  margin: 20px 0;
+  padding: 0;
+}
+#history-panel #history-list-block #history-table-mode .table-header {
+  height: 40px;
+  border-bottom: 2px solid #ddd;
+  line-height: 2.3em;
+}
+#history-panel #history-list-block #history-table-mode .table-item {
+  height: 48px;
+  border-bottom: 1px solid #ddd;
+  line-height: 2.8em;
+}
+#history-panel #history-list-block #history-table-mode .table-item:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+#history-panel #history-list-block #history-table-mode .table-item:last-child {
+  border-bottom: none;
+}
+#history-panel #history-list-block #history-table-mode .table-col {
+  position: relative;
+  float: left;
+  width: 12.5%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: inherit;
+  padding: 0 5px;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#history-panel #history-list-block #history-table-mode .table-col-sm {
+  position: relative;
+  float: left;
+  width: 8.33333333%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: inherit;
+  padding: 0 5px;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
+}
+#history-panel #history-list-block #history-table-mode .table-col-lg {
+  position: relative;
+  float: left;
+  width: 12.5%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: inherit;
+  padding: 0 5px;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #ffffff;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:active:focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn.active:focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn.focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:active.focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn.active.focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:hover,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn.focus {
+  color: #333333;
+  text-decoration: none;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:active,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn.active {
+  outline: 0;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn.disabled,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn[disabled],
+fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn {
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+a#history-panel #history-list-block #history-table-mode .history-showpic-btn.disabled,
+fieldset[disabled] a#history-panel #history-list-block #history-table-mode .history-showpic-btn {
+  pointer-events: none;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn.focus {
+  color: #ffffff;
+  background-color: #449d44;
+  border-color: #255625;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:hover {
+  color: #ffffff;
+  background-color: #449d44;
+  border-color: #398439;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:active,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn.active,
+.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn {
+  color: #ffffff;
+  background-color: #449d44;
+  border-color: #398439;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:active:hover,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn.active:hover,
+.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:hover,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:active:focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn.active:focus,
+.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:active.focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn.active.focus,
+.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn.focus {
+  color: #ffffff;
+  background-color: #398439;
+  border-color: #255625;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:active,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn.active,
+.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn {
+  background-image: none;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn.disabled,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn[disabled],
+fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn.disabled:hover,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn[disabled]:hover,
+fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:hover,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn.disabled:focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn[disabled]:focus,
+fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn.disabled.focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn[disabled].focus,
+fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn.focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn.disabled:active,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn[disabled]:active,
+fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:active,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn.disabled.active,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn[disabled].active,
+fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn.active {
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn .badge {
+  color: #5cb85c;
+  background-color: #ffffff;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child {
+  color: #ffffff;
+  background-color: #5bc0de;
+  border-color: #46b8da;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.focus {
+  color: #ffffff;
+  background-color: #31b0d5;
+  border-color: #1b6d85;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:hover {
+  color: #ffffff;
+  background-color: #31b0d5;
+  border-color: #269abc;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:active,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.active,
+.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child {
+  color: #ffffff;
+  background-color: #31b0d5;
+  border-color: #269abc;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:active:hover,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.active:hover,
+.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:hover,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:active:focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.active:focus,
+.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:active.focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.active.focus,
+.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.focus {
+  color: #ffffff;
+  background-color: #269abc;
+  border-color: #1b6d85;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:active,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.active,
+.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child {
+  background-image: none;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.disabled,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child[disabled],
+fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.disabled:hover,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child[disabled]:hover,
+fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:hover,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.disabled:focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child[disabled]:focus,
+fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.disabled.focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child[disabled].focus,
+fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.disabled:active,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child[disabled]:active,
+fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:active,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.disabled.active,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child[disabled].active,
+fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.active {
+  background-color: #5bc0de;
+  border-color: #46b8da;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child .badge {
+  color: #5bc0de;
+  background-color: #ffffff;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child {
+  color: #ffffff;
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.focus {
+  color: #ffffff;
+  background-color: #c9302c;
+  border-color: #761c19;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:hover {
+  color: #ffffff;
+  background-color: #c9302c;
+  border-color: #ac2925;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:active,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.active,
+.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child {
+  color: #ffffff;
+  background-color: #c9302c;
+  border-color: #ac2925;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:active:hover,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.active:hover,
+.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:hover,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:active:focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.active:focus,
+.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:active.focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.active.focus,
+.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.focus {
+  color: #ffffff;
+  background-color: #ac2925;
+  border-color: #761c19;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:active,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.active,
+.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child {
+  background-image: none;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.disabled,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child[disabled],
+fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.disabled:hover,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child[disabled]:hover,
+fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:hover,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.disabled:focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child[disabled]:focus,
+fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.disabled.focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child[disabled].focus,
+fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.focus,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.disabled:active,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child[disabled]:active,
+fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:active,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.disabled.active,
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child[disabled].active,
+fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.active {
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child .badge {
+  color: #d9534f;
+  background-color: #ffffff;
+}
+#history-panel #history-pic-block {
+  width: 100%;
+  max-width: 1200px;
+  min-height: 800px;
+  margin: -30px auto 0;
+  padding: 20px;
+  box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.3);
 }
