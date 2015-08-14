@@ -9736,7 +9736,7 @@ fieldset[disabled] .info-delete-button.active {
   background-color: #ecf0f1;
 }
 .login-header {
-  margin-top: 150px;
+  margin-top: 10%;
   margin-bottom: -36px;
 }
 .login-panel {
