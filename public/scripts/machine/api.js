@@ -1,5 +1,6 @@
 'use strict';
 
+var $ = window.jQuery = require('jquery');
 var config = require('../config/url');
 
 exports = module.exports = {
@@ -12,7 +13,7 @@ function goToMachineIndex() {
 }
 
 function getMachineInfo(id) {
-	return getData(config.machineUrl + 'api/machine/' + id);
+	return getData(config.machineUrl + 'api/machine/info/' + id);
 };
 
 function getData(url) {

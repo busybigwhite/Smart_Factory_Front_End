@@ -3,7 +3,6 @@
 var $ = window.jQuery = require('jquery');
 var config = require('../config/url');
 var header = require('../includes/header');
-var info = require('../machine/info');
 
 /* DOM */
 var $machineNewBtn = $('#machine-new-button');
@@ -13,7 +12,6 @@ initialize();
 
 function initialize() {
 	header.include();
-	info.init();
 	getInitialData();
 	bindEvents();
 }

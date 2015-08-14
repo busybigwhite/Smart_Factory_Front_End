@@ -1,4 +1,171 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/* ========================================================================
+ * Bootstrap: dropdown.js v3.3.5
+ * http://getbootstrap.com/javascript/#dropdowns
+ * ========================================================================
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // DROPDOWN CLASS DEFINITION
+  // =========================
+
+  var backdrop = '.dropdown-backdrop'
+  var toggle   = '[data-toggle="dropdown"]'
+  var Dropdown = function (element) {
+    $(element).on('click.bs.dropdown', this.toggle)
+  }
+
+  Dropdown.VERSION = '3.3.5'
+
+  function getParent($this) {
+    var selector = $this.attr('data-target')
+
+    if (!selector) {
+      selector = $this.attr('href')
+      selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
+    }
+
+    var $parent = selector && $(selector)
+
+    return $parent && $parent.length ? $parent : $this.parent()
+  }
+
+  function clearMenus(e) {
+    if (e && e.which === 3) return
+    $(backdrop).remove()
+    $(toggle).each(function () {
+      var $this         = $(this)
+      var $parent       = getParent($this)
+      var relatedTarget = { relatedTarget: this }
+
+      if (!$parent.hasClass('open')) return
+
+      if (e && e.type == 'click' && /input|textarea/i.test(e.target.tagName) && $.contains($parent[0], e.target)) return
+
+      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
+
+      if (e.isDefaultPrevented()) return
+
+      $this.attr('aria-expanded', 'false')
+      $parent.removeClass('open').trigger('hidden.bs.dropdown', relatedTarget)
+    })
+  }
+
+  Dropdown.prototype.toggle = function (e) {
+    var $this = $(this)
+
+    if ($this.is('.disabled, :disabled')) return
+
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
+
+    clearMenus()
+
+    if (!isActive) {
+      if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
+        // if mobile we use a backdrop because click events don't delegate
+        $(document.createElement('div'))
+          .addClass('dropdown-backdrop')
+          .insertAfter($(this))
+          .on('click', clearMenus)
+      }
+
+      var relatedTarget = { relatedTarget: this }
+      $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
+
+      if (e.isDefaultPrevented()) return
+
+      $this
+        .trigger('focus')
+        .attr('aria-expanded', 'true')
+
+      $parent
+        .toggleClass('open')
+        .trigger('shown.bs.dropdown', relatedTarget)
+    }
+
+    return false
+  }
+
+  Dropdown.prototype.keydown = function (e) {
+    if (!/(38|40|27|32)/.test(e.which) || /input|textarea/i.test(e.target.tagName)) return
+
+    var $this = $(this)
+
+    e.preventDefault()
+    e.stopPropagation()
+
+    if ($this.is('.disabled, :disabled')) return
+
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
+
+    if (!isActive && e.which != 27 || isActive && e.which == 27) {
+      if (e.which == 27) $parent.find(toggle).trigger('focus')
+      return $this.trigger('click')
+    }
+
+    var desc = ' li:not(.disabled):visible a'
+    var $items = $parent.find('.dropdown-menu' + desc)
+
+    if (!$items.length) return
+
+    var index = $items.index(e.target)
+
+    if (e.which == 38 && index > 0)                 index--         // up
+    if (e.which == 40 && index < $items.length - 1) index++         // down
+    if (!~index)                                    index = 0
+
+    $items.eq(index).trigger('focus')
+  }
+
+
+  // DROPDOWN PLUGIN DEFINITION
+  // ==========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this = $(this)
+      var data  = $this.data('bs.dropdown')
+
+      if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
+      if (typeof option == 'string') data[option].call($this)
+    })
+  }
+
+  var old = $.fn.dropdown
+
+  $.fn.dropdown             = Plugin
+  $.fn.dropdown.Constructor = Dropdown
+
+
+  // DROPDOWN NO CONFLICT
+  // ====================
+
+  $.fn.dropdown.noConflict = function () {
+    $.fn.dropdown = old
+    return this
+  }
+
+
+  // APPLY TO STANDARD DROPDOWN ELEMENTS
+  // ===================================
+
+  $(document)
+    .on('click.bs.dropdown.data-api', clearMenus)
+    .on('click.bs.dropdown.data-api', '.dropdown form', function (e) { e.stopPropagation() })
+    .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
+    .on('keydown.bs.dropdown.data-api', toggle, Dropdown.prototype.keydown)
+    .on('keydown.bs.dropdown.data-api', '.dropdown-menu', Dropdown.prototype.keydown)
+
+}(jQuery);
+
+},{}],2:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -9210,7 +9377,568 @@ return jQuery;
 
 }));
 
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
+'use strict';
+var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+function ToObject(val) {
+	if (val == null) {
+		throw new TypeError('Object.assign cannot be called with null or undefined');
+	}
+
+	return Object(val);
+}
+
+function ownEnumerableKeys(obj) {
+	var keys = Object.getOwnPropertyNames(obj);
+
+	if (Object.getOwnPropertySymbols) {
+		keys = keys.concat(Object.getOwnPropertySymbols(obj));
+	}
+
+	return keys.filter(function (key) {
+		return propIsEnumerable.call(obj, key);
+	});
+}
+
+module.exports = Object.assign || function (target, source) {
+	var from;
+	var keys;
+	var to = ToObject(target);
+
+	for (var s = 1; s < arguments.length; s++) {
+		from = arguments[s];
+		keys = ownEnumerableKeys(Object(from));
+
+		for (var i = 0; i < keys.length; i++) {
+			to[keys[i]] = from[keys[i]];
+		}
+	}
+
+	return to;
+};
+
+},{}],4:[function(require,module,exports){
+// Load modules
+
+var Stringify = require('./stringify');
+var Parse = require('./parse');
+
+
+// Declare internals
+
+var internals = {};
+
+
+module.exports = {
+    stringify: Stringify,
+    parse: Parse
+};
+
+},{"./parse":5,"./stringify":6}],5:[function(require,module,exports){
+// Load modules
+
+var Utils = require('./utils');
+
+
+// Declare internals
+
+var internals = {
+    delimiter: '&',
+    depth: 5,
+    arrayLimit: 20,
+    parameterLimit: 1000,
+    strictNullHandling: false,
+    plainObjects: false,
+    allowPrototypes: false
+};
+
+
+internals.parseValues = function (str, options) {
+
+    var obj = {};
+    var parts = str.split(options.delimiter, options.parameterLimit === Infinity ? undefined : options.parameterLimit);
+
+    for (var i = 0, il = parts.length; i < il; ++i) {
+        var part = parts[i];
+        var pos = part.indexOf(']=') === -1 ? part.indexOf('=') : part.indexOf(']=') + 1;
+
+        if (pos === -1) {
+            obj[Utils.decode(part)] = '';
+
+            if (options.strictNullHandling) {
+                obj[Utils.decode(part)] = null;
+            }
+        }
+        else {
+            var key = Utils.decode(part.slice(0, pos));
+            var val = Utils.decode(part.slice(pos + 1));
+
+            if (!Object.prototype.hasOwnProperty.call(obj, key)) {
+                obj[key] = val;
+            }
+            else {
+                obj[key] = [].concat(obj[key]).concat(val);
+            }
+        }
+    }
+
+    return obj;
+};
+
+
+internals.parseObject = function (chain, val, options) {
+
+    if (!chain.length) {
+        return val;
+    }
+
+    var root = chain.shift();
+
+    var obj;
+    if (root === '[]') {
+        obj = [];
+        obj = obj.concat(internals.parseObject(chain, val, options));
+    }
+    else {
+        obj = options.plainObjects ? Object.create(null) : {};
+        var cleanRoot = root[0] === '[' && root[root.length - 1] === ']' ? root.slice(1, root.length - 1) : root;
+        var index = parseInt(cleanRoot, 10);
+        var indexString = '' + index;
+        if (!isNaN(index) &&
+            root !== cleanRoot &&
+            indexString === cleanRoot &&
+            index >= 0 &&
+            (options.parseArrays &&
+             index <= options.arrayLimit)) {
+
+            obj = [];
+            obj[index] = internals.parseObject(chain, val, options);
+        }
+        else {
+            obj[cleanRoot] = internals.parseObject(chain, val, options);
+        }
+    }
+
+    return obj;
+};
+
+
+internals.parseKeys = function (key, val, options) {
+
+    if (!key) {
+        return;
+    }
+
+    // Transform dot notation to bracket notation
+
+    if (options.allowDots) {
+        key = key.replace(/\.([^\.\[]+)/g, '[$1]');
+    }
+
+    // The regex chunks
+
+    var parent = /^([^\[\]]*)/;
+    var child = /(\[[^\[\]]*\])/g;
+
+    // Get the parent
+
+    var segment = parent.exec(key);
+
+    // Stash the parent if it exists
+
+    var keys = [];
+    if (segment[1]) {
+        // If we aren't using plain objects, optionally prefix keys
+        // that would overwrite object prototype properties
+        if (!options.plainObjects &&
+            Object.prototype.hasOwnProperty(segment[1])) {
+
+            if (!options.allowPrototypes) {
+                return;
+            }
+        }
+
+        keys.push(segment[1]);
+    }
+
+    // Loop through children appending to the array until we hit depth
+
+    var i = 0;
+    while ((segment = child.exec(key)) !== null && i < options.depth) {
+
+        ++i;
+        if (!options.plainObjects &&
+            Object.prototype.hasOwnProperty(segment[1].replace(/\[|\]/g, ''))) {
+
+            if (!options.allowPrototypes) {
+                continue;
+            }
+        }
+        keys.push(segment[1]);
+    }
+
+    // If there's a remainder, just add whatever is left
+
+    if (segment) {
+        keys.push('[' + key.slice(segment.index) + ']');
+    }
+
+    return internals.parseObject(keys, val, options);
+};
+
+
+module.exports = function (str, options) {
+
+    options = options || {};
+    options.delimiter = typeof options.delimiter === 'string' || Utils.isRegExp(options.delimiter) ? options.delimiter : internals.delimiter;
+    options.depth = typeof options.depth === 'number' ? options.depth : internals.depth;
+    options.arrayLimit = typeof options.arrayLimit === 'number' ? options.arrayLimit : internals.arrayLimit;
+    options.parseArrays = options.parseArrays !== false;
+    options.allowDots = options.allowDots !== false;
+    options.plainObjects = typeof options.plainObjects === 'boolean' ? options.plainObjects : internals.plainObjects;
+    options.allowPrototypes = typeof options.allowPrototypes === 'boolean' ? options.allowPrototypes : internals.allowPrototypes;
+    options.parameterLimit = typeof options.parameterLimit === 'number' ? options.parameterLimit : internals.parameterLimit;
+    options.strictNullHandling = typeof options.strictNullHandling === 'boolean' ? options.strictNullHandling : internals.strictNullHandling;
+
+    if (str === '' ||
+        str === null ||
+        typeof str === 'undefined') {
+
+        return options.plainObjects ? Object.create(null) : {};
+    }
+
+    var tempObj = typeof str === 'string' ? internals.parseValues(str, options) : str;
+    var obj = options.plainObjects ? Object.create(null) : {};
+
+    // Iterate over the keys and setup the new object
+
+    var keys = Object.keys(tempObj);
+    for (var i = 0, il = keys.length; i < il; ++i) {
+        var key = keys[i];
+        var newObj = internals.parseKeys(key, tempObj[key], options);
+        obj = Utils.merge(obj, newObj, options);
+    }
+
+    return Utils.compact(obj);
+};
+
+},{"./utils":7}],6:[function(require,module,exports){
+// Load modules
+
+var Utils = require('./utils');
+
+
+// Declare internals
+
+var internals = {
+    delimiter: '&',
+    arrayPrefixGenerators: {
+        brackets: function (prefix, key) {
+
+            return prefix + '[]';
+        },
+        indices: function (prefix, key) {
+
+            return prefix + '[' + key + ']';
+        },
+        repeat: function (prefix, key) {
+
+            return prefix;
+        }
+    },
+    strictNullHandling: false
+};
+
+
+internals.stringify = function (obj, prefix, generateArrayPrefix, strictNullHandling, filter) {
+
+    if (typeof filter === 'function') {
+        obj = filter(prefix, obj);
+    }
+    else if (Utils.isBuffer(obj)) {
+        obj = obj.toString();
+    }
+    else if (obj instanceof Date) {
+        obj = obj.toISOString();
+    }
+    else if (obj === null) {
+        if (strictNullHandling) {
+            return Utils.encode(prefix);
+        }
+
+        obj = '';
+    }
+
+    if (typeof obj === 'string' ||
+        typeof obj === 'number' ||
+        typeof obj === 'boolean') {
+
+        return [Utils.encode(prefix) + '=' + Utils.encode(obj)];
+    }
+
+    var values = [];
+
+    if (typeof obj === 'undefined') {
+        return values;
+    }
+
+    var objKeys = Array.isArray(filter) ? filter : Object.keys(obj);
+    for (var i = 0, il = objKeys.length; i < il; ++i) {
+        var key = objKeys[i];
+
+        if (Array.isArray(obj)) {
+            values = values.concat(internals.stringify(obj[key], generateArrayPrefix(prefix, key), generateArrayPrefix, strictNullHandling, filter));
+        }
+        else {
+            values = values.concat(internals.stringify(obj[key], prefix + '[' + key + ']', generateArrayPrefix, strictNullHandling, filter));
+        }
+    }
+
+    return values;
+};
+
+
+module.exports = function (obj, options) {
+
+    options = options || {};
+    var delimiter = typeof options.delimiter === 'undefined' ? internals.delimiter : options.delimiter;
+    var strictNullHandling = typeof options.strictNullHandling === 'boolean' ? options.strictNullHandling : internals.strictNullHandling;
+    var objKeys;
+    var filter;
+    if (typeof options.filter === 'function') {
+        filter = options.filter;
+        obj = filter('', obj);
+    }
+    else if (Array.isArray(options.filter)) {
+        objKeys = filter = options.filter;
+    }
+
+    var keys = [];
+
+    if (typeof obj !== 'object' ||
+        obj === null) {
+
+        return '';
+    }
+
+    var arrayFormat;
+    if (options.arrayFormat in internals.arrayPrefixGenerators) {
+        arrayFormat = options.arrayFormat;
+    }
+    else if ('indices' in options) {
+        arrayFormat = options.indices ? 'indices' : 'repeat';
+    }
+    else {
+        arrayFormat = 'indices';
+    }
+
+    var generateArrayPrefix = internals.arrayPrefixGenerators[arrayFormat];
+
+    if (!objKeys) {
+        objKeys = Object.keys(obj);
+    }
+    for (var i = 0, il = objKeys.length; i < il; ++i) {
+        var key = objKeys[i];
+        keys = keys.concat(internals.stringify(obj[key], key, generateArrayPrefix, strictNullHandling, filter));
+    }
+
+    return keys.join(delimiter);
+};
+
+},{"./utils":7}],7:[function(require,module,exports){
+// Load modules
+
+
+// Declare internals
+
+var internals = {};
+internals.hexTable = new Array(256);
+for (var h = 0; h < 256; ++h) {
+    internals.hexTable[h] = '%' + ((h < 16 ? '0' : '') + h.toString(16)).toUpperCase();
+}
+
+
+exports.arrayToObject = function (source, options) {
+
+    var obj = options.plainObjects ? Object.create(null) : {};
+    for (var i = 0, il = source.length; i < il; ++i) {
+        if (typeof source[i] !== 'undefined') {
+
+            obj[i] = source[i];
+        }
+    }
+
+    return obj;
+};
+
+
+exports.merge = function (target, source, options) {
+
+    if (!source) {
+        return target;
+    }
+
+    if (typeof source !== 'object') {
+        if (Array.isArray(target)) {
+            target.push(source);
+        }
+        else if (typeof target === 'object') {
+            target[source] = true;
+        }
+        else {
+            target = [target, source];
+        }
+
+        return target;
+    }
+
+    if (typeof target !== 'object') {
+        target = [target].concat(source);
+        return target;
+    }
+
+    if (Array.isArray(target) &&
+        !Array.isArray(source)) {
+
+        target = exports.arrayToObject(target, options);
+    }
+
+    var keys = Object.keys(source);
+    for (var k = 0, kl = keys.length; k < kl; ++k) {
+        var key = keys[k];
+        var value = source[key];
+
+        if (!Object.prototype.hasOwnProperty.call(target, key)) {
+            target[key] = value;
+        }
+        else {
+            target[key] = exports.merge(target[key], value, options);
+        }
+    }
+
+    return target;
+};
+
+
+exports.decode = function (str) {
+
+    try {
+        return decodeURIComponent(str.replace(/\+/g, ' '));
+    } catch (e) {
+        return str;
+    }
+};
+
+exports.encode = function (str) {
+
+    // This code was originally written by Brian White (mscdex) for the io.js core querystring library.
+    // It has been adapted here for stricter adherence to RFC 3986
+    if (str.length === 0) {
+        return str;
+    }
+
+    if (typeof str !== 'string') {
+        str = '' + str;
+    }
+
+    var out = '';
+    for (var i = 0, il = str.length; i < il; ++i) {
+        var c = str.charCodeAt(i);
+
+        if (c === 0x2D || // -
+            c === 0x2E || // .
+            c === 0x5F || // _
+            c === 0x7E || // ~
+            (c >= 0x30 && c <= 0x39) || // 0-9
+            (c >= 0x41 && c <= 0x5A) || // a-z
+            (c >= 0x61 && c <= 0x7A)) { // A-Z
+
+            out += str[i];
+            continue;
+        }
+
+        if (c < 0x80) {
+            out += internals.hexTable[c];
+            continue;
+        }
+
+        if (c < 0x800) {
+            out += internals.hexTable[0xC0 | (c >> 6)] + internals.hexTable[0x80 | (c & 0x3F)];
+            continue;
+        }
+
+        if (c < 0xD800 || c >= 0xE000) {
+            out += internals.hexTable[0xE0 | (c >> 12)] + internals.hexTable[0x80 | ((c >> 6) & 0x3F)] + internals.hexTable[0x80 | (c & 0x3F)];
+            continue;
+        }
+
+        ++i;
+        c = 0x10000 + (((c & 0x3FF) << 10) | (str.charCodeAt(i) & 0x3FF));
+        out += internals.hexTable[0xF0 | (c >> 18)] + internals.hexTable[0x80 | ((c >> 12) & 0x3F)] + internals.hexTable[0x80 | ((c >> 6) & 0x3F)] + internals.hexTable[0x80 | (c & 0x3F)];
+    }
+
+    return out;
+};
+
+exports.compact = function (obj, refs) {
+
+    if (typeof obj !== 'object' ||
+        obj === null) {
+
+        return obj;
+    }
+
+    refs = refs || [];
+    var lookup = refs.indexOf(obj);
+    if (lookup !== -1) {
+        return refs[lookup];
+    }
+
+    refs.push(obj);
+
+    if (Array.isArray(obj)) {
+        var compacted = [];
+
+        for (var i = 0, il = obj.length; i < il; ++i) {
+            if (typeof obj[i] !== 'undefined') {
+                compacted.push(obj[i]);
+            }
+        }
+
+        return compacted;
+    }
+
+    var keys = Object.keys(obj);
+    for (i = 0, il = keys.length; i < il; ++i) {
+        var key = keys[i];
+        obj[key] = exports.compact(obj[key], refs);
+    }
+
+    return obj;
+};
+
+
+exports.isRegExp = function (obj) {
+
+    return Object.prototype.toString.call(obj) === '[object RegExp]';
+};
+
+
+exports.isBuffer = function (obj) {
+
+    if (obj === null ||
+        typeof obj === 'undefined') {
+
+        return false;
+    }
+
+    return !!(obj.constructor &&
+              obj.constructor.isBuffer &&
+              obj.constructor.isBuffer(obj));
+};
+
+},{}],8:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9256,7 +9984,7 @@ exports.headerUrl 	 = `${base}/views/includes/header/main.html`;
 
 exports.imageUrl 	 = `${base}/images/`;
 
-},{}],3:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 var $ = window.jQuery = require('jquery');
@@ -9267,16 +9995,202 @@ exports = module.exports = {};
 exports.include = function(){
 	$("#header").load(config.headerUrl);
 }
-},{"../config/url":2,"jquery":1}],4:[function(require,module,exports){
+},{"../config/url":8,"jquery":2}],10:[function(require,module,exports){
+'use strict';
+
+var qs = require('qs');
+var assign = require('object-assign');
+
+exports = module.exports = {};
+
+exports.all = function() {
+  return getQueries();
+};
+
+exports.get = function(key) {
+  var queries = getQueries();
+  return queries[key];
+};
+
+exports.build = function(params) {
+  params = params || {};
+  return qs.stringify(params);
+};
+
+exports.assign = function(params, opts) {
+  opts = opts || {};
+  var queries = getQueries();
+  var newQueries = assign({}, queries, params);
+  return opts.stringify ? qs.stringify(newQueries) : newQueries;
+};
+
+function getQueries() {
+  var queryString = getQueryString();
+  if (queryString === '') return {};
+  return qs.parse(queryString);
+}
+
+function getQueryString() {
+  return window.location.search.substr(1);
+}
+
+},{"object-assign":3,"qs":4}],11:[function(require,module,exports){
 'use strict';
 
 var $ = window.jQuery = require('jquery');
 var config = require('../config/url');
+
+exports = module.exports = {
+	goToMachineIndex: goToMachineIndex,
+	getMachineInfo: getMachineInfo,
+};
+
+function goToMachineIndex() {
+	window.location.href = config.machineUrl;
+}
+
+function getMachineInfo(id) {
+	// return getData(config.machineUrl + 'api/machine/' + id);
+	return getData('http://smartfactory.moremote.com/api/machine/info' + id);
+};
+
+function getData(url) {
+	return $.get(url, { crossDomain: true });
+}
+
+},{"../config/url":8,"jquery":2}],12:[function(require,module,exports){
+'use strict';
+
+var $ = window.jQuery = require('jquery');
+
+var $checkPeriod  = $('#machine-check-period');
+var $periodView   = $checkPeriod.find('.view-mode').eq(0);
+var $periodInput  = $checkPeriod.find('.edit-mode').eq(0);
+var $typeView     = $checkPeriod.find('.view-mode').eq(1);
+var $selectedType = $('#machine-check-period-dropdown').find('.selected-option');
+var $typeDropdownList = $('ul[aria-labelledby="machine-check-period-dropdown"]').find('.option');
+
+exports.init     = initCheckPeriod;
+exports.getValue = getValue;
+exports.getType  = getType;
+
+function initCheckPeriod(val, type) {
+	$periodView.text(val);
+	$periodInput.val(val);
+	$typeView.text(type);
+	$selectedType.text(type);
+	bindEvents();
+}
+
+function bindEvents() {
+	$typeDropdownList.on('click', changeType);
+}
+
+function changeType() {
+	var type = $(this).attr('type');
+	$selectedType.text(type);
+}
+
+function getValue() {
+	return $periodInput.val();
+}
+
+function getType() {
+	return $selectedType.text();
+}
+},{"jquery":2}],13:[function(require,module,exports){
+'use strict';
+
+var $ = window.jQuery = require('jquery');
+
+var $maintainPeriod = $('#machine-maintain-period');
+var $periodView   = $maintainPeriod.find('.view-mode').eq(0);
+var $periodInput  = $maintainPeriod.find('.edit-mode').eq(0);
+var $typeView     = $maintainPeriod.find('.view-mode').eq(1);
+var $selectedType = $('#machine-maintain-period-dropdown').find('.selected-option');
+var $typeDropdownList = $('ul[aria-labelledby="machine-maintain-period-dropdown"]').find('.option');
+
+exports.init     = initMaintainPeriod;
+exports.getValue = getValue;
+exports.getType  = getType;
+
+function initMaintainPeriod(val, type) {
+	$periodView.text(val);
+	$periodInput.val(val);
+	$typeView.text(type);
+	$selectedType.text(type);
+	bindEvents();
+}
+
+function bindEvents() {
+	$typeDropdownList.on('click', changeType);
+}
+
+function changeType() {
+	var type = $(this).attr('type');
+	$selectedType.text(type);
+}
+
+function getValue() {
+	return $periodInput.val();
+}
+
+function getType() {
+	return $selectedType.text();
+}
+},{"jquery":2}],14:[function(require,module,exports){
+'use strict';
+
+var $ = window.jQuery = require('jquery');
+
+var $noticedPerson = $('#machine-noticed-person');
+var $noticedPersonDropdown = $('#machine-notice-dropdown');
+
+exports.init = initNoticeedPerson;
+
+function initNoticeedPerson(id) {
+	$noticedPerson.find('.view-mode').text(id);
+	$noticedPersonDropdown.find('.selected-option').text(id);
+	bindEvents();
+}
+
+function bindEvents() {
+	// TODO
+}
+},{"jquery":2}],15:[function(require,module,exports){
+'use strict';
+
+var $ = window.jQuery = require('jquery');
 var header = require('../includes/header');
+var api = require('../machine/api');
+var queryParameter = require('../lib/helper/query-parameter');
+
+require('bootstrap/js/dropdown');
+var noticeedPersonDropdown = require('../machine/modules/noticed-person-dropdown');
+var checkPeriodDropdown = require('../machine/modules/check-period-dropdown');
+var maintainPeriodDropdown = require('../machine/modules/maintain-period-dropdown');
 
 /* DOM */
-var $machineNewBtn = $('#machine-new-button');
-var $machineTable = $('#machine-table');
+var $editBtn   = $('#machine-edit-button');
+var $cancelBtn = $('#machine-cancel-button');
+var $saveBtn   = $('#machine-save-button');
+var $deleteBtn = $('#machine-delete-button');
+var $backBtn   = $('#machine-back-button');
+var $machineDetailPage  = $('#machine-detail-page');
+var $viewModeCollection = $machineDetailPage.find('.view-mode');
+var $editModeCollection = $machineDetailPage.find('.edit-mode');
+
+var $id = $('#machine-id');
+var $name = $('#machine-name');
+var $weight = $('#machine-weight');
+// TODO: 機台稼動率
+
+// TODO: 小保養紀錄
+// TODO: 大保養紀錄
+// TODO: 異常維修紀錄
+
+var isEditMode = false;
+
 
 initialize();
 
@@ -9287,20 +10201,69 @@ function initialize() {
 }
 
 function getInitialData() {
-	// TODO
+	 var machineId = queryParameter.get('ID');
+	 api.getMachineInfo(machineId)
+	 		.done(initialView)
+	 		.fail(function(err) { console.log("error: ", err); });
 }
 
 function bindEvents() {
-	$machineNewBtn.on('click', gotoMachineNewInfoPage);
-	$machineTable.on('click', '.detail-info-button', gotoMachineDetailInfoPage);
+	$editBtn.on('click', showEditMode);
+	$cancelBtn.on('click', hideEditMode);
+	$saveBtn.on('click', saveChangedData);
+	$deleteBtn.on('click', deleteMachine);
+	$backBtn.on('click', api.goToMachineIndex);
 }
 
-function gotoMachineNewInfoPage() {
-	window.location.href = config.machineUrl + 'new';
+function showEditMode() {
+	isEditMode = true;
+	$editBtn.hide();
+	$cancelBtn.show();
+	$saveBtn.show();
+	$deleteBtn.hide();
+	$backBtn.hide();
+	$viewModeCollection.addClass('editting');
+	$editModeCollection.addClass('editting');
 }
 
-function gotoMachineDetailInfoPage() {
-	var ID = $(this).data('id');
-	window.location.href = config.machineUrl + 'info?ID=' + ID;
+function hideEditMode() {
+	isEditMode = false;
+	$editBtn.show();
+	$cancelBtn.hide();
+	$saveBtn.hide();
+	$deleteBtn.show();
+	$backBtn.show();
+	$viewModeCollection.removeClass('editting');
+	$editModeCollection.removeClass('editting');
 }
-},{"../config/url":2,"../includes/header":3,"jquery":1}]},{},[4]);
+
+function saveChangedData() {
+	// TODO
+}
+
+function deleteMachine() {
+	// TODO
+}
+
+function initialView(data) {
+	initBaseInfo(data);
+	noticeedPersonDropdown.init(data['admin_id']);
+	// ToFix: data type params
+	checkPeriodDropdown.init(data['check_period'], '天');
+	maintainPeriodDropdown.init(data['maintain_period'], '年');
+}
+
+function initBaseInfo(data) {
+	$id.find('.view-mode').text(data['id']);
+	$id.find('.edit-mode').val(data['id']);
+
+	$name.find('.view-mode').text(data['name']);
+	$name.find('.edit-mode').val(data['name']);
+
+	$weight.find('.view-mode').text(data['weight']);
+	$weight.find('.edit-mode').val(data['weight']);
+
+	// TODO: 機台稼動率
+}
+
+},{"../includes/header":9,"../lib/helper/query-parameter":10,"../machine/api":11,"../machine/modules/check-period-dropdown":12,"../machine/modules/maintain-period-dropdown":13,"../machine/modules/noticed-person-dropdown":14,"bootstrap/js/dropdown":1,"jquery":2}]},{},[15]);

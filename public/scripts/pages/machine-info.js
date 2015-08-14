@@ -1,13 +1,14 @@
 'use strict';
 
 var $ = window.jQuery = require('jquery');
+var header = require('../includes/header');
 var api = require('../machine/api');
 var queryParameter = require('../lib/helper/query-parameter');
 
 require('bootstrap/js/dropdown');
-var noticeedPersonDropdown = require('./modules/noticed-person-dropdown');
-var checkPeriodDropdown = require('./modules/check-period-dropdown');
-var maintainPeriodDropdown = require('./modules/maintain-period-dropdown');
+var noticeedPersonDropdown = require('../machine/modules/noticed-person-dropdown');
+var checkPeriodDropdown = require('../machine/modules/check-period-dropdown');
+var maintainPeriodDropdown = require('../machine/modules/maintain-period-dropdown');
 
 /* DOM */
 var $editBtn   = $('#machine-edit-button');
@@ -31,10 +32,10 @@ var $weight = $('#machine-weight');
 var isEditMode = false;
 
 
-exports.init = initialize;
+initialize();
 
 function initialize() {
-	console.log('machine info init');
+	header.include();
 	getInitialData();
 	bindEvents();
 }
@@ -43,7 +44,7 @@ function getInitialData() {
 	 var machineId = queryParameter.get('ID');
 	 api.getMachineInfo(machineId)
 	 		.done(initialView)
-	 		.fail(function(err) { console.log("error: " + err); });
+	 		.fail(function(err) { console.log("error: ", err); });
 }
 
 function bindEvents() {
