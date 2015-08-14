@@ -23,7 +23,7 @@ function bindEvents() {
 function getToken(){
 	$.get( config.baseUrl + "/api/token" )
   .done(function(res) {
-    $csrfToken.val(res);
+    $csrfToken.val(res.csrf_token);
   });
 }
 
