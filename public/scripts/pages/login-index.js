@@ -5,12 +5,14 @@ var config = require('../config/url');
 
 /* DOM */
 var $loginForm = $('form');
-var $userEmail = $('#userEmail');
+var $userName = $('#userName');
 var $userPassword = $('#userPassword');
+var $csrfToken = $('#csrf_token');
 
 initialize();
 
 function initialize() {
+	getToken();
 	bindEvents();
 }
 
@@ -18,7 +20,16 @@ function bindEvents() {
 	$loginForm.on('submit', userLogin);
 }
 
+function getToken(){
+	$.get( config.baseUrl + "/api/token" )
+  .done(function(res) {
+    $csrfToken.val(res);
+  });
+}
+
 function userLogin(e){
+
+	console.log("name=" + $userName.val() + "&password=" + $userPassword.val() + "&_token=" + $csrfToken.val());
 
 	e.preventDefault();
 	var valid = validateForm();
@@ -30,11 +41,12 @@ function userLogin(e){
 		$.ajax({
 			url: config.baseUrl + "/login",
 			type: "POST",
-			data: "email=" + $userEmail.val() + "&password=" + $userPassword.val(),
+			data: "name=" + $userName.val() + "&password=" + $userPassword.val() + "&_token=" + $csrfToken.val(),
 			success: function(res){
-			  //set token
+			  document.cookie = res;
+			  window.location.href = config.realtimeUrl;
 			}
-		});
+		});		
 	}
 };
 

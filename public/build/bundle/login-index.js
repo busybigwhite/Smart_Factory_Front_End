@@ -9245,16 +9245,18 @@ var base          = exports.baseUrl = `${protocol}://${hostname}${portDisplay}`;
 // exports.eventsUrl    = `${base}/${projectName}/${restNamespace}/events/`;
 // exports.publishesUrl = `${base}/${projectName}/${restNamespace}/publishes/`;
 
-exports.realtimeUrl  = `${base}/realtime/`;
-exports.machineUrl 	 = `${base}/machine/`;
-exports.workorderUrl = `${base}/workorder/`;
-exports.moldUrl   	 = `${base}/mold/`;
-exports.unusualUrl 	 = `${base}/unusual/`;
-exports.memberUrl 	 = `${base}/member/`;
-exports.historyUrl   = `${base}/history/`;
-exports.headerUrl 	 = `${base}/views/includes/header/main.html`;
+exports.realtimeUrl  	= `${base}/realtime/`;
+exports.realtimePicUrl  = `${base}/realtime/listpic`;
+exports.machineUrl 	 	= `${base}/machine/`;
+exports.workorderUrl 	= `${base}/workorder/`;
+exports.moldUrl   	 	= `${base}/mold/`;
+exports.unusualUrl 	 	= `${base}/unusual/`;
+exports.memberUrl 	 	= `${base}/member/`;
+exports.historyUrl   	= `${base}/history/`;
+exports.headerUrl 	 	= `${base}/views/includes/header/main.html`;
 
-exports.imageUrl 	 = `${base}/images/`;
+exports.APIUrl  		= `${base}/api/`;
+exports.imageUrl 	 	= `${base}/images/`;
 
 },{}],3:[function(require,module,exports){
 'use strict';
@@ -9264,12 +9266,14 @@ var config = require('../config/url');
 
 /* DOM */
 var $loginForm = $('form');
-var $userEmail = $('#userEmail');
+var $userName = $('#userName');
 var $userPassword = $('#userPassword');
+var $csrfToken = $('#csrf_token');
 
 initialize();
 
 function initialize() {
+	getToken();
 	bindEvents();
 }
 
@@ -9277,23 +9281,32 @@ function bindEvents() {
 	$loginForm.on('submit', userLogin);
 }
 
+function getToken(){
+	$.get( config.baseUrl + "/api/token" )
+  .done(function(res) {
+    $csrfToken.val(res);
+  });
+}
+
 function userLogin(e){
+
+	console.log("name=" + $userName.val() + "&password=" + $userPassword.val() + "&_token=" + $csrfToken.val());
 
 	e.preventDefault();
 	var valid = validateForm();
 
 	if (!valid) {
-		// TODO: show validation msg
+		//show validation msg
 	} else {
 
 		$.ajax({
 			url: config.baseUrl + "/login",
 			type: "POST",
-			data: "email=" + $userEmail.val() + "&password=" + $userPassword.val(),
+			data: "name=" + $userName.val() + "&password=" + $userPassword.val() + "&_token=" + $csrfToken.val(),
 			success: function(res){
-			  //TODO: set token
+			  document.cookie = res;
 			}
-		});
+		});		
 	}
 };
 
