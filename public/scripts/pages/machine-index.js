@@ -1,25 +1,29 @@
 'use strict';
 
 var $ = window.jQuery = require('jquery');
-var config = require('../config/url');
 var header = require('../includes/header');
-var info = require('../machine/info');
+var api = require('../machine/api');
+var template = require('../machine/templates/index-list-template');
 
 /* DOM */
-var $machineNewBtn = $('#machine-new-button');
-var $machineTable = $('#machine-table');
+var $machineNewBtn    = $('#machine-new-button');
+var $machineTable     = $('#machine-table');
+var $machineTableBody = $('#machine-table-body');
 
 initialize();
 
 function initialize() {
 	header.include();
-	info.init();
 	getInitialData();
 	bindEvents();
 }
 
 function getInitialData() {
-	// TODO
+	api.getMachineList()
+		 .done(initialView)
+		 .fail(function(err) { console.log("GET Machine Info error: ", err); });
+	// var fakeResponse = [{"id":"1","factory_id":"1","name":"\u6e2c\u8a66\u6a5f\u578b01","weight":"10"},{"id":"2","factory_id":"1","name":"\u6e2c\u8a66\u6a5f\u578b02","weight":"20"}];
+	// initialView(fakeResponse);
 }
 
 function bindEvents() {
@@ -28,10 +32,15 @@ function bindEvents() {
 }
 
 function gotoMachineNewInfoPage() {
-	window.location.href = config.machineUrl + 'new';
+	api.goToMachineInfo('new');
 }
 
 function gotoMachineDetailInfoPage() {
 	var ID = $(this).data('id');
-	window.location.href = config.machineUrl + 'info?ID=' + ID;
+	api.goToMachineInfo('detail', ID);
+}
+
+function initialView(data) {
+	var tableListRows = template.render({ infos : data });
+	$machineTableBody.empty().append( tableListRows );
 }

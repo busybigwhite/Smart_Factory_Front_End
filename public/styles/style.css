@@ -10335,10 +10335,26 @@ fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .re
 #machine-table .table-item:last-child {
   border-bottom: none;
 }
-#machine-table .table-col {
+#machine-table .table-col:nth-of-type(1),
+#machine-table .table-col:nth-of-type(2) {
   position: relative;
   float: left;
-  width: 166.66666667%;
+  width: 25%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: inherit;
+  padding: 0 5px;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#machine-table .table-col:nth-of-type(3),
+#machine-table .table-col:nth-of-type(4) {
+  position: relative;
+  float: left;
+  width: 16.66666667%;
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
@@ -10350,10 +10366,9 @@ fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .re
   white-space: nowrap;
 }
 #machine-table .table-col:last-of-type {
-  /* if columns sum equal to 100% & html tag with \n, it will seprate to two line */
   position: relative;
   float: left;
-  width: 150%;
+  width: 16.66666667%;
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
