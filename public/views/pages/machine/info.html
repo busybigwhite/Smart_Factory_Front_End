@@ -9,13 +9,13 @@
 
 <div id="header"></div>
 
-<div class="detail-page-container" id="machine-detail-page">
+<form class="detail-page-container" id="machine-detail-page">
 	<div class="base-action-panel">
-		<button class="info-delete-button" id="machine-delete-button">刪除</button>
-		<button class="info-edit-button" id="machine-edit-button">編輯</button>
-		<button class="info-save-button" id="machine-save-button">儲存</button>
-		<button class="info-back-button" id="machine-back-button">回列表</button>
-		<button class="info-cancel-button" id="machine-cancel-button">取消</button>
+		<button type="button" class="info-delete-button" id="machine-delete-button">刪除</button>
+		<button type="button" class="info-edit-button" id="machine-edit-button">編輯</button>
+		<button type="submit" class="info-save-button" id="machine-save-button">儲存</button>
+		<button type="button" class="info-back-button" id="machine-back-button">回列表</button>
+		<button type="button" class="info-cancel-button" id="machine-cancel-button">取消</button>
 	</div>
 	<div class="base-info-panel">
 		<ul>
@@ -23,28 +23,29 @@
 				<span class="info-name">射出機台編號</span>
 				<span class="info-value">
 					<p class="view-mode"></p>
-					<input class="edit-mode" type="text" value="">
+					<input class="edit-mode" type="text" name="id" value="" pattern="[A-Za-z0-9]{1,10}" title="輸入1~10個英數字" required>
 				</span>
 			</li>
 			<li id="machine-name">
 				<span class="info-name">機種名稱</span>
 				<span class="info-value">
 					<p class="view-mode"></p>
-					<input class="edit-mode" type="text" value="">
+					<input class="edit-mode" type="text" name="name" value="">
 				</span>
 			</li>
 			<li id="machine-weight">
 				<span class="info-name">噸數</span>
 				<span class="info-value">
 					<p class="view-mode"></p>
-					<input class="edit-mode" type="text" value="">
+					<input class="edit-mode" type="text" name="weight" value="" pattern="[0-9]{1,10}" title="輸入數字">
 				</span>
 			</li>
 			<li><!-- TODO: add id -->
 				<span class="info-name">機台稼動率</span>
 				<span class="info-value">
 					<p class="view-mode"></p>
-					<input class="edit-mode" type="text" value="">
+					<input class="edit-mode" type="text" name="todo" value="" pattern="[0-9]{1,3}" title="輸入數字">
+					<span>%</span>
 				</span>
 			</li>
 		</ul>
@@ -62,7 +63,7 @@
 										data-toggle="dropdown"
 										aria-haspopup="true"
 										aria-expanded="true">
-							<span class="selected-option"></span>
+							<span class="selected-option" name="admin_id"></span>
 							<span class="caret"></span>
 						</button>
 						<!-- TODO: add real id -->
@@ -79,14 +80,14 @@
 				<span class="resume-value">
 					<span class="view-mode"></span>
 					<span class="view-mode"></span>
-					<input class="edit-mode" type="text" value="">
+					<input class="edit-mode" type="text" name="check_period" value="" pattern="[0-9]{1,10}" title="輸入數字" required>
 					<div class="edit-mode dropdown">
 						<button class="btn btn-default dropdown-toggle"
 										id="machine-check-period-dropdown"
 										data-toggle="dropdown"
 										aria-haspopup="true"
 										aria-expanded="true">
-							<span class="selected-option"></span>
+							<span class="selected-option" name="todo"></span>
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="machine-check-period-dropdown">
@@ -107,14 +108,14 @@
 				<span class="resume-value">
 					<span class="view-mode"></span>
 					<span class="view-mode"></span>
-					<input class="edit-mode" type="text" value="">
+					<input class="edit-mode" type="text" name="maintain_period" value="" pattern="[0-9]{1,10}" title="輸入數字" required>
 					<div class="edit-mode dropdown">
 						<button class="btn btn-default dropdown-toggle"
 										id="machine-maintain-period-dropdown"
 										data-toggle="dropdown"
 										aria-haspopup="true"
 										aria-expanded="true">
-							<span class="selected-option"></span>
+							<span class="selected-option" name="todo"></span>
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="machine-maintain-period-dropdown">
@@ -137,9 +138,9 @@
 			</li>
 		</ul>
 	</section>
-</div>
+</form>
 
-<script src="../../../build/bundle/machine-index.js"></script>
+<script src="../../../build/bundle/machine-info.js"></script>
 
 </body>
 </html>
