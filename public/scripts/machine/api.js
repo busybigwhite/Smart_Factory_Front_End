@@ -3,6 +3,9 @@
 var $ = window.jQuery = require('jquery');
 var config = require('../config/url');
 
+var machineApiUrl  = config.APIUrl + 'machine/';
+var machinePageUrl = config.machineUrl;
+
 exports = module.exports = {
 	goToMachineIndex: goToMachineIndex,
 	goToMachineInfo: goToMachineInfo,
@@ -13,7 +16,7 @@ exports = module.exports = {
 };
 
 function goToMachineIndex() {
-	window.location.href = config.machineUrl;
+	window.location.href = machinePageUrl;
 }
 
 function goToMachineInfo(type, ID) {
@@ -27,23 +30,23 @@ function goToMachineInfo(type, ID) {
 		default:
 			action = '?ID=' + ID;
 	}
-	window.location.href = config.machineUrl + 'info' + action;
+	window.location.href = machinePageUrl + 'info' + action;
 }
 
 function createMachine(id) {
-	return createData(config.machineUrl + 'api/machine/' + id);
+	return createData(machineApiUrl + id);
 }
 
 function deleteMachine(id) {
-	return deleteData(config.machineUrl + 'api/machine/' + id);
+	return deleteData(machineApiUrl + id);
 }
 
 function getMachineInfo(id) {
-	return getData(config.machineUrl + 'api/machine/info/' + id);
+	return getData(machineApiUrl + 'info/' + id);
 };
 
 function editMachineInfo(id, data) {
-	return editData(config.machineUrl + 'api/machine/info/' + id);
+	return editData(machineApiUrl + 'info/' + id);
 }
 
 
