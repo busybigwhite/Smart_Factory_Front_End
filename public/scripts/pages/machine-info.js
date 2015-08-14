@@ -49,8 +49,8 @@ function initialize() {
 function getInitialData() {
 	machineId = queryParameter.get('ID');
 	api.getMachineInfo(machineId)
-			.done(initialView)
-			.fail(function(err) { console.log("error: ", err); });
+		 .done(initialView)
+		 .fail(function(err) { console.log("error: ", err); });
 /*	var fakeResponse = {"id":"1","name":"\u6e2c\u8a66\u6a5f\u578b01","weight":"10","date":"2015\/08\/14 14:00:00","acquisition_date":"2015\/08\/15 14:00:00","admin_id":"U0001","check_period":"3","maintain_period":"10"};
 	initialView(fakeResponse); */
 }
@@ -105,8 +105,8 @@ function saveData() {
 
 	} else if (!isEditMode && isCreateMode) {
 		api.createMachine(machineId, data)
-		 .done(function(data) { console.log("DELETE Machine res: ", data); })
-		 .fail(function(err) { console.log("DELETE Machine error: ", err); });
+			 .done(function(data) { console.log("DELETE Machine res: ", data); })
+			 .fail(function(err) { console.log("DELETE Machine error: ", err); });
 
 	} else {
 		console.log('machine info page has error: Undefined Mode');
