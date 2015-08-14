@@ -51,8 +51,8 @@ function getInitialData() {
 	api.getMachineInfo(machineId)
 		 .done(initialView)
 		 .fail(function(err) { console.log("GET Machine Info error: ", err); });
-/*	var fakeResponse = {"id":"1","name":"\u6e2c\u8a66\u6a5f\u578b01","weight":"10","date":"2015\/08\/14 14:00:00","acquisition_date":"2015\/08\/15 14:00:00","admin_id":"U0001","check_period":"3","maintain_period":"10"};
-	initialView(fakeResponse); */
+	// var fakeResponse = {"id":"1","name":"\u6e2c\u8a66\u6a5f\u578b01","weight":"10","date":"2015\/08\/14 14:00:00","acquisition_date":"2015\/08\/15 14:00:00","admin_id":"U0001","check_period":"3","maintain_period":"10"};
+	// initialView(fakeResponse);
 }
 
 function bindEvents() {
@@ -95,22 +95,32 @@ function showCreateMode() {
 	$editModeCollection.addClass('editting');
 }
 
-function saveData() {
+function saveData(e) {
+	e.preventDefault();
 	var data = getChangedData();
+	console.log('Changed or New Data : ', data);
 
 	if (isEditMode && !isCreateMode) {
-		api.editMachineInfo(machineId, data)
-			 .done(function(data) { console.log("EDIT Machine Info res: ", data); })
-			 .fail(function(err) { console.log("EDIT Machine Info error: ", err); });
+		saveChangedData(data);
 
 	} else if (!isEditMode && isCreateMode) {
-		api.createMachine(machineId, data)
-			 .done(function(data) { console.log("DELETE Machine res: ", data); })
-			 .fail(function(err) { console.log("DELETE Machine error: ", err); });
+		saveNewData(data);
 
 	} else {
 		console.log('machine info page has error: Undefined Mode');
 	}
+}
+
+function saveChangedData(data) {
+	api.editMachineInfo(machineId, data)
+		 .done(function(data) { console.log("EDIT Machine Info res: ", data); })
+		 .fail(function(err) { console.log("EDIT Machine Info error: ", err); });
+}
+
+function saveNewData(data) {
+	api.createMachine(data)
+		 .done(function(data) { console.log("CREATE Machine res: ", data); })
+		 .fail(function(err) { console.log("CREATE Machine error: ", err); });
 }
 
 function deleteMachine() {
@@ -149,6 +159,23 @@ function initResumeInfo(data) {
 
 function getChangedData() {
 	var newData = {};
-		// TODO
+	$editModeCollection.each(function(index, el) {
+		var name  = $(el).attr('name');
+		var value = $(el).val();
+		var $dropdownSelected = $(el).find('.selected-option');
+
+		if (name) {
+			value = value ? value : '';
+			newData[name] = value;
+
+		} else if ($dropdownSelected) {
+			var selectedName  = $dropdownSelected.attr('name');
+			var selectedValue = $dropdownSelected.text();
+			newData[selectedName] = selectedValue;
+
+		} else {
+			console.log('getChangedData error: missing some value');
+		}
+	});
 	return newData;
 }

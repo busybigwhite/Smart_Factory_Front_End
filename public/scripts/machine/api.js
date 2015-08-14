@@ -33,8 +33,8 @@ function goToMachineInfo(type, ID) {
 	window.location.href = machinePageUrl + 'info' + action;
 }
 
-function createMachine(id) {
-	return createData(machineApiUrl + id);
+function createMachine(data) {
+	return createData(machineApiUrl, data);
 }
 
 function deleteMachine(id) {
