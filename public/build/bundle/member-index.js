@@ -9264,54 +9264,38 @@ exports.imageUrl 	 	= `${base}/images/`;
 var $ = window.jQuery = require('jquery');
 var config = require('../config/url');
 
+exports = module.exports = {};
+
+exports.include = function(){
+	$("#header").load(config.headerUrl);
+}
+},{"../config/url":2,"jquery":1}],4:[function(require,module,exports){
+'use strict';
+
+var $ = window.jQuery = require('jquery');
+var config = require('../config/url');
+var header = require('../includes/header');
+
 /* DOM */
-var $loginForm = $('form');
-var $userName = $('#userName');
-var $userPassword = $('#userPassword');
-var $csrfToken = $('#csrf_token');
+var $machineNewBtn = $('#machine-new-button');
+var $machineTable = $('#machine-table');
 
 initialize();
 
 function initialize() {
-	getToken();
-	bindEvents();
+	header.include();
+	// info.init();
+	// getInitialData();
+	// bindEvents();
+}
+
+function getInitialData() {
+	var fakeResponse = {"id":"1","name":"\u6e2c\u8a66\u6a5f\u578b01","weight":"10","date":"2015\/08\/14 14:00:00","acquisition_date":"2015\/08\/15 14:00:00","admin_id":"U0001","check_period":"3","maintain_period":"10"};
+	initialView(fakeResponse);
 }
 
 function bindEvents() {
-	$loginForm.on('submit', userLogin);
+	$machineNewBtn.on('click', gotoMachineNewInfoPage);
+	$machineTable.on('click', '.detail-info-button', gotoMachineDetailInfoPage);
 }
-
-function getToken(){
-	$.get( config.baseUrl + "/api/token" )
-  .done(function(res) {
-    $csrfToken.val(res);
-  });
-}
-
-function userLogin(e){
-
-	console.log("name=" + $userName.val() + "&password=" + $userPassword.val() + "&_token=" + $csrfToken.val());
-
-	e.preventDefault();
-	var valid = validateForm();
-
-	if (!valid) {
-		//show validation msg
-	} else {
-
-		$.ajax({
-			url: config.baseUrl + "/login",
-			type: "POST",
-			data: "name=" + $userName.val() + "&password=" + $userPassword.val() + "&_token=" + $csrfToken.val(),
-			success: function(res){
-			  document.cookie = res;
-			}
-		});		
-	}
-};
-
-function validateForm(){
-	return true;
-	//TODO: validate input
-}
-},{"../config/url":2,"jquery":1}]},{},[3]);
+},{"../config/url":2,"../includes/header":3,"jquery":1}]},{},[4]);
