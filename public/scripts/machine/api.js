@@ -9,6 +9,7 @@ var machinePageUrl = config.machineUrl;
 exports = module.exports = {
 	goToMachineIndex: goToMachineIndex,
 	goToMachineInfo: goToMachineInfo,
+	getMachineList: getMachineList,
 	createMachine: createMachine,
 	deleteMachine: deleteMachine,
 	getMachineInfo: getMachineInfo,

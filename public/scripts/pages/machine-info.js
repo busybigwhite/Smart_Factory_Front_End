@@ -58,9 +58,9 @@ function getInitialData() {
 function bindEvents() {
 	$editBtn  .on('click', showEditMode);
 	$cancelBtn.on('click', hideEditMode);
-	$saveBtn  .on('click', saveData);
 	$deleteBtn.on('click', deleteMachine);
 	$backBtn  .on('click', api.goToMachineIndex);
+	$machineDetailPage.submit(saveData);
 }
 
 function showEditMode() {
@@ -95,8 +95,7 @@ function showCreateMode() {
 	$editModeCollection.addClass('editting');
 }
 
-function saveData(e) {
-	e.preventDefault();
+function saveData() {
 	var data = getChangedData();
 	console.log('Changed or New Data : ', data);
 
@@ -109,6 +108,7 @@ function saveData(e) {
 	} else {
 		console.log('machine info page has error: Undefined Mode');
 	}
+	return false;
 }
 
 function saveChangedData(data) {
