@@ -1,13 +1,12 @@
 'use strict';
 
 var $ = window.jQuery = require('jquery');
-var config = require('../config/url');
 var header = require('../includes/header');
 var api = require('../machine/api');
 
 /* DOM */
 var $machineNewBtn = $('#machine-new-button');
-var $machineTable = $('#machine-table');
+var $machineTable  = $('#machine-table');
 
 initialize();
 

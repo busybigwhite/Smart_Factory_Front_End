@@ -7,7 +7,7 @@ var queryParameter = require('../lib/helper/query-parameter');
 
 require('bootstrap/js/dropdown');
 var noticeedPersonDropdown = require('../machine/modules/noticed-person-dropdown');
-var checkPeriodDropdown = require('../machine/modules/check-period-dropdown');
+var checkPeriodDropdown    = require('../machine/modules/check-period-dropdown');
 var maintainPeriodDropdown = require('../machine/modules/maintain-period-dropdown');
 
 /* DOM */
@@ -29,7 +29,7 @@ var $weight = $('#machine-weight');
 // TODO: 大保養紀錄
 // TODO: 異常維修紀錄
 
-var isEditMode = false;
+var isEditMode   = false;
 var isCreateMode = false;
 var machineId;
 
@@ -50,47 +50,47 @@ function getInitialData() {
 	machineId = queryParameter.get('ID');
 	api.getMachineInfo(machineId)
 		 .done(initialView)
-		 .fail(function(err) { console.log("error: ", err); });
+		 .fail(function(err) { console.log("GET Machine Info error: ", err); });
 /*	var fakeResponse = {"id":"1","name":"\u6e2c\u8a66\u6a5f\u578b01","weight":"10","date":"2015\/08\/14 14:00:00","acquisition_date":"2015\/08\/15 14:00:00","admin_id":"U0001","check_period":"3","maintain_period":"10"};
 	initialView(fakeResponse); */
 }
 
 function bindEvents() {
-	$editBtn.on('click', showEditMode);
+	$editBtn  .on('click', showEditMode);
 	$cancelBtn.on('click', hideEditMode);
-	$saveBtn.on('click', saveData);
+	$saveBtn  .on('click', saveData);
 	$deleteBtn.on('click', deleteMachine);
-	$backBtn.on('click', api.goToMachineIndex);
+	$backBtn  .on('click', api.goToMachineIndex);
 }
 
 function showEditMode() {
 	isEditMode = true;
-	$editBtn.hide();
+	$editBtn  .hide();
 	$cancelBtn.show();
-	$saveBtn.show();
+	$saveBtn  .show();
 	$deleteBtn.hide();
-	$backBtn.hide();
+	$backBtn  .hide();
 	$viewModeCollection.addClass('editting');
 	$editModeCollection.addClass('editting');
 }
 
 function hideEditMode() {
 	isEditMode = false;
-	$editBtn.show();
+	$editBtn  .show();
 	$cancelBtn.hide();
-	$saveBtn.hide();
+	$saveBtn  .hide();
 	$deleteBtn.show();
-	$backBtn.show();
+	$backBtn  .show();
 	$viewModeCollection.removeClass('editting');
 	$editModeCollection.removeClass('editting');
 }
 
 function showCreateMode() {
-	$editBtn.hide();
+	$editBtn  .hide();
 	$cancelBtn.hide();
-	$saveBtn.show();
+	$saveBtn  .show();
 	$deleteBtn.hide();
-	$backBtn.show();
+	$backBtn  .show();
 	$viewModeCollection.addClass('editting');
 	$editModeCollection.addClass('editting');
 }
@@ -140,7 +140,7 @@ function initBaseInfo(data) {
 function initResumeInfo(data) {
 	noticeedPersonDropdown.init(data['admin_id']);
 	// ToFix: data type params
-	checkPeriodDropdown.init(data['check_period'], '天');
+	checkPeriodDropdown   .init(data['check_period'], '天');
 	maintainPeriodDropdown.init(data['maintain_period'], '年');
 	// TODO: 小保養紀錄
 	// TODO: 大保養紀錄
