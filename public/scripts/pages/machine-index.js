@@ -3,6 +3,7 @@
 var $ = window.jQuery = require('jquery');
 var config = require('../config/url');
 var header = require('../includes/header');
+var api = require('../machine/api');
 
 /* DOM */
 var $machineNewBtn = $('#machine-new-button');
@@ -26,10 +27,10 @@ function bindEvents() {
 }
 
 function gotoMachineNewInfoPage() {
-	window.location.href = config.machineUrl + 'new';
+	api.goToMachineInfo('new');
 }
 
 function gotoMachineDetailInfoPage() {
 	var ID = $(this).data('id');
-	window.location.href = config.machineUrl + 'info?ID=' + ID;
+	api.goToMachineInfo('detail', ID);
 }
