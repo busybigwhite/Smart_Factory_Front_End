@@ -1,7 +1,6 @@
 'use strict';
 
 var $ = window.jQuery = require('jquery');
-var config = require('../config/url');
 var api = require('../machine/api');
 var queryParameter = require('../lib/helper/query-parameter');
 
@@ -41,12 +40,10 @@ function initialize() {
 }
 
 function getInitialData() {
-	/* temp comment, hasn't test
 	 var machineId = queryParameter.get('ID');
-	 var res = api.getMachineInfo(machineId);
-	*/
-	var fakeResponse = {"id":"1","name":"\u6e2c\u8a66\u6a5f\u578b01","weight":"10","date":"2015\/08\/14 14:00:00","acquisition_date":"2015\/08\/15 14:00:00","admin_id":"U0001","check_period":"3","maintain_period":"10"};
-	initialView(fakeResponse);
+	 api.getMachineInfo(machineId)
+	 		.done(initialView)
+	 		.fail(function(err) { console.log("error: " + err); });
 }
 
 function bindEvents() {
@@ -54,7 +51,7 @@ function bindEvents() {
 	$cancelBtn.on('click', hideEditMode);
 	$saveBtn.on('click', saveChangedData);
 	$deleteBtn.on('click', deleteMachine);
-	$backBtn.on('click', goToMachineIndex);
+	$backBtn.on('click', api.goToMachineIndex);
 }
 
 function showEditMode() {
@@ -85,10 +82,6 @@ function saveChangedData() {
 
 function deleteMachine() {
 	// TODO
-}
-
-function goToMachineIndex() {
-	window.location.href = config.machineUrl;
 }
 
 function initialView(data) {

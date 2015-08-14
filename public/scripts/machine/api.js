@@ -2,16 +2,19 @@
 
 var config = require('../config/url');
 
-exports = module.exports = {};
+exports = module.exports = {
+	goToMachineIndex: goToMachineIndex,
+	getMachineInfo: getMachineInfo,
+};
 
-exports.getMachineInfo = function(id) {
+function goToMachineIndex() {
+	window.location.href = config.machineUrl;
+}
+
+function getMachineInfo(id) {
 	return getData(config.machineUrl + 'api/machine/' + id);
 };
 
 function getData(url) {
-	$.get(url)
-	.done(function(res){
-		console.log(res);
-		return res;
-	});
+	return $.get(url);
 }
