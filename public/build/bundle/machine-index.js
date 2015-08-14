@@ -9245,16 +9245,18 @@ var base          = exports.baseUrl = `${protocol}://${hostname}${portDisplay}`;
 // exports.eventsUrl    = `${base}/${projectName}/${restNamespace}/events/`;
 // exports.publishesUrl = `${base}/${projectName}/${restNamespace}/publishes/`;
 
-exports.realtimeUrl  = `${base}/realtime/`;
-exports.machineUrl 	 = `${base}/machine/`;
-exports.workorderUrl = `${base}/workorder/`;
-exports.moldUrl   	 = `${base}/mold/`;
-exports.unusualUrl 	 = `${base}/unusual/`;
-exports.memberUrl 	 = `${base}/member/`;
-exports.historyUrl   = `${base}/history/`;
-exports.headerUrl 	 = `${base}/views/includes/header/main.html`;
+exports.realtimeUrl  	= `${base}/realtime/`;
+exports.realtimePicUrl  = `${base}/realtime/listpic`;
+exports.machineUrl 	 	= `${base}/machine/`;
+exports.workorderUrl 	= `${base}/workorder/`;
+exports.moldUrl   	 	= `${base}/mold/`;
+exports.unusualUrl 	 	= `${base}/unusual/`;
+exports.memberUrl 	 	= `${base}/member/`;
+exports.historyUrl   	= `${base}/history/`;
+exports.headerUrl 	 	= `${base}/views/includes/header/main.html`;
 
-exports.imageUrl 	 = `${base}/images/`;
+exports.APIUrl  		= `${base}/api/`;
+exports.imageUrl 	 	= `${base}/images/`;
 
 },{}],3:[function(require,module,exports){
 'use strict';
