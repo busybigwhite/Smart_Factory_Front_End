@@ -23,8 +23,16 @@
 	}
 }
 
-.custom-table-col(@width) {
-	width: @width;
-    padding: 0 10px;
+.custom-table-col(@colNum) {
+
+	.make-xs-column(@colNum);
+
+	height: inherit;
+    padding: 0 5px;
+    overflow: hidden;
 	display: inline-block;
+	text-overflow: ellipsis;
+    white-space: nowrap;
 }
+
+

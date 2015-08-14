@@ -8836,7 +8836,7 @@ a:active {
 }
 .main-container {
   min-width: 1200px;
-  padding: 100px 20px;
+  margin: 100px 20px 0;
 }
 .detail-page-html-body {
   background-color: whitesmoke;
@@ -9966,15 +9966,48 @@ fieldset[disabled] .info-back-button.active {
   border-bottom: none;
 }
 #realtime-panel #realtime-list-block #realtime-table-mode .table-col {
-  width: 12%;
-  padding: 0 10px;
+  position: relative;
+  float: left;
+  width: 12.5%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: inherit;
+  padding: 0 5px;
+  overflow: hidden;
   display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 #realtime-panel #realtime-list-block #realtime-table-mode .table-col-sm {
-  width: 9%;
-  padding: 0 10px;
+  position: relative;
+  float: left;
+  width: 8.33333333%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: inherit;
+  padding: 0 5px;
+  overflow: hidden;
   display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   text-align: right;
+}
+#realtime-panel #realtime-list-block #realtime-table-mode .table-col-lg {
+  position: relative;
+  float: left;
+  width: 12.5%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: inherit;
+  padding: 0 5px;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
 }
 #realtime-panel #realtime-list-block #realtime-table-mode .realtime-showpic-btn {
   display: inline-block;
@@ -10292,14 +10325,32 @@ fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .re
   border-bottom: none;
 }
 #machine-table .table-col {
-  width: 20%;
-  padding: 0 10px;
+  position: relative;
+  float: left;
+  width: 166.66666667%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: inherit;
+  padding: 0 5px;
+  overflow: hidden;
   display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 #machine-table .table-col:last-of-type {
   /* if columns sum equal to 100% & html tag with \n, it will seprate to two line */
-  width: 18%;
-  padding: 0 10px;
+  position: relative;
+  float: left;
+  width: 150%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: inherit;
+  padding: 0 5px;
+  overflow: hidden;
   display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   text-align: center;
 }
