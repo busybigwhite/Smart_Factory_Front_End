@@ -3,6 +3,7 @@
 var $ = window.jQuery = require('jquery');
 require('bootstrap/js/dropdown');
 
+var _ = require('lodash');
 var userId = require('../../config/auth');
 var config = require('../../config/url');
 var templates = require('../templates');
@@ -12,7 +13,7 @@ var $valueDropdown = $('#dropdown-value-list');
 var $filterValueFocusName = $('#focus-value');
 var $filterValueMenu = $('#filter-value-list');
 
-var filterType;
+var selectedValue;
 
 exports = module.exports = {};
 
@@ -23,6 +24,10 @@ exports.showAndRenderDropdown = function(type) {
 
 exports.hide = function() {
 	$valueDropdown.addClass('hidden');
+}
+
+exports.getSelectedValue = function() {
+	return selectedValue;
 }
 
 initialize();
@@ -41,30 +46,18 @@ function bindSetFocusNameBlockEventOnSelector() {
 
 function setFocusValueBlock() {
 	var displayName = $(this).text();
-	var id = $(this).data('id');
+	selectedValue = $(this).data('id');
 
-	$filterValueFocusName.text(displayName).data(id);
-
-	getItemListThenRenderRows(id);
-}
-
-function getItemListThenRenderRows(id) {
-	// $.get(config.APIUrl + 'history/:' + userId?type=' + type + 'id=' + id)
-	$.get(config.APIUrl + 'history?type=' + filterType + 'id=' + id)
-	 .done(function(response){
-		// var tableListRows = templates.renderTableList({ lists : response });
-
-		// $filterValueMenu.empty().html( tableListRows );
-	 });
+	$filterValueFocusName.text(displayName).data(selectedValue);
 }
 
 function getValueThenRenderDropdown(type) {
-	filterType = type;
 
-	// $.get(config.APIUrl + 'history/list/:' + userId?type=' + filterType)
-	$.get(config.APIUrl + 'history/list?type=' + filterType)
+	// $.get(config.APIUrl + 'history/filter/:' + userId?type=' + type)
+	$.get(config.APIUrl + 'history/filter?type=' + type)
 	 .done(function(response){
-		var filterListRows = templates.renderFilterDropdown({ filters : response });
+	 	var filters = _.uniq(response);
+		var filterListRows = templates.renderFilterDropdown({ filters : filters });
 
 		$filterValueMenu.empty().html( filterListRows );
 	 });

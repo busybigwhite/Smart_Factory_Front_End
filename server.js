@@ -42,10 +42,10 @@ app.get('/member', function(req, res) { res.render('pages/member/main'); });
 app.get('/history', function(req, res) { res.render('pages/history/main'); });
 app.get('/api/history/list', function(req, res) {
 	switch(req.query.type){
-		case "machine":
+		case "machine_id":
 			res.send(data.machineLists);
 		break;
-		case "mold":
+		case "mold_id":
 			res.send(data.moldLists);
 		break;
 		default:

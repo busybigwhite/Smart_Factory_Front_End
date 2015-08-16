@@ -14,19 +14,19 @@
     <div id="realtime-panel">
     	<div id="realtime-select-block">
     		<div class="col-xs-8">
-	    		<div class="realtime-dropdown">
+	    		<div class="dropdown-factory-filter">
 					<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-						<span id="realtime-factory-focus"></span>
+						<span class="factory-focus-name"></span>
 						<span class="caret"></span>
 					</button>
-					<ul id="realtime-factory-list" class="dropdown-menu"></ul>
+					<ul class="factory-list dropdown-menu"></ul>
 				</div>
-				<div class="realtime-dropdown">
+				<div id="dropdown-realtime-view-mode">
 					<button id="realtime-mode" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 						<span id="realtime-mode-focus"></span>
 						<span class="caret"></span>
 					</button>
-					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+					<ul class="dropdown-menu">
 						<li><a id="table-mode-switcher" data-mode="0">列表模式</a></li>
 						<li><a id="image-mode-switcher" data-mode="1">圖片模式</a></li>
 					</ul>
@@ -41,13 +41,13 @@
 						</button>
 					</span>
 				</div>
-				<div class="realtime-dropdown pull-right">
+				<div class="dropdown-history-filter pull-right">
 					<button id="realtime-filter" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 						<span id="realtime-filter-focus"></span>
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-						<li><a class="filter-item" data-id="workOrder_id">工單編號</a></li>
+						<li><a class="filter-item" data-id="workorder_id">工單編號</a></li>
 						<li><a class="filter-item" data-id="machine_id">射出機台編號</a></li>
 						<li><a class="filter-item" data-id="mold_id">模具編號</a></li>
 						<li><a class="filter-item" data-id="customer_id">客戶名稱</a></li>

@@ -4,19 +4,6 @@ var _ = require('lodash');
 
 exports = module.exports = {};
 
-exports.renderFactoryDropdown = function(factories) {
-
-  var menuTemp = _.template(
-	 `<% _.forEach(factories, function(factory) {  %>
-      <li><a class="realtime-factory-item" data-id=<%= factory.id %>>
-      		<%= factory.name %>
-      </a></li>
-    <% });                                          %>`
-	);
-
-  return menuTemp(factories);
-}
-
 exports.renderTableList = function(infos) {
 
   var menuTemp = _.template(
