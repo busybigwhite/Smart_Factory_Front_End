@@ -9246,6 +9246,9 @@ a:active {
 .navbar .pull-right {
   margin-right: 20px;
 }
+.btn {
+  font-size: 16px;
+}
 .detail-info-button {
   display: inline-block;
   margin-bottom: 0;
@@ -9265,6 +9268,7 @@ a:active {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  font-size: 16px;
   min-width: 120px;
   height: 2.2em;
   line-height: 2.2em;
@@ -9389,6 +9393,7 @@ fieldset[disabled] .detail-info-button.active {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  font-size: 16px;
   min-width: 120px;
   height: 2.2em;
   line-height: 2.2em;
@@ -9514,6 +9519,7 @@ fieldset[disabled] .new-button.active {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  font-size: 16px;
   min-width: 120px;
   height: 2.2em;
   line-height: 2.2em;
@@ -9639,6 +9645,7 @@ fieldset[disabled] .info-save-button.active {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  font-size: 16px;
   min-width: 120px;
   height: 2.2em;
   line-height: 2.2em;
@@ -9763,6 +9770,7 @@ fieldset[disabled] .info-edit-button.active {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  font-size: 16px;
   min-width: 120px;
   height: 2.2em;
   line-height: 2.2em;
@@ -9888,6 +9896,7 @@ fieldset[disabled] .info-cancel-button.active {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  font-size: 16px;
   min-width: 120px;
   height: 2.2em;
   line-height: 2.2em;
@@ -10012,6 +10021,7 @@ fieldset[disabled] .info-delete-button.active {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  font-size: 16px;
   min-width: 120px;
   height: 2.2em;
   line-height: 2.2em;
@@ -10117,6 +10127,11 @@ fieldset[disabled] .info-back-button.active {
   color: #ffffff;
   background-color: #333333;
 }
+.date-picker-btn {
+  margin: 0 20px 0 -35px;
+  cursor: pointer;
+  pointer-events: none;
+}
 .custom-dropdown {
   position: relative;
   padding: 0;
@@ -10126,6 +10141,7 @@ fieldset[disabled] .info-back-button.active {
 .custom-dropdown .dropdown-toggle {
   min-width: 100px;
   font-size: 16px;
+  text-align: right;
 }
 .custom-dropdown .dropdown-toggle .dropdown-focus-name {
   min-width: 80px;
@@ -10152,6 +10168,7 @@ fieldset[disabled] .info-back-button.active {
 #dropdown-value-list .dropdown-toggle {
   min-width: 100px;
   font-size: 16px;
+  text-align: right;
 }
 .dropdown-factory-filter .dropdown-toggle .dropdown-focus-name,
 #dropdown-realtime-view-mode .dropdown-toggle .dropdown-focus-name,
@@ -10417,6 +10434,7 @@ fieldset[disabled] .info-back-button.active {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  font-size: 16px;
   color: #ffffff;
   background-color: #5cb85c;
   border-color: #4cae4c;
@@ -10650,6 +10668,12 @@ fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .re
   color: #d9534f;
   background-color: #ffffff;
 }
+#realtime-panel #realtime-list-block #realtime-img-mode {
+  padding: 150px 0;
+  fonct-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
 #realtime-panel #realtime-pic-block {
   width: 100%;
   max-width: 1200px;
@@ -10774,6 +10798,15 @@ fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .re
 #history-panel #history-select-block #history-date-block {
   display: inline-block;
 }
+#history-panel #history-select-block #history-date-block #history-start-date-picker,
+#history-panel #history-select-block #history-date-block #history-end-date-picker {
+  width: 140px;
+  height: 35px;
+  padding: 0 8px;
+  margin: 0 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
 #history-panel #history-list-block {
   position: relative;
   float: left;
@@ -10865,6 +10898,7 @@ fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .re
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  font-size: 16px;
   color: #ffffff;
   background-color: #5cb85c;
   border-color: #4cae4c;

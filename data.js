@@ -50,35 +50,35 @@ var listpics = [
                 'workorder_id': '1',
                 'pic_id': '1',
                 'type': 'normal',
-                'date': '2015/08/11 00:00:00',
+                'current_time': '2015/08/11 00:00:00',
                 'url': '../../../images/sample/sample.jpg',
             },
             {
                 'workorder_id': '1',
                 'mold_id': '2',
                 'type': 'error',
-                'date': '2015/08/11 00:00:00',
+                'current_time': '2015/08/11 00:00:00',
                 'url': '../../../images/sample/sample.jpg',
             },
             {
                 'workorder_id': '1',
                 'pic_id': '0',
                 'type': 'current',
-                'date': '2015/08/11 00:00:00',
+                'current_time': '2015/08/11 00:00:00',
                 'url': '../../../images/sample/sample.jpg'
             },
             {
                 'workorder_id': '1',
                 'mold_id': '2',
                 'type': 'error',
-                'date': '2015/08/11 00:00:00',
+                'current_time': '2015/08/11 00:00:00',
                 'url': '../../../images/sample/sample.jpg',
             },
             {
                 'workorder_id': '1',
                 'pic_id': '0',
                 'type': 'current',
-                'date': '2015/08/11 00:00:00',
+                'current_time': '2015/08/11 00:00:00',
                 'url': '../../../images/sample/sample.jpg'
             }
 ]

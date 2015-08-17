@@ -73,7 +73,7 @@ function setFocusFactoryIdThenRenderRows(factoryId) {
 
 function createRealtimeListThenRenderRows(type, searchKey) {
 	// $.get(config.APIUrl + 'workorder/list/:' + userId + '?factory_id=' + focusFactoryId + 'type=' + type + '&search_key=' + searchKey)
-	$.get(config.APIUrl + 'workorder/list/?factory_id=' + focusFactoryId + 'type=' + type + '&search_key=' + searchKey)
+	$.get(config.APIUrl + 'realtime/info/?factory_id=' + focusFactoryId + 'type=' + type + '&search_key=' + searchKey)
 	 .done(function(response){
 		var tableListRows = templates.renderTableList({ infos : response });
 		// var imageListRows = templates.renderImageList({ infos : response });

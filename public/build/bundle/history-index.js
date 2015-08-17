@@ -27804,22 +27804,25 @@ function bindSetFocusNameBlockEventOnSelector() {
 	$filterValueMenu.on('click', '.option-item', setFocusValueBlock);
 }
 
-function setFocusValueBlock() {
-	var displayName = $(this).text();
-	selectedValue = $(this).data('id');
+function setFocusValueBlock(target) {
+	var displayName = target.type==='click' ? $(this).text() : target.name;
+	selectedValue = target.type==='click' ? $(this).data('id') : target.id;
 
 	$filterValueFocusName.text(displayName).data(selectedValue);
 }
 
 function getValueThenRenderDropdown(type) {
-
 	// $.get(config.APIUrl + 'history/filter/:' + userId?type=' + type)
 	$.get(config.APIUrl + 'history/filter?type=' + type)
 	 .done(function(response){
-	 	var filters = _.uniq(response);
-		var filterListRows = templates.renderFilterDropdown({ filters : filters });
+	 	if( response.length ){
+		 	var filters = _.uniq(response);
+			var filterListRows = templates.renderFilterDropdown({ filters : filters });
 
-		$filterValueMenu.empty().html( filterListRows );
+			$filterValueMenu.empty().html( filterListRows );
+
+			setFocusValueBlock( filters[0] );
+		}
 	 });
 }
 },{"../../config/auth":7,"../../config/url":8,"../templates":11,"bootstrap/js/dropdown":1,"jquery":4,"lodash":5}],11:[function(require,module,exports){
