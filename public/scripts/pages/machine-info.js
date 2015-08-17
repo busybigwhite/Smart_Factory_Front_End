@@ -10,6 +10,10 @@ var noticeedPersonDropdown = require('../machine/modules/noticed-person-dropdown
 var checkPeriodDropdown    = require('../machine/modules/check-period-dropdown');
 var maintainPeriodDropdown = require('../machine/modules/maintain-period-dropdown');
 
+require('eonasdan-bootstrap-datetimepicker');
+var errorRecordTable = require('../machine/modules/error-record-table');
+
+
 /* DOM */
 var $editBtn   = $('#machine-edit-button');
 var $cancelBtn = $('#machine-cancel-button');
@@ -159,6 +163,7 @@ function initResumeInfo(data) {
 	// TODO: 小保養紀錄
 	// TODO: 大保養紀錄
 	// TODO: 異常維修紀錄
+	errorRecordTable.init();
 }
 
 function getChangedData() {
