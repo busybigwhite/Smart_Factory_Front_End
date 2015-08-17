@@ -37,6 +37,7 @@ app.get('/workorder', function(req, res) { res.render('pages/workorder/main'); }
 app.get('/mold', function(req, res) { res.render('pages/mold/main'); });
 app.get('/unusual', function(req, res) { res.render('pages/unusual/main'); });
 app.get('/member', function(req, res) { res.render('pages/member/main'); });
+app.get('/member/manage', function(req, res) { res.render('pages/member/manage'); });
 
 // history
 app.get('/history', function(req, res) { res.render('pages/history/main'); });
