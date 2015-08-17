@@ -21,16 +21,16 @@ function initialize() {
 
 function getInitialData() {
 
-	// api.getMemberList()
-	// 	 .done(initialView)
-	// 	 .fail(function(err) { console.log("GET Member List error: ", err); });
-	var response = [
-		{"id":"1","name":"admin","group":"Administrator","email":"admin@moremote.com"},
-		{"id":"2","name":"louk","group":"Manager","email":"louk@moremote.com"},
-		{"id":"3","name":"unknown","group":"Customer","email":"unknown@moremote.com"}
-	];
+	api.getMemberList()
+		 .done(initialView)
+		 .fail(function(err) { console.log("GET Member List error: ", err); });
+	// var response = [
+	// 	{"id":"1","name":"admin","group":"Administrator","email":"admin@moremote.com"},
+	// 	{"id":"2","name":"louk","group":"Manager","email":"louk@moremote.com"},
+	// 	{"id":"3","name":"unknown","group":"Customer","email":"unknown@moremote.com"}
+	// ];
 
-	initialView(response);
+	// initialView(response);
 }
 
 function bindEvents() {
