@@ -7,15 +7,19 @@ var _ = require('lodash');
 var userId = require('../../config/auth');
 var config = require('../../config/url');
 var templates = require('../templates');
+var EventEmitter = require('wolfy87-eventemitter');
+
+var selectedValue;
+var emitter = new EventEmitter();
 
 /* DOM */
 var $valueDropdown = $('#dropdown-value-list');
 var $filterValueFocusName = $('#focus-value');
 var $filterValueMenu = $('#filter-value-list');
 
-var selectedValue;
-
 exports = module.exports = {};
+
+exports.emitter = emitter;
 
 exports.showAndRenderDropdown = function(type) {
 	getValueThenRenderDropdown(type);
@@ -49,19 +53,30 @@ function setFocusValueBlock(target) {
 	selectedValue = target.type==='click' ? $(this).data('id') : target.id;
 
 	$filterValueFocusName.text(displayName).data(selectedValue);
+
+	emitter.emit('valueChanged', selectedValue);
 }
 
 function getValueThenRenderDropdown(type) {
-	// $.get(config.APIUrl + 'history/filter/:' + userId?type=' + type)
-	$.get(config.APIUrl + 'history/filter?type=' + type)
-	 .done(function(response){
+
+	$.ajax({
+		url: config.APIUrl + 'history/filter?type=' + type,
+		beforeSend: function(){
+			selectedValue = undefined;
+			$filterValueMenu.empty();
+		}
+	}).done(function(response){
+
 	 	if( response.length ){
 		 	var filters = _.uniq(response);
 			var filterListRows = templates.renderFilterDropdown({ filters : filters });
 
-			$filterValueMenu.empty().html( filterListRows );
+			$filterValueMenu.html( filterListRows );
 
 			setFocusValueBlock( filters[0] );
+
+		}else {
+			emitter.emit('valueChanged', selectedValue);
 		}
-	 });
+	});
 }

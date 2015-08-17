@@ -6,17 +6,23 @@ var userId = require('../config/auth');
 var config = require('../config/url');
 var templates = require('../history/templates');
 var factoryDropdown = require('../lib/component/dropdown-factory');
+var filterDropdown = require('../history/components/dropdown-filter-type');
+var valueDropdown = require('../history/components/dropdown-filter-value');
 
 require('eonasdan-bootstrap-datetimepicker');
-require('../history/components/dropdown-filter-type');
+
 
 /* DOM */
 var $tableListBlock = $('#history-table-block');
+var $tableBody = $('#history-table-body');
 var $imageBlock = $('#history-img-block');
 var $searchBtn = $('#history-search-btn');
 var $startDatePicker = $('#history-start-date-picker');
 var $endDatePicker = $('#history-end-date-picker');
 
+var focusFactoryId;
+var selectedFilter;
+var selectedValue;
 var today = new Date();
 var dateTimePickerOpt = {
 		widgetPositioning: {
@@ -33,6 +39,7 @@ function initialize() {
 	header.include();
 	initializeDatetimePicker();
 	bindEvents();
+	searchHistoryThenRenderRows();
 }
 
 function initializeDatetimePicker() {
@@ -48,20 +55,85 @@ function setDefaultDate() {
 }
 
 function bindEvents() {
+	bindDropdownsChangedEventListener();
 	bindSearchListEventOnButton();
 }
 
+function bindDropdownsChangedEventListener() {
+	factoryDropdown.emitter.on('factoryChanged', setFocusFactoryIdThenRenderRows);
+	filterDropdown.emitter.on('filterChanged', switchDropdownAndDatepicker);
+	valueDropdown.emitter.on('valueChanged', setSelectedValueThenRenderRows);
+}
+
 function bindSearchListEventOnButton() {
-	$searchBtn.on('click', searchHistoryThenRenderRows);
+	$searchBtn.on('click', searchPeriodThenRenderRows);
+}
+
+function setFocusFactoryIdThenRenderRows(factoryId) {
+	focusFactoryId = factoryId;
+
+	searchHistoryThenRenderRows();
+}
+
+function switchDropdownAndDatepicker(filterId) {
+	selectedFilter = filterId;
+
+	if(selectedFilter === 'date_period'){
+		valueDropdown.hide();
+	}else {
+		valueDropdown.showAndRenderDropdown(selectedFilter);
+	}
+}
+
+function setSelectedValueThenRenderRows(valueId) {
+	selectedValue = valueId;
+
+	searchHistoryThenRenderRows();
 }
 
 function searchHistoryThenRenderRows() {
 
-	// $.get(config.APIUrl + 'history/list/:' + userId + '?factory_id=' + focusFactoryId + 'type=' + type + '&search_key=' + searchKey)
-	$.get(config.APIUrl + 'history/list/?factory_id=' + focusFactoryId + '&type=' + type + '&search_key=' + searchKey)
-	 .done(function(response){
-		var tableListRows = templates.renderTableList({ infos : response });
+	if( !selectedFilter ) return;
 
-		$tableListBlock.empty().append( tableListRows );
-	 });
+	$.ajax({
+		url: config.APIUrl + 'history/list/?factory_id=' + focusFactoryId + '&type=' + selectedFilter + '&search_key=' + selectedValue,
+		beforeSend: function(){
+			$imageBlock.empty();
+			$tableBody.empty();
+		}
+	}).done(function(response){
+	 	var infos = response || [];
+		var type = selectedFilter.split('_')[0];
+
+		createTableList(infos, type);
+		displayImageBlock(infos, type);
+	});
+}
+
+function searchPeriodThenRenderRows() {
+
+}
+
+function createTableList(infos, type) {
+	var tableListRows = templates.renderTableList({ infos : infos });
+
+	$tableBody.append( tableListRows );
+ 	$tableListBlock.find('.table-col').attr('class', 'table-col ' + type);
+	$tableListBlock.find('.table-col-sm').attr('class', 'table-col-sm ' + type);
+}
+
+function displayImageBlock(infos, type) {
+	switch (type){
+		case "workorder":
+			var chart = templates.renderChart();
+			$imageBlock.append( chart ).removeClass('hidden');
+		break;
+		case "mold":
+			var heatmap = templates.renderHeatmap({ info: infos[0] });
+			$imageBlock.append( heatmap ).removeClass('hidden');
+		break;
+		default:
+			$imageBlock.addClass('hidden');
+		break;
+	}
 }

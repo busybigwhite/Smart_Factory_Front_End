@@ -23,7 +23,7 @@ app.get('/realtime', function(req, res) { res.render('pages/realtime/main'); });
 app.get('/realtime/listpic', function(req, res) {
 	res.render('pages/realtime/listpic');
 });
-app.get('/api/realtime/info', function(req, res) {
+app.get('/api/workorder/list', function(req, res) {
 	res.send(data.liveinfos);
 });
 app.get('/api/realtime/listpic', function(req, res) {
@@ -43,6 +43,9 @@ app.get('/member/manage', function(req, res) { res.render('pages/member/manage')
 app.get('/history', function(req, res) { res.render('pages/history/main'); });
 app.get('/api/history/filter', function(req, res) {
 	switch(req.query.type){
+		case "workorder_id":
+			res.send(data.workorderLists);
+		break;
 		case "machine_id":
 			res.send(data.machineLists);
 		break;
@@ -53,6 +56,9 @@ app.get('/api/history/filter', function(req, res) {
 			res.send({});
 		break;
 	}
+});
+app.get('/api/history/list', function(req, res) {
+	res.send(data.historyInfos);
 });
 
 app.get('/api/factory/list', function(req, res) {

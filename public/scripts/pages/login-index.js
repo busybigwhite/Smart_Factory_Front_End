@@ -38,7 +38,7 @@ function userLogin(e){
 	if (!valid) {
 		//show validation msg
 	} else {
-		$.post(config.APIUrl + '/auth/login?name=' + $userName.val() + '&password=' + $userPassword.val() + '&_token=' + $csrfToken.val())
+		$.post(config.APIUrl + 'auth/login?name=' + $userName.val() + '&password=' + $userPassword.val() + '&_token=' + $csrfToken.val())
 		 .done(function(res){
 		 	console.log("name=" + $userName.val() + "&password=" + $userPassword.val() + "&_token=" + $csrfToken.val());
 			Auth.set(res.csrf_token);

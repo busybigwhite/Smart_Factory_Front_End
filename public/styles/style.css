@@ -10128,7 +10128,7 @@ fieldset[disabled] .info-back-button.active {
   background-color: #333333;
 }
 .date-picker-btn {
-  margin: 0 20px 0 -35px;
+  margin: 0 15px 0 -35px;
   cursor: pointer;
   pointer-events: none;
 }
@@ -10139,16 +10139,16 @@ fieldset[disabled] .info-back-button.active {
   display: inline-block;
 }
 .custom-dropdown .dropdown-toggle {
-  min-width: 100px;
+  min-width: 150px;
   font-size: 16px;
   text-align: right;
 }
+.custom-dropdown .dropdown-toggle .factory-focus-name,
 .custom-dropdown .dropdown-toggle .dropdown-focus-name {
-  min-width: 80px;
+  width: 85%;
+  margin-right: 5px;
   display: inline-block;
-}
-.custom-dropdown .dropdown-toggle .caret {
-  margin-left: 10px;
+  text-align: left;
 }
 .custom-dropdown .dropdown-menu {
   font-size: 16px;
@@ -10166,22 +10166,22 @@ fieldset[disabled] .info-back-button.active {
 #dropdown-realtime-view-mode .dropdown-toggle,
 .dropdown-history-filter .dropdown-toggle,
 #dropdown-value-list .dropdown-toggle {
-  min-width: 100px;
+  min-width: 150px;
   font-size: 16px;
   text-align: right;
 }
+.dropdown-factory-filter .dropdown-toggle .factory-focus-name,
+#dropdown-realtime-view-mode .dropdown-toggle .factory-focus-name,
+.dropdown-history-filter .dropdown-toggle .factory-focus-name,
+#dropdown-value-list .dropdown-toggle .factory-focus-name,
 .dropdown-factory-filter .dropdown-toggle .dropdown-focus-name,
 #dropdown-realtime-view-mode .dropdown-toggle .dropdown-focus-name,
 .dropdown-history-filter .dropdown-toggle .dropdown-focus-name,
 #dropdown-value-list .dropdown-toggle .dropdown-focus-name {
-  min-width: 80px;
+  width: 85%;
+  margin-right: 5px;
   display: inline-block;
-}
-.dropdown-factory-filter .dropdown-toggle .caret,
-#dropdown-realtime-view-mode .dropdown-toggle .caret,
-.dropdown-history-filter .dropdown-toggle .caret,
-#dropdown-value-list .dropdown-toggle .caret {
-  margin-left: 10px;
+  text-align: left;
 }
 .dropdown-factory-filter .dropdown-menu,
 #dropdown-realtime-view-mode .dropdown-menu,
@@ -10324,7 +10324,7 @@ fieldset[disabled] .info-back-button.active {
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
-  padding: 0;
+  padding: 0 25px;
 }
 #realtime-panel #realtime-select-block .input-group {
   max-width: 250px;
@@ -10787,55 +10787,62 @@ fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .re
   margin-right: -15px;
 }
 #history-panel #history-select-block {
-  position: relative;
-  float: left;
   width: 100%;
-  min-height: 1px;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding: 0;
+  height: 60px;
+  padding: 0 25px;
 }
 #history-panel #history-select-block #history-date-block {
   display: inline-block;
 }
 #history-panel #history-select-block #history-date-block #history-start-date-picker,
 #history-panel #history-select-block #history-date-block #history-end-date-picker {
-  width: 140px;
+  width: 170px;
   height: 35px;
   padding: 0 8px;
   margin: 0 5px;
   border-radius: 4px;
   border: 1px solid #ccc;
+  cursor: pointer;
 }
 #history-panel #history-list-block {
-  position: relative;
-  float: left;
   width: 100%;
-  min-height: 1px;
-  padding-left: 15px;
-  padding-right: 15px;
+  max-width: 1600px;
+  min-height: 800px;
+  margin: 0 auto;
+  padding: 10px 15px;
+  box-shadow: 0 1px 8px 1px rgba(0, 0, 0, 0.3);
+  z-index: 1;
 }
-#history-panel #history-list-block #history-table-mode {
+#history-panel #history-list-block #history-img-block {
+  min-height: 350px;
+  padding: 30px 0;
+  text-align: center;
+}
+#history-panel #history-list-block #history-img-block img {
+  height: 350px;
+}
+#history-panel #history-list-block #history-table-block {
   margin: 20px 0;
   padding: 0;
 }
-#history-panel #history-list-block #history-table-mode .table-header {
+#history-panel #history-list-block #history-table-block .table-header {
   height: 40px;
   border-bottom: 2px solid #ddd;
   line-height: 2.3em;
 }
-#history-panel #history-list-block #history-table-mode .table-item {
+#history-panel #history-list-block #history-table-block .table-item {
   height: 48px;
   border-bottom: 1px solid #ddd;
   line-height: 2.8em;
 }
-#history-panel #history-list-block #history-table-mode .table-item:nth-child(odd) {
+#history-panel #history-list-block #history-table-block .table-item:nth-child(odd) {
   background-color: #f9f9f9;
 }
-#history-panel #history-list-block #history-table-mode .table-item:last-child {
+#history-panel #history-list-block #history-table-block .table-item:last-child {
   border-bottom: none;
 }
-#history-panel #history-list-block #history-table-mode .table-col {
+#history-panel #history-list-block #history-table-block .table-header .table-col,
+#history-panel #history-list-block #history-table-block .table-item .table-col {
   position: relative;
   float: left;
   width: 12.5%;
@@ -10849,7 +10856,68 @@ fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .re
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-#history-panel #history-list-block #history-table-mode .table-col-sm {
+#history-panel #history-list-block #history-table-block .table-header .table-col.workorder,
+#history-panel #history-list-block #history-table-block .table-item .table-col.workorder {
+  position: relative;
+  float: left;
+  width: 16.66666667%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: inherit;
+  padding: 0 5px;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#history-panel #history-list-block #history-table-block .table-header .table-col.workorder:nth-child(1),
+#history-panel #history-list-block #history-table-block .table-item .table-col.workorder:nth-child(1) {
+  display: none;
+}
+#history-panel #history-list-block #history-table-block .table-header .table-col.machine:nth-child(2),
+#history-panel #history-list-block #history-table-block .table-item .table-col.machine:nth-child(2) {
+  display: none;
+}
+#history-panel #history-list-block #history-table-block .table-header .table-col.mold,
+#history-panel #history-list-block #history-table-block .table-item .table-col.mold {
+  position: relative;
+  float: left;
+  width: 16.66666667%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: inherit;
+  padding: 0 5px;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#history-panel #history-list-block #history-table-block .table-header .table-col.mold:nth-child(3),
+#history-panel #history-list-block #history-table-block .table-item .table-col.mold:nth-child(3) {
+  display: none;
+}
+#history-panel #history-list-block #history-table-block .table-header .table-col-sm,
+#history-panel #history-list-block #history-table-block .table-item .table-col-sm {
+  position: relative;
+  float: left;
+  width: 12.5%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: inherit;
+  padding: 0 5px;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
+}
+#history-panel #history-list-block #history-table-block .table-header .table-col-sm.workorder,
+#history-panel #history-list-block #history-table-block .table-item .table-col-sm.workorder,
+#history-panel #history-list-block #history-table-block .table-header .table-col-sm.mold,
+#history-panel #history-list-block #history-table-block .table-item .table-col-sm.mold {
   position: relative;
   float: left;
   width: 8.33333333%;
@@ -10862,283 +10930,28 @@ fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .re
   display: inline-block;
   text-overflow: ellipsis;
   white-space: nowrap;
-  text-align: right;
 }
-#history-panel #history-list-block #history-table-mode .table-col-lg {
-  position: relative;
-  float: left;
-  width: 12.5%;
-  min-height: 1px;
-  padding-left: 15px;
-  padding-right: 15px;
-  height: inherit;
-  padding: 0 5px;
-  overflow: hidden;
+#history-panel #history-list-block #history-table-block .table-header .table-col-sm.workorder:last-child,
+#history-panel #history-list-block #history-table-block .table-item .table-col-sm.workorder:last-child,
+#history-panel #history-list-block #history-table-block .table-header .table-col-sm.mold:last-child,
+#history-panel #history-list-block #history-table-block .table-item .table-col-sm.mold:last-child {
+  display: none;
+}
+#history-panel #history-list-block #history-table-block .table-header .table-col-sm.machine:last-child,
+#history-panel #history-list-block #history-table-block .table-item .table-col-sm.machine:last-child {
   display: inline-block;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  text-align: center;
 }
-#history-panel #history-list-block #history-table-mode .history-showpic-btn {
-  display: inline-block;
-  margin-bottom: 0;
-  font-weight: normal;
-  text-align: center;
-  vertical-align: middle;
-  touch-action: manipulation;
-  cursor: pointer;
-  background-image: none;
-  border: 1px solid transparent;
-  white-space: nowrap;
-  padding: 6px 12px;
-  font-size: 14px;
-  line-height: 1.42857143;
-  border-radius: 4px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  font-size: 16px;
-  color: #ffffff;
-  background-color: #5cb85c;
-  border-color: #4cae4c;
+#history-panel #history-list-block #history-table-block .table-header .table-col-sm.customer:last-child,
+#history-panel #history-list-block #history-table-block .table-item .table-col-sm.customer:last-child,
+#history-panel #history-list-block #history-table-block .table-header .table-col-sm.date:last-child,
+#history-panel #history-list-block #history-table-block .table-item .table-col-sm.date:last-child {
+  display: none;
 }
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:active:focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn.active:focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn.focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:active.focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn.active.focus {
-  outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:hover,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn.focus {
-  color: #333333;
-  text-decoration: none;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:active,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn.active {
-  outline: 0;
-  background-image: none;
-  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn.disabled,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn[disabled],
-fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn {
-  cursor: not-allowed;
-  opacity: 0.65;
-  filter: alpha(opacity=65);
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-a#history-panel #history-list-block #history-table-mode .history-showpic-btn.disabled,
-fieldset[disabled] a#history-panel #history-list-block #history-table-mode .history-showpic-btn {
-  pointer-events: none;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn.focus {
-  color: #ffffff;
-  background-color: #449d44;
-  border-color: #255625;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:hover {
-  color: #ffffff;
-  background-color: #449d44;
-  border-color: #398439;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:active,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn.active,
-.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn {
-  color: #ffffff;
-  background-color: #449d44;
-  border-color: #398439;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:active:hover,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn.active:hover,
-.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:hover,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:active:focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn.active:focus,
-.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:active.focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn.active.focus,
-.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn.focus {
-  color: #ffffff;
-  background-color: #398439;
-  border-color: #255625;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:active,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn.active,
-.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn {
-  background-image: none;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn.disabled,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn[disabled],
-fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn.disabled:hover,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn[disabled]:hover,
-fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:hover,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn.disabled:focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn[disabled]:focus,
-fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn.disabled.focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn[disabled].focus,
-fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn.focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn.disabled:active,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn[disabled]:active,
-fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:active,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn.disabled.active,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn[disabled].active,
-fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn.active {
-  background-color: #5cb85c;
-  border-color: #4cae4c;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn .badge {
-  color: #5cb85c;
-  background-color: #ffffff;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child {
-  color: #ffffff;
-  background-color: #5bc0de;
-  border-color: #46b8da;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.focus {
-  color: #ffffff;
-  background-color: #31b0d5;
-  border-color: #1b6d85;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:hover {
-  color: #ffffff;
-  background-color: #31b0d5;
-  border-color: #269abc;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:active,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.active,
-.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child {
-  color: #ffffff;
-  background-color: #31b0d5;
-  border-color: #269abc;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:active:hover,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.active:hover,
-.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:hover,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:active:focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.active:focus,
-.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:active.focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.active.focus,
-.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.focus {
-  color: #ffffff;
-  background-color: #269abc;
-  border-color: #1b6d85;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:active,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.active,
-.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child {
-  background-image: none;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.disabled,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child[disabled],
-fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.disabled:hover,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child[disabled]:hover,
-fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:hover,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.disabled:focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child[disabled]:focus,
-fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.disabled.focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child[disabled].focus,
-fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.disabled:active,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child[disabled]:active,
-fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child:active,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.disabled.active,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child[disabled].active,
-fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child.active {
-  background-color: #5bc0de;
-  border-color: #46b8da;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:first-child .badge {
-  color: #5bc0de;
-  background-color: #ffffff;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child {
-  color: #ffffff;
-  background-color: #d9534f;
-  border-color: #d43f3a;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.focus {
-  color: #ffffff;
-  background-color: #c9302c;
-  border-color: #761c19;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:hover {
-  color: #ffffff;
-  background-color: #c9302c;
-  border-color: #ac2925;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:active,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.active,
-.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child {
-  color: #ffffff;
-  background-color: #c9302c;
-  border-color: #ac2925;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:active:hover,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.active:hover,
-.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:hover,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:active:focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.active:focus,
-.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:active.focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.active.focus,
-.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.focus {
-  color: #ffffff;
-  background-color: #ac2925;
-  border-color: #761c19;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:active,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.active,
-.open > .dropdown-toggle#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child {
-  background-image: none;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.disabled,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child[disabled],
-fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.disabled:hover,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child[disabled]:hover,
-fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:hover,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.disabled:focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child[disabled]:focus,
-fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.disabled.focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child[disabled].focus,
-fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.focus,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.disabled:active,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child[disabled]:active,
-fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child:active,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.disabled.active,
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child[disabled].active,
-fieldset[disabled] #history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child.active {
-  background-color: #d9534f;
-  border-color: #d43f3a;
-}
-#history-panel #history-list-block #history-table-mode .history-showpic-btn:last-child .badge {
-  color: #d9534f;
-  background-color: #ffffff;
-}
-#history-panel #history-pic-block {
+.divide-line {
   width: 100%;
-  max-width: 1200px;
-  min-height: 800px;
-  margin: -30px auto 0;
-  padding: 20px;
-  box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.3);
+  height: 3px;
+  background-color: #5bc0de;
+  z-index: 3;
 }
 #member-table {
   margin: 20px 0;

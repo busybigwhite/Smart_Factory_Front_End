@@ -27873,15 +27873,18 @@ require('bootstrap/js/dropdown');
 
 var userId = require('../../config/auth');
 var config = require('../../config/url');
-var valueDropdown = require('./dropdown-filter-value');
+var EventEmitter = require('wolfy87-eventemitter');
 
 var selectedFilter;
+var emitter = new EventEmitter();
 
 /* DOM */
 var $filterDropdown = $('.dropdown-history-filter');
 var $filterFocusName = $('#filter-focus-item-name');
 
 exports = module.exports = {};
+
+exports.emitter = emitter;
 
 exports.getSelectedFilter = function() {
 	return selectedFilter;
@@ -27908,7 +27911,7 @@ function setFocusNameBlock() {
 
 	$filterFocusName.text(displayName).data(selectedFilter);
 
-	displaySelector();
+	emitter.emit('filterChanged', selectedFilter);
 }
 
 function setDefault() {
@@ -27918,17 +27921,9 @@ function setDefault() {
 
 	$filterFocusName.text(displayName).data(selectedFilter);
 
-	displaySelector();
+	emitter.emit('filterChanged', selectedFilter);
 }
-
-function displaySelector() {
-	if(selectedFilter === 'date_period'){
-		valueDropdown.hide();
-	}else {
-		valueDropdown.showAndRenderDropdown(selectedFilter);
-	}
-}
-},{"../../config/auth":8,"../../config/url":9,"./dropdown-filter-value":11,"bootstrap/js/dropdown":1,"jquery":5}],11:[function(require,module,exports){
+},{"../../config/auth":8,"../../config/url":9,"bootstrap/js/dropdown":1,"jquery":5,"wolfy87-eventemitter":7}],11:[function(require,module,exports){
 'use strict';
 
 var $ = window.jQuery = require('jquery');
@@ -27938,15 +27933,19 @@ var _ = require('lodash');
 var userId = require('../../config/auth');
 var config = require('../../config/url');
 var templates = require('../templates');
+var EventEmitter = require('wolfy87-eventemitter');
+
+var selectedValue;
+var emitter = new EventEmitter();
 
 /* DOM */
 var $valueDropdown = $('#dropdown-value-list');
 var $filterValueFocusName = $('#focus-value');
 var $filterValueMenu = $('#filter-value-list');
 
-var selectedValue;
-
 exports = module.exports = {};
+
+exports.emitter = emitter;
 
 exports.showAndRenderDropdown = function(type) {
 	getValueThenRenderDropdown(type);
@@ -27980,23 +27979,34 @@ function setFocusValueBlock(target) {
 	selectedValue = target.type==='click' ? $(this).data('id') : target.id;
 
 	$filterValueFocusName.text(displayName).data(selectedValue);
+
+	emitter.emit('valueChanged', selectedValue);
 }
 
 function getValueThenRenderDropdown(type) {
-	// $.get(config.APIUrl + 'history/filter/:' + userId?type=' + type)
-	$.get(config.APIUrl + 'history/filter?type=' + type)
-	 .done(function(response){
+
+	$.ajax({
+		url: config.APIUrl + 'history/filter?type=' + type,
+		beforeSend: function(){
+			selectedValue = undefined;
+			$filterValueMenu.empty();
+		}
+	}).done(function(response){
+
 	 	if( response.length ){
 		 	var filters = _.uniq(response);
 			var filterListRows = templates.renderFilterDropdown({ filters : filters });
 
-			$filterValueMenu.empty().html( filterListRows );
+			$filterValueMenu.html( filterListRows );
 
 			setFocusValueBlock( filters[0] );
+
+		}else {
+			emitter.emit('valueChanged', selectedValue);
 		}
-	 });
+	});
 }
-},{"../../config/auth":8,"../../config/url":9,"../templates":12,"bootstrap/js/dropdown":1,"jquery":5,"lodash":6}],12:[function(require,module,exports){
+},{"../../config/auth":8,"../../config/url":9,"../templates":12,"bootstrap/js/dropdown":1,"jquery":5,"lodash":6,"wolfy87-eventemitter":7}],12:[function(require,module,exports){
 'use strict';
 
 var _ = require('lodash');
@@ -28008,7 +28018,7 @@ exports.renderFilterDropdown = function(filters) {
   var menuTemp = _.template(
 	 `<% _.forEach(filters, function(filter) {  %>
       <li><a class="option-item" data-id=<%= filter.id %>>
-      		<%= filter.id %>
+      		<%= filter.name %>
       </a></li>
     <% });                                          %>`
 	);
@@ -28018,27 +28028,41 @@ exports.renderFilterDropdown = function(filters) {
 
 exports.renderTableList = function(infos) {
 
-  var menuTemp = _.template(
+  var listTemp = _.template(
 	 `<% _.forEach(infos, function(info) {  %>
       <li class="table-item">
-        <div class="table-col"><%= info.workorder_id %></div>
-      	<div class="table-col"><%= info.machine_id %></div>
-      	<div class="table-col"><%= info.mold_id %></div>
-      	<div class="table-col"><%= info.customer_id %></div>
-      	<div class="table-col-sm"><%= info.target_num %></div>
-      	<div class="table-col"><%= info.start_date %></div>
-      	<div class="table-col-sm"><%= info.current_fail_num %>/<%= info.current_num %></div>
-      	<div class="table-col-sm"><%= info.abnormal_num %></div>
-      	<div class="table-col-lg">
-      		<button class="realtime-showpic-btn" data-type="current" data-info=<%= info.workorder_id %>/<%= info.machine_id %>/<%= info.mold_id %>>即時</button>
-        	<button class="realtime-showpic-btn" data-type="safety" data-info=<%= info.workorder_id %>/<%= info.machine_id %>/<%= info.mold_id %>>安全</button>
-        	<button class="realtime-showpic-btn" data-type="error" data-info=<%= info.workorder_id %>/<%= info.machine_id %>/<%= info.mold_id %>>異常</button>
-      	</div>
+      	<div class="table-col"><%= info.workorder_id %></div>
+        <div class="table-col"><%= info.machine_id %></div>
+        <div class="table-col"><%= info.mold_id %></div>
+        <div class="table-col"><%= info.customer_id %></div>
+        <div class="table-col"><%= info.work_st %></div>
+        <div class="table-col"><%= info.work_et %></div>
+        <div class="table-col-sm"><%= info.sample_num %></div>
+        <div class="table-col-sm"><%= info.error_num %></div>
+        <div class="table-col-sm">25%</div>
 		  </li>
     <% });                                          %>`
 	);
 
-  return menuTemp(infos);
+  return listTemp(infos);
+}
+
+exports.renderHeatmap = function(info) {
+
+  var imgTemp = _.template(
+      '<img src=<%= info.heatmap %>>'
+  );
+
+  return imgTemp(info);
+}
+
+exports.renderChart = function() {
+
+  var imgTemp = _.template(
+      "<img src='../../../images/sample/chart.png'>"
+  );
+
+  return imgTemp();
 }
 
 },{"lodash":6}],13:[function(require,module,exports){
@@ -28073,6 +28097,7 @@ var $factoryList = $('.factory-list');
 exports = module.exports = {};
 
 exports.emitter = emitter;
+exports.getSelectedFactoryId = getSelectedFactoryId;
 
 initialize();
 
@@ -28121,6 +28146,10 @@ function renderFactoryDropdown(factories) {
 
   return menuTemp(factories);
 }
+
+function getSelectedFactoryId() {
+	return selectedFactoryId;
+}
 },{"../../config/auth":8,"../../config/url":9,"bootstrap/js/dropdown":1,"jquery":5,"lodash":6,"wolfy87-eventemitter":7}],15:[function(require,module,exports){
 'use strict';
 var $ = window.jQuery = require('jquery');
@@ -28130,17 +28159,23 @@ var userId = require('../config/auth');
 var config = require('../config/url');
 var templates = require('../history/templates');
 var factoryDropdown = require('../lib/component/dropdown-factory');
+var filterDropdown = require('../history/components/dropdown-filter-type');
+var valueDropdown = require('../history/components/dropdown-filter-value');
 
 require('eonasdan-bootstrap-datetimepicker');
-require('../history/components/dropdown-filter-type');
+
 
 /* DOM */
 var $tableListBlock = $('#history-table-block');
+var $tableBody = $('#history-table-body');
 var $imageBlock = $('#history-img-block');
 var $searchBtn = $('#history-search-btn');
 var $startDatePicker = $('#history-start-date-picker');
 var $endDatePicker = $('#history-end-date-picker');
 
+var focusFactoryId;
+var selectedFilter;
+var selectedValue;
 var today = new Date();
 var dateTimePickerOpt = {
 		widgetPositioning: {
@@ -28157,6 +28192,7 @@ function initialize() {
 	header.include();
 	initializeDatetimePicker();
 	bindEvents();
+	searchHistoryThenRenderRows();
 }
 
 function initializeDatetimePicker() {
@@ -28172,22 +28208,86 @@ function setDefaultDate() {
 }
 
 function bindEvents() {
+	bindDropdownsChangedEventListener();
 	bindSearchListEventOnButton();
 }
 
+function bindDropdownsChangedEventListener() {
+	factoryDropdown.emitter.on('factoryChanged', setFocusFactoryIdThenRenderRows);
+	filterDropdown.emitter.on('filterChanged', switchDropdownAndDatepicker);
+	valueDropdown.emitter.on('valueChanged', setSelectedValueThenRenderRows);
+}
+
 function bindSearchListEventOnButton() {
-	$searchBtn.on('click', searchHistoryThenRenderRows);
+	$searchBtn.on('click', searchPeriodThenRenderRows);
+}
+
+function setFocusFactoryIdThenRenderRows(factoryId) {
+	focusFactoryId = factoryId;
+
+	searchHistoryThenRenderRows();
+}
+
+function switchDropdownAndDatepicker(filterId) {
+	selectedFilter = filterId;
+
+	if(selectedFilter === 'date_period'){
+		valueDropdown.hide();
+	}else {
+		valueDropdown.showAndRenderDropdown(selectedFilter);
+	}
+}
+
+function setSelectedValueThenRenderRows(valueId) {
+	selectedValue = valueId;
+
+	searchHistoryThenRenderRows();
 }
 
 function searchHistoryThenRenderRows() {
 
-	// $.get(config.APIUrl + 'history/list/:' + userId + '?factory_id=' + focusFactoryId + 'type=' + type + '&search_key=' + searchKey)
-	$.get(config.APIUrl + 'history/list/?factory_id=' + focusFactoryId + '&type=' + type + '&search_key=' + searchKey)
-	 .done(function(response){
-		var tableListRows = templates.renderTableList({ infos : response });
+	if( !selectedFilter ) return;
 
-		$tableListBlock.empty().append( tableListRows );
-	 });
+	$.ajax({
+		url: config.APIUrl + 'history/list/?factory_id=' + focusFactoryId + '&type=' + selectedFilter + '&search_key=' + selectedValue,
+		beforeSend: function(){
+			$imageBlock.empty();
+			$tableBody.empty();
+		}
+	}).done(function(response){
+	 	var infos = response || [];
+		var type = selectedFilter.split('_')[0];
+
+		createTableList(infos, type);
+		displayImageBlock(infos, type);
+	});
 }
 
-},{"../config/auth":8,"../config/url":9,"../history/components/dropdown-filter-type":10,"../history/templates":12,"../includes/header":13,"../lib/component/dropdown-factory":14,"eonasdan-bootstrap-datetimepicker":4,"jquery":5}]},{},[15]);
+function searchPeriodThenRenderRows() {
+
+}
+
+function createTableList(infos, type) {
+	var tableListRows = templates.renderTableList({ infos : infos });
+
+	$tableBody.append( tableListRows );
+ 	$tableListBlock.find('.table-col').attr('class', 'table-col ' + type);
+	$tableListBlock.find('.table-col-sm').attr('class', 'table-col-sm ' + type);
+}
+
+function displayImageBlock(infos, type) {
+	switch (type){
+		case "workorder":
+			var chart = templates.renderChart();
+			$imageBlock.append( chart ).removeClass('hidden');
+		break;
+		case "mold":
+			var heatmap = templates.renderHeatmap({ info: infos[0] });
+			$imageBlock.append( heatmap ).removeClass('hidden');
+		break;
+		default:
+			$imageBlock.addClass('hidden');
+		break;
+	}
+}
+},{"../config/auth":8,"../config/url":9,"../history/components/dropdown-filter-type":10,"../history/components/dropdown-filter-value":11,"../history/templates":12,"../includes/header":13,"../lib/component/dropdown-factory":14,"eonasdan-bootstrap-datetimepicker":4,"jquery":5}]},{},[15]);

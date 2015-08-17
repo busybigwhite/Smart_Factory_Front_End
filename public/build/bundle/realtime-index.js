@@ -23031,6 +23031,7 @@ var $factoryList = $('.factory-list');
 exports = module.exports = {};
 
 exports.emitter = emitter;
+exports.getSelectedFactoryId = getSelectedFactoryId;
 
 initialize();
 
@@ -23078,6 +23079,10 @@ function renderFactoryDropdown(factories) {
 	);
 
   return menuTemp(factories);
+}
+
+function getSelectedFactoryId() {
+	return selectedFactoryId;
 }
 },{"../../config/auth":11,"../../config/url":12,"bootstrap/js/dropdown":1,"jquery":3,"lodash":4,"wolfy87-eventemitter":10}],15:[function(require,module,exports){
 'use strict';
@@ -23213,7 +23218,7 @@ function setFocusFactoryIdThenRenderRows(factoryId) {
 
 function createRealtimeListThenRenderRows(type, searchKey) {
 	// $.get(config.APIUrl + 'workorder/list/:' + userId + '?factory_id=' + focusFactoryId + 'type=' + type + '&search_key=' + searchKey)
-	$.get(config.APIUrl + 'realtime/info/?factory_id=' + focusFactoryId + 'type=' + type + '&search_key=' + searchKey)
+	$.get(config.APIUrl + 'workorder/list/?factory_id=' + focusFactoryId + 'type=' + type + '&search_key=' + searchKey)
 	 .done(function(response){
 		var tableListRows = templates.renderTableList({ infos : response });
 		// var imageListRows = templates.renderImageList({ infos : response });
