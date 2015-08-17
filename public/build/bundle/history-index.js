@@ -27984,7 +27984,7 @@ function setFocusValueBlock(target) {
 }
 
 function getValueThenRenderDropdown(type) {
-	// $.get(config.APIUrl + 'history/filter/:' + userId?type=' + type)
+
 	$.ajax({
 		url: config.APIUrl + 'history/filter?type=' + type,
 		beforeSend: function(){
@@ -28097,6 +28097,7 @@ var $factoryList = $('.factory-list');
 exports = module.exports = {};
 
 exports.emitter = emitter;
+exports.getSelectedFactoryId = getSelectedFactoryId;
 
 initialize();
 
@@ -28144,6 +28145,10 @@ function renderFactoryDropdown(factories) {
 	);
 
   return menuTemp(factories);
+}
+
+function getSelectedFactoryId() {
+	return selectedFactoryId;
 }
 },{"../../config/auth":8,"../../config/url":9,"bootstrap/js/dropdown":1,"jquery":5,"lodash":6,"wolfy87-eventemitter":7}],15:[function(require,module,exports){
 'use strict';
