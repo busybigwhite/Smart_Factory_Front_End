@@ -3,7 +3,6 @@ var connect = require('gulp-connect');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var less = require('gulp-less');
-var notify = require('gulp-notify');
 var rename = require('gulp-rename');
 var glob = require('glob');
 var minifyCss = require('gulp-minify-css');
@@ -35,7 +34,6 @@ gulp.task('less', [ 'pre-build-less' ], function() {
     gulp.src(paths.cssGlob)
         .pipe(minifyCss())
         .pipe(gulp.dest(paths.destCssDir))
-        .pipe(notify('v Build Less Success v'))
         .pipe(connect.reload());
 });
 
@@ -49,7 +47,6 @@ gulp.task('bundle', function(done) {
                 .pipe(source(entry))
                 .pipe(rename({dirname: ""}))
                 .pipe(gulp.dest(paths.destJsDir))
-                .pipe(notify('v Build JavaScript Success v'))
 	    		.pipe(connect.reload());
         });
     })
