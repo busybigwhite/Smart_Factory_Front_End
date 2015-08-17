@@ -10987,3 +10987,20 @@ fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .re
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+#member-manage > .row .btn {
+  color: #e74c3c;
+  border: #e74c3c 2px solid;
+  border-radius: 0;
+}
+#member-manage > .row .btn:hover {
+  background-color: #FFF;
+}
+#member-manage > .row .form-group {
+  margin-bottom: 25px;
+}
+#member-manage > .row input {
+  border: #FFF 1px solid;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);
+  border-bottom: #a1aab0 1px solid;
+  border-radius: 0;
+}
