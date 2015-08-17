@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var connect = require('gulp-connect');
 var mkdirp = require('mkdirp');
+var rimraf = require('rimraf');
 var fs = require('fs');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
@@ -12,6 +13,7 @@ var minifyCss = require('gulp-minify-css');
 var base = 'public/';
 
 var paths = {
+    lessGlob: base + 'styles/less/**/*.less',
 	mainLess: base + 'styles/less/style.less',
     mainCssDir: base + 'styles',
     cssGlob: base + 'styles/*.css',
@@ -24,6 +26,10 @@ var paths = {
 
 gulp.task('connect', function () {
 	connect.server({livereload: true});
+});
+
+gulp.task('clean', function (done) {
+    rimraf(paths.destDir + '/*', done);
 });
 
 gulp.task('mkdir-bundle', function(done) {
@@ -59,7 +65,7 @@ gulp.task('less', [ 'pre-build-less' ], function() {
         .pipe(connect.reload());
 });
 
-gulp.task('bundle', [ 'mkdir-bundle' ], function(done) {
+gulp.task('bundle', function(done) {
     glob(paths.jsGlob, function(err, files) {
         if(err) done(err);
 
@@ -74,8 +80,17 @@ gulp.task('bundle', [ 'mkdir-bundle' ], function(done) {
     })
 });
 
+gulp.task('watch-less', function () {
+    gulp.watch(paths.lessGlob, ['less']);
+});
+
+//TODO only build one
+gulp.task('watch-js', function () {
+    gulp.watch(paths.jsGlob, ['bundle']);
+});
+
 gulp.task('watch', function () {
-	gulp.watch(paths.mainLess, ['less']);
+	gulp.watch(paths.lessGlob, ['less']);
 	gulp.watch(paths.jsGlob, ['bundle']);
 });
 

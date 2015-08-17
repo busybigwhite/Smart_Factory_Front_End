@@ -10,6 +10,10 @@ var noticeedPersonDropdown = require('../machine/modules/noticed-person-dropdown
 var checkPeriodDropdown    = require('../machine/modules/check-period-dropdown');
 var maintainPeriodDropdown = require('../machine/modules/maintain-period-dropdown');
 
+require('eonasdan-bootstrap-datetimepicker');
+var errorRecordTable = require('../machine/modules/error-record-table');
+
+
 /* DOM */
 var $editBtn   = $('#machine-edit-button');
 var $cancelBtn = $('#machine-cancel-button');
@@ -48,15 +52,11 @@ function initialize() {
 
 function getInitialData() {
 	machineId = queryParameter.get('ID');
-	api.getMachineInfo(machineId)
-		 .done(initialView)
-		 .fail(function(err) { console.log("GET Machine Info error: ", err); });
-	// var fakeArray = [{"id":1,"name":"Hoeger","weight":768,"acquisition":"2008-09-06 00:00:00","admin_id":1,"check_period":"2015-08-14 17:54:48","maintain_period":"2015-08-14 17:54:48","created_at":"2015-08-14 17:54:48","updated_at":"2015-08-14 17:54:48"},{"id":2,"name":"O'Connell","weight":753,"acquisition":"1994-07-09 00:00:00","admin_id":1,"check_period":"2015-08-14 17:54:48","maintain_period":"2015-08-14 17:54:48","created_at":"2015-08-14 17:54:48","updated_at":"2015-08-14 17:54:48"},{"id":3,"name":"Steuber","weight":473,"acquisition":"1997-10-06 00:00:00","admin_id":1,"check_period":"2015-08-14 17:54:48","maintain_period":"2015-08-14 17:54:48","created_at":"2015-08-14 17:54:48","updated_at":"2015-08-14 17:54:48"},{"id":4,"name":"Hettinger","weight":349,"acquisition":"1996-08-08 00:00:00","admin_id":1,"check_period":"2015-08-14 17:54:48","maintain_period":"2015-08-14 17:54:48","created_at":"2015-08-14 17:54:48","updated_at":"2015-08-14 17:54:48"},{"id":5,"name":"Swift","weight":591,"acquisition":"1996-10-09 00:00:00","admin_id":1,"check_period":"2015-08-14 17:54:48","maintain_period":"2015-08-14 17:54:48","created_at":"2015-08-14 17:54:48","updated_at":"2015-08-14 17:54:48"},{"id":6,"name":"Waelchi","weight":694,"acquisition":"2012-10-02 00:00:00","admin_id":1,"check_period":"2015-08-14 17:54:48","maintain_period":"2015-08-14 17:54:48","created_at":"2015-08-14 17:54:48","updated_at":"2015-08-14 17:54:48"},{"id":7,"name":"Braun","weight":862,"acquisition":"1994-08-09 00:00:00","admin_id":1,"check_period":"2015-08-14 17:54:48","maintain_period":"2015-08-14 17:54:48","created_at":"2015-08-14 17:54:48","updated_at":"2015-08-14 17:54:48"},{"id":8,"name":"Bernier","weight":953,"acquisition":"1996-10-04 00:00:00","admin_id":1,"check_period":"2015-08-14 17:54:48","maintain_period":"2015-08-14 17:54:48","created_at":"2015-08-14 17:54:48","updated_at":"2015-08-14 17:54:48"},{"id":9,"name":"Zboncak","weight":646,"acquisition":"2002-11-08 00:00:00","admin_id":1,"check_period":"2015-08-14 17:54:48","maintain_period":"2015-08-14 17:54:48","created_at":"2015-08-14 17:54:48","updated_at":"2015-08-14 17:54:48"},{"id":10,"name":"Hartmann","weight":681,"acquisition":"2000-07-04 00:00:00","admin_id":1,"check_period":"2015-08-14 17:54:48","maintain_period":"2015-08-14 17:54:48","created_at":"2015-08-14 17:54:48","updated_at":"2015-08-14 17:54:48"}];
-	// var fakeResponse;
-	// fakeArray.map(function(obj) {
-	// 	if ((obj.id + '') === machineId) fakeResponse = obj;
-	// });
-	// initialView(fakeResponse);
+	// api.getMachineInfo(machineId)
+	// 	 .done(initialView)
+	// 	 .fail(function(err) { console.log("GET Machine Info error: ", err); });
+	var fakeResponse ={"id":1,"name":"Fritsch","weight":516,"acquisition":"1991-07-09 00:00:00","admin_id":1,"check_period_unit":"times","check_period_value":42,"maintain_period_unit":"time","maintain_period_value":10,"created_at":"2015-08-17 11:56:02","updated_at":"2015-08-17 11:56:02","maintain_records":[{"id":1,"machine_id":1,"type":"maintain","content":"test","created_at":"2015-08-17 11:56:02","updated_at":"2015-08-17 11:56:02"},{"id":2,"machine_id":1,"type":"check","content":"test","created_at":"2015-08-17 11:56:02","updated_at":"2015-08-17 11:56:02"},{"id":3,"machine_id":1,"type":"check","content":"test","created_at":"2015-08-17 11:56:02","updated_at":"2015-08-17 11:56:02"}]};
+	initialView(fakeResponse);
 }
 
 function bindEvents() {
@@ -76,6 +76,7 @@ function showEditMode() {
 	$backBtn  .hide();
 	$viewModeCollection.addClass('editting');
 	$editModeCollection.addClass('editting');
+	errorRecordTable.setEditMode(true);
 }
 
 function hideEditMode() {
@@ -87,6 +88,7 @@ function hideEditMode() {
 	$backBtn  .show();
 	$viewModeCollection.removeClass('editting');
 	$editModeCollection.removeClass('editting');
+	errorRecordTable.setEditMode(false);
 }
 
 function showCreateMode() {
@@ -97,6 +99,7 @@ function showCreateMode() {
 	$backBtn  .show();
 	$viewModeCollection.addClass('editting');
 	$editModeCollection.addClass('editting');
+	errorRecordTable.setEditMode(true);
 }
 
 function saveData() {
@@ -153,12 +156,12 @@ function initBaseInfo(data) {
 
 function initResumeInfo(data) {
 	noticeedPersonDropdown.init(data['admin_id']);
-	// ToFix: data type params
-	checkPeriodDropdown   .init(data['check_period'], '天');
-	maintainPeriodDropdown.init(data['maintain_period'], '年');
+	checkPeriodDropdown   .init(data['check_period_value'], data['check_period_unit']);
+	maintainPeriodDropdown.init(data['maintain_period_value'], data['maintain_period_unit']);
 	// TODO: 小保養紀錄
 	// TODO: 大保養紀錄
 	// TODO: 異常維修紀錄
+	errorRecordTable.init();
 }
 
 function getChangedData() {
