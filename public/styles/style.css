@@ -9215,30 +9215,30 @@ a:active {
   margin-top: 100px;
   padding: 2% 5%;
   background-color: #fff;
-  -webkit-box-shadow: 0 0 10px 1px #95a5a6;
-  -moz-box-shadow: 0 0 10px 1px #95a5a6;
-  box-shadow: 0 0 10px 1px #95a5a6;
+  -webkit-box-shadow: 0 0 10px 1px #333c3c;
+  -moz-box-shadow: 0 0 10px 1px #333c3c;
+  box-shadow: 0 0 10px 1px #333c3c;
 }
 .navbar {
   min-width: 1200px;
   background-color: #ecf0f1;
-  border-bottom: #bdc3c7 3px solid;
+  border-bottom: #a1aab0 3px solid;
 }
 .navbar li a {
-  color: #bdc3c7;
+  color: #a1aab0;
   margin-bottom: -3px;
   padding-top: 25px;
   padding-bottom: 25px;
-  border-bottom: #bdc3c7 3px solid;
+  border-bottom: #a1aab0 3px solid;
 }
 .navbar li a:hover {
-  color: #95a5a6;
+  color: #333c3c;
   background-color: #ecf0f1;
-  border-bottom: #95a5a6 3px solid;
+  border-bottom: #333c3c 3px solid;
 }
 .navbar li.active a {
-  color: #95a5a6;
-  border-bottom: #95a5a6 3px solid;
+  color: #333c3c;
+  border-bottom: #333c3c 3px solid;
 }
 .navbar li.account a {
   padding: 0;
@@ -10260,8 +10260,8 @@ fieldset[disabled] .info-back-button.active {
 }
 .production-resume-panel .resume-header {
   font-size: 24px;
-  color: #95a5a6;
-  border-bottom: 2px dotted #95a5a6;
+  color: #333c3c;
+  border-bottom: 2px dotted #333c3c;
   padding-bottom: 10px;
   margin-bottom: 30px;
 }
@@ -10986,4 +10986,21 @@ fieldset[disabled] #realtime-panel #realtime-list-block #realtime-table-mode .re
   display: inline-block;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+#member-manage > .row .btn {
+  color: #e74c3c;
+  border: #e74c3c 2px solid;
+  border-radius: 0;
+}
+#member-manage > .row .btn:hover {
+  background-color: #FFF;
+}
+#member-manage > .row .form-group {
+  margin-bottom: 25px;
+}
+#member-manage > .row input {
+  border: #FFF 1px solid;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);
+  border-bottom: #a1aab0 1px solid;
+  border-radius: 0;
 }
