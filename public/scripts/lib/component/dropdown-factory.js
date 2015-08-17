@@ -18,6 +18,7 @@ var $factoryList = $('.factory-list');
 exports = module.exports = {};
 
 exports.emitter = emitter;
+exports.getSelectedFactoryId = getSelectedFactoryId;
 
 initialize();
 
@@ -65,4 +66,8 @@ function renderFactoryDropdown(factories) {
 	);
 
   return menuTemp(factories);
+}
+
+function getSelectedFactoryId() {
+	return selectedFactoryId;
 }
