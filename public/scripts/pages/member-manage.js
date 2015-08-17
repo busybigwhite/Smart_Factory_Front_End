@@ -15,6 +15,7 @@ var $userGroup1 = $('#userGroup1');
 var $userGroup2 = $('#userGroup2');
 var $addBtn = $('#member-add-btn');
 var $editBtn = $('#member-edit-btn');
+var $deleteBtn = $('#member-delete-btn');
 
 var memberId = queryParameter.get('id');
 
@@ -24,6 +25,7 @@ function initialize() {
 	header.include();
 	if (queryParameter.get('type') === 'add') {
 		$editBtn.hide();
+		$deleteBtn.hide();
 	} else {
 		$addBtn.hide();
 		getInitialData();
@@ -34,6 +36,7 @@ function initialize() {
 function bindEvents() {
 	$addBtn.on('click', addMemberSubmit);
 	$editBtn.on('click', editMemberSubmit);
+	$deleteBtn.on('click', deleteMemberSubmit);
 }
 
 function getInitialData() {
@@ -77,4 +80,10 @@ function editMemberSubmit() {
 	api.editMember(memberId, data)
 		 .done(function(data) { console.log("EDIT Member res: ", data); })
 		 .fail(function(err) { console.log("EDIT Member error: ", err); });
+}
+
+function deleteMemberSubmit() {
+	api.deleteMember(memberId)
+		 .done(function(data) { console.log("DELETE Member res: ", data); })
+		 .fail(function(err) { console.log("DELETE Member error: ", err); });
 }

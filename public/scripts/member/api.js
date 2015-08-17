@@ -8,7 +8,7 @@ var memberApiUrl  = config.APIUrl + 'user/';
 exports = module.exports = {
 	getMemberList: getMemberList,
 	createMember: createMember,
-	// deleteMember: deleteMember,
+	deleteMember: deleteMember,
 	getMember: getMember,
 	editMember: editMember,
 };
@@ -21,9 +21,9 @@ function createMember(data) {
 	return createData(memberApiUrl, data);
 }
 
-// function deleteMember(id) {
-// 	return deleteData(memberApiUrl + id);
-// }
+function deleteMember(id) {
+	return deleteData(memberApiUrl + id);
+}
 
 function getMember(id) {
 	return getData(memberApiUrl + id);
