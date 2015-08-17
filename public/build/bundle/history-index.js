@@ -166,6 +166,5595 @@
 }(jQuery);
 
 },{}],2:[function(require,module,exports){
+/*
+ * Cookies.js - 1.2.1
+ * https://github.com/ScottHamper/Cookies
+ *
+ * This is free and unencumbered software released into the public domain.
+ */
+(function (global, undefined) {
+    'use strict';
+
+    var factory = function (window) {
+        if (typeof window.document !== 'object') {
+            throw new Error('Cookies.js requires a `window` with a `document` object');
+        }
+
+        var Cookies = function (key, value, options) {
+            return arguments.length === 1 ?
+                Cookies.get(key) : Cookies.set(key, value, options);
+        };
+
+        // Allows for setter injection in unit tests
+        Cookies._document = window.document;
+
+        // Used to ensure cookie keys do not collide with
+        // built-in `Object` properties
+        Cookies._cacheKeyPrefix = 'cookey.'; // Hurr hurr, :)
+        
+        Cookies._maxExpireDate = new Date('Fri, 31 Dec 9999 23:59:59 UTC');
+
+        Cookies.defaults = {
+            path: '/',
+            secure: false
+        };
+
+        Cookies.get = function (key) {
+            if (Cookies._cachedDocumentCookie !== Cookies._document.cookie) {
+                Cookies._renewCache();
+            }
+
+            return Cookies._cache[Cookies._cacheKeyPrefix + key];
+        };
+
+        Cookies.set = function (key, value, options) {
+            options = Cookies._getExtendedOptions(options);
+            options.expires = Cookies._getExpiresDate(value === undefined ? -1 : options.expires);
+
+            Cookies._document.cookie = Cookies._generateCookieString(key, value, options);
+
+            return Cookies;
+        };
+
+        Cookies.expire = function (key, options) {
+            return Cookies.set(key, undefined, options);
+        };
+
+        Cookies._getExtendedOptions = function (options) {
+            return {
+                path: options && options.path || Cookies.defaults.path,
+                domain: options && options.domain || Cookies.defaults.domain,
+                expires: options && options.expires || Cookies.defaults.expires,
+                secure: options && options.secure !== undefined ?  options.secure : Cookies.defaults.secure
+            };
+        };
+
+        Cookies._isValidDate = function (date) {
+            return Object.prototype.toString.call(date) === '[object Date]' && !isNaN(date.getTime());
+        };
+
+        Cookies._getExpiresDate = function (expires, now) {
+            now = now || new Date();
+
+            if (typeof expires === 'number') {
+                expires = expires === Infinity ?
+                    Cookies._maxExpireDate : new Date(now.getTime() + expires * 1000);
+            } else if (typeof expires === 'string') {
+                expires = new Date(expires);
+            }
+
+            if (expires && !Cookies._isValidDate(expires)) {
+                throw new Error('`expires` parameter cannot be converted to a valid Date instance');
+            }
+
+            return expires;
+        };
+
+        Cookies._generateCookieString = function (key, value, options) {
+            key = key.replace(/[^#$&+\^`|]/g, encodeURIComponent);
+            key = key.replace(/\(/g, '%28').replace(/\)/g, '%29');
+            value = (value + '').replace(/[^!#$&-+\--:<-\[\]-~]/g, encodeURIComponent);
+            options = options || {};
+
+            var cookieString = key + '=' + value;
+            cookieString += options.path ? ';path=' + options.path : '';
+            cookieString += options.domain ? ';domain=' + options.domain : '';
+            cookieString += options.expires ? ';expires=' + options.expires.toUTCString() : '';
+            cookieString += options.secure ? ';secure' : '';
+
+            return cookieString;
+        };
+
+        Cookies._getCacheFromString = function (documentCookie) {
+            var cookieCache = {};
+            var cookiesArray = documentCookie ? documentCookie.split('; ') : [];
+
+            for (var i = 0; i < cookiesArray.length; i++) {
+                var cookieKvp = Cookies._getKeyValuePairFromCookieString(cookiesArray[i]);
+
+                if (cookieCache[Cookies._cacheKeyPrefix + cookieKvp.key] === undefined) {
+                    cookieCache[Cookies._cacheKeyPrefix + cookieKvp.key] = cookieKvp.value;
+                }
+            }
+
+            return cookieCache;
+        };
+
+        Cookies._getKeyValuePairFromCookieString = function (cookieString) {
+            // "=" is a valid character in a cookie value according to RFC6265, so cannot `split('=')`
+            var separatorIndex = cookieString.indexOf('=');
+
+            // IE omits the "=" when the cookie value is an empty string
+            separatorIndex = separatorIndex < 0 ? cookieString.length : separatorIndex;
+
+            return {
+                key: decodeURIComponent(cookieString.substr(0, separatorIndex)),
+                value: decodeURIComponent(cookieString.substr(separatorIndex + 1))
+            };
+        };
+
+        Cookies._renewCache = function () {
+            Cookies._cache = Cookies._getCacheFromString(Cookies._document.cookie);
+            Cookies._cachedDocumentCookie = Cookies._document.cookie;
+        };
+
+        Cookies._areEnabled = function () {
+            var testKey = 'cookies.js';
+            var areEnabled = Cookies.set(testKey, 1).get(testKey) === '1';
+            Cookies.expire(testKey);
+            return areEnabled;
+        };
+
+        Cookies.enabled = Cookies._areEnabled();
+
+        return Cookies;
+    };
+
+    var cookiesExport = typeof global.document === 'object' ? factory(global) : factory;
+
+    // AMD support
+    if (typeof define === 'function' && define.amd) {
+        define(function () { return cookiesExport; });
+    // CommonJS/Node.js support
+    } else if (typeof exports === 'object') {
+        // Support Node.js specific `module.exports` (which can be a function)
+        if (typeof module === 'object' && typeof module.exports === 'object') {
+            exports = module.exports = cookiesExport;
+        }
+        // But always support CommonJS module 1.1.1 spec (`exports` cannot be a function)
+        exports.Cookies = cookiesExport;
+    } else {
+        global.Cookies = cookiesExport;
+    }
+})(typeof window === 'undefined' ? this : window);
+},{}],3:[function(require,module,exports){
+(function (global){
+//! moment.js
+//! version : 2.8.4
+//! authors : Tim Wood, Iskren Chernev, Moment.js contributors
+//! license : MIT
+//! momentjs.com
+
+(function (undefined) {
+    /************************************
+        Constants
+    ************************************/
+
+    var moment,
+        VERSION = '2.8.4',
+        // the global-scope this is NOT the global object in Node.js
+        globalScope = typeof global !== 'undefined' ? global : this,
+        oldGlobalMoment,
+        round = Math.round,
+        hasOwnProperty = Object.prototype.hasOwnProperty,
+        i,
+
+        YEAR = 0,
+        MONTH = 1,
+        DATE = 2,
+        HOUR = 3,
+        MINUTE = 4,
+        SECOND = 5,
+        MILLISECOND = 6,
+
+        // internal storage for locale config files
+        locales = {},
+
+        // extra moment internal properties (plugins register props here)
+        momentProperties = [],
+
+        // check for nodeJS
+        hasModule = (typeof module !== 'undefined' && module && module.exports),
+
+        // ASP.NET json date format regex
+        aspNetJsonRegex = /^\/?Date\((\-?\d+)/i,
+        aspNetTimeSpanJsonRegex = /(\-)?(?:(\d*)\.)?(\d+)\:(\d+)(?:\:(\d+)\.?(\d{3})?)?/,
+
+        // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
+        // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
+        isoDurationRegex = /^(-)?P(?:(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?|([0-9,.]*)W)$/,
+
+        // format tokens
+        formattingTokens = /(\[[^\[]*\])|(\\)?(Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Q|YYYYYY|YYYYY|YYYY|YY|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|mm?|ss?|S{1,4}|x|X|zz?|ZZ?|.)/g,
+        localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g,
+
+        // parsing token regexes
+        parseTokenOneOrTwoDigits = /\d\d?/, // 0 - 99
+        parseTokenOneToThreeDigits = /\d{1,3}/, // 0 - 999
+        parseTokenOneToFourDigits = /\d{1,4}/, // 0 - 9999
+        parseTokenOneToSixDigits = /[+\-]?\d{1,6}/, // -999,999 - 999,999
+        parseTokenDigits = /\d+/, // nonzero number of digits
+        parseTokenWord = /[0-9]*['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+|[\u0600-\u06FF\/]+(\s*?[\u0600-\u06FF]+){1,2}/i, // any word (or two) characters or numbers including two/three word month in arabic.
+        parseTokenTimezone = /Z|[\+\-]\d\d:?\d\d/gi, // +00:00 -00:00 +0000 -0000 or Z
+        parseTokenT = /T/i, // T (ISO separator)
+        parseTokenOffsetMs = /[\+\-]?\d+/, // 1234567890123
+        parseTokenTimestampMs = /[\+\-]?\d+(\.\d{1,3})?/, // 123456789 123456789.123
+
+        //strict parsing regexes
+        parseTokenOneDigit = /\d/, // 0 - 9
+        parseTokenTwoDigits = /\d\d/, // 00 - 99
+        parseTokenThreeDigits = /\d{3}/, // 000 - 999
+        parseTokenFourDigits = /\d{4}/, // 0000 - 9999
+        parseTokenSixDigits = /[+-]?\d{6}/, // -999,999 - 999,999
+        parseTokenSignedNumber = /[+-]?\d+/, // -inf - inf
+
+        // iso 8601 regex
+        // 0000-00-00 0000-W00 or 0000-W00-0 + T + 00 or 00:00 or 00:00:00 or 00:00:00.000 + +00:00 or +0000 or +00)
+        isoRegex = /^\s*(?:[+-]\d{6}|\d{4})-(?:(\d\d-\d\d)|(W\d\d$)|(W\d\d-\d)|(\d\d\d))((T| )(\d\d(:\d\d(:\d\d(\.\d+)?)?)?)?([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/,
+
+        isoFormat = 'YYYY-MM-DDTHH:mm:ssZ',
+
+        isoDates = [
+            ['YYYYYY-MM-DD', /[+-]\d{6}-\d{2}-\d{2}/],
+            ['YYYY-MM-DD', /\d{4}-\d{2}-\d{2}/],
+            ['GGGG-[W]WW-E', /\d{4}-W\d{2}-\d/],
+            ['GGGG-[W]WW', /\d{4}-W\d{2}/],
+            ['YYYY-DDD', /\d{4}-\d{3}/]
+        ],
+
+        // iso time formats and regexes
+        isoTimes = [
+            ['HH:mm:ss.SSSS', /(T| )\d\d:\d\d:\d\d\.\d+/],
+            ['HH:mm:ss', /(T| )\d\d:\d\d:\d\d/],
+            ['HH:mm', /(T| )\d\d:\d\d/],
+            ['HH', /(T| )\d\d/]
+        ],
+
+        // timezone chunker '+10:00' > ['10', '00'] or '-1530' > ['-15', '30']
+        parseTimezoneChunker = /([\+\-]|\d\d)/gi,
+
+        // getter and setter names
+        proxyGettersAndSetters = 'Date|Hours|Minutes|Seconds|Milliseconds'.split('|'),
+        unitMillisecondFactors = {
+            'Milliseconds' : 1,
+            'Seconds' : 1e3,
+            'Minutes' : 6e4,
+            'Hours' : 36e5,
+            'Days' : 864e5,
+            'Months' : 2592e6,
+            'Years' : 31536e6
+        },
+
+        unitAliases = {
+            ms : 'millisecond',
+            s : 'second',
+            m : 'minute',
+            h : 'hour',
+            d : 'day',
+            D : 'date',
+            w : 'week',
+            W : 'isoWeek',
+            M : 'month',
+            Q : 'quarter',
+            y : 'year',
+            DDD : 'dayOfYear',
+            e : 'weekday',
+            E : 'isoWeekday',
+            gg: 'weekYear',
+            GG: 'isoWeekYear'
+        },
+
+        camelFunctions = {
+            dayofyear : 'dayOfYear',
+            isoweekday : 'isoWeekday',
+            isoweek : 'isoWeek',
+            weekyear : 'weekYear',
+            isoweekyear : 'isoWeekYear'
+        },
+
+        // format function strings
+        formatFunctions = {},
+
+        // default relative time thresholds
+        relativeTimeThresholds = {
+            s: 45,  // seconds to minute
+            m: 45,  // minutes to hour
+            h: 22,  // hours to day
+            d: 26,  // days to month
+            M: 11   // months to year
+        },
+
+        // tokens to ordinalize and pad
+        ordinalizeTokens = 'DDD w W M D d'.split(' '),
+        paddedTokens = 'M D H h m s w W'.split(' '),
+
+        formatTokenFunctions = {
+            M    : function () {
+                return this.month() + 1;
+            },
+            MMM  : function (format) {
+                return this.localeData().monthsShort(this, format);
+            },
+            MMMM : function (format) {
+                return this.localeData().months(this, format);
+            },
+            D    : function () {
+                return this.date();
+            },
+            DDD  : function () {
+                return this.dayOfYear();
+            },
+            d    : function () {
+                return this.day();
+            },
+            dd   : function (format) {
+                return this.localeData().weekdaysMin(this, format);
+            },
+            ddd  : function (format) {
+                return this.localeData().weekdaysShort(this, format);
+            },
+            dddd : function (format) {
+                return this.localeData().weekdays(this, format);
+            },
+            w    : function () {
+                return this.week();
+            },
+            W    : function () {
+                return this.isoWeek();
+            },
+            YY   : function () {
+                return leftZeroFill(this.year() % 100, 2);
+            },
+            YYYY : function () {
+                return leftZeroFill(this.year(), 4);
+            },
+            YYYYY : function () {
+                return leftZeroFill(this.year(), 5);
+            },
+            YYYYYY : function () {
+                var y = this.year(), sign = y >= 0 ? '+' : '-';
+                return sign + leftZeroFill(Math.abs(y), 6);
+            },
+            gg   : function () {
+                return leftZeroFill(this.weekYear() % 100, 2);
+            },
+            gggg : function () {
+                return leftZeroFill(this.weekYear(), 4);
+            },
+            ggggg : function () {
+                return leftZeroFill(this.weekYear(), 5);
+            },
+            GG   : function () {
+                return leftZeroFill(this.isoWeekYear() % 100, 2);
+            },
+            GGGG : function () {
+                return leftZeroFill(this.isoWeekYear(), 4);
+            },
+            GGGGG : function () {
+                return leftZeroFill(this.isoWeekYear(), 5);
+            },
+            e : function () {
+                return this.weekday();
+            },
+            E : function () {
+                return this.isoWeekday();
+            },
+            a    : function () {
+                return this.localeData().meridiem(this.hours(), this.minutes(), true);
+            },
+            A    : function () {
+                return this.localeData().meridiem(this.hours(), this.minutes(), false);
+            },
+            H    : function () {
+                return this.hours();
+            },
+            h    : function () {
+                return this.hours() % 12 || 12;
+            },
+            m    : function () {
+                return this.minutes();
+            },
+            s    : function () {
+                return this.seconds();
+            },
+            S    : function () {
+                return toInt(this.milliseconds() / 100);
+            },
+            SS   : function () {
+                return leftZeroFill(toInt(this.milliseconds() / 10), 2);
+            },
+            SSS  : function () {
+                return leftZeroFill(this.milliseconds(), 3);
+            },
+            SSSS : function () {
+                return leftZeroFill(this.milliseconds(), 3);
+            },
+            Z    : function () {
+                var a = -this.zone(),
+                    b = '+';
+                if (a < 0) {
+                    a = -a;
+                    b = '-';
+                }
+                return b + leftZeroFill(toInt(a / 60), 2) + ':' + leftZeroFill(toInt(a) % 60, 2);
+            },
+            ZZ   : function () {
+                var a = -this.zone(),
+                    b = '+';
+                if (a < 0) {
+                    a = -a;
+                    b = '-';
+                }
+                return b + leftZeroFill(toInt(a / 60), 2) + leftZeroFill(toInt(a) % 60, 2);
+            },
+            z : function () {
+                return this.zoneAbbr();
+            },
+            zz : function () {
+                return this.zoneName();
+            },
+            x    : function () {
+                return this.valueOf();
+            },
+            X    : function () {
+                return this.unix();
+            },
+            Q : function () {
+                return this.quarter();
+            }
+        },
+
+        deprecations = {},
+
+        lists = ['months', 'monthsShort', 'weekdays', 'weekdaysShort', 'weekdaysMin'];
+
+    // Pick the first defined of two or three arguments. dfl comes from
+    // default.
+    function dfl(a, b, c) {
+        switch (arguments.length) {
+            case 2: return a != null ? a : b;
+            case 3: return a != null ? a : b != null ? b : c;
+            default: throw new Error('Implement me');
+        }
+    }
+
+    function hasOwnProp(a, b) {
+        return hasOwnProperty.call(a, b);
+    }
+
+    function defaultParsingFlags() {
+        // We need to deep clone this object, and es5 standard is not very
+        // helpful.
+        return {
+            empty : false,
+            unusedTokens : [],
+            unusedInput : [],
+            overflow : -2,
+            charsLeftOver : 0,
+            nullInput : false,
+            invalidMonth : null,
+            invalidFormat : false,
+            userInvalidated : false,
+            iso: false
+        };
+    }
+
+    function printMsg(msg) {
+        if (moment.suppressDeprecationWarnings === false &&
+                typeof console !== 'undefined' && console.warn) {
+            console.warn('Deprecation warning: ' + msg);
+        }
+    }
+
+    function deprecate(msg, fn) {
+        var firstTime = true;
+        return extend(function () {
+            if (firstTime) {
+                printMsg(msg);
+                firstTime = false;
+            }
+            return fn.apply(this, arguments);
+        }, fn);
+    }
+
+    function deprecateSimple(name, msg) {
+        if (!deprecations[name]) {
+            printMsg(msg);
+            deprecations[name] = true;
+        }
+    }
+
+    function padToken(func, count) {
+        return function (a) {
+            return leftZeroFill(func.call(this, a), count);
+        };
+    }
+    function ordinalizeToken(func, period) {
+        return function (a) {
+            return this.localeData().ordinal(func.call(this, a), period);
+        };
+    }
+
+    while (ordinalizeTokens.length) {
+        i = ordinalizeTokens.pop();
+        formatTokenFunctions[i + 'o'] = ordinalizeToken(formatTokenFunctions[i], i);
+    }
+    while (paddedTokens.length) {
+        i = paddedTokens.pop();
+        formatTokenFunctions[i + i] = padToken(formatTokenFunctions[i], 2);
+    }
+    formatTokenFunctions.DDDD = padToken(formatTokenFunctions.DDD, 3);
+
+
+    /************************************
+        Constructors
+    ************************************/
+
+    function Locale() {
+    }
+
+    // Moment prototype object
+    function Moment(config, skipOverflow) {
+        if (skipOverflow !== false) {
+            checkOverflow(config);
+        }
+        copyConfig(this, config);
+        this._d = new Date(+config._d);
+    }
+
+    // Duration Constructor
+    function Duration(duration) {
+        var normalizedInput = normalizeObjectUnits(duration),
+            years = normalizedInput.year || 0,
+            quarters = normalizedInput.quarter || 0,
+            months = normalizedInput.month || 0,
+            weeks = normalizedInput.week || 0,
+            days = normalizedInput.day || 0,
+            hours = normalizedInput.hour || 0,
+            minutes = normalizedInput.minute || 0,
+            seconds = normalizedInput.second || 0,
+            milliseconds = normalizedInput.millisecond || 0;
+
+        // representation for dateAddRemove
+        this._milliseconds = +milliseconds +
+            seconds * 1e3 + // 1000
+            minutes * 6e4 + // 1000 * 60
+            hours * 36e5; // 1000 * 60 * 60
+        // Because of dateAddRemove treats 24 hours as different from a
+        // day when working around DST, we need to store them separately
+        this._days = +days +
+            weeks * 7;
+        // It is impossible translate months into days without knowing
+        // which months you are are talking about, so we have to store
+        // it separately.
+        this._months = +months +
+            quarters * 3 +
+            years * 12;
+
+        this._data = {};
+
+        this._locale = moment.localeData();
+
+        this._bubble();
+    }
+
+    /************************************
+        Helpers
+    ************************************/
+
+
+    function extend(a, b) {
+        for (var i in b) {
+            if (hasOwnProp(b, i)) {
+                a[i] = b[i];
+            }
+        }
+
+        if (hasOwnProp(b, 'toString')) {
+            a.toString = b.toString;
+        }
+
+        if (hasOwnProp(b, 'valueOf')) {
+            a.valueOf = b.valueOf;
+        }
+
+        return a;
+    }
+
+    function copyConfig(to, from) {
+        var i, prop, val;
+
+        if (typeof from._isAMomentObject !== 'undefined') {
+            to._isAMomentObject = from._isAMomentObject;
+        }
+        if (typeof from._i !== 'undefined') {
+            to._i = from._i;
+        }
+        if (typeof from._f !== 'undefined') {
+            to._f = from._f;
+        }
+        if (typeof from._l !== 'undefined') {
+            to._l = from._l;
+        }
+        if (typeof from._strict !== 'undefined') {
+            to._strict = from._strict;
+        }
+        if (typeof from._tzm !== 'undefined') {
+            to._tzm = from._tzm;
+        }
+        if (typeof from._isUTC !== 'undefined') {
+            to._isUTC = from._isUTC;
+        }
+        if (typeof from._offset !== 'undefined') {
+            to._offset = from._offset;
+        }
+        if (typeof from._pf !== 'undefined') {
+            to._pf = from._pf;
+        }
+        if (typeof from._locale !== 'undefined') {
+            to._locale = from._locale;
+        }
+
+        if (momentProperties.length > 0) {
+            for (i in momentProperties) {
+                prop = momentProperties[i];
+                val = from[prop];
+                if (typeof val !== 'undefined') {
+                    to[prop] = val;
+                }
+            }
+        }
+
+        return to;
+    }
+
+    function absRound(number) {
+        if (number < 0) {
+            return Math.ceil(number);
+        } else {
+            return Math.floor(number);
+        }
+    }
+
+    // left zero fill a number
+    // see http://jsperf.com/left-zero-filling for performance comparison
+    function leftZeroFill(number, targetLength, forceSign) {
+        var output = '' + Math.abs(number),
+            sign = number >= 0;
+
+        while (output.length < targetLength) {
+            output = '0' + output;
+        }
+        return (sign ? (forceSign ? '+' : '') : '-') + output;
+    }
+
+    function positiveMomentsDifference(base, other) {
+        var res = {milliseconds: 0, months: 0};
+
+        res.months = other.month() - base.month() +
+            (other.year() - base.year()) * 12;
+        if (base.clone().add(res.months, 'M').isAfter(other)) {
+            --res.months;
+        }
+
+        res.milliseconds = +other - +(base.clone().add(res.months, 'M'));
+
+        return res;
+    }
+
+    function momentsDifference(base, other) {
+        var res;
+        other = makeAs(other, base);
+        if (base.isBefore(other)) {
+            res = positiveMomentsDifference(base, other);
+        } else {
+            res = positiveMomentsDifference(other, base);
+            res.milliseconds = -res.milliseconds;
+            res.months = -res.months;
+        }
+
+        return res;
+    }
+
+    // TODO: remove 'name' arg after deprecation is removed
+    function createAdder(direction, name) {
+        return function (val, period) {
+            var dur, tmp;
+            //invert the arguments, but complain about it
+            if (period !== null && !isNaN(+period)) {
+                deprecateSimple(name, 'moment().' + name  + '(period, number) is deprecated. Please use moment().' + name + '(number, period).');
+                tmp = val; val = period; period = tmp;
+            }
+
+            val = typeof val === 'string' ? +val : val;
+            dur = moment.duration(val, period);
+            addOrSubtractDurationFromMoment(this, dur, direction);
+            return this;
+        };
+    }
+
+    function addOrSubtractDurationFromMoment(mom, duration, isAdding, updateOffset) {
+        var milliseconds = duration._milliseconds,
+            days = duration._days,
+            months = duration._months;
+        updateOffset = updateOffset == null ? true : updateOffset;
+
+        if (milliseconds) {
+            mom._d.setTime(+mom._d + milliseconds * isAdding);
+        }
+        if (days) {
+            rawSetter(mom, 'Date', rawGetter(mom, 'Date') + days * isAdding);
+        }
+        if (months) {
+            rawMonthSetter(mom, rawGetter(mom, 'Month') + months * isAdding);
+        }
+        if (updateOffset) {
+            moment.updateOffset(mom, days || months);
+        }
+    }
+
+    // check if is an array
+    function isArray(input) {
+        return Object.prototype.toString.call(input) === '[object Array]';
+    }
+
+    function isDate(input) {
+        return Object.prototype.toString.call(input) === '[object Date]' ||
+            input instanceof Date;
+    }
+
+    // compare two arrays, return the number of differences
+    function compareArrays(array1, array2, dontConvert) {
+        var len = Math.min(array1.length, array2.length),
+            lengthDiff = Math.abs(array1.length - array2.length),
+            diffs = 0,
+            i;
+        for (i = 0; i < len; i++) {
+            if ((dontConvert && array1[i] !== array2[i]) ||
+                (!dontConvert && toInt(array1[i]) !== toInt(array2[i]))) {
+                diffs++;
+            }
+        }
+        return diffs + lengthDiff;
+    }
+
+    function normalizeUnits(units) {
+        if (units) {
+            var lowered = units.toLowerCase().replace(/(.)s$/, '$1');
+            units = unitAliases[units] || camelFunctions[lowered] || lowered;
+        }
+        return units;
+    }
+
+    function normalizeObjectUnits(inputObject) {
+        var normalizedInput = {},
+            normalizedProp,
+            prop;
+
+        for (prop in inputObject) {
+            if (hasOwnProp(inputObject, prop)) {
+                normalizedProp = normalizeUnits(prop);
+                if (normalizedProp) {
+                    normalizedInput[normalizedProp] = inputObject[prop];
+                }
+            }
+        }
+
+        return normalizedInput;
+    }
+
+    function makeList(field) {
+        var count, setter;
+
+        if (field.indexOf('week') === 0) {
+            count = 7;
+            setter = 'day';
+        }
+        else if (field.indexOf('month') === 0) {
+            count = 12;
+            setter = 'month';
+        }
+        else {
+            return;
+        }
+
+        moment[field] = function (format, index) {
+            var i, getter,
+                method = moment._locale[field],
+                results = [];
+
+            if (typeof format === 'number') {
+                index = format;
+                format = undefined;
+            }
+
+            getter = function (i) {
+                var m = moment().utc().set(setter, i);
+                return method.call(moment._locale, m, format || '');
+            };
+
+            if (index != null) {
+                return getter(index);
+            }
+            else {
+                for (i = 0; i < count; i++) {
+                    results.push(getter(i));
+                }
+                return results;
+            }
+        };
+    }
+
+    function toInt(argumentForCoercion) {
+        var coercedNumber = +argumentForCoercion,
+            value = 0;
+
+        if (coercedNumber !== 0 && isFinite(coercedNumber)) {
+            if (coercedNumber >= 0) {
+                value = Math.floor(coercedNumber);
+            } else {
+                value = Math.ceil(coercedNumber);
+            }
+        }
+
+        return value;
+    }
+
+    function daysInMonth(year, month) {
+        return new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+    }
+
+    function weeksInYear(year, dow, doy) {
+        return weekOfYear(moment([year, 11, 31 + dow - doy]), dow, doy).week;
+    }
+
+    function daysInYear(year) {
+        return isLeapYear(year) ? 366 : 365;
+    }
+
+    function isLeapYear(year) {
+        return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+    }
+
+    function checkOverflow(m) {
+        var overflow;
+        if (m._a && m._pf.overflow === -2) {
+            overflow =
+                m._a[MONTH] < 0 || m._a[MONTH] > 11 ? MONTH :
+                m._a[DATE] < 1 || m._a[DATE] > daysInMonth(m._a[YEAR], m._a[MONTH]) ? DATE :
+                m._a[HOUR] < 0 || m._a[HOUR] > 24 ||
+                    (m._a[HOUR] === 24 && (m._a[MINUTE] !== 0 ||
+                                           m._a[SECOND] !== 0 ||
+                                           m._a[MILLISECOND] !== 0)) ? HOUR :
+                m._a[MINUTE] < 0 || m._a[MINUTE] > 59 ? MINUTE :
+                m._a[SECOND] < 0 || m._a[SECOND] > 59 ? SECOND :
+                m._a[MILLISECOND] < 0 || m._a[MILLISECOND] > 999 ? MILLISECOND :
+                -1;
+
+            if (m._pf._overflowDayOfYear && (overflow < YEAR || overflow > DATE)) {
+                overflow = DATE;
+            }
+
+            m._pf.overflow = overflow;
+        }
+    }
+
+    function isValid(m) {
+        if (m._isValid == null) {
+            m._isValid = !isNaN(m._d.getTime()) &&
+                m._pf.overflow < 0 &&
+                !m._pf.empty &&
+                !m._pf.invalidMonth &&
+                !m._pf.nullInput &&
+                !m._pf.invalidFormat &&
+                !m._pf.userInvalidated;
+
+            if (m._strict) {
+                m._isValid = m._isValid &&
+                    m._pf.charsLeftOver === 0 &&
+                    m._pf.unusedTokens.length === 0 &&
+                    m._pf.bigHour === undefined;
+            }
+        }
+        return m._isValid;
+    }
+
+    function normalizeLocale(key) {
+        return key ? key.toLowerCase().replace('_', '-') : key;
+    }
+
+    // pick the locale from the array
+    // try ['en-au', 'en-gb'] as 'en-au', 'en-gb', 'en', as in move through the list trying each
+    // substring from most specific to least, but move to the next array item if it's a more specific variant than the current root
+    function chooseLocale(names) {
+        var i = 0, j, next, locale, split;
+
+        while (i < names.length) {
+            split = normalizeLocale(names[i]).split('-');
+            j = split.length;
+            next = normalizeLocale(names[i + 1]);
+            next = next ? next.split('-') : null;
+            while (j > 0) {
+                locale = loadLocale(split.slice(0, j).join('-'));
+                if (locale) {
+                    return locale;
+                }
+                if (next && next.length >= j && compareArrays(split, next, true) >= j - 1) {
+                    //the next array item is better than a shallower substring of this one
+                    break;
+                }
+                j--;
+            }
+            i++;
+        }
+        return null;
+    }
+
+    function loadLocale(name) {
+        var oldLocale = null;
+        if (!locales[name] && hasModule) {
+            try {
+                oldLocale = moment.locale();
+                require('./locale/' + name);
+                // because defineLocale currently also sets the global locale, we want to undo that for lazy loaded locales
+                moment.locale(oldLocale);
+            } catch (e) { }
+        }
+        return locales[name];
+    }
+
+    // Return a moment from input, that is local/utc/zone equivalent to model.
+    function makeAs(input, model) {
+        var res, diff;
+        if (model._isUTC) {
+            res = model.clone();
+            diff = (moment.isMoment(input) || isDate(input) ?
+                    +input : +moment(input)) - (+res);
+            // Use low-level api, because this fn is low-level api.
+            res._d.setTime(+res._d + diff);
+            moment.updateOffset(res, false);
+            return res;
+        } else {
+            return moment(input).local();
+        }
+    }
+
+    /************************************
+        Locale
+    ************************************/
+
+
+    extend(Locale.prototype, {
+
+        set : function (config) {
+            var prop, i;
+            for (i in config) {
+                prop = config[i];
+                if (typeof prop === 'function') {
+                    this[i] = prop;
+                } else {
+                    this['_' + i] = prop;
+                }
+            }
+            // Lenient ordinal parsing accepts just a number in addition to
+            // number + (possibly) stuff coming from _ordinalParseLenient.
+            this._ordinalParseLenient = new RegExp(this._ordinalParse.source + '|' + /\d{1,2}/.source);
+        },
+
+        _months : 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_'),
+        months : function (m) {
+            return this._months[m.month()];
+        },
+
+        _monthsShort : 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_'),
+        monthsShort : function (m) {
+            return this._monthsShort[m.month()];
+        },
+
+        monthsParse : function (monthName, format, strict) {
+            var i, mom, regex;
+
+            if (!this._monthsParse) {
+                this._monthsParse = [];
+                this._longMonthsParse = [];
+                this._shortMonthsParse = [];
+            }
+
+            for (i = 0; i < 12; i++) {
+                // make the regex if we don't have it already
+                mom = moment.utc([2000, i]);
+                if (strict && !this._longMonthsParse[i]) {
+                    this._longMonthsParse[i] = new RegExp('^' + this.months(mom, '').replace('.', '') + '$', 'i');
+                    this._shortMonthsParse[i] = new RegExp('^' + this.monthsShort(mom, '').replace('.', '') + '$', 'i');
+                }
+                if (!strict && !this._monthsParse[i]) {
+                    regex = '^' + this.months(mom, '') + '|^' + this.monthsShort(mom, '');
+                    this._monthsParse[i] = new RegExp(regex.replace('.', ''), 'i');
+                }
+                // test the regex
+                if (strict && format === 'MMMM' && this._longMonthsParse[i].test(monthName)) {
+                    return i;
+                } else if (strict && format === 'MMM' && this._shortMonthsParse[i].test(monthName)) {
+                    return i;
+                } else if (!strict && this._monthsParse[i].test(monthName)) {
+                    return i;
+                }
+            }
+        },
+
+        _weekdays : 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_'),
+        weekdays : function (m) {
+            return this._weekdays[m.day()];
+        },
+
+        _weekdaysShort : 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_'),
+        weekdaysShort : function (m) {
+            return this._weekdaysShort[m.day()];
+        },
+
+        _weekdaysMin : 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_'),
+        weekdaysMin : function (m) {
+            return this._weekdaysMin[m.day()];
+        },
+
+        weekdaysParse : function (weekdayName) {
+            var i, mom, regex;
+
+            if (!this._weekdaysParse) {
+                this._weekdaysParse = [];
+            }
+
+            for (i = 0; i < 7; i++) {
+                // make the regex if we don't have it already
+                if (!this._weekdaysParse[i]) {
+                    mom = moment([2000, 1]).day(i);
+                    regex = '^' + this.weekdays(mom, '') + '|^' + this.weekdaysShort(mom, '') + '|^' + this.weekdaysMin(mom, '');
+                    this._weekdaysParse[i] = new RegExp(regex.replace('.', ''), 'i');
+                }
+                // test the regex
+                if (this._weekdaysParse[i].test(weekdayName)) {
+                    return i;
+                }
+            }
+        },
+
+        _longDateFormat : {
+            LTS : 'h:mm:ss A',
+            LT : 'h:mm A',
+            L : 'MM/DD/YYYY',
+            LL : 'MMMM D, YYYY',
+            LLL : 'MMMM D, YYYY LT',
+            LLLL : 'dddd, MMMM D, YYYY LT'
+        },
+        longDateFormat : function (key) {
+            var output = this._longDateFormat[key];
+            if (!output && this._longDateFormat[key.toUpperCase()]) {
+                output = this._longDateFormat[key.toUpperCase()].replace(/MMMM|MM|DD|dddd/g, function (val) {
+                    return val.slice(1);
+                });
+                this._longDateFormat[key] = output;
+            }
+            return output;
+        },
+
+        isPM : function (input) {
+            // IE8 Quirks Mode & IE7 Standards Mode do not allow accessing strings like arrays
+            // Using charAt should be more compatible.
+            return ((input + '').toLowerCase().charAt(0) === 'p');
+        },
+
+        _meridiemParse : /[ap]\.?m?\.?/i,
+        meridiem : function (hours, minutes, isLower) {
+            if (hours > 11) {
+                return isLower ? 'pm' : 'PM';
+            } else {
+                return isLower ? 'am' : 'AM';
+            }
+        },
+
+        _calendar : {
+            sameDay : '[Today at] LT',
+            nextDay : '[Tomorrow at] LT',
+            nextWeek : 'dddd [at] LT',
+            lastDay : '[Yesterday at] LT',
+            lastWeek : '[Last] dddd [at] LT',
+            sameElse : 'L'
+        },
+        calendar : function (key, mom, now) {
+            var output = this._calendar[key];
+            return typeof output === 'function' ? output.apply(mom, [now]) : output;
+        },
+
+        _relativeTime : {
+            future : 'in %s',
+            past : '%s ago',
+            s : 'a few seconds',
+            m : 'a minute',
+            mm : '%d minutes',
+            h : 'an hour',
+            hh : '%d hours',
+            d : 'a day',
+            dd : '%d days',
+            M : 'a month',
+            MM : '%d months',
+            y : 'a year',
+            yy : '%d years'
+        },
+
+        relativeTime : function (number, withoutSuffix, string, isFuture) {
+            var output = this._relativeTime[string];
+            return (typeof output === 'function') ?
+                output(number, withoutSuffix, string, isFuture) :
+                output.replace(/%d/i, number);
+        },
+
+        pastFuture : function (diff, output) {
+            var format = this._relativeTime[diff > 0 ? 'future' : 'past'];
+            return typeof format === 'function' ? format(output) : format.replace(/%s/i, output);
+        },
+
+        ordinal : function (number) {
+            return this._ordinal.replace('%d', number);
+        },
+        _ordinal : '%d',
+        _ordinalParse : /\d{1,2}/,
+
+        preparse : function (string) {
+            return string;
+        },
+
+        postformat : function (string) {
+            return string;
+        },
+
+        week : function (mom) {
+            return weekOfYear(mom, this._week.dow, this._week.doy).week;
+        },
+
+        _week : {
+            dow : 0, // Sunday is the first day of the week.
+            doy : 6  // The week that contains Jan 1st is the first week of the year.
+        },
+
+        _invalidDate: 'Invalid date',
+        invalidDate: function () {
+            return this._invalidDate;
+        }
+    });
+
+    /************************************
+        Formatting
+    ************************************/
+
+
+    function removeFormattingTokens(input) {
+        if (input.match(/\[[\s\S]/)) {
+            return input.replace(/^\[|\]$/g, '');
+        }
+        return input.replace(/\\/g, '');
+    }
+
+    function makeFormatFunction(format) {
+        var array = format.match(formattingTokens), i, length;
+
+        for (i = 0, length = array.length; i < length; i++) {
+            if (formatTokenFunctions[array[i]]) {
+                array[i] = formatTokenFunctions[array[i]];
+            } else {
+                array[i] = removeFormattingTokens(array[i]);
+            }
+        }
+
+        return function (mom) {
+            var output = '';
+            for (i = 0; i < length; i++) {
+                output += array[i] instanceof Function ? array[i].call(mom, format) : array[i];
+            }
+            return output;
+        };
+    }
+
+    // format date using native date object
+    function formatMoment(m, format) {
+        if (!m.isValid()) {
+            return m.localeData().invalidDate();
+        }
+
+        format = expandFormat(format, m.localeData());
+
+        if (!formatFunctions[format]) {
+            formatFunctions[format] = makeFormatFunction(format);
+        }
+
+        return formatFunctions[format](m);
+    }
+
+    function expandFormat(format, locale) {
+        var i = 5;
+
+        function replaceLongDateFormatTokens(input) {
+            return locale.longDateFormat(input) || input;
+        }
+
+        localFormattingTokens.lastIndex = 0;
+        while (i >= 0 && localFormattingTokens.test(format)) {
+            format = format.replace(localFormattingTokens, replaceLongDateFormatTokens);
+            localFormattingTokens.lastIndex = 0;
+            i -= 1;
+        }
+
+        return format;
+    }
+
+
+    /************************************
+        Parsing
+    ************************************/
+
+
+    // get the regex to find the next token
+    function getParseRegexForToken(token, config) {
+        var a, strict = config._strict;
+        switch (token) {
+        case 'Q':
+            return parseTokenOneDigit;
+        case 'DDDD':
+            return parseTokenThreeDigits;
+        case 'YYYY':
+        case 'GGGG':
+        case 'gggg':
+            return strict ? parseTokenFourDigits : parseTokenOneToFourDigits;
+        case 'Y':
+        case 'G':
+        case 'g':
+            return parseTokenSignedNumber;
+        case 'YYYYYY':
+        case 'YYYYY':
+        case 'GGGGG':
+        case 'ggggg':
+            return strict ? parseTokenSixDigits : parseTokenOneToSixDigits;
+        case 'S':
+            if (strict) {
+                return parseTokenOneDigit;
+            }
+            /* falls through */
+        case 'SS':
+            if (strict) {
+                return parseTokenTwoDigits;
+            }
+            /* falls through */
+        case 'SSS':
+            if (strict) {
+                return parseTokenThreeDigits;
+            }
+            /* falls through */
+        case 'DDD':
+            return parseTokenOneToThreeDigits;
+        case 'MMM':
+        case 'MMMM':
+        case 'dd':
+        case 'ddd':
+        case 'dddd':
+            return parseTokenWord;
+        case 'a':
+        case 'A':
+            return config._locale._meridiemParse;
+        case 'x':
+            return parseTokenOffsetMs;
+        case 'X':
+            return parseTokenTimestampMs;
+        case 'Z':
+        case 'ZZ':
+            return parseTokenTimezone;
+        case 'T':
+            return parseTokenT;
+        case 'SSSS':
+            return parseTokenDigits;
+        case 'MM':
+        case 'DD':
+        case 'YY':
+        case 'GG':
+        case 'gg':
+        case 'HH':
+        case 'hh':
+        case 'mm':
+        case 'ss':
+        case 'ww':
+        case 'WW':
+            return strict ? parseTokenTwoDigits : parseTokenOneOrTwoDigits;
+        case 'M':
+        case 'D':
+        case 'd':
+        case 'H':
+        case 'h':
+        case 'm':
+        case 's':
+        case 'w':
+        case 'W':
+        case 'e':
+        case 'E':
+            return parseTokenOneOrTwoDigits;
+        case 'Do':
+            return strict ? config._locale._ordinalParse : config._locale._ordinalParseLenient;
+        default :
+            a = new RegExp(regexpEscape(unescapeFormat(token.replace('\\', '')), 'i'));
+            return a;
+        }
+    }
+
+    function timezoneMinutesFromString(string) {
+        string = string || '';
+        var possibleTzMatches = (string.match(parseTokenTimezone) || []),
+            tzChunk = possibleTzMatches[possibleTzMatches.length - 1] || [],
+            parts = (tzChunk + '').match(parseTimezoneChunker) || ['-', 0, 0],
+            minutes = +(parts[1] * 60) + toInt(parts[2]);
+
+        return parts[0] === '+' ? -minutes : minutes;
+    }
+
+    // function to convert string input to date
+    function addTimeToArrayFromToken(token, input, config) {
+        var a, datePartArray = config._a;
+
+        switch (token) {
+        // QUARTER
+        case 'Q':
+            if (input != null) {
+                datePartArray[MONTH] = (toInt(input) - 1) * 3;
+            }
+            break;
+        // MONTH
+        case 'M' : // fall through to MM
+        case 'MM' :
+            if (input != null) {
+                datePartArray[MONTH] = toInt(input) - 1;
+            }
+            break;
+        case 'MMM' : // fall through to MMMM
+        case 'MMMM' :
+            a = config._locale.monthsParse(input, token, config._strict);
+            // if we didn't find a month name, mark the date as invalid.
+            if (a != null) {
+                datePartArray[MONTH] = a;
+            } else {
+                config._pf.invalidMonth = input;
+            }
+            break;
+        // DAY OF MONTH
+        case 'D' : // fall through to DD
+        case 'DD' :
+            if (input != null) {
+                datePartArray[DATE] = toInt(input);
+            }
+            break;
+        case 'Do' :
+            if (input != null) {
+                datePartArray[DATE] = toInt(parseInt(
+                            input.match(/\d{1,2}/)[0], 10));
+            }
+            break;
+        // DAY OF YEAR
+        case 'DDD' : // fall through to DDDD
+        case 'DDDD' :
+            if (input != null) {
+                config._dayOfYear = toInt(input);
+            }
+
+            break;
+        // YEAR
+        case 'YY' :
+            datePartArray[YEAR] = moment.parseTwoDigitYear(input);
+            break;
+        case 'YYYY' :
+        case 'YYYYY' :
+        case 'YYYYYY' :
+            datePartArray[YEAR] = toInt(input);
+            break;
+        // AM / PM
+        case 'a' : // fall through to A
+        case 'A' :
+            config._isPm = config._locale.isPM(input);
+            break;
+        // HOUR
+        case 'h' : // fall through to hh
+        case 'hh' :
+            config._pf.bigHour = true;
+            /* falls through */
+        case 'H' : // fall through to HH
+        case 'HH' :
+            datePartArray[HOUR] = toInt(input);
+            break;
+        // MINUTE
+        case 'm' : // fall through to mm
+        case 'mm' :
+            datePartArray[MINUTE] = toInt(input);
+            break;
+        // SECOND
+        case 's' : // fall through to ss
+        case 'ss' :
+            datePartArray[SECOND] = toInt(input);
+            break;
+        // MILLISECOND
+        case 'S' :
+        case 'SS' :
+        case 'SSS' :
+        case 'SSSS' :
+            datePartArray[MILLISECOND] = toInt(('0.' + input) * 1000);
+            break;
+        // UNIX OFFSET (MILLISECONDS)
+        case 'x':
+            config._d = new Date(toInt(input));
+            break;
+        // UNIX TIMESTAMP WITH MS
+        case 'X':
+            config._d = new Date(parseFloat(input) * 1000);
+            break;
+        // TIMEZONE
+        case 'Z' : // fall through to ZZ
+        case 'ZZ' :
+            config._useUTC = true;
+            config._tzm = timezoneMinutesFromString(input);
+            break;
+        // WEEKDAY - human
+        case 'dd':
+        case 'ddd':
+        case 'dddd':
+            a = config._locale.weekdaysParse(input);
+            // if we didn't get a weekday name, mark the date as invalid
+            if (a != null) {
+                config._w = config._w || {};
+                config._w['d'] = a;
+            } else {
+                config._pf.invalidWeekday = input;
+            }
+            break;
+        // WEEK, WEEK DAY - numeric
+        case 'w':
+        case 'ww':
+        case 'W':
+        case 'WW':
+        case 'd':
+        case 'e':
+        case 'E':
+            token = token.substr(0, 1);
+            /* falls through */
+        case 'gggg':
+        case 'GGGG':
+        case 'GGGGG':
+            token = token.substr(0, 2);
+            if (input) {
+                config._w = config._w || {};
+                config._w[token] = toInt(input);
+            }
+            break;
+        case 'gg':
+        case 'GG':
+            config._w = config._w || {};
+            config._w[token] = moment.parseTwoDigitYear(input);
+        }
+    }
+
+    function dayOfYearFromWeekInfo(config) {
+        var w, weekYear, week, weekday, dow, doy, temp;
+
+        w = config._w;
+        if (w.GG != null || w.W != null || w.E != null) {
+            dow = 1;
+            doy = 4;
+
+            // TODO: We need to take the current isoWeekYear, but that depends on
+            // how we interpret now (local, utc, fixed offset). So create
+            // a now version of current config (take local/utc/offset flags, and
+            // create now).
+            weekYear = dfl(w.GG, config._a[YEAR], weekOfYear(moment(), 1, 4).year);
+            week = dfl(w.W, 1);
+            weekday = dfl(w.E, 1);
+        } else {
+            dow = config._locale._week.dow;
+            doy = config._locale._week.doy;
+
+            weekYear = dfl(w.gg, config._a[YEAR], weekOfYear(moment(), dow, doy).year);
+            week = dfl(w.w, 1);
+
+            if (w.d != null) {
+                // weekday -- low day numbers are considered next week
+                weekday = w.d;
+                if (weekday < dow) {
+                    ++week;
+                }
+            } else if (w.e != null) {
+                // local weekday -- counting starts from begining of week
+                weekday = w.e + dow;
+            } else {
+                // default to begining of week
+                weekday = dow;
+            }
+        }
+        temp = dayOfYearFromWeeks(weekYear, week, weekday, doy, dow);
+
+        config._a[YEAR] = temp.year;
+        config._dayOfYear = temp.dayOfYear;
+    }
+
+    // convert an array to a date.
+    // the array should mirror the parameters below
+    // note: all values past the year are optional and will default to the lowest possible value.
+    // [year, month, day , hour, minute, second, millisecond]
+    function dateFromConfig(config) {
+        var i, date, input = [], currentDate, yearToUse;
+
+        if (config._d) {
+            return;
+        }
+
+        currentDate = currentDateArray(config);
+
+        //compute day of the year from weeks and weekdays
+        if (config._w && config._a[DATE] == null && config._a[MONTH] == null) {
+            dayOfYearFromWeekInfo(config);
+        }
+
+        //if the day of the year is set, figure out what it is
+        if (config._dayOfYear) {
+            yearToUse = dfl(config._a[YEAR], currentDate[YEAR]);
+
+            if (config._dayOfYear > daysInYear(yearToUse)) {
+                config._pf._overflowDayOfYear = true;
+            }
+
+            date = makeUTCDate(yearToUse, 0, config._dayOfYear);
+            config._a[MONTH] = date.getUTCMonth();
+            config._a[DATE] = date.getUTCDate();
+        }
+
+        // Default to current date.
+        // * if no year, month, day of month are given, default to today
+        // * if day of month is given, default month and year
+        // * if month is given, default only year
+        // * if year is given, don't default anything
+        for (i = 0; i < 3 && config._a[i] == null; ++i) {
+            config._a[i] = input[i] = currentDate[i];
+        }
+
+        // Zero out whatever was not defaulted, including time
+        for (; i < 7; i++) {
+            config._a[i] = input[i] = (config._a[i] == null) ? (i === 2 ? 1 : 0) : config._a[i];
+        }
+
+        // Check for 24:00:00.000
+        if (config._a[HOUR] === 24 &&
+                config._a[MINUTE] === 0 &&
+                config._a[SECOND] === 0 &&
+                config._a[MILLISECOND] === 0) {
+            config._nextDay = true;
+            config._a[HOUR] = 0;
+        }
+
+        config._d = (config._useUTC ? makeUTCDate : makeDate).apply(null, input);
+        // Apply timezone offset from input. The actual zone can be changed
+        // with parseZone.
+        if (config._tzm != null) {
+            config._d.setUTCMinutes(config._d.getUTCMinutes() + config._tzm);
+        }
+
+        if (config._nextDay) {
+            config._a[HOUR] = 24;
+        }
+    }
+
+    function dateFromObject(config) {
+        var normalizedInput;
+
+        if (config._d) {
+            return;
+        }
+
+        normalizedInput = normalizeObjectUnits(config._i);
+        config._a = [
+            normalizedInput.year,
+            normalizedInput.month,
+            normalizedInput.day || normalizedInput.date,
+            normalizedInput.hour,
+            normalizedInput.minute,
+            normalizedInput.second,
+            normalizedInput.millisecond
+        ];
+
+        dateFromConfig(config);
+    }
+
+    function currentDateArray(config) {
+        var now = new Date();
+        if (config._useUTC) {
+            return [
+                now.getUTCFullYear(),
+                now.getUTCMonth(),
+                now.getUTCDate()
+            ];
+        } else {
+            return [now.getFullYear(), now.getMonth(), now.getDate()];
+        }
+    }
+
+    // date from string and format string
+    function makeDateFromStringAndFormat(config) {
+        if (config._f === moment.ISO_8601) {
+            parseISO(config);
+            return;
+        }
+
+        config._a = [];
+        config._pf.empty = true;
+
+        // This array is used to make a Date, either with `new Date` or `Date.UTC`
+        var string = '' + config._i,
+            i, parsedInput, tokens, token, skipped,
+            stringLength = string.length,
+            totalParsedInputLength = 0;
+
+        tokens = expandFormat(config._f, config._locale).match(formattingTokens) || [];
+
+        for (i = 0; i < tokens.length; i++) {
+            token = tokens[i];
+            parsedInput = (string.match(getParseRegexForToken(token, config)) || [])[0];
+            if (parsedInput) {
+                skipped = string.substr(0, string.indexOf(parsedInput));
+                if (skipped.length > 0) {
+                    config._pf.unusedInput.push(skipped);
+                }
+                string = string.slice(string.indexOf(parsedInput) + parsedInput.length);
+                totalParsedInputLength += parsedInput.length;
+            }
+            // don't parse if it's not a known token
+            if (formatTokenFunctions[token]) {
+                if (parsedInput) {
+                    config._pf.empty = false;
+                }
+                else {
+                    config._pf.unusedTokens.push(token);
+                }
+                addTimeToArrayFromToken(token, parsedInput, config);
+            }
+            else if (config._strict && !parsedInput) {
+                config._pf.unusedTokens.push(token);
+            }
+        }
+
+        // add remaining unparsed input length to the string
+        config._pf.charsLeftOver = stringLength - totalParsedInputLength;
+        if (string.length > 0) {
+            config._pf.unusedInput.push(string);
+        }
+
+        // clear _12h flag if hour is <= 12
+        if (config._pf.bigHour === true && config._a[HOUR] <= 12) {
+            config._pf.bigHour = undefined;
+        }
+        // handle am pm
+        if (config._isPm && config._a[HOUR] < 12) {
+            config._a[HOUR] += 12;
+        }
+        // if is 12 am, change hours to 0
+        if (config._isPm === false && config._a[HOUR] === 12) {
+            config._a[HOUR] = 0;
+        }
+        dateFromConfig(config);
+        checkOverflow(config);
+    }
+
+    function unescapeFormat(s) {
+        return s.replace(/\\(\[)|\\(\])|\[([^\]\[]*)\]|\\(.)/g, function (matched, p1, p2, p3, p4) {
+            return p1 || p2 || p3 || p4;
+        });
+    }
+
+    // Code from http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
+    function regexpEscape(s) {
+        return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    }
+
+    // date from string and array of format strings
+    function makeDateFromStringAndArray(config) {
+        var tempConfig,
+            bestMoment,
+
+            scoreToBeat,
+            i,
+            currentScore;
+
+        if (config._f.length === 0) {
+            config._pf.invalidFormat = true;
+            config._d = new Date(NaN);
+            return;
+        }
+
+        for (i = 0; i < config._f.length; i++) {
+            currentScore = 0;
+            tempConfig = copyConfig({}, config);
+            if (config._useUTC != null) {
+                tempConfig._useUTC = config._useUTC;
+            }
+            tempConfig._pf = defaultParsingFlags();
+            tempConfig._f = config._f[i];
+            makeDateFromStringAndFormat(tempConfig);
+
+            if (!isValid(tempConfig)) {
+                continue;
+            }
+
+            // if there is any input that was not parsed add a penalty for that format
+            currentScore += tempConfig._pf.charsLeftOver;
+
+            //or tokens
+            currentScore += tempConfig._pf.unusedTokens.length * 10;
+
+            tempConfig._pf.score = currentScore;
+
+            if (scoreToBeat == null || currentScore < scoreToBeat) {
+                scoreToBeat = currentScore;
+                bestMoment = tempConfig;
+            }
+        }
+
+        extend(config, bestMoment || tempConfig);
+    }
+
+    // date from iso format
+    function parseISO(config) {
+        var i, l,
+            string = config._i,
+            match = isoRegex.exec(string);
+
+        if (match) {
+            config._pf.iso = true;
+            for (i = 0, l = isoDates.length; i < l; i++) {
+                if (isoDates[i][1].exec(string)) {
+                    // match[5] should be 'T' or undefined
+                    config._f = isoDates[i][0] + (match[6] || ' ');
+                    break;
+                }
+            }
+            for (i = 0, l = isoTimes.length; i < l; i++) {
+                if (isoTimes[i][1].exec(string)) {
+                    config._f += isoTimes[i][0];
+                    break;
+                }
+            }
+            if (string.match(parseTokenTimezone)) {
+                config._f += 'Z';
+            }
+            makeDateFromStringAndFormat(config);
+        } else {
+            config._isValid = false;
+        }
+    }
+
+    // date from iso format or fallback
+    function makeDateFromString(config) {
+        parseISO(config);
+        if (config._isValid === false) {
+            delete config._isValid;
+            moment.createFromInputFallback(config);
+        }
+    }
+
+    function map(arr, fn) {
+        var res = [], i;
+        for (i = 0; i < arr.length; ++i) {
+            res.push(fn(arr[i], i));
+        }
+        return res;
+    }
+
+    function makeDateFromInput(config) {
+        var input = config._i, matched;
+        if (input === undefined) {
+            config._d = new Date();
+        } else if (isDate(input)) {
+            config._d = new Date(+input);
+        } else if ((matched = aspNetJsonRegex.exec(input)) !== null) {
+            config._d = new Date(+matched[1]);
+        } else if (typeof input === 'string') {
+            makeDateFromString(config);
+        } else if (isArray(input)) {
+            config._a = map(input.slice(0), function (obj) {
+                return parseInt(obj, 10);
+            });
+            dateFromConfig(config);
+        } else if (typeof(input) === 'object') {
+            dateFromObject(config);
+        } else if (typeof(input) === 'number') {
+            // from milliseconds
+            config._d = new Date(input);
+        } else {
+            moment.createFromInputFallback(config);
+        }
+    }
+
+    function makeDate(y, m, d, h, M, s, ms) {
+        //can't just apply() to create a date:
+        //http://stackoverflow.com/questions/181348/instantiating-a-javascript-object-by-calling-prototype-constructor-apply
+        var date = new Date(y, m, d, h, M, s, ms);
+
+        //the date constructor doesn't accept years < 1970
+        if (y < 1970) {
+            date.setFullYear(y);
+        }
+        return date;
+    }
+
+    function makeUTCDate(y) {
+        var date = new Date(Date.UTC.apply(null, arguments));
+        if (y < 1970) {
+            date.setUTCFullYear(y);
+        }
+        return date;
+    }
+
+    function parseWeekday(input, locale) {
+        if (typeof input === 'string') {
+            if (!isNaN(input)) {
+                input = parseInt(input, 10);
+            }
+            else {
+                input = locale.weekdaysParse(input);
+                if (typeof input !== 'number') {
+                    return null;
+                }
+            }
+        }
+        return input;
+    }
+
+    /************************************
+        Relative Time
+    ************************************/
+
+
+    // helper function for moment.fn.from, moment.fn.fromNow, and moment.duration.fn.humanize
+    function substituteTimeAgo(string, number, withoutSuffix, isFuture, locale) {
+        return locale.relativeTime(number || 1, !!withoutSuffix, string, isFuture);
+    }
+
+    function relativeTime(posNegDuration, withoutSuffix, locale) {
+        var duration = moment.duration(posNegDuration).abs(),
+            seconds = round(duration.as('s')),
+            minutes = round(duration.as('m')),
+            hours = round(duration.as('h')),
+            days = round(duration.as('d')),
+            months = round(duration.as('M')),
+            years = round(duration.as('y')),
+
+            args = seconds < relativeTimeThresholds.s && ['s', seconds] ||
+                minutes === 1 && ['m'] ||
+                minutes < relativeTimeThresholds.m && ['mm', minutes] ||
+                hours === 1 && ['h'] ||
+                hours < relativeTimeThresholds.h && ['hh', hours] ||
+                days === 1 && ['d'] ||
+                days < relativeTimeThresholds.d && ['dd', days] ||
+                months === 1 && ['M'] ||
+                months < relativeTimeThresholds.M && ['MM', months] ||
+                years === 1 && ['y'] || ['yy', years];
+
+        args[2] = withoutSuffix;
+        args[3] = +posNegDuration > 0;
+        args[4] = locale;
+        return substituteTimeAgo.apply({}, args);
+    }
+
+
+    /************************************
+        Week of Year
+    ************************************/
+
+
+    // firstDayOfWeek       0 = sun, 6 = sat
+    //                      the day of the week that starts the week
+    //                      (usually sunday or monday)
+    // firstDayOfWeekOfYear 0 = sun, 6 = sat
+    //                      the first week is the week that contains the first
+    //                      of this day of the week
+    //                      (eg. ISO weeks use thursday (4))
+    function weekOfYear(mom, firstDayOfWeek, firstDayOfWeekOfYear) {
+        var end = firstDayOfWeekOfYear - firstDayOfWeek,
+            daysToDayOfWeek = firstDayOfWeekOfYear - mom.day(),
+            adjustedMoment;
+
+
+        if (daysToDayOfWeek > end) {
+            daysToDayOfWeek -= 7;
+        }
+
+        if (daysToDayOfWeek < end - 7) {
+            daysToDayOfWeek += 7;
+        }
+
+        adjustedMoment = moment(mom).add(daysToDayOfWeek, 'd');
+        return {
+            week: Math.ceil(adjustedMoment.dayOfYear() / 7),
+            year: adjustedMoment.year()
+        };
+    }
+
+    //http://en.wikipedia.org/wiki/ISO_week_date#Calculating_a_date_given_the_year.2C_week_number_and_weekday
+    function dayOfYearFromWeeks(year, week, weekday, firstDayOfWeekOfYear, firstDayOfWeek) {
+        var d = makeUTCDate(year, 0, 1).getUTCDay(), daysToAdd, dayOfYear;
+
+        d = d === 0 ? 7 : d;
+        weekday = weekday != null ? weekday : firstDayOfWeek;
+        daysToAdd = firstDayOfWeek - d + (d > firstDayOfWeekOfYear ? 7 : 0) - (d < firstDayOfWeek ? 7 : 0);
+        dayOfYear = 7 * (week - 1) + (weekday - firstDayOfWeek) + daysToAdd + 1;
+
+        return {
+            year: dayOfYear > 0 ? year : year - 1,
+            dayOfYear: dayOfYear > 0 ?  dayOfYear : daysInYear(year - 1) + dayOfYear
+        };
+    }
+
+    /************************************
+        Top Level Functions
+    ************************************/
+
+    function makeMoment(config) {
+        var input = config._i,
+            format = config._f,
+            res;
+
+        config._locale = config._locale || moment.localeData(config._l);
+
+        if (input === null || (format === undefined && input === '')) {
+            return moment.invalid({nullInput: true});
+        }
+
+        if (typeof input === 'string') {
+            config._i = input = config._locale.preparse(input);
+        }
+
+        if (moment.isMoment(input)) {
+            return new Moment(input, true);
+        } else if (format) {
+            if (isArray(format)) {
+                makeDateFromStringAndArray(config);
+            } else {
+                makeDateFromStringAndFormat(config);
+            }
+        } else {
+            makeDateFromInput(config);
+        }
+
+        res = new Moment(config);
+        if (res._nextDay) {
+            // Adding is smart enough around DST
+            res.add(1, 'd');
+            res._nextDay = undefined;
+        }
+
+        return res;
+    }
+
+    moment = function (input, format, locale, strict) {
+        var c;
+
+        if (typeof(locale) === 'boolean') {
+            strict = locale;
+            locale = undefined;
+        }
+        // object construction must be done this way.
+        // https://github.com/moment/moment/issues/1423
+        c = {};
+        c._isAMomentObject = true;
+        c._i = input;
+        c._f = format;
+        c._l = locale;
+        c._strict = strict;
+        c._isUTC = false;
+        c._pf = defaultParsingFlags();
+
+        return makeMoment(c);
+    };
+
+    moment.suppressDeprecationWarnings = false;
+
+    moment.createFromInputFallback = deprecate(
+        'moment construction falls back to js Date. This is ' +
+        'discouraged and will be removed in upcoming major ' +
+        'release. Please refer to ' +
+        'https://github.com/moment/moment/issues/1407 for more info.',
+        function (config) {
+            config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
+        }
+    );
+
+    // Pick a moment m from moments so that m[fn](other) is true for all
+    // other. This relies on the function fn to be transitive.
+    //
+    // moments should either be an array of moment objects or an array, whose
+    // first element is an array of moment objects.
+    function pickBy(fn, moments) {
+        var res, i;
+        if (moments.length === 1 && isArray(moments[0])) {
+            moments = moments[0];
+        }
+        if (!moments.length) {
+            return moment();
+        }
+        res = moments[0];
+        for (i = 1; i < moments.length; ++i) {
+            if (moments[i][fn](res)) {
+                res = moments[i];
+            }
+        }
+        return res;
+    }
+
+    moment.min = function () {
+        var args = [].slice.call(arguments, 0);
+
+        return pickBy('isBefore', args);
+    };
+
+    moment.max = function () {
+        var args = [].slice.call(arguments, 0);
+
+        return pickBy('isAfter', args);
+    };
+
+    // creating with utc
+    moment.utc = function (input, format, locale, strict) {
+        var c;
+
+        if (typeof(locale) === 'boolean') {
+            strict = locale;
+            locale = undefined;
+        }
+        // object construction must be done this way.
+        // https://github.com/moment/moment/issues/1423
+        c = {};
+        c._isAMomentObject = true;
+        c._useUTC = true;
+        c._isUTC = true;
+        c._l = locale;
+        c._i = input;
+        c._f = format;
+        c._strict = strict;
+        c._pf = defaultParsingFlags();
+
+        return makeMoment(c).utc();
+    };
+
+    // creating with unix timestamp (in seconds)
+    moment.unix = function (input) {
+        return moment(input * 1000);
+    };
+
+    // duration
+    moment.duration = function (input, key) {
+        var duration = input,
+            // matching against regexp is expensive, do it on demand
+            match = null,
+            sign,
+            ret,
+            parseIso,
+            diffRes;
+
+        if (moment.isDuration(input)) {
+            duration = {
+                ms: input._milliseconds,
+                d: input._days,
+                M: input._months
+            };
+        } else if (typeof input === 'number') {
+            duration = {};
+            if (key) {
+                duration[key] = input;
+            } else {
+                duration.milliseconds = input;
+            }
+        } else if (!!(match = aspNetTimeSpanJsonRegex.exec(input))) {
+            sign = (match[1] === '-') ? -1 : 1;
+            duration = {
+                y: 0,
+                d: toInt(match[DATE]) * sign,
+                h: toInt(match[HOUR]) * sign,
+                m: toInt(match[MINUTE]) * sign,
+                s: toInt(match[SECOND]) * sign,
+                ms: toInt(match[MILLISECOND]) * sign
+            };
+        } else if (!!(match = isoDurationRegex.exec(input))) {
+            sign = (match[1] === '-') ? -1 : 1;
+            parseIso = function (inp) {
+                // We'd normally use ~~inp for this, but unfortunately it also
+                // converts floats to ints.
+                // inp may be undefined, so careful calling replace on it.
+                var res = inp && parseFloat(inp.replace(',', '.'));
+                // apply sign while we're at it
+                return (isNaN(res) ? 0 : res) * sign;
+            };
+            duration = {
+                y: parseIso(match[2]),
+                M: parseIso(match[3]),
+                d: parseIso(match[4]),
+                h: parseIso(match[5]),
+                m: parseIso(match[6]),
+                s: parseIso(match[7]),
+                w: parseIso(match[8])
+            };
+        } else if (typeof duration === 'object' &&
+                ('from' in duration || 'to' in duration)) {
+            diffRes = momentsDifference(moment(duration.from), moment(duration.to));
+
+            duration = {};
+            duration.ms = diffRes.milliseconds;
+            duration.M = diffRes.months;
+        }
+
+        ret = new Duration(duration);
+
+        if (moment.isDuration(input) && hasOwnProp(input, '_locale')) {
+            ret._locale = input._locale;
+        }
+
+        return ret;
+    };
+
+    // version number
+    moment.version = VERSION;
+
+    // default format
+    moment.defaultFormat = isoFormat;
+
+    // constant that refers to the ISO standard
+    moment.ISO_8601 = function () {};
+
+    // Plugins that add properties should also add the key here (null value),
+    // so we can properly clone ourselves.
+    moment.momentProperties = momentProperties;
+
+    // This function will be called whenever a moment is mutated.
+    // It is intended to keep the offset in sync with the timezone.
+    moment.updateOffset = function () {};
+
+    // This function allows you to set a threshold for relative time strings
+    moment.relativeTimeThreshold = function (threshold, limit) {
+        if (relativeTimeThresholds[threshold] === undefined) {
+            return false;
+        }
+        if (limit === undefined) {
+            return relativeTimeThresholds[threshold];
+        }
+        relativeTimeThresholds[threshold] = limit;
+        return true;
+    };
+
+    moment.lang = deprecate(
+        'moment.lang is deprecated. Use moment.locale instead.',
+        function (key, value) {
+            return moment.locale(key, value);
+        }
+    );
+
+    // This function will load locale and then set the global locale.  If
+    // no arguments are passed in, it will simply return the current global
+    // locale key.
+    moment.locale = function (key, values) {
+        var data;
+        if (key) {
+            if (typeof(values) !== 'undefined') {
+                data = moment.defineLocale(key, values);
+            }
+            else {
+                data = moment.localeData(key);
+            }
+
+            if (data) {
+                moment.duration._locale = moment._locale = data;
+            }
+        }
+
+        return moment._locale._abbr;
+    };
+
+    moment.defineLocale = function (name, values) {
+        if (values !== null) {
+            values.abbr = name;
+            if (!locales[name]) {
+                locales[name] = new Locale();
+            }
+            locales[name].set(values);
+
+            // backwards compat for now: also set the locale
+            moment.locale(name);
+
+            return locales[name];
+        } else {
+            // useful for testing
+            delete locales[name];
+            return null;
+        }
+    };
+
+    moment.langData = deprecate(
+        'moment.langData is deprecated. Use moment.localeData instead.',
+        function (key) {
+            return moment.localeData(key);
+        }
+    );
+
+    // returns locale data
+    moment.localeData = function (key) {
+        var locale;
+
+        if (key && key._locale && key._locale._abbr) {
+            key = key._locale._abbr;
+        }
+
+        if (!key) {
+            return moment._locale;
+        }
+
+        if (!isArray(key)) {
+            //short-circuit everything else
+            locale = loadLocale(key);
+            if (locale) {
+                return locale;
+            }
+            key = [key];
+        }
+
+        return chooseLocale(key);
+    };
+
+    // compare moment object
+    moment.isMoment = function (obj) {
+        return obj instanceof Moment ||
+            (obj != null && hasOwnProp(obj, '_isAMomentObject'));
+    };
+
+    // for typechecking Duration objects
+    moment.isDuration = function (obj) {
+        return obj instanceof Duration;
+    };
+
+    for (i = lists.length - 1; i >= 0; --i) {
+        makeList(lists[i]);
+    }
+
+    moment.normalizeUnits = function (units) {
+        return normalizeUnits(units);
+    };
+
+    moment.invalid = function (flags) {
+        var m = moment.utc(NaN);
+        if (flags != null) {
+            extend(m._pf, flags);
+        }
+        else {
+            m._pf.userInvalidated = true;
+        }
+
+        return m;
+    };
+
+    moment.parseZone = function () {
+        return moment.apply(null, arguments).parseZone();
+    };
+
+    moment.parseTwoDigitYear = function (input) {
+        return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
+    };
+
+    /************************************
+        Moment Prototype
+    ************************************/
+
+
+    extend(moment.fn = Moment.prototype, {
+
+        clone : function () {
+            return moment(this);
+        },
+
+        valueOf : function () {
+            return +this._d + ((this._offset || 0) * 60000);
+        },
+
+        unix : function () {
+            return Math.floor(+this / 1000);
+        },
+
+        toString : function () {
+            return this.clone().locale('en').format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ');
+        },
+
+        toDate : function () {
+            return this._offset ? new Date(+this) : this._d;
+        },
+
+        toISOString : function () {
+            var m = moment(this).utc();
+            if (0 < m.year() && m.year() <= 9999) {
+                if ('function' === typeof Date.prototype.toISOString) {
+                    // native implementation is ~50x faster, use it when we can
+                    return this.toDate().toISOString();
+                } else {
+                    return formatMoment(m, 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
+                }
+            } else {
+                return formatMoment(m, 'YYYYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
+            }
+        },
+
+        toArray : function () {
+            var m = this;
+            return [
+                m.year(),
+                m.month(),
+                m.date(),
+                m.hours(),
+                m.minutes(),
+                m.seconds(),
+                m.milliseconds()
+            ];
+        },
+
+        isValid : function () {
+            return isValid(this);
+        },
+
+        isDSTShifted : function () {
+            if (this._a) {
+                return this.isValid() && compareArrays(this._a, (this._isUTC ? moment.utc(this._a) : moment(this._a)).toArray()) > 0;
+            }
+
+            return false;
+        },
+
+        parsingFlags : function () {
+            return extend({}, this._pf);
+        },
+
+        invalidAt: function () {
+            return this._pf.overflow;
+        },
+
+        utc : function (keepLocalTime) {
+            return this.zone(0, keepLocalTime);
+        },
+
+        local : function (keepLocalTime) {
+            if (this._isUTC) {
+                this.zone(0, keepLocalTime);
+                this._isUTC = false;
+
+                if (keepLocalTime) {
+                    this.add(this._dateTzOffset(), 'm');
+                }
+            }
+            return this;
+        },
+
+        format : function (inputString) {
+            var output = formatMoment(this, inputString || moment.defaultFormat);
+            return this.localeData().postformat(output);
+        },
+
+        add : createAdder(1, 'add'),
+
+        subtract : createAdder(-1, 'subtract'),
+
+        diff : function (input, units, asFloat) {
+            var that = makeAs(input, this),
+                zoneDiff = (this.zone() - that.zone()) * 6e4,
+                diff, output, daysAdjust;
+
+            units = normalizeUnits(units);
+
+            if (units === 'year' || units === 'month') {
+                // average number of days in the months in the given dates
+                diff = (this.daysInMonth() + that.daysInMonth()) * 432e5; // 24 * 60 * 60 * 1000 / 2
+                // difference in months
+                output = ((this.year() - that.year()) * 12) + (this.month() - that.month());
+                // adjust by taking difference in days, average number of days
+                // and dst in the given months.
+                daysAdjust = (this - moment(this).startOf('month')) -
+                    (that - moment(that).startOf('month'));
+                // same as above but with zones, to negate all dst
+                daysAdjust -= ((this.zone() - moment(this).startOf('month').zone()) -
+                        (that.zone() - moment(that).startOf('month').zone())) * 6e4;
+                output += daysAdjust / diff;
+                if (units === 'year') {
+                    output = output / 12;
+                }
+            } else {
+                diff = (this - that);
+                output = units === 'second' ? diff / 1e3 : // 1000
+                    units === 'minute' ? diff / 6e4 : // 1000 * 60
+                    units === 'hour' ? diff / 36e5 : // 1000 * 60 * 60
+                    units === 'day' ? (diff - zoneDiff) / 864e5 : // 1000 * 60 * 60 * 24, negate dst
+                    units === 'week' ? (diff - zoneDiff) / 6048e5 : // 1000 * 60 * 60 * 24 * 7, negate dst
+                    diff;
+            }
+            return asFloat ? output : absRound(output);
+        },
+
+        from : function (time, withoutSuffix) {
+            return moment.duration({to: this, from: time}).locale(this.locale()).humanize(!withoutSuffix);
+        },
+
+        fromNow : function (withoutSuffix) {
+            return this.from(moment(), withoutSuffix);
+        },
+
+        calendar : function (time) {
+            // We want to compare the start of today, vs this.
+            // Getting start-of-today depends on whether we're zone'd or not.
+            var now = time || moment(),
+                sod = makeAs(now, this).startOf('day'),
+                diff = this.diff(sod, 'days', true),
+                format = diff < -6 ? 'sameElse' :
+                    diff < -1 ? 'lastWeek' :
+                    diff < 0 ? 'lastDay' :
+                    diff < 1 ? 'sameDay' :
+                    diff < 2 ? 'nextDay' :
+                    diff < 7 ? 'nextWeek' : 'sameElse';
+            return this.format(this.localeData().calendar(format, this, moment(now)));
+        },
+
+        isLeapYear : function () {
+            return isLeapYear(this.year());
+        },
+
+        isDST : function () {
+            return (this.zone() < this.clone().month(0).zone() ||
+                this.zone() < this.clone().month(5).zone());
+        },
+
+        day : function (input) {
+            var day = this._isUTC ? this._d.getUTCDay() : this._d.getDay();
+            if (input != null) {
+                input = parseWeekday(input, this.localeData());
+                return this.add(input - day, 'd');
+            } else {
+                return day;
+            }
+        },
+
+        month : makeAccessor('Month', true),
+
+        startOf : function (units) {
+            units = normalizeUnits(units);
+            // the following switch intentionally omits break keywords
+            // to utilize falling through the cases.
+            switch (units) {
+            case 'year':
+                this.month(0);
+                /* falls through */
+            case 'quarter':
+            case 'month':
+                this.date(1);
+                /* falls through */
+            case 'week':
+            case 'isoWeek':
+            case 'day':
+                this.hours(0);
+                /* falls through */
+            case 'hour':
+                this.minutes(0);
+                /* falls through */
+            case 'minute':
+                this.seconds(0);
+                /* falls through */
+            case 'second':
+                this.milliseconds(0);
+                /* falls through */
+            }
+
+            // weeks are a special case
+            if (units === 'week') {
+                this.weekday(0);
+            } else if (units === 'isoWeek') {
+                this.isoWeekday(1);
+            }
+
+            // quarters are also special
+            if (units === 'quarter') {
+                this.month(Math.floor(this.month() / 3) * 3);
+            }
+
+            return this;
+        },
+
+        endOf: function (units) {
+            units = normalizeUnits(units);
+            if (units === undefined || units === 'millisecond') {
+                return this;
+            }
+            return this.startOf(units).add(1, (units === 'isoWeek' ? 'week' : units)).subtract(1, 'ms');
+        },
+
+        isAfter: function (input, units) {
+            var inputMs;
+            units = normalizeUnits(typeof units !== 'undefined' ? units : 'millisecond');
+            if (units === 'millisecond') {
+                input = moment.isMoment(input) ? input : moment(input);
+                return +this > +input;
+            } else {
+                inputMs = moment.isMoment(input) ? +input : +moment(input);
+                return inputMs < +this.clone().startOf(units);
+            }
+        },
+
+        isBefore: function (input, units) {
+            var inputMs;
+            units = normalizeUnits(typeof units !== 'undefined' ? units : 'millisecond');
+            if (units === 'millisecond') {
+                input = moment.isMoment(input) ? input : moment(input);
+                return +this < +input;
+            } else {
+                inputMs = moment.isMoment(input) ? +input : +moment(input);
+                return +this.clone().endOf(units) < inputMs;
+            }
+        },
+
+        isSame: function (input, units) {
+            var inputMs;
+            units = normalizeUnits(units || 'millisecond');
+            if (units === 'millisecond') {
+                input = moment.isMoment(input) ? input : moment(input);
+                return +this === +input;
+            } else {
+                inputMs = +moment(input);
+                return +(this.clone().startOf(units)) <= inputMs && inputMs <= +(this.clone().endOf(units));
+            }
+        },
+
+        min: deprecate(
+                 'moment().min is deprecated, use moment.min instead. https://github.com/moment/moment/issues/1548',
+                 function (other) {
+                     other = moment.apply(null, arguments);
+                     return other < this ? this : other;
+                 }
+         ),
+
+        max: deprecate(
+                'moment().max is deprecated, use moment.max instead. https://github.com/moment/moment/issues/1548',
+                function (other) {
+                    other = moment.apply(null, arguments);
+                    return other > this ? this : other;
+                }
+        ),
+
+        // keepLocalTime = true means only change the timezone, without
+        // affecting the local hour. So 5:31:26 +0300 --[zone(2, true)]-->
+        // 5:31:26 +0200 It is possible that 5:31:26 doesn't exist int zone
+        // +0200, so we adjust the time as needed, to be valid.
+        //
+        // Keeping the time actually adds/subtracts (one hour)
+        // from the actual represented time. That is why we call updateOffset
+        // a second time. In case it wants us to change the offset again
+        // _changeInProgress == true case, then we have to adjust, because
+        // there is no such time in the given timezone.
+        zone : function (input, keepLocalTime) {
+            var offset = this._offset || 0,
+                localAdjust;
+            if (input != null) {
+                if (typeof input === 'string') {
+                    input = timezoneMinutesFromString(input);
+                }
+                if (Math.abs(input) < 16) {
+                    input = input * 60;
+                }
+                if (!this._isUTC && keepLocalTime) {
+                    localAdjust = this._dateTzOffset();
+                }
+                this._offset = input;
+                this._isUTC = true;
+                if (localAdjust != null) {
+                    this.subtract(localAdjust, 'm');
+                }
+                if (offset !== input) {
+                    if (!keepLocalTime || this._changeInProgress) {
+                        addOrSubtractDurationFromMoment(this,
+                                moment.duration(offset - input, 'm'), 1, false);
+                    } else if (!this._changeInProgress) {
+                        this._changeInProgress = true;
+                        moment.updateOffset(this, true);
+                        this._changeInProgress = null;
+                    }
+                }
+            } else {
+                return this._isUTC ? offset : this._dateTzOffset();
+            }
+            return this;
+        },
+
+        zoneAbbr : function () {
+            return this._isUTC ? 'UTC' : '';
+        },
+
+        zoneName : function () {
+            return this._isUTC ? 'Coordinated Universal Time' : '';
+        },
+
+        parseZone : function () {
+            if (this._tzm) {
+                this.zone(this._tzm);
+            } else if (typeof this._i === 'string') {
+                this.zone(this._i);
+            }
+            return this;
+        },
+
+        hasAlignedHourOffset : function (input) {
+            if (!input) {
+                input = 0;
+            }
+            else {
+                input = moment(input).zone();
+            }
+
+            return (this.zone() - input) % 60 === 0;
+        },
+
+        daysInMonth : function () {
+            return daysInMonth(this.year(), this.month());
+        },
+
+        dayOfYear : function (input) {
+            var dayOfYear = round((moment(this).startOf('day') - moment(this).startOf('year')) / 864e5) + 1;
+            return input == null ? dayOfYear : this.add((input - dayOfYear), 'd');
+        },
+
+        quarter : function (input) {
+            return input == null ? Math.ceil((this.month() + 1) / 3) : this.month((input - 1) * 3 + this.month() % 3);
+        },
+
+        weekYear : function (input) {
+            var year = weekOfYear(this, this.localeData()._week.dow, this.localeData()._week.doy).year;
+            return input == null ? year : this.add((input - year), 'y');
+        },
+
+        isoWeekYear : function (input) {
+            var year = weekOfYear(this, 1, 4).year;
+            return input == null ? year : this.add((input - year), 'y');
+        },
+
+        week : function (input) {
+            var week = this.localeData().week(this);
+            return input == null ? week : this.add((input - week) * 7, 'd');
+        },
+
+        isoWeek : function (input) {
+            var week = weekOfYear(this, 1, 4).week;
+            return input == null ? week : this.add((input - week) * 7, 'd');
+        },
+
+        weekday : function (input) {
+            var weekday = (this.day() + 7 - this.localeData()._week.dow) % 7;
+            return input == null ? weekday : this.add(input - weekday, 'd');
+        },
+
+        isoWeekday : function (input) {
+            // behaves the same as moment#day except
+            // as a getter, returns 7 instead of 0 (1-7 range instead of 0-6)
+            // as a setter, sunday should belong to the previous week.
+            return input == null ? this.day() || 7 : this.day(this.day() % 7 ? input : input - 7);
+        },
+
+        isoWeeksInYear : function () {
+            return weeksInYear(this.year(), 1, 4);
+        },
+
+        weeksInYear : function () {
+            var weekInfo = this.localeData()._week;
+            return weeksInYear(this.year(), weekInfo.dow, weekInfo.doy);
+        },
+
+        get : function (units) {
+            units = normalizeUnits(units);
+            return this[units]();
+        },
+
+        set : function (units, value) {
+            units = normalizeUnits(units);
+            if (typeof this[units] === 'function') {
+                this[units](value);
+            }
+            return this;
+        },
+
+        // If passed a locale key, it will set the locale for this
+        // instance.  Otherwise, it will return the locale configuration
+        // variables for this instance.
+        locale : function (key) {
+            var newLocaleData;
+
+            if (key === undefined) {
+                return this._locale._abbr;
+            } else {
+                newLocaleData = moment.localeData(key);
+                if (newLocaleData != null) {
+                    this._locale = newLocaleData;
+                }
+                return this;
+            }
+        },
+
+        lang : deprecate(
+            'moment().lang() is deprecated. Instead, use moment().localeData() to get the language configuration. Use moment().locale() to change languages.',
+            function (key) {
+                if (key === undefined) {
+                    return this.localeData();
+                } else {
+                    return this.locale(key);
+                }
+            }
+        ),
+
+        localeData : function () {
+            return this._locale;
+        },
+
+        _dateTzOffset : function () {
+            // On Firefox.24 Date#getTimezoneOffset returns a floating point.
+            // https://github.com/moment/moment/pull/1871
+            return Math.round(this._d.getTimezoneOffset() / 15) * 15;
+        }
+    });
+
+    function rawMonthSetter(mom, value) {
+        var dayOfMonth;
+
+        // TODO: Move this out of here!
+        if (typeof value === 'string') {
+            value = mom.localeData().monthsParse(value);
+            // TODO: Another silent failure?
+            if (typeof value !== 'number') {
+                return mom;
+            }
+        }
+
+        dayOfMonth = Math.min(mom.date(),
+                daysInMonth(mom.year(), value));
+        mom._d['set' + (mom._isUTC ? 'UTC' : '') + 'Month'](value, dayOfMonth);
+        return mom;
+    }
+
+    function rawGetter(mom, unit) {
+        return mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]();
+    }
+
+    function rawSetter(mom, unit, value) {
+        if (unit === 'Month') {
+            return rawMonthSetter(mom, value);
+        } else {
+            return mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
+        }
+    }
+
+    function makeAccessor(unit, keepTime) {
+        return function (value) {
+            if (value != null) {
+                rawSetter(this, unit, value);
+                moment.updateOffset(this, keepTime);
+                return this;
+            } else {
+                return rawGetter(this, unit);
+            }
+        };
+    }
+
+    moment.fn.millisecond = moment.fn.milliseconds = makeAccessor('Milliseconds', false);
+    moment.fn.second = moment.fn.seconds = makeAccessor('Seconds', false);
+    moment.fn.minute = moment.fn.minutes = makeAccessor('Minutes', false);
+    // Setting the hour should keep the time, because the user explicitly
+    // specified which hour he wants. So trying to maintain the same hour (in
+    // a new timezone) makes sense. Adding/subtracting hours does not follow
+    // this rule.
+    moment.fn.hour = moment.fn.hours = makeAccessor('Hours', true);
+    // moment.fn.month is defined separately
+    moment.fn.date = makeAccessor('Date', true);
+    moment.fn.dates = deprecate('dates accessor is deprecated. Use date instead.', makeAccessor('Date', true));
+    moment.fn.year = makeAccessor('FullYear', true);
+    moment.fn.years = deprecate('years accessor is deprecated. Use year instead.', makeAccessor('FullYear', true));
+
+    // add plural methods
+    moment.fn.days = moment.fn.day;
+    moment.fn.months = moment.fn.month;
+    moment.fn.weeks = moment.fn.week;
+    moment.fn.isoWeeks = moment.fn.isoWeek;
+    moment.fn.quarters = moment.fn.quarter;
+
+    // add aliased format methods
+    moment.fn.toJSON = moment.fn.toISOString;
+
+    /************************************
+        Duration Prototype
+    ************************************/
+
+
+    function daysToYears (days) {
+        // 400 years have 146097 days (taking into account leap year rules)
+        return days * 400 / 146097;
+    }
+
+    function yearsToDays (years) {
+        // years * 365 + absRound(years / 4) -
+        //     absRound(years / 100) + absRound(years / 400);
+        return years * 146097 / 400;
+    }
+
+    extend(moment.duration.fn = Duration.prototype, {
+
+        _bubble : function () {
+            var milliseconds = this._milliseconds,
+                days = this._days,
+                months = this._months,
+                data = this._data,
+                seconds, minutes, hours, years = 0;
+
+            // The following code bubbles up values, see the tests for
+            // examples of what that means.
+            data.milliseconds = milliseconds % 1000;
+
+            seconds = absRound(milliseconds / 1000);
+            data.seconds = seconds % 60;
+
+            minutes = absRound(seconds / 60);
+            data.minutes = minutes % 60;
+
+            hours = absRound(minutes / 60);
+            data.hours = hours % 24;
+
+            days += absRound(hours / 24);
+
+            // Accurately convert days to years, assume start from year 0.
+            years = absRound(daysToYears(days));
+            days -= absRound(yearsToDays(years));
+
+            // 30 days to a month
+            // TODO (iskren): Use anchor date (like 1st Jan) to compute this.
+            months += absRound(days / 30);
+            days %= 30;
+
+            // 12 months -> 1 year
+            years += absRound(months / 12);
+            months %= 12;
+
+            data.days = days;
+            data.months = months;
+            data.years = years;
+        },
+
+        abs : function () {
+            this._milliseconds = Math.abs(this._milliseconds);
+            this._days = Math.abs(this._days);
+            this._months = Math.abs(this._months);
+
+            this._data.milliseconds = Math.abs(this._data.milliseconds);
+            this._data.seconds = Math.abs(this._data.seconds);
+            this._data.minutes = Math.abs(this._data.minutes);
+            this._data.hours = Math.abs(this._data.hours);
+            this._data.months = Math.abs(this._data.months);
+            this._data.years = Math.abs(this._data.years);
+
+            return this;
+        },
+
+        weeks : function () {
+            return absRound(this.days() / 7);
+        },
+
+        valueOf : function () {
+            return this._milliseconds +
+              this._days * 864e5 +
+              (this._months % 12) * 2592e6 +
+              toInt(this._months / 12) * 31536e6;
+        },
+
+        humanize : function (withSuffix) {
+            var output = relativeTime(this, !withSuffix, this.localeData());
+
+            if (withSuffix) {
+                output = this.localeData().pastFuture(+this, output);
+            }
+
+            return this.localeData().postformat(output);
+        },
+
+        add : function (input, val) {
+            // supports only 2.0-style add(1, 's') or add(moment)
+            var dur = moment.duration(input, val);
+
+            this._milliseconds += dur._milliseconds;
+            this._days += dur._days;
+            this._months += dur._months;
+
+            this._bubble();
+
+            return this;
+        },
+
+        subtract : function (input, val) {
+            var dur = moment.duration(input, val);
+
+            this._milliseconds -= dur._milliseconds;
+            this._days -= dur._days;
+            this._months -= dur._months;
+
+            this._bubble();
+
+            return this;
+        },
+
+        get : function (units) {
+            units = normalizeUnits(units);
+            return this[units.toLowerCase() + 's']();
+        },
+
+        as : function (units) {
+            var days, months;
+            units = normalizeUnits(units);
+
+            if (units === 'month' || units === 'year') {
+                days = this._days + this._milliseconds / 864e5;
+                months = this._months + daysToYears(days) * 12;
+                return units === 'month' ? months : months / 12;
+            } else {
+                // handle milliseconds separately because of floating point math errors (issue #1867)
+                days = this._days + Math.round(yearsToDays(this._months / 12));
+                switch (units) {
+                    case 'week': return days / 7 + this._milliseconds / 6048e5;
+                    case 'day': return days + this._milliseconds / 864e5;
+                    case 'hour': return days * 24 + this._milliseconds / 36e5;
+                    case 'minute': return days * 24 * 60 + this._milliseconds / 6e4;
+                    case 'second': return days * 24 * 60 * 60 + this._milliseconds / 1000;
+                    // Math.floor prevents floating point math errors here
+                    case 'millisecond': return Math.floor(days * 24 * 60 * 60 * 1000) + this._milliseconds;
+                    default: throw new Error('Unknown unit ' + units);
+                }
+            }
+        },
+
+        lang : moment.fn.lang,
+        locale : moment.fn.locale,
+
+        toIsoString : deprecate(
+            'toIsoString() is deprecated. Please use toISOString() instead ' +
+            '(notice the capitals)',
+            function () {
+                return this.toISOString();
+            }
+        ),
+
+        toISOString : function () {
+            // inspired by https://github.com/dordille/moment-isoduration/blob/master/moment.isoduration.js
+            var years = Math.abs(this.years()),
+                months = Math.abs(this.months()),
+                days = Math.abs(this.days()),
+                hours = Math.abs(this.hours()),
+                minutes = Math.abs(this.minutes()),
+                seconds = Math.abs(this.seconds() + this.milliseconds() / 1000);
+
+            if (!this.asSeconds()) {
+                // this is the same as C#'s (Noda) and python (isodate)...
+                // but not other JS (goog.date)
+                return 'P0D';
+            }
+
+            return (this.asSeconds() < 0 ? '-' : '') +
+                'P' +
+                (years ? years + 'Y' : '') +
+                (months ? months + 'M' : '') +
+                (days ? days + 'D' : '') +
+                ((hours || minutes || seconds) ? 'T' : '') +
+                (hours ? hours + 'H' : '') +
+                (minutes ? minutes + 'M' : '') +
+                (seconds ? seconds + 'S' : '');
+        },
+
+        localeData : function () {
+            return this._locale;
+        }
+    });
+
+    moment.duration.fn.toString = moment.duration.fn.toISOString;
+
+    function makeDurationGetter(name) {
+        moment.duration.fn[name] = function () {
+            return this._data[name];
+        };
+    }
+
+    for (i in unitMillisecondFactors) {
+        if (hasOwnProp(unitMillisecondFactors, i)) {
+            makeDurationGetter(i.toLowerCase());
+        }
+    }
+
+    moment.duration.fn.asMilliseconds = function () {
+        return this.as('ms');
+    };
+    moment.duration.fn.asSeconds = function () {
+        return this.as('s');
+    };
+    moment.duration.fn.asMinutes = function () {
+        return this.as('m');
+    };
+    moment.duration.fn.asHours = function () {
+        return this.as('h');
+    };
+    moment.duration.fn.asDays = function () {
+        return this.as('d');
+    };
+    moment.duration.fn.asWeeks = function () {
+        return this.as('weeks');
+    };
+    moment.duration.fn.asMonths = function () {
+        return this.as('M');
+    };
+    moment.duration.fn.asYears = function () {
+        return this.as('y');
+    };
+
+    /************************************
+        Default Locale
+    ************************************/
+
+
+    // Set default locale, other locale will inherit from English.
+    moment.locale('en', {
+        ordinalParse: /\d{1,2}(th|st|nd|rd)/,
+        ordinal : function (number) {
+            var b = number % 10,
+                output = (toInt(number % 100 / 10) === 1) ? 'th' :
+                (b === 1) ? 'st' :
+                (b === 2) ? 'nd' :
+                (b === 3) ? 'rd' : 'th';
+            return number + output;
+        }
+    });
+
+    /* EMBED_LOCALES */
+
+    /************************************
+        Exposing Moment
+    ************************************/
+
+    function makeGlobal(shouldDeprecate) {
+        /*global ender:false */
+        if (typeof ender !== 'undefined') {
+            return;
+        }
+        oldGlobalMoment = globalScope.moment;
+        if (shouldDeprecate) {
+            globalScope.moment = deprecate(
+                    'Accessing Moment through the global scope is ' +
+                    'deprecated, and will be removed in an upcoming ' +
+                    'release.',
+                    moment);
+        } else {
+            globalScope.moment = moment;
+        }
+    }
+
+    // CommonJS module is defined
+    if (hasModule) {
+        module.exports = moment;
+    } else if (typeof define === 'function' && define.amd) {
+        define('moment', function (require, exports, module) {
+            if (module.config && module.config() && module.config().noGlobal === true) {
+                // release the global variable
+                globalScope.moment = oldGlobalMoment;
+            }
+
+            return moment;
+        });
+        makeGlobal(true);
+    } else {
+        makeGlobal();
+    }
+}).call(this);
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],4:[function(require,module,exports){
+/*! version : 4.15.35
+ =========================================================
+ bootstrap-datetimejs
+ https://github.com/Eonasdan/bootstrap-datetimepicker
+ Copyright (c) 2015 Jonathan Peterson
+ =========================================================
+ */
+/*
+ The MIT License (MIT)
+
+ Copyright (c) 2015 Jonathan Peterson
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
+ */
+/*global define:false */
+/*global exports:false */
+/*global require:false */
+/*global jQuery:false */
+/*global moment:false */
+(function (factory) {
+    'use strict';
+    if (typeof define === 'function' && define.amd) {
+        // AMD is used - Register as an anonymous module.
+        define(['jquery', 'moment'], factory);
+    } else if (typeof exports === 'object') {
+        factory(require('jquery'), require('moment'));
+    } else {
+        // Neither AMD nor CommonJS used. Use global variables.
+        if (typeof jQuery === 'undefined') {
+            throw 'bootstrap-datetimepicker requires jQuery to be loaded first';
+        }
+        if (typeof moment === 'undefined') {
+            throw 'bootstrap-datetimepicker requires Moment.js to be loaded first';
+        }
+        factory(jQuery, moment);
+    }
+}(function ($, moment) {
+    'use strict';
+    if (!moment) {
+        throw new Error('bootstrap-datetimepicker requires Moment.js to be loaded first');
+    }
+
+    var dateTimePicker = function (element, options) {
+        var picker = {},
+            date = moment().startOf('d'),
+            viewDate = date.clone(),
+            unset = true,
+            input,
+            component = false,
+            widget = false,
+            use24Hours,
+            minViewModeNumber = 0,
+            actualFormat,
+            parseFormats,
+            currentViewMode,
+            datePickerModes = [
+                {
+                    clsName: 'days',
+                    navFnc: 'M',
+                    navStep: 1
+                },
+                {
+                    clsName: 'months',
+                    navFnc: 'y',
+                    navStep: 1
+                },
+                {
+                    clsName: 'years',
+                    navFnc: 'y',
+                    navStep: 10
+                },
+                {
+                    clsName: 'decades',
+                    navFnc: 'y',
+                    navStep: 100
+                }
+            ],
+            viewModes = ['days', 'months', 'years', 'decades'],
+            verticalModes = ['top', 'bottom', 'auto'],
+            horizontalModes = ['left', 'right', 'auto'],
+            toolbarPlacements = ['default', 'top', 'bottom'],
+            keyMap = {
+                'up': 38,
+                38: 'up',
+                'down': 40,
+                40: 'down',
+                'left': 37,
+                37: 'left',
+                'right': 39,
+                39: 'right',
+                'tab': 9,
+                9: 'tab',
+                'escape': 27,
+                27: 'escape',
+                'enter': 13,
+                13: 'enter',
+                'pageUp': 33,
+                33: 'pageUp',
+                'pageDown': 34,
+                34: 'pageDown',
+                'shift': 16,
+                16: 'shift',
+                'control': 17,
+                17: 'control',
+                'space': 32,
+                32: 'space',
+                't': 84,
+                84: 't',
+                'delete': 46,
+                46: 'delete'
+            },
+            keyState = {},
+
+            /********************************************************************************
+             *
+             * Private functions
+             *
+             ********************************************************************************/
+            isEnabled = function (granularity) {
+                if (typeof granularity !== 'string' || granularity.length > 1) {
+                    throw new TypeError('isEnabled expects a single character string parameter');
+                }
+                switch (granularity) {
+                    case 'y':
+                        return actualFormat.indexOf('Y') !== -1;
+                    case 'M':
+                        return actualFormat.indexOf('M') !== -1;
+                    case 'd':
+                        return actualFormat.toLowerCase().indexOf('d') !== -1;
+                    case 'h':
+                    case 'H':
+                        return actualFormat.toLowerCase().indexOf('h') !== -1;
+                    case 'm':
+                        return actualFormat.indexOf('m') !== -1;
+                    case 's':
+                        return actualFormat.indexOf('s') !== -1;
+                    default:
+                        return false;
+                }
+            },
+            hasTime = function () {
+                return (isEnabled('h') || isEnabled('m') || isEnabled('s'));
+            },
+
+            hasDate = function () {
+                return (isEnabled('y') || isEnabled('M') || isEnabled('d'));
+            },
+
+            getDatePickerTemplate = function () {
+                var headTemplate = $('<thead>')
+                        .append($('<tr>')
+                            .append($('<th>').addClass('prev').attr('data-action', 'previous')
+                                .append($('<span>').addClass(options.icons.previous))
+                                )
+                            .append($('<th>').addClass('picker-switch').attr('data-action', 'pickerSwitch').attr('colspan', (options.calendarWeeks ? '6' : '5')))
+                            .append($('<th>').addClass('next').attr('data-action', 'next')
+                                .append($('<span>').addClass(options.icons.next))
+                                )
+                            ),
+                    contTemplate = $('<tbody>')
+                        .append($('<tr>')
+                            .append($('<td>').attr('colspan', (options.calendarWeeks ? '8' : '7')))
+                            );
+
+                return [
+                    $('<div>').addClass('datepicker-days')
+                        .append($('<table>').addClass('table-condensed')
+                            .append(headTemplate)
+                            .append($('<tbody>'))
+                            ),
+                    $('<div>').addClass('datepicker-months')
+                        .append($('<table>').addClass('table-condensed')
+                            .append(headTemplate.clone())
+                            .append(contTemplate.clone())
+                            ),
+                    $('<div>').addClass('datepicker-years')
+                        .append($('<table>').addClass('table-condensed')
+                            .append(headTemplate.clone())
+                            .append(contTemplate.clone())
+                            ),
+                    $('<div>').addClass('datepicker-decades')
+                        .append($('<table>').addClass('table-condensed')
+                            .append(headTemplate.clone())
+                            .append(contTemplate.clone())
+                            )
+                ];
+            },
+
+            getTimePickerMainTemplate = function () {
+                var topRow = $('<tr>'),
+                    middleRow = $('<tr>'),
+                    bottomRow = $('<tr>');
+
+                if (isEnabled('h')) {
+                    topRow.append($('<td>')
+                        .append($('<a>').attr({href: '#', tabindex: '-1', 'title':'Increment Hour'}).addClass('btn').attr('data-action', 'incrementHours')
+                            .append($('<span>').addClass(options.icons.up))));
+                    middleRow.append($('<td>')
+                        .append($('<span>').addClass('timepicker-hour').attr({'data-time-component':'hours', 'title':'Pick Hour'}).attr('data-action', 'showHours')));
+                    bottomRow.append($('<td>')
+                        .append($('<a>').attr({href: '#', tabindex: '-1', 'title':'Decrement Hour'}).addClass('btn').attr('data-action', 'decrementHours')
+                            .append($('<span>').addClass(options.icons.down))));
+                }
+                if (isEnabled('m')) {
+                    if (isEnabled('h')) {
+                        topRow.append($('<td>').addClass('separator'));
+                        middleRow.append($('<td>').addClass('separator').html(':'));
+                        bottomRow.append($('<td>').addClass('separator'));
+                    }
+                    topRow.append($('<td>')
+                        .append($('<a>').attr({href: '#', tabindex: '-1', 'title':'Increment Minute'}).addClass('btn').attr('data-action', 'incrementMinutes')
+                            .append($('<span>').addClass(options.icons.up))));
+                    middleRow.append($('<td>')
+                        .append($('<span>').addClass('timepicker-minute').attr({'data-time-component': 'minutes', 'title':'Pick Minute'}).attr('data-action', 'showMinutes')));
+                    bottomRow.append($('<td>')
+                        .append($('<a>').attr({href: '#', tabindex: '-1', 'title':'Decrement Minute'}).addClass('btn').attr('data-action', 'decrementMinutes')
+                            .append($('<span>').addClass(options.icons.down))));
+                }
+                if (isEnabled('s')) {
+                    if (isEnabled('m')) {
+                        topRow.append($('<td>').addClass('separator'));
+                        middleRow.append($('<td>').addClass('separator').html(':'));
+                        bottomRow.append($('<td>').addClass('separator'));
+                    }
+                    topRow.append($('<td>')
+                        .append($('<a>').attr({href: '#', tabindex: '-1', 'title':'Increment Second'}).addClass('btn').attr('data-action', 'incrementSeconds')
+                            .append($('<span>').addClass(options.icons.up))));
+                    middleRow.append($('<td>')
+                        .append($('<span>').addClass('timepicker-second').attr({'data-time-component': 'seconds', 'title':'Pick Second'}).attr('data-action', 'showSeconds')));
+                    bottomRow.append($('<td>')
+                        .append($('<a>').attr({href: '#', tabindex: '-1', 'title':'Decrement Second'}).addClass('btn').attr('data-action', 'decrementSeconds')
+                            .append($('<span>').addClass(options.icons.down))));
+                }
+
+                if (!use24Hours) {
+                    topRow.append($('<td>').addClass('separator'));
+                    middleRow.append($('<td>')
+                        .append($('<button>').addClass('btn btn-primary').attr({'data-action': 'togglePeriod', tabindex: '-1', 'title':'Toggle Period'})));
+                    bottomRow.append($('<td>').addClass('separator'));
+                }
+
+                return $('<div>').addClass('timepicker-picker')
+                    .append($('<table>').addClass('table-condensed')
+                        .append([topRow, middleRow, bottomRow]));
+            },
+
+            getTimePickerTemplate = function () {
+                var hoursView = $('<div>').addClass('timepicker-hours')
+                        .append($('<table>').addClass('table-condensed')),
+                    minutesView = $('<div>').addClass('timepicker-minutes')
+                        .append($('<table>').addClass('table-condensed')),
+                    secondsView = $('<div>').addClass('timepicker-seconds')
+                        .append($('<table>').addClass('table-condensed')),
+                    ret = [getTimePickerMainTemplate()];
+
+                if (isEnabled('h')) {
+                    ret.push(hoursView);
+                }
+                if (isEnabled('m')) {
+                    ret.push(minutesView);
+                }
+                if (isEnabled('s')) {
+                    ret.push(secondsView);
+                }
+
+                return ret;
+            },
+
+            getToolbar = function () {
+                var row = [];
+                if (options.showTodayButton) {
+                    row.push($('<td>').append($('<a>').attr({'data-action':'today', 'title': options.tooltips.today}).append($('<span>').addClass(options.icons.today))));
+                }
+                if (!options.sideBySide && hasDate() && hasTime()) {
+                    row.push($('<td>').append($('<a>').attr({'data-action':'togglePicker', 'title':'Select Time'}).append($('<span>').addClass(options.icons.time))));
+                }
+                if (options.showClear) {
+                    row.push($('<td>').append($('<a>').attr({'data-action':'clear', 'title': options.tooltips.clear}).append($('<span>').addClass(options.icons.clear))));
+                }
+                if (options.showClose) {
+                    row.push($('<td>').append($('<a>').attr({'data-action':'close', 'title': options.tooltips.close}).append($('<span>').addClass(options.icons.close))));
+                }
+                return $('<table>').addClass('table-condensed').append($('<tbody>').append($('<tr>').append(row)));
+            },
+
+            getTemplate = function () {
+                var template = $('<div>').addClass('bootstrap-datetimepicker-widget dropdown-menu'),
+                    dateView = $('<div>').addClass('datepicker').append(getDatePickerTemplate()),
+                    timeView = $('<div>').addClass('timepicker').append(getTimePickerTemplate()),
+                    content = $('<ul>').addClass('list-unstyled'),
+                    toolbar = $('<li>').addClass('picker-switch' + (options.collapse ? ' accordion-toggle' : '')).append(getToolbar());
+
+                if (options.inline) {
+                    template.removeClass('dropdown-menu');
+                }
+
+                if (use24Hours) {
+                    template.addClass('usetwentyfour');
+                }
+                if (isEnabled('s') && !use24Hours) {
+                    template.addClass('wider');
+                }
+
+                if (options.sideBySide && hasDate() && hasTime()) {
+                    template.addClass('timepicker-sbs');
+                    if (options.toolbarPlacement === 'top') {
+                        template.append(toolbar);
+                    }
+                    template.append(
+                        $('<div>').addClass('row')
+                            .append(dateView.addClass('col-md-6'))
+                            .append(timeView.addClass('col-md-6'))
+                    );
+                    if (options.toolbarPlacement === 'bottom') {
+                        template.append(toolbar);
+                    }
+                    return template;
+                }
+
+                if (options.toolbarPlacement === 'top') {
+                    content.append(toolbar);
+                }
+                if (hasDate()) {
+                    content.append($('<li>').addClass((options.collapse && hasTime() ? 'collapse in' : '')).append(dateView));
+                }
+                if (options.toolbarPlacement === 'default') {
+                    content.append(toolbar);
+                }
+                if (hasTime()) {
+                    content.append($('<li>').addClass((options.collapse && hasDate() ? 'collapse' : '')).append(timeView));
+                }
+                if (options.toolbarPlacement === 'bottom') {
+                    content.append(toolbar);
+                }
+                return template.append(content);
+            },
+
+            dataToOptions = function () {
+                var eData,
+                    dataOptions = {};
+
+                if (element.is('input') || options.inline) {
+                    eData = element.data();
+                } else {
+                    eData = element.find('input').data();
+                }
+
+                if (eData.dateOptions && eData.dateOptions instanceof Object) {
+                    dataOptions = $.extend(true, dataOptions, eData.dateOptions);
+                }
+
+                $.each(options, function (key) {
+                    var attributeName = 'date' + key.charAt(0).toUpperCase() + key.slice(1);
+                    if (eData[attributeName] !== undefined) {
+                        dataOptions[key] = eData[attributeName];
+                    }
+                });
+                return dataOptions;
+            },
+
+            place = function () {
+                var position = (component || element).position(),
+                    offset = (component || element).offset(),
+                    vertical = options.widgetPositioning.vertical,
+                    horizontal = options.widgetPositioning.horizontal,
+                    parent;
+
+                if (options.widgetParent) {
+                    parent = options.widgetParent.append(widget);
+                } else if (element.is('input')) {
+                    parent = element.after(widget).parent();
+                } else if (options.inline) {
+                    parent = element.append(widget);
+                    return;
+                } else {
+                    parent = element;
+                    element.children().first().after(widget);
+                }
+
+                // Top and bottom logic
+                if (vertical === 'auto') {
+                    if (offset.top + widget.height() * 1.5 >= $(window).height() + $(window).scrollTop() &&
+                        widget.height() + element.outerHeight() < offset.top) {
+                        vertical = 'top';
+                    } else {
+                        vertical = 'bottom';
+                    }
+                }
+
+                // Left and right logic
+                if (horizontal === 'auto') {
+                    if (parent.width() < offset.left + widget.outerWidth() / 2 &&
+                        offset.left + widget.outerWidth() > $(window).width()) {
+                        horizontal = 'right';
+                    } else {
+                        horizontal = 'left';
+                    }
+                }
+
+                if (vertical === 'top') {
+                    widget.addClass('top').removeClass('bottom');
+                } else {
+                    widget.addClass('bottom').removeClass('top');
+                }
+
+                if (horizontal === 'right') {
+                    widget.addClass('pull-right');
+                } else {
+                    widget.removeClass('pull-right');
+                }
+
+                // find the first parent element that has a relative css positioning
+                if (parent.css('position') !== 'relative') {
+                    parent = parent.parents().filter(function () {
+                        return $(this).css('position') === 'relative';
+                    }).first();
+                }
+
+                if (parent.length === 0) {
+                    throw new Error('datetimepicker component should be placed within a relative positioned container');
+                }
+
+                widget.css({
+                    top: vertical === 'top' ? 'auto' : position.top + element.outerHeight(),
+                    bottom: vertical === 'top' ? position.top + element.outerHeight() : 'auto',
+                    left: horizontal === 'left' ? (parent === element ? 0 : position.left) : 'auto',
+                    right: horizontal === 'left' ? 'auto' : parent.outerWidth() - element.outerWidth() - (parent === element ? 0 : position.left)
+                });
+            },
+
+            notifyEvent = function (e) {
+                if (e.type === 'dp.change' && ((e.date && e.date.isSame(e.oldDate)) || (!e.date && !e.oldDate))) {
+                    return;
+                }
+                element.trigger(e);
+            },
+
+            viewUpdate = function (e) {
+                if (e === 'y') {
+                    e = 'YYYY';
+                }
+                notifyEvent({
+                    type: 'dp.update',
+                    change: e,
+                    viewDate: viewDate.clone()
+                });
+            },
+
+            showMode = function (dir) {
+                if (!widget) {
+                    return;
+                }
+                if (dir) {
+                    currentViewMode = Math.max(minViewModeNumber, Math.min(3, currentViewMode + dir));
+                }
+                widget.find('.datepicker > div').hide().filter('.datepicker-' + datePickerModes[currentViewMode].clsName).show();
+            },
+
+            fillDow = function () {
+                var row = $('<tr>'),
+                    currentDate = viewDate.clone().startOf('w').startOf('d');
+
+                if (options.calendarWeeks === true) {
+                    row.append($('<th>').addClass('cw').text('#'));
+                }
+
+                while (currentDate.isBefore(viewDate.clone().endOf('w'))) {
+                    row.append($('<th>').addClass('dow').text(currentDate.format('dd')));
+                    currentDate.add(1, 'd');
+                }
+                widget.find('.datepicker-days thead').append(row);
+            },
+
+            isInDisabledDates = function (testDate) {
+                return options.disabledDates[testDate.format('YYYY-MM-DD')] === true;
+            },
+
+            isInEnabledDates = function (testDate) {
+                return options.enabledDates[testDate.format('YYYY-MM-DD')] === true;
+            },
+
+            isInDisabledHours = function (testDate) {
+                return options.disabledHours[testDate.format('H')] === true;
+            },
+
+            isInEnabledHours = function (testDate) {
+                return options.enabledHours[testDate.format('H')] === true;
+            },
+
+            isValid = function (targetMoment, granularity) {
+                if (!targetMoment.isValid()) {
+                    return false;
+                }
+                if (options.disabledDates && granularity === 'd' && isInDisabledDates(targetMoment)) {
+                    return false;
+                }
+                if (options.enabledDates && granularity === 'd' && !isInEnabledDates(targetMoment)) {
+                    return false;
+                }
+                if (options.minDate && targetMoment.isBefore(options.minDate, granularity)) {
+                    return false;
+                }
+                if (options.maxDate && targetMoment.isAfter(options.maxDate, granularity)) {
+                    return false;
+                }
+                if (options.daysOfWeekDisabled && granularity === 'd' && options.daysOfWeekDisabled.indexOf(targetMoment.day()) !== -1) {
+                    return false;
+                }
+                if (options.disabledHours && (granularity === 'h' || granularity === 'm' || granularity === 's') && isInDisabledHours(targetMoment)) {
+                    return false;
+                }
+                if (options.enabledHours && (granularity === 'h' || granularity === 'm' || granularity === 's') && !isInEnabledHours(targetMoment)) {
+                    return false;
+                }
+                if (options.disabledTimeIntervals && (granularity === 'h' || granularity === 'm' || granularity === 's')) {
+                    var found = false;
+                    $.each(options.disabledTimeIntervals, function () {
+                        if (targetMoment.isBetween(this[0], this[1])) {
+                            found = true;
+                            return false;
+                        }
+                    });
+                    if (found) {
+                        return false;
+                    }
+                }
+                return true;
+            },
+
+            fillMonths = function () {
+                var spans = [],
+                    monthsShort = viewDate.clone().startOf('y').startOf('d');
+                while (monthsShort.isSame(viewDate, 'y')) {
+                    spans.push($('<span>').attr('data-action', 'selectMonth').addClass('month').text(monthsShort.format('MMM')));
+                    monthsShort.add(1, 'M');
+                }
+                widget.find('.datepicker-months td').empty().append(spans);
+            },
+
+            updateMonths = function () {
+                var monthsView = widget.find('.datepicker-months'),
+                    monthsViewHeader = monthsView.find('th'),
+                    months = monthsView.find('tbody').find('span');
+
+                monthsViewHeader.eq(0).find('span').attr('title', options.tooltips.prevYear);
+                monthsViewHeader.eq(1).attr('title', options.tooltips.selectYear);
+                monthsViewHeader.eq(2).find('span').attr('title', options.tooltips.nextYear);
+
+                monthsView.find('.disabled').removeClass('disabled');
+
+                if (!isValid(viewDate.clone().subtract(1, 'y'), 'y')) {
+                    monthsViewHeader.eq(0).addClass('disabled');
+                }
+
+                monthsViewHeader.eq(1).text(viewDate.year());
+
+                if (!isValid(viewDate.clone().add(1, 'y'), 'y')) {
+                    monthsViewHeader.eq(2).addClass('disabled');
+                }
+
+                months.removeClass('active');
+                if (date.isSame(viewDate, 'y') && !unset) {
+                    months.eq(date.month()).addClass('active');
+                }
+
+                months.each(function (index) {
+                    if (!isValid(viewDate.clone().month(index), 'M')) {
+                        $(this).addClass('disabled');
+                    }
+                });
+            },
+
+            updateYears = function () {
+                var yearsView = widget.find('.datepicker-years'),
+                    yearsViewHeader = yearsView.find('th'),
+                    startYear = viewDate.clone().subtract(5, 'y'),
+                    endYear = viewDate.clone().add(6, 'y'),
+                    html = '';
+
+                yearsViewHeader.eq(0).find('span').attr('title', options.tooltips.nextDecade);
+                yearsViewHeader.eq(1).attr('title', options.tooltips.selectDecade);
+                yearsViewHeader.eq(2).find('span').attr('title', options.tooltips.prevDecade);
+
+                yearsView.find('.disabled').removeClass('disabled');
+
+                if (options.minDate && options.minDate.isAfter(startYear, 'y')) {
+                    yearsViewHeader.eq(0).addClass('disabled');
+                }
+
+                yearsViewHeader.eq(1).text(startYear.year() + '-' + endYear.year());
+
+                if (options.maxDate && options.maxDate.isBefore(endYear, 'y')) {
+                    yearsViewHeader.eq(2).addClass('disabled');
+                }
+
+                while (!startYear.isAfter(endYear, 'y')) {
+                    html += '<span data-action="selectYear" class="year' + (startYear.isSame(date, 'y') && !unset ? ' active' : '') + (!isValid(startYear, 'y') ? ' disabled' : '') + '">' + startYear.year() + '</span>';
+                    startYear.add(1, 'y');
+                }
+
+                yearsView.find('td').html(html);
+            },
+
+            updateDecades = function () {
+                var decadesView = widget.find('.datepicker-decades'),
+                    decadesViewHeader = decadesView.find('th'),
+                    startDecade = viewDate.isBefore(moment({y: 1999})) ? moment({y: 1899}) : moment({y: 1999}),
+                    endDecade = startDecade.clone().add(100, 'y'),
+                    html = '';
+
+                decadesViewHeader.eq(0).find('span').attr('title', options.tooltips.prevCentury);
+                decadesViewHeader.eq(2).find('span').attr('title', options.tooltips.nextCentury);
+
+                decadesView.find('.disabled').removeClass('disabled');
+
+                if (startDecade.isSame(moment({y: 1900})) || (options.minDate && options.minDate.isAfter(startDecade, 'y'))) {
+                    decadesViewHeader.eq(0).addClass('disabled');
+                }
+
+                decadesViewHeader.eq(1).text(startDecade.year() + '-' + endDecade.year());
+
+                if (startDecade.isSame(moment({y: 2000})) || (options.maxDate && options.maxDate.isBefore(endDecade, 'y'))) {
+                    decadesViewHeader.eq(2).addClass('disabled');
+                }
+
+                while (!startDecade.isAfter(endDecade, 'y')) {
+                    html += '<span data-action="selectDecade" class="decade' + (startDecade.isSame(date, 'y') ? ' active' : '') +
+                        (!isValid(startDecade, 'y') ? ' disabled' : '') + '" data-selection="' + (startDecade.year() + 6) + '">' + (startDecade.year() + 1) + ' - ' + (startDecade.year() + 12) + '</span>';
+                    startDecade.add(12, 'y');
+                }
+                html += '<span></span><span></span><span></span>'; //push the dangling block over, at least this way it's even
+
+                decadesView.find('td').html(html);
+            },
+
+            fillDate = function () {
+                var daysView = widget.find('.datepicker-days'),
+                    daysViewHeader = daysView.find('th'),
+                    currentDate,
+                    html = [],
+                    row,
+                    clsName,
+                    i;
+
+                if (!hasDate()) {
+                    return;
+                }
+
+                daysViewHeader.eq(0).find('span').attr('title', options.tooltips.prevMonth);
+                daysViewHeader.eq(1).attr('title', options.tooltips.selectMonth);
+                daysViewHeader.eq(2).find('span').attr('title', options.tooltips.nextMonth);
+
+                daysView.find('.disabled').removeClass('disabled');
+                daysViewHeader.eq(1).text(viewDate.format(options.dayViewHeaderFormat));
+
+                if (!isValid(viewDate.clone().subtract(1, 'M'), 'M')) {
+                    daysViewHeader.eq(0).addClass('disabled');
+                }
+                if (!isValid(viewDate.clone().add(1, 'M'), 'M')) {
+                    daysViewHeader.eq(2).addClass('disabled');
+                }
+
+                currentDate = viewDate.clone().startOf('M').startOf('w').startOf('d');
+
+                for (i = 0; i < 42; i++) { //always display 42 days (should show 6 weeks)
+                    if (currentDate.weekday() === 0) {
+                        row = $('<tr>');
+                        if (options.calendarWeeks) {
+                            row.append('<td class="cw">' + currentDate.week() + '</td>');
+                        }
+                        html.push(row);
+                    }
+                    clsName = '';
+                    if (currentDate.isBefore(viewDate, 'M')) {
+                        clsName += ' old';
+                    }
+                    if (currentDate.isAfter(viewDate, 'M')) {
+                        clsName += ' new';
+                    }
+                    if (currentDate.isSame(date, 'd') && !unset) {
+                        clsName += ' active';
+                    }
+                    if (!isValid(currentDate, 'd')) {
+                        clsName += ' disabled';
+                    }
+                    if (currentDate.isSame(moment(), 'd')) {
+                        clsName += ' today';
+                    }
+                    if (currentDate.day() === 0 || currentDate.day() === 6) {
+                        clsName += ' weekend';
+                    }
+                    row.append('<td data-action="selectDay" data-day="' + currentDate.format('L') + '" class="day' + clsName + '">' + currentDate.date() + '</td>');
+                    currentDate.add(1, 'd');
+                }
+
+                daysView.find('tbody').empty().append(html);
+
+                updateMonths();
+
+                updateYears();
+
+                updateDecades();
+            },
+
+            fillHours = function () {
+                var table = widget.find('.timepicker-hours table'),
+                    currentHour = viewDate.clone().startOf('d'),
+                    html = [],
+                    row = $('<tr>');
+
+                if (viewDate.hour() > 11 && !use24Hours) {
+                    currentHour.hour(12);
+                }
+                while (currentHour.isSame(viewDate, 'd') && (use24Hours || (viewDate.hour() < 12 && currentHour.hour() < 12) || viewDate.hour() > 11)) {
+                    if (currentHour.hour() % 4 === 0) {
+                        row = $('<tr>');
+                        html.push(row);
+                    }
+                    row.append('<td data-action="selectHour" class="hour' + (!isValid(currentHour, 'h') ? ' disabled' : '') + '">' + currentHour.format(use24Hours ? 'HH' : 'hh') + '</td>');
+                    currentHour.add(1, 'h');
+                }
+                table.empty().append(html);
+            },
+
+            fillMinutes = function () {
+                var table = widget.find('.timepicker-minutes table'),
+                    currentMinute = viewDate.clone().startOf('h'),
+                    html = [],
+                    row = $('<tr>'),
+                    step = options.stepping === 1 ? 5 : options.stepping;
+
+                while (viewDate.isSame(currentMinute, 'h')) {
+                    if (currentMinute.minute() % (step * 4) === 0) {
+                        row = $('<tr>');
+                        html.push(row);
+                    }
+                    row.append('<td data-action="selectMinute" class="minute' + (!isValid(currentMinute, 'm') ? ' disabled' : '') + '">' + currentMinute.format('mm') + '</td>');
+                    currentMinute.add(step, 'm');
+                }
+                table.empty().append(html);
+            },
+
+            fillSeconds = function () {
+                var table = widget.find('.timepicker-seconds table'),
+                    currentSecond = viewDate.clone().startOf('m'),
+                    html = [],
+                    row = $('<tr>');
+
+                while (viewDate.isSame(currentSecond, 'm')) {
+                    if (currentSecond.second() % 20 === 0) {
+                        row = $('<tr>');
+                        html.push(row);
+                    }
+                    row.append('<td data-action="selectSecond" class="second' + (!isValid(currentSecond, 's') ? ' disabled' : '') + '">' + currentSecond.format('ss') + '</td>');
+                    currentSecond.add(5, 's');
+                }
+
+                table.empty().append(html);
+            },
+
+            fillTime = function () {
+                var toggle, newDate, timeComponents = widget.find('.timepicker span[data-time-component]');
+
+                if (!use24Hours) {
+                    toggle = widget.find('.timepicker [data-action=togglePeriod]');
+                    newDate = date.clone().add((date.hours() >= 12) ? -12 : 12, 'h');
+
+                    toggle.text(date.format('A'));
+
+                    if (isValid(newDate, 'h')) {
+                        toggle.removeClass('disabled');
+                    } else {
+                        toggle.addClass('disabled');
+                    }
+                }
+                timeComponents.filter('[data-time-component=hours]').text(date.format(use24Hours ? 'HH' : 'hh'));
+                timeComponents.filter('[data-time-component=minutes]').text(date.format('mm'));
+                timeComponents.filter('[data-time-component=seconds]').text(date.format('ss'));
+
+                fillHours();
+                fillMinutes();
+                fillSeconds();
+            },
+
+            update = function () {
+                if (!widget) {
+                    return;
+                }
+                fillDate();
+                fillTime();
+            },
+
+            setValue = function (targetMoment) {
+                var oldDate = unset ? null : date;
+
+                // case of calling setValue(null or false)
+                if (!targetMoment) {
+                    unset = true;
+                    input.val('');
+                    element.data('date', '');
+                    notifyEvent({
+                        type: 'dp.change',
+                        date: false,
+                        oldDate: oldDate
+                    });
+                    update();
+                    return;
+                }
+
+                targetMoment = targetMoment.clone().locale(options.locale);
+
+                if (options.stepping !== 1) {
+                    targetMoment.minutes((Math.round(targetMoment.minutes() / options.stepping) * options.stepping) % 60).seconds(0);
+                }
+
+                if (isValid(targetMoment)) {
+                    date = targetMoment;
+                    viewDate = date.clone();
+                    input.val(date.format(actualFormat));
+                    element.data('date', date.format(actualFormat));
+                    unset = false;
+                    update();
+                    notifyEvent({
+                        type: 'dp.change',
+                        date: date.clone(),
+                        oldDate: oldDate
+                    });
+                } else {
+                    if (!options.keepInvalid) {
+                        input.val(unset ? '' : date.format(actualFormat));
+                    }
+                    notifyEvent({
+                        type: 'dp.error',
+                        date: targetMoment
+                    });
+                }
+            },
+
+            hide = function () {
+                ///<summary>Hides the widget. Possibly will emit dp.hide</summary>
+                var transitioning = false;
+                if (!widget) {
+                    return picker;
+                }
+                // Ignore event if in the middle of a picker transition
+                widget.find('.collapse').each(function () {
+                    var collapseData = $(this).data('collapse');
+                    if (collapseData && collapseData.transitioning) {
+                        transitioning = true;
+                        return false;
+                    }
+                    return true;
+                });
+                if (transitioning) {
+                    return picker;
+                }
+                if (component && component.hasClass('btn')) {
+                    component.toggleClass('active');
+                }
+                widget.hide();
+
+                $(window).off('resize', place);
+                widget.off('click', '[data-action]');
+                widget.off('mousedown', false);
+
+                widget.remove();
+                widget = false;
+
+                notifyEvent({
+                    type: 'dp.hide',
+                    date: date.clone()
+                });
+
+                input.blur();
+
+                return picker;
+            },
+
+            clear = function () {
+                setValue(null);
+            },
+
+            /********************************************************************************
+             *
+             * Widget UI interaction functions
+             *
+             ********************************************************************************/
+            actions = {
+                next: function () {
+                    var navFnc = datePickerModes[currentViewMode].navFnc;
+                    viewDate.add(datePickerModes[currentViewMode].navStep, navFnc);
+                    fillDate();
+                    viewUpdate(navFnc);
+                },
+
+                previous: function () {
+                    var navFnc = datePickerModes[currentViewMode].navFnc;
+                    viewDate.subtract(datePickerModes[currentViewMode].navStep, navFnc);
+                    fillDate();
+                    viewUpdate(navFnc);
+                },
+
+                pickerSwitch: function () {
+                    showMode(1);
+                },
+
+                selectMonth: function (e) {
+                    var month = $(e.target).closest('tbody').find('span').index($(e.target));
+                    viewDate.month(month);
+                    if (currentViewMode === minViewModeNumber) {
+                        setValue(date.clone().year(viewDate.year()).month(viewDate.month()));
+                        if (!options.inline) {
+                            hide();
+                        }
+                    } else {
+                        showMode(-1);
+                        fillDate();
+                    }
+                    viewUpdate('M');
+                },
+
+                selectYear: function (e) {
+                    var year = parseInt($(e.target).text(), 10) || 0;
+                    viewDate.year(year);
+                    if (currentViewMode === minViewModeNumber) {
+                        setValue(date.clone().year(viewDate.year()));
+                        if (!options.inline) {
+                            hide();
+                        }
+                    } else {
+                        showMode(-1);
+                        fillDate();
+                    }
+                    viewUpdate('YYYY');
+                },
+
+                selectDecade: function (e) {
+                    var year = parseInt($(e.target).data('selection'), 10) || 0;
+                    viewDate.year(year);
+                    if (currentViewMode === minViewModeNumber) {
+                        setValue(date.clone().year(viewDate.year()));
+                        if (!options.inline) {
+                            hide();
+                        }
+                    } else {
+                        showMode(-1);
+                        fillDate();
+                    }
+                    viewUpdate('YYYY');
+                },
+
+                selectDay: function (e) {
+                    var day = viewDate.clone();
+                    if ($(e.target).is('.old')) {
+                        day.subtract(1, 'M');
+                    }
+                    if ($(e.target).is('.new')) {
+                        day.add(1, 'M');
+                    }
+                    setValue(day.date(parseInt($(e.target).text(), 10)));
+                    if (!hasTime() && !options.keepOpen && !options.inline) {
+                        hide();
+                    }
+                },
+
+                incrementHours: function () {
+                    var newDate = date.clone().add(1, 'h');
+                    if (isValid(newDate, 'h')) {
+                        setValue(newDate);
+                    }
+                },
+
+                incrementMinutes: function () {
+                    var newDate = date.clone().add(options.stepping, 'm');
+                    if (isValid(newDate, 'm')) {
+                        setValue(newDate);
+                    }
+                },
+
+                incrementSeconds: function () {
+                    var newDate = date.clone().add(1, 's');
+                    if (isValid(newDate, 's')) {
+                        setValue(newDate);
+                    }
+                },
+
+                decrementHours: function () {
+                    var newDate = date.clone().subtract(1, 'h');
+                    if (isValid(newDate, 'h')) {
+                        setValue(newDate);
+                    }
+                },
+
+                decrementMinutes: function () {
+                    var newDate = date.clone().subtract(options.stepping, 'm');
+                    if (isValid(newDate, 'm')) {
+                        setValue(newDate);
+                    }
+                },
+
+                decrementSeconds: function () {
+                    var newDate = date.clone().subtract(1, 's');
+                    if (isValid(newDate, 's')) {
+                        setValue(newDate);
+                    }
+                },
+
+                togglePeriod: function () {
+                    setValue(date.clone().add((date.hours() >= 12) ? -12 : 12, 'h'));
+                },
+
+                togglePicker: function (e) {
+                    var $this = $(e.target),
+                        $parent = $this.closest('ul'),
+                        expanded = $parent.find('.in'),
+                        closed = $parent.find('.collapse:not(.in)'),
+                        collapseData;
+
+                    if (expanded && expanded.length) {
+                        collapseData = expanded.data('collapse');
+                        if (collapseData && collapseData.transitioning) {
+                            return;
+                        }
+                        if (expanded.collapse) { // if collapse plugin is available through bootstrap.js then use it
+                            expanded.collapse('hide');
+                            closed.collapse('show');
+                        } else { // otherwise just toggle in class on the two views
+                            expanded.removeClass('in');
+                            closed.addClass('in');
+                        }
+                        if ($this.is('span')) {
+                            $this.toggleClass(options.icons.time + ' ' + options.icons.date);
+                        } else {
+                            $this.find('span').toggleClass(options.icons.time + ' ' + options.icons.date);
+                        }
+
+                        // NOTE: uncomment if toggled state will be restored in show()
+                        //if (component) {
+                        //    component.find('span').toggleClass(options.icons.time + ' ' + options.icons.date);
+                        //}
+                    }
+                },
+
+                showPicker: function () {
+                    widget.find('.timepicker > div:not(.timepicker-picker)').hide();
+                    widget.find('.timepicker .timepicker-picker').show();
+                },
+
+                showHours: function () {
+                    widget.find('.timepicker .timepicker-picker').hide();
+                    widget.find('.timepicker .timepicker-hours').show();
+                },
+
+                showMinutes: function () {
+                    widget.find('.timepicker .timepicker-picker').hide();
+                    widget.find('.timepicker .timepicker-minutes').show();
+                },
+
+                showSeconds: function () {
+                    widget.find('.timepicker .timepicker-picker').hide();
+                    widget.find('.timepicker .timepicker-seconds').show();
+                },
+
+                selectHour: function (e) {
+                    var hour = parseInt($(e.target).text(), 10);
+
+                    if (!use24Hours) {
+                        if (date.hours() >= 12) {
+                            if (hour !== 12) {
+                                hour += 12;
+                            }
+                        } else {
+                            if (hour === 12) {
+                                hour = 0;
+                            }
+                        }
+                    }
+                    setValue(date.clone().hours(hour));
+                    actions.showPicker.call(picker);
+                },
+
+                selectMinute: function (e) {
+                    setValue(date.clone().minutes(parseInt($(e.target).text(), 10)));
+                    actions.showPicker.call(picker);
+                },
+
+                selectSecond: function (e) {
+                    setValue(date.clone().seconds(parseInt($(e.target).text(), 10)));
+                    actions.showPicker.call(picker);
+                },
+
+                clear: clear,
+
+                today: function () {
+                    if (isValid(moment(), 'd')) {
+                        setValue(moment());
+                    }
+                },
+
+                close: hide
+            },
+
+            doAction = function (e) {
+                if ($(e.currentTarget).is('.disabled')) {
+                    return false;
+                }
+                actions[$(e.currentTarget).data('action')].apply(picker, arguments);
+                return false;
+            },
+
+            show = function () {
+                ///<summary>Shows the widget. Possibly will emit dp.show and dp.change</summary>
+                var currentMoment,
+                    useCurrentGranularity = {
+                        'year': function (m) {
+                            return m.month(0).date(1).hours(0).seconds(0).minutes(0);
+                        },
+                        'month': function (m) {
+                            return m.date(1).hours(0).seconds(0).minutes(0);
+                        },
+                        'day': function (m) {
+                            return m.hours(0).seconds(0).minutes(0);
+                        },
+                        'hour': function (m) {
+                            return m.seconds(0).minutes(0);
+                        },
+                        'minute': function (m) {
+                            return m.seconds(0);
+                        }
+                    };
+
+                if (input.prop('disabled') || (!options.ignoreReadonly && input.prop('readonly')) || widget) {
+                    return picker;
+                }
+                if (input.val() !== undefined && input.val().trim().length !== 0) {
+                    setValue(parseInputDate(input.val().trim()));
+                } else if (options.useCurrent && unset && ((input.is('input') && input.val().trim().length === 0) || options.inline)) {
+                    currentMoment = moment();
+                    if (typeof options.useCurrent === 'string') {
+                        currentMoment = useCurrentGranularity[options.useCurrent](currentMoment);
+                    }
+                    setValue(currentMoment);
+                }
+
+                widget = getTemplate();
+
+                fillDow();
+                fillMonths();
+
+                widget.find('.timepicker-hours').hide();
+                widget.find('.timepicker-minutes').hide();
+                widget.find('.timepicker-seconds').hide();
+
+                update();
+                showMode();
+
+                $(window).on('resize', place);
+                widget.on('click', '[data-action]', doAction); // this handles clicks on the widget
+                widget.on('mousedown', false);
+
+                if (component && component.hasClass('btn')) {
+                    component.toggleClass('active');
+                }
+                widget.show();
+                place();
+
+                if (options.focusOnShow && !input.is(':focus')) {
+                    input.focus();
+                }
+
+                notifyEvent({
+                    type: 'dp.show'
+                });
+                return picker;
+            },
+
+            toggle = function () {
+                /// <summary>Shows or hides the widget</summary>
+                return (widget ? hide() : show());
+            },
+
+            parseInputDate = function (inputDate) {
+                if (options.parseInputDate === undefined) {
+                    if (moment.isMoment(inputDate) || inputDate instanceof Date) {
+                        inputDate = moment(inputDate);
+                    } else {
+                        inputDate = moment(inputDate, parseFormats, options.useStrict);
+                    }
+                } else {
+                    inputDate = options.parseInputDate(inputDate);
+                }
+                inputDate.locale(options.locale);
+                return inputDate;
+            },
+
+            keydown = function (e) {
+                var handler = null,
+                    index,
+                    index2,
+                    pressedKeys = [],
+                    pressedModifiers = {},
+                    currentKey = e.which,
+                    keyBindKeys,
+                    allModifiersPressed,
+                    pressed = 'p';
+
+                keyState[currentKey] = pressed;
+
+                for (index in keyState) {
+                    if (keyState.hasOwnProperty(index) && keyState[index] === pressed) {
+                        pressedKeys.push(index);
+                        if (parseInt(index, 10) !== currentKey) {
+                            pressedModifiers[index] = true;
+                        }
+                    }
+                }
+
+                for (index in options.keyBinds) {
+                    if (options.keyBinds.hasOwnProperty(index) && typeof (options.keyBinds[index]) === 'function') {
+                        keyBindKeys = index.split(' ');
+                        if (keyBindKeys.length === pressedKeys.length && keyMap[currentKey] === keyBindKeys[keyBindKeys.length - 1]) {
+                            allModifiersPressed = true;
+                            for (index2 = keyBindKeys.length - 2; index2 >= 0; index2--) {
+                                if (!(keyMap[keyBindKeys[index2]] in pressedModifiers)) {
+                                    allModifiersPressed = false;
+                                    break;
+                                }
+                            }
+                            if (allModifiersPressed) {
+                                handler = options.keyBinds[index];
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (handler) {
+                    handler.call(picker, widget);
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
+            },
+
+            keyup = function (e) {
+                keyState[e.which] = 'r';
+                e.stopPropagation();
+                e.preventDefault();
+            },
+
+            change = function (e) {
+                var val = $(e.target).val().trim(),
+                    parsedDate = val ? parseInputDate(val) : null;
+                setValue(parsedDate);
+                e.stopImmediatePropagation();
+                return false;
+            },
+
+            attachDatePickerElementEvents = function () {
+                input.on({
+                    'change': change,
+                    'blur': options.debug ? '' : hide,
+                    'keydown': keydown,
+                    'keyup': keyup,
+                    'focus': options.allowInputToggle ? show : ''
+                });
+
+                if (element.is('input')) {
+                    input.on({
+                        'focus': show
+                    });
+                } else if (component) {
+                    component.on('click', toggle);
+                    component.on('mousedown', false);
+                }
+            },
+
+            detachDatePickerElementEvents = function () {
+                input.off({
+                    'change': change,
+                    'blur': blur,
+                    'keydown': keydown,
+                    'keyup': keyup,
+                    'focus': options.allowInputToggle ? hide : ''
+                });
+
+                if (element.is('input')) {
+                    input.off({
+                        'focus': show
+                    });
+                } else if (component) {
+                    component.off('click', toggle);
+                    component.off('mousedown', false);
+                }
+            },
+
+            indexGivenDates = function (givenDatesArray) {
+                // Store given enabledDates and disabledDates as keys.
+                // This way we can check their existence in O(1) time instead of looping through whole array.
+                // (for example: options.enabledDates['2014-02-27'] === true)
+                var givenDatesIndexed = {};
+                $.each(givenDatesArray, function () {
+                    var dDate = parseInputDate(this);
+                    if (dDate.isValid()) {
+                        givenDatesIndexed[dDate.format('YYYY-MM-DD')] = true;
+                    }
+                });
+                return (Object.keys(givenDatesIndexed).length) ? givenDatesIndexed : false;
+            },
+
+            indexGivenHours = function (givenHoursArray) {
+                // Store given enabledHours and disabledHours as keys.
+                // This way we can check their existence in O(1) time instead of looping through whole array.
+                // (for example: options.enabledHours['2014-02-27'] === true)
+                var givenHoursIndexed = {};
+                $.each(givenHoursArray, function () {
+                    givenHoursIndexed[this] = true;
+                });
+                return (Object.keys(givenHoursIndexed).length) ? givenHoursIndexed : false;
+            },
+
+            initFormatting = function () {
+                var format = options.format || 'L LT';
+
+                actualFormat = format.replace(/(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g, function (formatInput) {
+                    var newinput = date.localeData().longDateFormat(formatInput) || formatInput;
+                    return newinput.replace(/(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g, function (formatInput2) { //temp fix for #740
+                        return date.localeData().longDateFormat(formatInput2) || formatInput2;
+                    });
+                });
+
+
+                parseFormats = options.extraFormats ? options.extraFormats.slice() : [];
+                if (parseFormats.indexOf(format) < 0 && parseFormats.indexOf(actualFormat) < 0) {
+                    parseFormats.push(actualFormat);
+                }
+
+                use24Hours = (actualFormat.toLowerCase().indexOf('a') < 1 && actualFormat.replace(/\[.*?\]/g, '').indexOf('h') < 1);
+
+                if (isEnabled('y')) {
+                    minViewModeNumber = 2;
+                }
+                if (isEnabled('M')) {
+                    minViewModeNumber = 1;
+                }
+                if (isEnabled('d')) {
+                    minViewModeNumber = 0;
+                }
+
+                currentViewMode = Math.max(minViewModeNumber, currentViewMode);
+
+                if (!unset) {
+                    setValue(date);
+                }
+            };
+
+        /********************************************************************************
+         *
+         * Public API functions
+         * =====================
+         *
+         * Important: Do not expose direct references to private objects or the options
+         * object to the outer world. Always return a clone when returning values or make
+         * a clone when setting a private variable.
+         *
+         ********************************************************************************/
+        picker.destroy = function () {
+            ///<summary>Destroys the widget and removes all attached event listeners</summary>
+            hide();
+            detachDatePickerElementEvents();
+            element.removeData('DateTimePicker');
+            element.removeData('date');
+        };
+
+        picker.toggle = toggle;
+
+        picker.show = show;
+
+        picker.hide = hide;
+
+        picker.disable = function () {
+            ///<summary>Disables the input element, the component is attached to, by adding a disabled="true" attribute to it.
+            ///If the widget was visible before that call it is hidden. Possibly emits dp.hide</summary>
+            hide();
+            if (component && component.hasClass('btn')) {
+                component.addClass('disabled');
+            }
+            input.prop('disabled', true);
+            return picker;
+        };
+
+        picker.enable = function () {
+            ///<summary>Enables the input element, the component is attached to, by removing disabled attribute from it.</summary>
+            if (component && component.hasClass('btn')) {
+                component.removeClass('disabled');
+            }
+            input.prop('disabled', false);
+            return picker;
+        };
+
+        picker.ignoreReadonly = function (ignoreReadonly) {
+            if (arguments.length === 0) {
+                return options.ignoreReadonly;
+            }
+            if (typeof ignoreReadonly !== 'boolean') {
+                throw new TypeError('ignoreReadonly () expects a boolean parameter');
+            }
+            options.ignoreReadonly = ignoreReadonly;
+            return picker;
+        };
+
+        picker.options = function (newOptions) {
+            if (arguments.length === 0) {
+                return $.extend(true, {}, options);
+            }
+
+            if (!(newOptions instanceof Object)) {
+                throw new TypeError('options() options parameter should be an object');
+            }
+            $.extend(true, options, newOptions);
+            $.each(options, function (key, value) {
+                if (picker[key] !== undefined) {
+                    picker[key](value);
+                } else {
+                    throw new TypeError('option ' + key + ' is not recognized!');
+                }
+            });
+            return picker;
+        };
+
+        picker.date = function (newDate) {
+            ///<signature helpKeyword="$.fn.datetimepicker.date">
+            ///<summary>Returns the component's model current date, a moment object or null if not set.</summary>
+            ///<returns type="Moment">date.clone()</returns>
+            ///</signature>
+            ///<signature>
+            ///<summary>Sets the components model current moment to it. Passing a null value unsets the components model current moment. Parsing of the newDate parameter is made using moment library with the options.format and options.useStrict components configuration.</summary>
+            ///<param name="newDate" locid="$.fn.datetimepicker.date_p:newDate">Takes string, Date, moment, null parameter.</param>
+            ///</signature>
+            if (arguments.length === 0) {
+                if (unset) {
+                    return null;
+                }
+                return date.clone();
+            }
+
+            if (newDate !== null && typeof newDate !== 'string' && !moment.isMoment(newDate) && !(newDate instanceof Date)) {
+                throw new TypeError('date() parameter must be one of [null, string, moment or Date]');
+            }
+
+            setValue(newDate === null ? null : parseInputDate(newDate));
+            return picker;
+        };
+
+        picker.format = function (newFormat) {
+            ///<summary>test su</summary>
+            ///<param name="newFormat">info about para</param>
+            ///<returns type="string|boolean">returns foo</returns>
+            if (arguments.length === 0) {
+                return options.format;
+            }
+
+            if ((typeof newFormat !== 'string') && ((typeof newFormat !== 'boolean') || (newFormat !== false))) {
+                throw new TypeError('format() expects a sting or boolean:false parameter ' + newFormat);
+            }
+
+            options.format = newFormat;
+            if (actualFormat) {
+                initFormatting(); // reinit formatting
+            }
+            return picker;
+        };
+
+        picker.dayViewHeaderFormat = function (newFormat) {
+            if (arguments.length === 0) {
+                return options.dayViewHeaderFormat;
+            }
+
+            if (typeof newFormat !== 'string') {
+                throw new TypeError('dayViewHeaderFormat() expects a string parameter');
+            }
+
+            options.dayViewHeaderFormat = newFormat;
+            return picker;
+        };
+
+        picker.extraFormats = function (formats) {
+            if (arguments.length === 0) {
+                return options.extraFormats;
+            }
+
+            if (formats !== false && !(formats instanceof Array)) {
+                throw new TypeError('extraFormats() expects an array or false parameter');
+            }
+
+            options.extraFormats = formats;
+            if (parseFormats) {
+                initFormatting(); // reinit formatting
+            }
+            return picker;
+        };
+
+        picker.disabledDates = function (dates) {
+            ///<signature helpKeyword="$.fn.datetimepicker.disabledDates">
+            ///<summary>Returns an array with the currently set disabled dates on the component.</summary>
+            ///<returns type="array">options.disabledDates</returns>
+            ///</signature>
+            ///<signature>
+            ///<summary>Setting this takes precedence over options.minDate, options.maxDate configuration. Also calling this function removes the configuration of
+            ///options.enabledDates if such exist.</summary>
+            ///<param name="dates" locid="$.fn.datetimepicker.disabledDates_p:dates">Takes an [ string or Date or moment ] of values and allows the user to select only from those days.</param>
+            ///</signature>
+            if (arguments.length === 0) {
+                return (options.disabledDates ? $.extend({}, options.disabledDates) : options.disabledDates);
+            }
+
+            if (!dates) {
+                options.disabledDates = false;
+                update();
+                return picker;
+            }
+            if (!(dates instanceof Array)) {
+                throw new TypeError('disabledDates() expects an array parameter');
+            }
+            options.disabledDates = indexGivenDates(dates);
+            options.enabledDates = false;
+            update();
+            return picker;
+        };
+
+        picker.enabledDates = function (dates) {
+            ///<signature helpKeyword="$.fn.datetimepicker.enabledDates">
+            ///<summary>Returns an array with the currently set enabled dates on the component.</summary>
+            ///<returns type="array">options.enabledDates</returns>
+            ///</signature>
+            ///<signature>
+            ///<summary>Setting this takes precedence over options.minDate, options.maxDate configuration. Also calling this function removes the configuration of options.disabledDates if such exist.</summary>
+            ///<param name="dates" locid="$.fn.datetimepicker.enabledDates_p:dates">Takes an [ string or Date or moment ] of values and allows the user to select only from those days.</param>
+            ///</signature>
+            if (arguments.length === 0) {
+                return (options.enabledDates ? $.extend({}, options.enabledDates) : options.enabledDates);
+            }
+
+            if (!dates) {
+                options.enabledDates = false;
+                update();
+                return picker;
+            }
+            if (!(dates instanceof Array)) {
+                throw new TypeError('enabledDates() expects an array parameter');
+            }
+            options.enabledDates = indexGivenDates(dates);
+            options.disabledDates = false;
+            update();
+            return picker;
+        };
+
+        picker.daysOfWeekDisabled = function (daysOfWeekDisabled) {
+            if (arguments.length === 0) {
+                return options.daysOfWeekDisabled.splice(0);
+            }
+
+            if ((typeof daysOfWeekDisabled === 'boolean') && !daysOfWeekDisabled) {
+                options.daysOfWeekDisabled = false;
+                update();
+                return picker;
+            }
+
+            if (!(daysOfWeekDisabled instanceof Array)) {
+                throw new TypeError('daysOfWeekDisabled() expects an array parameter');
+            }
+            options.daysOfWeekDisabled = daysOfWeekDisabled.reduce(function (previousValue, currentValue) {
+                currentValue = parseInt(currentValue, 10);
+                if (currentValue > 6 || currentValue < 0 || isNaN(currentValue)) {
+                    return previousValue;
+                }
+                if (previousValue.indexOf(currentValue) === -1) {
+                    previousValue.push(currentValue);
+                }
+                return previousValue;
+            }, []).sort();
+            if (options.useCurrent && !options.keepInvalid) {
+                var tries = 0;
+                while (!isValid(date, 'd')) {
+                    date.add(1, 'd');
+                    if (tries === 7) {
+                        throw 'Tried 7 times to find a valid date';
+                    }
+                    tries++;
+                }
+                setValue(date);
+            }
+            update();
+            return picker;
+        };
+
+        picker.maxDate = function (maxDate) {
+            if (arguments.length === 0) {
+                return options.maxDate ? options.maxDate.clone() : options.maxDate;
+            }
+
+            if ((typeof maxDate === 'boolean') && maxDate === false) {
+                options.maxDate = false;
+                update();
+                return picker;
+            }
+
+            if (typeof maxDate === 'string') {
+                if (maxDate === 'now' || maxDate === 'moment') {
+                    maxDate = moment();
+                }
+            }
+
+            var parsedDate = parseInputDate(maxDate);
+
+            if (!parsedDate.isValid()) {
+                throw new TypeError('maxDate() Could not parse date parameter: ' + maxDate);
+            }
+            if (options.minDate && parsedDate.isBefore(options.minDate)) {
+                throw new TypeError('maxDate() date parameter is before options.minDate: ' + parsedDate.format(actualFormat));
+            }
+            options.maxDate = parsedDate;
+            if (options.useCurrent && !options.keepInvalid && date.isAfter(maxDate)) {
+                setValue(options.maxDate);
+            }
+            if (viewDate.isAfter(parsedDate)) {
+                viewDate = parsedDate.clone().subtract(options.stepping, 'm');
+            }
+            update();
+            return picker;
+        };
+
+        picker.minDate = function (minDate) {
+            if (arguments.length === 0) {
+                return options.minDate ? options.minDate.clone() : options.minDate;
+            }
+
+            if ((typeof minDate === 'boolean') && minDate === false) {
+                options.minDate = false;
+                update();
+                return picker;
+            }
+
+            if (typeof minDate === 'string') {
+                if (minDate === 'now' || minDate === 'moment') {
+                    minDate = moment();
+                }
+            }
+
+            var parsedDate = parseInputDate(minDate);
+
+            if (!parsedDate.isValid()) {
+                throw new TypeError('minDate() Could not parse date parameter: ' + minDate);
+            }
+            if (options.maxDate && parsedDate.isAfter(options.maxDate)) {
+                throw new TypeError('minDate() date parameter is after options.maxDate: ' + parsedDate.format(actualFormat));
+            }
+            options.minDate = parsedDate;
+            if (options.useCurrent && !options.keepInvalid && date.isBefore(minDate)) {
+                setValue(options.minDate);
+            }
+            if (viewDate.isBefore(parsedDate)) {
+                viewDate = parsedDate.clone().add(options.stepping, 'm');
+            }
+            update();
+            return picker;
+        };
+
+        picker.defaultDate = function (defaultDate) {
+            ///<signature helpKeyword="$.fn.datetimepicker.defaultDate">
+            ///<summary>Returns a moment with the options.defaultDate option configuration or false if not set</summary>
+            ///<returns type="Moment">date.clone()</returns>
+            ///</signature>
+            ///<signature>
+            ///<summary>Will set the picker's inital date. If a boolean:false value is passed the options.defaultDate parameter is cleared.</summary>
+            ///<param name="defaultDate" locid="$.fn.datetimepicker.defaultDate_p:defaultDate">Takes a string, Date, moment, boolean:false</param>
+            ///</signature>
+            if (arguments.length === 0) {
+                return options.defaultDate ? options.defaultDate.clone() : options.defaultDate;
+            }
+            if (!defaultDate) {
+                options.defaultDate = false;
+                return picker;
+            }
+
+            if (typeof defaultDate === 'string') {
+                if (defaultDate === 'now' || defaultDate === 'moment') {
+                    defaultDate = moment();
+                }
+            }
+
+            var parsedDate = parseInputDate(defaultDate);
+            if (!parsedDate.isValid()) {
+                throw new TypeError('defaultDate() Could not parse date parameter: ' + defaultDate);
+            }
+            if (!isValid(parsedDate)) {
+                throw new TypeError('defaultDate() date passed is invalid according to component setup validations');
+            }
+
+            options.defaultDate = parsedDate;
+
+            if (options.defaultDate && options.inline || (input.val().trim() === '' && input.attr('placeholder') === undefined)) {
+                setValue(options.defaultDate);
+            }
+            return picker;
+        };
+
+        picker.locale = function (locale) {
+            if (arguments.length === 0) {
+                return options.locale;
+            }
+
+            if (!moment.localeData(locale)) {
+                throw new TypeError('locale() locale ' + locale + ' is not loaded from moment locales!');
+            }
+
+            options.locale = locale;
+            date.locale(options.locale);
+            viewDate.locale(options.locale);
+
+            if (actualFormat) {
+                initFormatting(); // reinit formatting
+            }
+            if (widget) {
+                hide();
+                show();
+            }
+            return picker;
+        };
+
+        picker.stepping = function (stepping) {
+            if (arguments.length === 0) {
+                return options.stepping;
+            }
+
+            stepping = parseInt(stepping, 10);
+            if (isNaN(stepping) || stepping < 1) {
+                stepping = 1;
+            }
+            options.stepping = stepping;
+            return picker;
+        };
+
+        picker.useCurrent = function (useCurrent) {
+            var useCurrentOptions = ['year', 'month', 'day', 'hour', 'minute'];
+            if (arguments.length === 0) {
+                return options.useCurrent;
+            }
+
+            if ((typeof useCurrent !== 'boolean') && (typeof useCurrent !== 'string')) {
+                throw new TypeError('useCurrent() expects a boolean or string parameter');
+            }
+            if (typeof useCurrent === 'string' && useCurrentOptions.indexOf(useCurrent.toLowerCase()) === -1) {
+                throw new TypeError('useCurrent() expects a string parameter of ' + useCurrentOptions.join(', '));
+            }
+            options.useCurrent = useCurrent;
+            return picker;
+        };
+
+        picker.collapse = function (collapse) {
+            if (arguments.length === 0) {
+                return options.collapse;
+            }
+
+            if (typeof collapse !== 'boolean') {
+                throw new TypeError('collapse() expects a boolean parameter');
+            }
+            if (options.collapse === collapse) {
+                return picker;
+            }
+            options.collapse = collapse;
+            if (widget) {
+                hide();
+                show();
+            }
+            return picker;
+        };
+
+        picker.icons = function (icons) {
+            if (arguments.length === 0) {
+                return $.extend({}, options.icons);
+            }
+
+            if (!(icons instanceof Object)) {
+                throw new TypeError('icons() expects parameter to be an Object');
+            }
+            $.extend(options.icons, icons);
+            if (widget) {
+                hide();
+                show();
+            }
+            return picker;
+        };
+
+        picker.tooltips = function (tooltips) {
+            if (arguments.length === 0) {
+                return $.extend({}, options.tooltips);
+            }
+
+            if (!(tooltips instanceof Object)) {
+                throw new TypeError('tooltips() expects parameter to be an Object');
+            }
+            $.extend(options.tooltips, tooltips);
+            if (widget) {
+                hide();
+                show();
+            }
+            return picker;
+        };
+
+        picker.useStrict = function (useStrict) {
+            if (arguments.length === 0) {
+                return options.useStrict;
+            }
+
+            if (typeof useStrict !== 'boolean') {
+                throw new TypeError('useStrict() expects a boolean parameter');
+            }
+            options.useStrict = useStrict;
+            return picker;
+        };
+
+        picker.sideBySide = function (sideBySide) {
+            if (arguments.length === 0) {
+                return options.sideBySide;
+            }
+
+            if (typeof sideBySide !== 'boolean') {
+                throw new TypeError('sideBySide() expects a boolean parameter');
+            }
+            options.sideBySide = sideBySide;
+            if (widget) {
+                hide();
+                show();
+            }
+            return picker;
+        };
+
+        picker.viewMode = function (viewMode) {
+            if (arguments.length === 0) {
+                return options.viewMode;
+            }
+
+            if (typeof viewMode !== 'string') {
+                throw new TypeError('viewMode() expects a string parameter');
+            }
+
+            if (viewModes.indexOf(viewMode) === -1) {
+                throw new TypeError('viewMode() parameter must be one of (' + viewModes.join(', ') + ') value');
+            }
+
+            options.viewMode = viewMode;
+            currentViewMode = Math.max(viewModes.indexOf(viewMode), minViewModeNumber);
+
+            showMode();
+            return picker;
+        };
+
+        picker.toolbarPlacement = function (toolbarPlacement) {
+            if (arguments.length === 0) {
+                return options.toolbarPlacement;
+            }
+
+            if (typeof toolbarPlacement !== 'string') {
+                throw new TypeError('toolbarPlacement() expects a string parameter');
+            }
+            if (toolbarPlacements.indexOf(toolbarPlacement) === -1) {
+                throw new TypeError('toolbarPlacement() parameter must be one of (' + toolbarPlacements.join(', ') + ') value');
+            }
+            options.toolbarPlacement = toolbarPlacement;
+
+            if (widget) {
+                hide();
+                show();
+            }
+            return picker;
+        };
+
+        picker.widgetPositioning = function (widgetPositioning) {
+            if (arguments.length === 0) {
+                return $.extend({}, options.widgetPositioning);
+            }
+
+            if (({}).toString.call(widgetPositioning) !== '[object Object]') {
+                throw new TypeError('widgetPositioning() expects an object variable');
+            }
+            if (widgetPositioning.horizontal) {
+                if (typeof widgetPositioning.horizontal !== 'string') {
+                    throw new TypeError('widgetPositioning() horizontal variable must be a string');
+                }
+                widgetPositioning.horizontal = widgetPositioning.horizontal.toLowerCase();
+                if (horizontalModes.indexOf(widgetPositioning.horizontal) === -1) {
+                    throw new TypeError('widgetPositioning() expects horizontal parameter to be one of (' + horizontalModes.join(', ') + ')');
+                }
+                options.widgetPositioning.horizontal = widgetPositioning.horizontal;
+            }
+            if (widgetPositioning.vertical) {
+                if (typeof widgetPositioning.vertical !== 'string') {
+                    throw new TypeError('widgetPositioning() vertical variable must be a string');
+                }
+                widgetPositioning.vertical = widgetPositioning.vertical.toLowerCase();
+                if (verticalModes.indexOf(widgetPositioning.vertical) === -1) {
+                    throw new TypeError('widgetPositioning() expects vertical parameter to be one of (' + verticalModes.join(', ') + ')');
+                }
+                options.widgetPositioning.vertical = widgetPositioning.vertical;
+            }
+            update();
+            return picker;
+        };
+
+        picker.calendarWeeks = function (calendarWeeks) {
+            if (arguments.length === 0) {
+                return options.calendarWeeks;
+            }
+
+            if (typeof calendarWeeks !== 'boolean') {
+                throw new TypeError('calendarWeeks() expects parameter to be a boolean value');
+            }
+
+            options.calendarWeeks = calendarWeeks;
+            update();
+            return picker;
+        };
+
+        picker.showTodayButton = function (showTodayButton) {
+            if (arguments.length === 0) {
+                return options.showTodayButton;
+            }
+
+            if (typeof showTodayButton !== 'boolean') {
+                throw new TypeError('showTodayButton() expects a boolean parameter');
+            }
+
+            options.showTodayButton = showTodayButton;
+            if (widget) {
+                hide();
+                show();
+            }
+            return picker;
+        };
+
+        picker.showClear = function (showClear) {
+            if (arguments.length === 0) {
+                return options.showClear;
+            }
+
+            if (typeof showClear !== 'boolean') {
+                throw new TypeError('showClear() expects a boolean parameter');
+            }
+
+            options.showClear = showClear;
+            if (widget) {
+                hide();
+                show();
+            }
+            return picker;
+        };
+
+        picker.widgetParent = function (widgetParent) {
+            if (arguments.length === 0) {
+                return options.widgetParent;
+            }
+
+            if (typeof widgetParent === 'string') {
+                widgetParent = $(widgetParent);
+            }
+
+            if (widgetParent !== null && (typeof widgetParent !== 'string' && !(widgetParent instanceof $))) {
+                throw new TypeError('widgetParent() expects a string or a jQuery object parameter');
+            }
+
+            options.widgetParent = widgetParent;
+            if (widget) {
+                hide();
+                show();
+            }
+            return picker;
+        };
+
+        picker.keepOpen = function (keepOpen) {
+            if (arguments.length === 0) {
+                return options.keepOpen;
+            }
+
+            if (typeof keepOpen !== 'boolean') {
+                throw new TypeError('keepOpen() expects a boolean parameter');
+            }
+
+            options.keepOpen = keepOpen;
+            return picker;
+        };
+
+        picker.focusOnShow = function (focusOnShow) {
+            if (arguments.length === 0) {
+                return options.focusOnShow;
+            }
+
+            if (typeof focusOnShow !== 'boolean') {
+                throw new TypeError('focusOnShow() expects a boolean parameter');
+            }
+
+            options.focusOnShow = focusOnShow;
+            return picker;
+        };
+
+        picker.inline = function (inline) {
+            if (arguments.length === 0) {
+                return options.inline;
+            }
+
+            if (typeof inline !== 'boolean') {
+                throw new TypeError('inline() expects a boolean parameter');
+            }
+
+            options.inline = inline;
+            return picker;
+        };
+
+        picker.clear = function () {
+            clear();
+            return picker;
+        };
+
+        picker.keyBinds = function (keyBinds) {
+            options.keyBinds = keyBinds;
+            return picker;
+        };
+
+        picker.debug = function (debug) {
+            if (typeof debug !== 'boolean') {
+                throw new TypeError('debug() expects a boolean parameter');
+            }
+
+            options.debug = debug;
+            return picker;
+        };
+
+        picker.allowInputToggle = function (allowInputToggle) {
+            if (arguments.length === 0) {
+                return options.allowInputToggle;
+            }
+
+            if (typeof allowInputToggle !== 'boolean') {
+                throw new TypeError('allowInputToggle() expects a boolean parameter');
+            }
+
+            options.allowInputToggle = allowInputToggle;
+            return picker;
+        };
+
+        picker.showClose = function (showClose) {
+            if (arguments.length === 0) {
+                return options.showClose;
+            }
+
+            if (typeof showClose !== 'boolean') {
+                throw new TypeError('showClose() expects a boolean parameter');
+            }
+
+            options.showClose = showClose;
+            return picker;
+        };
+
+        picker.keepInvalid = function (keepInvalid) {
+            if (arguments.length === 0) {
+                return options.keepInvalid;
+            }
+
+            if (typeof keepInvalid !== 'boolean') {
+                throw new TypeError('keepInvalid() expects a boolean parameter');
+            }
+            options.keepInvalid = keepInvalid;
+            return picker;
+        };
+
+        picker.datepickerInput = function (datepickerInput) {
+            if (arguments.length === 0) {
+                return options.datepickerInput;
+            }
+
+            if (typeof datepickerInput !== 'string') {
+                throw new TypeError('datepickerInput() expects a string parameter');
+            }
+
+            options.datepickerInput = datepickerInput;
+            return picker;
+        };
+
+        picker.parseInputDate = function (parseInputDate) {
+            if (arguments.length === 0) {
+                return options.parseInputDate;
+            }
+
+            if (typeof parseInputDate !== 'function') {
+                throw new TypeError('parseInputDate() sholud be as function');
+            }
+
+            options.parseInputDate = parseInputDate;
+
+            return picker;
+        };
+
+        picker.disabledTimeIntervals = function (disabledTimeIntervals) {
+            ///<signature helpKeyword="$.fn.datetimepicker.disabledTimeIntervals">
+            ///<summary>Returns an array with the currently set disabled dates on the component.</summary>
+            ///<returns type="array">options.disabledTimeIntervals</returns>
+            ///</signature>
+            ///<signature>
+            ///<summary>Setting this takes precedence over options.minDate, options.maxDate configuration. Also calling this function removes the configuration of
+            ///options.enabledDates if such exist.</summary>
+            ///<param name="dates" locid="$.fn.datetimepicker.disabledTimeIntervals_p:dates">Takes an [ string or Date or moment ] of values and allows the user to select only from those days.</param>
+            ///</signature>
+            if (arguments.length === 0) {
+                return (options.disabledTimeIntervals ? $.extend({}, options.disabledTimeIntervals) : options.disabledTimeIntervals);
+            }
+
+            if (!disabledTimeIntervals) {
+                options.disabledTimeIntervals = false;
+                update();
+                return picker;
+            }
+            if (!(disabledTimeIntervals instanceof Array)) {
+                throw new TypeError('disabledTimeIntervals() expects an array parameter');
+            }
+            options.disabledTimeIntervals = disabledTimeIntervals;
+            update();
+            return picker;
+        };
+
+        picker.disabledHours = function (hours) {
+            ///<signature helpKeyword="$.fn.datetimepicker.disabledHours">
+            ///<summary>Returns an array with the currently set disabled hours on the component.</summary>
+            ///<returns type="array">options.disabledHours</returns>
+            ///</signature>
+            ///<signature>
+            ///<summary>Setting this takes precedence over options.minDate, options.maxDate configuration. Also calling this function removes the configuration of
+            ///options.enabledHours if such exist.</summary>
+            ///<param name="hours" locid="$.fn.datetimepicker.disabledHours_p:hours">Takes an [ int ] of values and disallows the user to select only from those hours.</param>
+            ///</signature>
+            if (arguments.length === 0) {
+                return (options.disabledHours ? $.extend({}, options.disabledHours) : options.disabledHours);
+            }
+
+            if (!hours) {
+                options.disabledHours = false;
+                update();
+                return picker;
+            }
+            if (!(hours instanceof Array)) {
+                throw new TypeError('disabledHours() expects an array parameter');
+            }
+            options.disabledHours = indexGivenHours(hours);
+            options.enabledHours = false;
+            if (options.useCurrent && !options.keepInvalid) {
+                var tries = 0;
+                while (!isValid(date, 'h')) {
+                    date.add(1, 'h');
+                    if (tries === 24) {
+                        throw 'Tried 24 times to find a valid date';
+                    }
+                    tries++;
+                }
+                setValue(date);
+            }
+            update();
+            return picker;
+        };
+
+        picker.enabledHours = function (hours) {
+            ///<signature helpKeyword="$.fn.datetimepicker.enabledHours">
+            ///<summary>Returns an array with the currently set enabled hours on the component.</summary>
+            ///<returns type="array">options.enabledHours</returns>
+            ///</signature>
+            ///<signature>
+            ///<summary>Setting this takes precedence over options.minDate, options.maxDate configuration. Also calling this function removes the configuration of options.disabledHours if such exist.</summary>
+            ///<param name="hours" locid="$.fn.datetimepicker.enabledHours_p:hours">Takes an [ int ] of values and allows the user to select only from those hours.</param>
+            ///</signature>
+            if (arguments.length === 0) {
+                return (options.enabledHours ? $.extend({}, options.enabledHours) : options.enabledHours);
+            }
+
+            if (!hours) {
+                options.enabledHours = false;
+                update();
+                return picker;
+            }
+            if (!(hours instanceof Array)) {
+                throw new TypeError('enabledHours() expects an array parameter');
+            }
+            options.enabledHours = indexGivenHours(hours);
+            options.disabledHours = false;
+            if (options.useCurrent && !options.keepInvalid) {
+                var tries = 0;
+                while (!isValid(date, 'h')) {
+                    date.add(1, 'h');
+                    if (tries === 24) {
+                        throw 'Tried 24 times to find a valid date';
+                    }
+                    tries++;
+                }
+                setValue(date);
+            }
+            update();
+            return picker;
+        };
+
+        picker.viewDate = function (newDate) {
+            ///<signature helpKeyword="$.fn.datetimepicker.viewDate">
+            ///<summary>Returns the component's model current viewDate, a moment object or null if not set.</summary>
+            ///<returns type="Moment">viewDate.clone()</returns>
+            ///</signature>
+            ///<signature>
+            ///<summary>Sets the components model current moment to it. Passing a null value unsets the components model current moment. Parsing of the newDate parameter is made using moment library with the options.format and options.useStrict components configuration.</summary>
+            ///<param name="newDate" locid="$.fn.datetimepicker.date_p:newDate">Takes string, viewDate, moment, null parameter.</param>
+            ///</signature>
+            if (arguments.length === 0) {
+                return viewDate.clone();
+            }
+
+            if (!newDate) {
+                viewDate = date.clone();
+                return picker;
+            }
+
+            if (typeof newDate !== 'string' && !moment.isMoment(newDate) && !(newDate instanceof Date)) {
+                throw new TypeError('viewDate() parameter must be one of [string, moment or Date]');
+            }
+
+            viewDate = parseInputDate(newDate);
+            viewUpdate();
+            return picker;
+        };
+
+        // initializing element and component attributes
+        if (element.is('input')) {
+            input = element;
+        } else {
+            input = element.find(options.datepickerInput);
+            if (input.size() === 0) {
+                input = element.find('input');
+            } else if (!input.is('input')) {
+                throw new Error('CSS class "' + options.datepickerInput + '" cannot be applied to non input element');
+            }
+        }
+
+        if (element.hasClass('input-group')) {
+            // in case there is more then one 'input-group-addon' Issue #48
+            if (element.find('.datepickerbutton').size() === 0) {
+                component = element.find('.input-group-addon');
+            } else {
+                component = element.find('.datepickerbutton');
+            }
+        }
+
+        if (!options.inline && !input.is('input')) {
+            throw new Error('Could not initialize DateTimePicker without an input element');
+        }
+
+        $.extend(true, options, dataToOptions());
+
+        picker.options(options);
+
+        initFormatting();
+
+        attachDatePickerElementEvents();
+
+        if (input.prop('disabled')) {
+            picker.disable();
+        }
+        if (input.is('input') && input.val().trim().length !== 0) {
+            setValue(parseInputDate(input.val().trim()));
+        }
+        else if (options.defaultDate && input.attr('placeholder') === undefined) {
+            setValue(options.defaultDate);
+        }
+        if (options.inline) {
+            show();
+        }
+        return picker;
+    };
+
+    /********************************************************************************
+     *
+     * jQuery plugin constructor and defaults object
+     *
+     ********************************************************************************/
+
+    $.fn.datetimepicker = function (options) {
+        return this.each(function () {
+            var $this = $(this);
+            if (!$this.data('DateTimePicker')) {
+                // create a private copy of the defaults object
+                options = $.extend(true, {}, $.fn.datetimepicker.defaults, options);
+                $this.data('DateTimePicker', dateTimePicker($this, options));
+            }
+        });
+    };
+
+    $.fn.datetimepicker.defaults = {
+        format: false,
+        dayViewHeaderFormat: 'MMMM YYYY',
+        extraFormats: false,
+        stepping: 1,
+        minDate: false,
+        maxDate: false,
+        useCurrent: true,
+        collapse: true,
+        locale: moment.locale(),
+        defaultDate: false,
+        disabledDates: false,
+        enabledDates: false,
+        icons: {
+            time: 'glyphicon glyphicon-time',
+            date: 'glyphicon glyphicon-calendar',
+            up: 'glyphicon glyphicon-chevron-up',
+            down: 'glyphicon glyphicon-chevron-down',
+            previous: 'glyphicon glyphicon-chevron-left',
+            next: 'glyphicon glyphicon-chevron-right',
+            today: 'glyphicon glyphicon-screenshot',
+            clear: 'glyphicon glyphicon-trash',
+            close: 'glyphicon glyphicon-remove'
+        },
+        tooltips: {
+            today: 'Go to today',
+            clear: 'Clear selection',
+            close: 'Close the picker',
+            selectMonth: 'Select Month',
+            prevMonth: 'Previous Month',
+            nextMonth: 'Next Month',
+            selectYear: 'Select Year',
+            prevYear: 'Previous Year',
+            nextYear: 'Next Year',
+            selectDecade: 'Select Decade',
+            prevDecade: 'Previous Decade',
+            nextDecade: 'Next Decade',
+            prevCentury: 'Previous Century',
+            nextCentury: 'Next Century'
+        },
+        useStrict: false,
+        sideBySide: false,
+        daysOfWeekDisabled: false,
+        calendarWeeks: false,
+        viewMode: 'days',
+        toolbarPlacement: 'default',
+        showTodayButton: false,
+        showClear: false,
+        showClose: false,
+        widgetPositioning: {
+            horizontal: 'auto',
+            vertical: 'auto'
+        },
+        widgetParent: null,
+        ignoreReadonly: false,
+        keepOpen: false,
+        focusOnShow: true,
+        inline: false,
+        keepInvalid: false,
+        datepickerInput: '.datepickerinput',
+        keyBinds: {
+            up: function (widget) {
+                if (!widget) {
+                    return;
+                }
+                var d = this.date() || moment();
+                if (widget.find('.datepicker').is(':visible')) {
+                    this.date(d.clone().subtract(7, 'd'));
+                } else {
+                    this.date(d.clone().add(this.stepping(), 'm'));
+                }
+            },
+            down: function (widget) {
+                if (!widget) {
+                    this.show();
+                    return;
+                }
+                var d = this.date() || moment();
+                if (widget.find('.datepicker').is(':visible')) {
+                    this.date(d.clone().add(7, 'd'));
+                } else {
+                    this.date(d.clone().subtract(this.stepping(), 'm'));
+                }
+            },
+            'control up': function (widget) {
+                if (!widget) {
+                    return;
+                }
+                var d = this.date() || moment();
+                if (widget.find('.datepicker').is(':visible')) {
+                    this.date(d.clone().subtract(1, 'y'));
+                } else {
+                    this.date(d.clone().add(1, 'h'));
+                }
+            },
+            'control down': function (widget) {
+                if (!widget) {
+                    return;
+                }
+                var d = this.date() || moment();
+                if (widget.find('.datepicker').is(':visible')) {
+                    this.date(d.clone().add(1, 'y'));
+                } else {
+                    this.date(d.clone().subtract(1, 'h'));
+                }
+            },
+            left: function (widget) {
+                if (!widget) {
+                    return;
+                }
+                var d = this.date() || moment();
+                if (widget.find('.datepicker').is(':visible')) {
+                    this.date(d.clone().subtract(1, 'd'));
+                }
+            },
+            right: function (widget) {
+                if (!widget) {
+                    return;
+                }
+                var d = this.date() || moment();
+                if (widget.find('.datepicker').is(':visible')) {
+                    this.date(d.clone().add(1, 'd'));
+                }
+            },
+            pageUp: function (widget) {
+                if (!widget) {
+                    return;
+                }
+                var d = this.date() || moment();
+                if (widget.find('.datepicker').is(':visible')) {
+                    this.date(d.clone().subtract(1, 'M'));
+                }
+            },
+            pageDown: function (widget) {
+                if (!widget) {
+                    return;
+                }
+                var d = this.date() || moment();
+                if (widget.find('.datepicker').is(':visible')) {
+                    this.date(d.clone().add(1, 'M'));
+                }
+            },
+            enter: function () {
+                this.hide();
+            },
+            escape: function () {
+                this.hide();
+            },
+            //tab: function (widget) { //this break the flow of the form. disabling for now
+            //    var toggle = widget.find('.picker-switch a[data-action="togglePicker"]');
+            //    if(toggle.length > 0) toggle.click();
+            //},
+            'control space': function (widget) {
+                if (widget.find('.timepicker').is(':visible')) {
+                    widget.find('.btn[data-action="togglePeriod"]').click();
+                }
+            },
+            t: function () {
+                this.date(moment());
+            },
+            'delete': function () {
+                this.clear();
+            }
+        },
+        debug: false,
+        allowInputToggle: false,
+        disabledTimeIntervals: false,
+        disabledHours: false,
+        enabledHours: false,
+        viewDate: false
+    };
+}));
+
+},{"jquery":5,"moment":3}],5:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -9377,7 +14966,7 @@ return jQuery;
 
 }));
 
-},{}],3:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -21732,7 +27321,481 @@ return jQuery;
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],4:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
+/*!
+ * EventEmitter v4.2.11 - git.io/ee
+ * Unlicense - http://unlicense.org/
+ * Oliver Caldwell - http://oli.me.uk/
+ * @preserve
+ */
+
+;(function () {
+    'use strict';
+
+    /**
+     * Class for managing events.
+     * Can be extended to provide event functionality in other classes.
+     *
+     * @class EventEmitter Manages event registering and emitting.
+     */
+    function EventEmitter() {}
+
+    // Shortcuts to improve speed and size
+    var proto = EventEmitter.prototype;
+    var exports = this;
+    var originalGlobalValue = exports.EventEmitter;
+
+    /**
+     * Finds the index of the listener for the event in its storage array.
+     *
+     * @param {Function[]} listeners Array of listeners to search through.
+     * @param {Function} listener Method to look for.
+     * @return {Number} Index of the specified listener, -1 if not found
+     * @api private
+     */
+    function indexOfListener(listeners, listener) {
+        var i = listeners.length;
+        while (i--) {
+            if (listeners[i].listener === listener) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    /**
+     * Alias a method while keeping the context correct, to allow for overwriting of target method.
+     *
+     * @param {String} name The name of the target method.
+     * @return {Function} The aliased method
+     * @api private
+     */
+    function alias(name) {
+        return function aliasClosure() {
+            return this[name].apply(this, arguments);
+        };
+    }
+
+    /**
+     * Returns the listener array for the specified event.
+     * Will initialise the event object and listener arrays if required.
+     * Will return an object if you use a regex search. The object contains keys for each matched event. So /ba[rz]/ might return an object containing bar and baz. But only if you have either defined them with defineEvent or added some listeners to them.
+     * Each property in the object response is an array of listener functions.
+     *
+     * @param {String|RegExp} evt Name of the event to return the listeners from.
+     * @return {Function[]|Object} All listener functions for the event.
+     */
+    proto.getListeners = function getListeners(evt) {
+        var events = this._getEvents();
+        var response;
+        var key;
+
+        // Return a concatenated array of all matching events if
+        // the selector is a regular expression.
+        if (evt instanceof RegExp) {
+            response = {};
+            for (key in events) {
+                if (events.hasOwnProperty(key) && evt.test(key)) {
+                    response[key] = events[key];
+                }
+            }
+        }
+        else {
+            response = events[evt] || (events[evt] = []);
+        }
+
+        return response;
+    };
+
+    /**
+     * Takes a list of listener objects and flattens it into a list of listener functions.
+     *
+     * @param {Object[]} listeners Raw listener objects.
+     * @return {Function[]} Just the listener functions.
+     */
+    proto.flattenListeners = function flattenListeners(listeners) {
+        var flatListeners = [];
+        var i;
+
+        for (i = 0; i < listeners.length; i += 1) {
+            flatListeners.push(listeners[i].listener);
+        }
+
+        return flatListeners;
+    };
+
+    /**
+     * Fetches the requested listeners via getListeners but will always return the results inside an object. This is mainly for internal use but others may find it useful.
+     *
+     * @param {String|RegExp} evt Name of the event to return the listeners from.
+     * @return {Object} All listener functions for an event in an object.
+     */
+    proto.getListenersAsObject = function getListenersAsObject(evt) {
+        var listeners = this.getListeners(evt);
+        var response;
+
+        if (listeners instanceof Array) {
+            response = {};
+            response[evt] = listeners;
+        }
+
+        return response || listeners;
+    };
+
+    /**
+     * Adds a listener function to the specified event.
+     * The listener will not be added if it is a duplicate.
+     * If the listener returns true then it will be removed after it is called.
+     * If you pass a regular expression as the event name then the listener will be added to all events that match it.
+     *
+     * @param {String|RegExp} evt Name of the event to attach the listener to.
+     * @param {Function} listener Method to be called when the event is emitted. If the function returns true then it will be removed after calling.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.addListener = function addListener(evt, listener) {
+        var listeners = this.getListenersAsObject(evt);
+        var listenerIsWrapped = typeof listener === 'object';
+        var key;
+
+        for (key in listeners) {
+            if (listeners.hasOwnProperty(key) && indexOfListener(listeners[key], listener) === -1) {
+                listeners[key].push(listenerIsWrapped ? listener : {
+                    listener: listener,
+                    once: false
+                });
+            }
+        }
+
+        return this;
+    };
+
+    /**
+     * Alias of addListener
+     */
+    proto.on = alias('addListener');
+
+    /**
+     * Semi-alias of addListener. It will add a listener that will be
+     * automatically removed after its first execution.
+     *
+     * @param {String|RegExp} evt Name of the event to attach the listener to.
+     * @param {Function} listener Method to be called when the event is emitted. If the function returns true then it will be removed after calling.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.addOnceListener = function addOnceListener(evt, listener) {
+        return this.addListener(evt, {
+            listener: listener,
+            once: true
+        });
+    };
+
+    /**
+     * Alias of addOnceListener.
+     */
+    proto.once = alias('addOnceListener');
+
+    /**
+     * Defines an event name. This is required if you want to use a regex to add a listener to multiple events at once. If you don't do this then how do you expect it to know what event to add to? Should it just add to every possible match for a regex? No. That is scary and bad.
+     * You need to tell it what event names should be matched by a regex.
+     *
+     * @param {String} evt Name of the event to create.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.defineEvent = function defineEvent(evt) {
+        this.getListeners(evt);
+        return this;
+    };
+
+    /**
+     * Uses defineEvent to define multiple events.
+     *
+     * @param {String[]} evts An array of event names to define.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.defineEvents = function defineEvents(evts) {
+        for (var i = 0; i < evts.length; i += 1) {
+            this.defineEvent(evts[i]);
+        }
+        return this;
+    };
+
+    /**
+     * Removes a listener function from the specified event.
+     * When passed a regular expression as the event name, it will remove the listener from all events that match it.
+     *
+     * @param {String|RegExp} evt Name of the event to remove the listener from.
+     * @param {Function} listener Method to remove from the event.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.removeListener = function removeListener(evt, listener) {
+        var listeners = this.getListenersAsObject(evt);
+        var index;
+        var key;
+
+        for (key in listeners) {
+            if (listeners.hasOwnProperty(key)) {
+                index = indexOfListener(listeners[key], listener);
+
+                if (index !== -1) {
+                    listeners[key].splice(index, 1);
+                }
+            }
+        }
+
+        return this;
+    };
+
+    /**
+     * Alias of removeListener
+     */
+    proto.off = alias('removeListener');
+
+    /**
+     * Adds listeners in bulk using the manipulateListeners method.
+     * If you pass an object as the second argument you can add to multiple events at once. The object should contain key value pairs of events and listeners or listener arrays. You can also pass it an event name and an array of listeners to be added.
+     * You can also pass it a regular expression to add the array of listeners to all events that match it.
+     * Yeah, this function does quite a bit. That's probably a bad thing.
+     *
+     * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to add to multiple events at once.
+     * @param {Function[]} [listeners] An optional array of listener functions to add.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.addListeners = function addListeners(evt, listeners) {
+        // Pass through to manipulateListeners
+        return this.manipulateListeners(false, evt, listeners);
+    };
+
+    /**
+     * Removes listeners in bulk using the manipulateListeners method.
+     * If you pass an object as the second argument you can remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.
+     * You can also pass it an event name and an array of listeners to be removed.
+     * You can also pass it a regular expression to remove the listeners from all events that match it.
+     *
+     * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to remove from multiple events at once.
+     * @param {Function[]} [listeners] An optional array of listener functions to remove.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.removeListeners = function removeListeners(evt, listeners) {
+        // Pass through to manipulateListeners
+        return this.manipulateListeners(true, evt, listeners);
+    };
+
+    /**
+     * Edits listeners in bulk. The addListeners and removeListeners methods both use this to do their job. You should really use those instead, this is a little lower level.
+     * The first argument will determine if the listeners are removed (true) or added (false).
+     * If you pass an object as the second argument you can add/remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.
+     * You can also pass it an event name and an array of listeners to be added/removed.
+     * You can also pass it a regular expression to manipulate the listeners of all events that match it.
+     *
+     * @param {Boolean} remove True if you want to remove listeners, false if you want to add.
+     * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to add/remove from multiple events at once.
+     * @param {Function[]} [listeners] An optional array of listener functions to add/remove.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.manipulateListeners = function manipulateListeners(remove, evt, listeners) {
+        var i;
+        var value;
+        var single = remove ? this.removeListener : this.addListener;
+        var multiple = remove ? this.removeListeners : this.addListeners;
+
+        // If evt is an object then pass each of its properties to this method
+        if (typeof evt === 'object' && !(evt instanceof RegExp)) {
+            for (i in evt) {
+                if (evt.hasOwnProperty(i) && (value = evt[i])) {
+                    // Pass the single listener straight through to the singular method
+                    if (typeof value === 'function') {
+                        single.call(this, i, value);
+                    }
+                    else {
+                        // Otherwise pass back to the multiple function
+                        multiple.call(this, i, value);
+                    }
+                }
+            }
+        }
+        else {
+            // So evt must be a string
+            // And listeners must be an array of listeners
+            // Loop over it and pass each one to the multiple method
+            i = listeners.length;
+            while (i--) {
+                single.call(this, evt, listeners[i]);
+            }
+        }
+
+        return this;
+    };
+
+    /**
+     * Removes all listeners from a specified event.
+     * If you do not specify an event then all listeners will be removed.
+     * That means every event will be emptied.
+     * You can also pass a regex to remove all events that match it.
+     *
+     * @param {String|RegExp} [evt] Optional name of the event to remove all listeners for. Will remove from every event if not passed.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.removeEvent = function removeEvent(evt) {
+        var type = typeof evt;
+        var events = this._getEvents();
+        var key;
+
+        // Remove different things depending on the state of evt
+        if (type === 'string') {
+            // Remove all listeners for the specified event
+            delete events[evt];
+        }
+        else if (evt instanceof RegExp) {
+            // Remove all events matching the regex.
+            for (key in events) {
+                if (events.hasOwnProperty(key) && evt.test(key)) {
+                    delete events[key];
+                }
+            }
+        }
+        else {
+            // Remove all listeners in all events
+            delete this._events;
+        }
+
+        return this;
+    };
+
+    /**
+     * Alias of removeEvent.
+     *
+     * Added to mirror the node API.
+     */
+    proto.removeAllListeners = alias('removeEvent');
+
+    /**
+     * Emits an event of your choice.
+     * When emitted, every listener attached to that event will be executed.
+     * If you pass the optional argument array then those arguments will be passed to every listener upon execution.
+     * Because it uses `apply`, your array of arguments will be passed as if you wrote them out separately.
+     * So they will not arrive within the array on the other side, they will be separate.
+     * You can also pass a regular expression to emit to all events that match it.
+     *
+     * @param {String|RegExp} evt Name of the event to emit and execute listeners for.
+     * @param {Array} [args] Optional array of arguments to be passed to each listener.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.emitEvent = function emitEvent(evt, args) {
+        var listeners = this.getListenersAsObject(evt);
+        var listener;
+        var i;
+        var key;
+        var response;
+
+        for (key in listeners) {
+            if (listeners.hasOwnProperty(key)) {
+                i = listeners[key].length;
+
+                while (i--) {
+                    // If the listener returns true then it shall be removed from the event
+                    // The function is executed either with a basic call or an apply if there is an args array
+                    listener = listeners[key][i];
+
+                    if (listener.once === true) {
+                        this.removeListener(evt, listener.listener);
+                    }
+
+                    response = listener.listener.apply(this, args || []);
+
+                    if (response === this._getOnceReturnValue()) {
+                        this.removeListener(evt, listener.listener);
+                    }
+                }
+            }
+        }
+
+        return this;
+    };
+
+    /**
+     * Alias of emitEvent
+     */
+    proto.trigger = alias('emitEvent');
+
+    /**
+     * Subtly different from emitEvent in that it will pass its arguments on to the listeners, as opposed to taking a single array of arguments to pass on.
+     * As with emitEvent, you can pass a regex in place of the event name to emit to all events that match it.
+     *
+     * @param {String|RegExp} evt Name of the event to emit and execute listeners for.
+     * @param {...*} Optional additional arguments to be passed to each listener.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.emit = function emit(evt) {
+        var args = Array.prototype.slice.call(arguments, 1);
+        return this.emitEvent(evt, args);
+    };
+
+    /**
+     * Sets the current value to check against when executing listeners. If a
+     * listeners return value matches the one set here then it will be removed
+     * after execution. This value defaults to true.
+     *
+     * @param {*} value The new value to check for when executing listeners.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.setOnceReturnValue = function setOnceReturnValue(value) {
+        this._onceReturnValue = value;
+        return this;
+    };
+
+    /**
+     * Fetches the current value to check against when executing listeners. If
+     * the listeners return value matches this one then it should be removed
+     * automatically. It will return true by default.
+     *
+     * @return {*|Boolean} The current value to check for or the default, true.
+     * @api private
+     */
+    proto._getOnceReturnValue = function _getOnceReturnValue() {
+        if (this.hasOwnProperty('_onceReturnValue')) {
+            return this._onceReturnValue;
+        }
+        else {
+            return true;
+        }
+    };
+
+    /**
+     * Fetches the events object and creates one if required.
+     *
+     * @return {Object} The events storage object.
+     * @api private
+     */
+    proto._getEvents = function _getEvents() {
+        return this._events || (this._events = {});
+    };
+
+    /**
+     * Reverts the global {@link EventEmitter} to its previous value and returns a reference to this version.
+     *
+     * @return {Function} Non conflicting EventEmitter class.
+     */
+    EventEmitter.noConflict = function noConflict() {
+        exports.EventEmitter = originalGlobalValue;
+        return EventEmitter;
+    };
+
+    // Expose the class either via AMD, CommonJS or the global object
+    if (typeof define === 'function' && define.amd) {
+        define(function () {
+            return EventEmitter;
+        });
+    }
+    else if (typeof module === 'object' && module.exports){
+        module.exports = EventEmitter;
+    }
+    else {
+        exports.EventEmitter = EventEmitter;
+    }
+}.call(this));
+
+},{}],8:[function(require,module,exports){
 'use strict';
 
 /**
@@ -21742,10 +27805,19 @@ return jQuery;
  *
  */
 
+var Cookies = require('cookies-js');
+
 exports = module.exports = {};
 
-exports.AUTH = document.cookie;
-},{}],5:[function(require,module,exports){
+exports.set = function(token) {
+	Cookies.set('AUTH', token, { expires: new Date() });
+};
+
+exports.get = function() {
+	return Cookies.get('AUTH');
+};
+
+},{"cookies-js":2}],9:[function(require,module,exports){
 'use strict';
 
 /**
@@ -21793,7 +27865,7 @@ exports.headerUrl 	 	= `${base}/views/includes/header/main.html`;
 exports.APIUrl  		= `${base}/api/`;
 exports.imageUrl 	 	= `${base}/images/`;
 
-},{}],6:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 var $ = window.jQuery = require('jquery');
@@ -21803,11 +27875,17 @@ var userId = require('../../config/auth');
 var config = require('../../config/url');
 var valueDropdown = require('./dropdown-filter-value');
 
+var selectedFilter;
+
 /* DOM */
-var $filterDropdown = $('#dropdown-history-filter');
+var $filterDropdown = $('.dropdown-history-filter');
 var $filterFocusName = $('#filter-focus-item-name');
 
 exports = module.exports = {};
+
+exports.getSelectedFilter = function() {
+	return selectedFilter;
+}
 
 initialize();
 
@@ -21826,38 +27904,37 @@ function bindSetFocusNameBlockEventOnSelector() {
 
 function setFocusNameBlock() {
 	var displayName = $(this).text();
-	var id = $(this).data('id');
+	selectedFilter = $(this).data('id');
 
-	$filterFocusName.text(displayName).data(id);
+	$filterFocusName.text(displayName).data(selectedFilter);
 
-	displaySelector(id);
+	displaySelector();
 }
 
 function setDefault() {
 	var $defaultItem = $filterDropdown.find('.option-item').eq(0);
 	var displayName = $defaultItem.text();
-	var id = $defaultItem.data('id');
+	selectedFilter = $defaultItem.data('id');
 
-	$filterFocusName.text(displayName).data(id);
+	$filterFocusName.text(displayName).data(selectedFilter);
 
-	displaySelector(id);
+	displaySelector();
 }
 
-function displaySelector(id) {
-	var type = id.split('_')[0];
-
-	if(type === 'date'){
+function displaySelector() {
+	if(selectedFilter === 'date_period'){
 		valueDropdown.hide();
 	}else {
-		valueDropdown.showAndRenderDropdown(type);
+		valueDropdown.showAndRenderDropdown(selectedFilter);
 	}
 }
-},{"../../config/auth":4,"../../config/url":5,"./dropdown-filter-value":7,"bootstrap/js/dropdown":1,"jquery":2}],7:[function(require,module,exports){
+},{"../../config/auth":8,"../../config/url":9,"./dropdown-filter-value":11,"bootstrap/js/dropdown":1,"jquery":5}],11:[function(require,module,exports){
 'use strict';
 
 var $ = window.jQuery = require('jquery');
 require('bootstrap/js/dropdown');
 
+var _ = require('lodash');
 var userId = require('../../config/auth');
 var config = require('../../config/url');
 var templates = require('../templates');
@@ -21867,7 +27944,7 @@ var $valueDropdown = $('#dropdown-value-list');
 var $filterValueFocusName = $('#focus-value');
 var $filterValueMenu = $('#filter-value-list');
 
-var filterType;
+var selectedValue;
 
 exports = module.exports = {};
 
@@ -21878,6 +27955,10 @@ exports.showAndRenderDropdown = function(type) {
 
 exports.hide = function() {
 	$valueDropdown.addClass('hidden');
+}
+
+exports.getSelectedValue = function() {
+	return selectedValue;
 }
 
 initialize();
@@ -21894,38 +27975,28 @@ function bindSetFocusNameBlockEventOnSelector() {
 	$filterValueMenu.on('click', '.option-item', setFocusValueBlock);
 }
 
-function setFocusValueBlock() {
-	var displayName = $(this).text();
-	var id = $(this).data('id');
+function setFocusValueBlock(target) {
+	var displayName = target.type==='click' ? $(this).text() : target.name;
+	selectedValue = target.type==='click' ? $(this).data('id') : target.id;
 
-	$filterValueFocusName.text(displayName).data(id);
-
-	getItemListThenRenderRows(id);
-}
-
-function getItemListThenRenderRows(id) {
-	// $.get(config.APIUrl + 'history/:' + userId?type=' + type + 'id=' + id)
-	$.get(config.APIUrl + 'history?type=' + filterType + 'id=' + id)
-	 .done(function(response){
-		// var tableListRows = templates.renderTableList({ lists : response });
-
-		// $filterValueMenu.empty().html( tableListRows );
-	 });
+	$filterValueFocusName.text(displayName).data(selectedValue);
 }
 
 function getValueThenRenderDropdown(type) {
-	filterType = type;
-
-	// $.get(config.APIUrl + 'history/list/:' + userId?type=' + filterType)
-	$.get(config.APIUrl + 'history/list?type=' + filterType)
+	// $.get(config.APIUrl + 'history/filter/:' + userId?type=' + type)
+	$.get(config.APIUrl + 'history/filter?type=' + type)
 	 .done(function(response){
-		var filterListRows = templates.renderFilterDropdown({ filters : response });
+	 	if( response.length ){
+		 	var filters = _.uniq(response);
+			var filterListRows = templates.renderFilterDropdown({ filters : filters });
 
-		$filterValueMenu.empty().html( filterListRows );
+			$filterValueMenu.empty().html( filterListRows );
+
+			setFocusValueBlock( filters[0] );
+		}
 	 });
 }
-
-},{"../../config/auth":4,"../../config/url":5,"../templates":8,"bootstrap/js/dropdown":1,"jquery":2}],8:[function(require,module,exports){
+},{"../../config/auth":8,"../../config/url":9,"../templates":12,"bootstrap/js/dropdown":1,"jquery":5,"lodash":6}],12:[function(require,module,exports){
 'use strict';
 
 var _ = require('lodash');
@@ -21970,7 +28041,7 @@ exports.renderTableList = function(infos) {
   return menuTemp(infos);
 }
 
-},{"lodash":3}],9:[function(require,module,exports){
+},{"lodash":6}],13:[function(require,module,exports){
 'use strict';
 
 var $ = window.jQuery = require('jquery');
@@ -21981,27 +28052,142 @@ exports = module.exports = {};
 exports.include = function(){
 	$("#header").load(config.headerUrl);
 }
-},{"../config/url":5,"jquery":2}],10:[function(require,module,exports){
+},{"../config/url":9,"jquery":5}],14:[function(require,module,exports){
+'use strict';
+
+var $ = window.jQuery = require('jquery');
+require('bootstrap/js/dropdown');
+
+var _ = require('lodash');
+var userId = require('../../config/auth');
+var config = require('../../config/url');
+var EventEmitter = require('wolfy87-eventemitter');
+
+var selectedFactoryId;
+var emitter = new EventEmitter();
+
+/* DOM */
+var $factoryFocusName = $('.factory-focus-name');
+var $factoryList = $('.factory-list');
+
+exports = module.exports = {};
+
+exports.emitter = emitter;
+
+initialize();
+
+function initialize() {
+	bindEvents();
+	createFactoryListThenRenderRows();
+}
+
+function bindEvents() {
+	bindSetFocusNameBlockEventOnSelector();
+}
+
+function bindSetFocusNameBlockEventOnSelector() {
+	$factoryList.on('click', '.option-item', setFocusNameBlock);
+}
+
+function setFocusNameBlock(target) {
+	selectedFactoryId = target.type==='click' ? $(this).data('id') : target.id;
+	var displayName = target.type==='click' ? $(this).text() : target.name;
+
+	$factoryFocusName.text(displayName).data(selectedFactoryId);
+
+	emitter.emit('factoryChanged', selectedFactoryId);
+}
+
+function createFactoryListThenRenderRows() {
+	// $.get(config.APIUrl + 'factory/list/:' + userId)
+	$.get(config.APIUrl + 'factory/list')
+	 .done(function(response){
+		var factoryListRows = renderFactoryDropdown({ factories : response });
+
+		$factoryList.empty().html( factoryListRows );
+
+		setFocusNameBlock(response[0]);
+	 });
+}
+
+function renderFactoryDropdown(factories) {
+  var menuTemp = _.template(
+	 `<% _.forEach(factories, function(factory) {  %>
+      <li><a class="option-item" data-id=<%= factory.id %>>
+      		<%= factory.name %>
+      </a></li>
+    <% });                                          %>`
+	);
+
+  return menuTemp(factories);
+}
+},{"../../config/auth":8,"../../config/url":9,"bootstrap/js/dropdown":1,"jquery":5,"lodash":6,"wolfy87-eventemitter":7}],15:[function(require,module,exports){
 'use strict';
 var $ = window.jQuery = require('jquery');
+// var moment = window.moment = require('moment');
 var header = require('../includes/header');
 var userId = require('../config/auth');
 var config = require('../config/url');
 var templates = require('../history/templates');
+var factoryDropdown = require('../lib/component/dropdown-factory');
 
+require('eonasdan-bootstrap-datetimepicker');
 require('../history/components/dropdown-filter-type');
 
 /* DOM */
+var $tableListBlock = $('#history-table-block');
+var $imageBlock = $('#history-img-block');
+var $searchBtn = $('#history-search-btn');
+var $startDatePicker = $('#history-start-date-picker');
+var $endDatePicker = $('#history-end-date-picker');
+
+var today = new Date();
+var dateTimePickerOpt = {
+		widgetPositioning: {
+			horizontal: 'auto',
+			vertical: 'bottom'
+		},
+		maxDate: today,
+		ignoreReadonly: true
+	};
 
 initialize();
 
 function initialize() {
 	header.include();
+	initializeDatetimePicker();
 	bindEvents();
 }
 
-function bindEvents() {
+function initializeDatetimePicker() {
+	$startDatePicker.datetimepicker(dateTimePickerOpt);
+	$endDatePicker.datetimepicker(dateTimePickerOpt);
 
+	setDefaultDate();
 }
 
-},{"../config/auth":4,"../config/url":5,"../history/components/dropdown-filter-type":6,"../history/templates":8,"../includes/header":9,"jquery":2}]},{},[10]);
+function setDefaultDate() {
+	$startDatePicker.data("DateTimePicker").defaultDate(today);
+	$endDatePicker.data("DateTimePicker").defaultDate(today);
+}
+
+function bindEvents() {
+	bindSearchListEventOnButton();
+}
+
+function bindSearchListEventOnButton() {
+	$searchBtn.on('click', searchHistoryThenRenderRows);
+}
+
+function searchHistoryThenRenderRows() {
+
+	// $.get(config.APIUrl + 'history/list/:' + userId + '?factory_id=' + focusFactoryId + 'type=' + type + '&search_key=' + searchKey)
+	$.get(config.APIUrl + 'history/list/?factory_id=' + focusFactoryId + '&type=' + type + '&search_key=' + searchKey)
+	 .done(function(response){
+		var tableListRows = templates.renderTableList({ infos : response });
+
+		$tableListBlock.empty().append( tableListRows );
+	 });
+}
+
+},{"../config/auth":8,"../config/url":9,"../history/components/dropdown-filter-type":10,"../history/templates":12,"../includes/header":13,"../lib/component/dropdown-factory":14,"eonasdan-bootstrap-datetimepicker":4,"jquery":5}]},{},[15]);

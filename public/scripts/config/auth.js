@@ -7,6 +7,14 @@
  *
  */
 
+var Cookies = require('cookies-js');
+
 exports = module.exports = {};
 
-exports.AUTH = document.cookie;
+exports.set = function(token) {
+	Cookies.set('AUTH', token, { expires: new Date() });
+};
+
+exports.get = function() {
+	return Cookies.get('AUTH');
+};

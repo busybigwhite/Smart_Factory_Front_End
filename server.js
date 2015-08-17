@@ -23,7 +23,7 @@ app.get('/realtime', function(req, res) { res.render('pages/realtime/main'); });
 app.get('/realtime/listpic', function(req, res) {
 	res.render('pages/realtime/listpic');
 });
-app.get('/api/workorder/list', function(req, res) {
+app.get('/api/realtime/info', function(req, res) {
 	res.send(data.liveinfos);
 });
 app.get('/api/realtime/listpic', function(req, res) {
@@ -40,12 +40,12 @@ app.get('/member', function(req, res) { res.render('pages/member/main'); });
 
 // history
 app.get('/history', function(req, res) { res.render('pages/history/main'); });
-app.get('/api/history/list', function(req, res) {
+app.get('/api/history/filter', function(req, res) {
 	switch(req.query.type){
-		case "machine":
+		case "machine_id":
 			res.send(data.machineLists);
 		break;
-		case "mold":
+		case "mold_id":
 			res.send(data.moldLists);
 		break;
 		default:

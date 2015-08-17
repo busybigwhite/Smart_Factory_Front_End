@@ -4,19 +4,6 @@ var _ = require('lodash');
 
 exports = module.exports = {};
 
-exports.renderFactoryDropdown = function(factories) {
-
-  var menuTemp = _.template(
-	 `<% _.forEach(factories, function(factory) {  %>
-      <li><a class="realtime-factory-item" data-id=<%= factory.id %>>
-      		<%= factory.name %>
-      </a></li>
-    <% });                                          %>`
-	);
-
-  return menuTemp(factories);
-}
-
 exports.renderTableList = function(infos) {
 
   var menuTemp = _.template(
@@ -32,7 +19,7 @@ exports.renderTableList = function(infos) {
       	<div class="table-col-sm"><%= info.abnormal_num %></div>
       	<div class="table-col-lg">
       		<button class="realtime-showpic-btn" data-type="current" data-info=<%= info.workorder_id %>/<%= info.machine_id %>/<%= info.mold_id %>>即時</button>
-        	<button class="realtime-showpic-btn" data-type="safety" data-info=<%= info.workorder_id %>/<%= info.machine_id %>/<%= info.mold_id %>>安全</button>
+        	<button class="realtime-showpic-btn" data-type="noremal" data-info=<%= info.workorder_id %>/<%= info.machine_id %>/<%= info.mold_id %>>安全</button>
         	<button class="realtime-showpic-btn" data-type="error" data-info=<%= info.workorder_id %>/<%= info.machine_id %>/<%= info.mold_id %>>異常</button>
       	</div>
 		  </li>
@@ -47,11 +34,11 @@ exports.renderPicList = function(pictures) {
   var menuTemp = _.template(
    `<% _.forEach(pictures, function(picture) {  %>
       <div class="realtime-pic-item">
-        <a class="thumbnail" title= <%= picture.date %> >
+        <a class="thumbnail" title= <%= picture.current_time %> >
           <img src= <%= picture.url %> >
         </a>
         <div class="realtime-pic-label">
-          <span><%= picture.date %></span>
+          <span><%= picture.current_time %></span>
         </div>
       </div>
 

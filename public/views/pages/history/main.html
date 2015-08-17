@@ -16,14 +16,14 @@
     		<div class="col-xs-8">
     			<div class="dropdown-factory-filter">
 					<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-						<span id="realtime-factory-focus"></span>
+						<span class="factory-focus-name"></span>
 						<span class="caret"></span>
 					</button>
-					<ul id="realtime-factory-list" class="dropdown-menu"></ul>
+					<ul class="factory-list dropdown-menu"></ul>
 				</div>
-	    		<div id="dropdown-history-filter">
+	    		<div class="dropdown-history-filter">
 					<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-						<span id="filter-focus-item-name" class="dropdown-focus-name"></span>
+						<span id="filter-focus-item-name"></span>
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu">
@@ -36,22 +36,23 @@
 				</div>
 				<div id="dropdown-value-list">
 					<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-						<span id="focus-value" class="dropdown-focus-name"></span>
+						<span id="focus-value"></span>
 						<span class="caret"></span>
 					</button>
 					<ul id="filter-value-list" class="dropdown-menu"></ul>
 				</div>
+				<div id="history-date-block">
+					<span>自 </span>
+					<input type="text" id='history-start-date-picker' data-date-format="YYYY/MM/DD" readonly/>
+	                <span id="history-start-date-btn" class="date-picker-btn fa fa-calendar"></span>
+					<span> 至 </span>
+					<input type="text" id='history-end-date-picker' data-date-format="YYYY/MM/DD" readonly/>
+	                <span id="history-end-date-btn" class="date-picker-btn fa fa-calendar"></span>
+				</div>
+				<button id="history-search-btn" class="btn btn-info">搜尋</button>
     		</div>
-    		<div class="col-xs-4">
-    			<!-- <div class="input-group pull-right">
-					<input id="history-search-input" type="text" class="form-control" placeholder="Search for...">
-					<span class="input-group-btn">
-						<button id="history-search-btn" class="btn btn-info">
-							<i class="fa fa-search"></i>
-						</button>
-					</span>
-				</div> -->
 
+    		<div class="col-xs-4">
 			</div>
     	</div>
 

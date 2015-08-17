@@ -166,6 +166,168 @@
 }(jQuery);
 
 },{}],2:[function(require,module,exports){
+/*
+ * Cookies.js - 1.2.1
+ * https://github.com/ScottHamper/Cookies
+ *
+ * This is free and unencumbered software released into the public domain.
+ */
+(function (global, undefined) {
+    'use strict';
+
+    var factory = function (window) {
+        if (typeof window.document !== 'object') {
+            throw new Error('Cookies.js requires a `window` with a `document` object');
+        }
+
+        var Cookies = function (key, value, options) {
+            return arguments.length === 1 ?
+                Cookies.get(key) : Cookies.set(key, value, options);
+        };
+
+        // Allows for setter injection in unit tests
+        Cookies._document = window.document;
+
+        // Used to ensure cookie keys do not collide with
+        // built-in `Object` properties
+        Cookies._cacheKeyPrefix = 'cookey.'; // Hurr hurr, :)
+        
+        Cookies._maxExpireDate = new Date('Fri, 31 Dec 9999 23:59:59 UTC');
+
+        Cookies.defaults = {
+            path: '/',
+            secure: false
+        };
+
+        Cookies.get = function (key) {
+            if (Cookies._cachedDocumentCookie !== Cookies._document.cookie) {
+                Cookies._renewCache();
+            }
+
+            return Cookies._cache[Cookies._cacheKeyPrefix + key];
+        };
+
+        Cookies.set = function (key, value, options) {
+            options = Cookies._getExtendedOptions(options);
+            options.expires = Cookies._getExpiresDate(value === undefined ? -1 : options.expires);
+
+            Cookies._document.cookie = Cookies._generateCookieString(key, value, options);
+
+            return Cookies;
+        };
+
+        Cookies.expire = function (key, options) {
+            return Cookies.set(key, undefined, options);
+        };
+
+        Cookies._getExtendedOptions = function (options) {
+            return {
+                path: options && options.path || Cookies.defaults.path,
+                domain: options && options.domain || Cookies.defaults.domain,
+                expires: options && options.expires || Cookies.defaults.expires,
+                secure: options && options.secure !== undefined ?  options.secure : Cookies.defaults.secure
+            };
+        };
+
+        Cookies._isValidDate = function (date) {
+            return Object.prototype.toString.call(date) === '[object Date]' && !isNaN(date.getTime());
+        };
+
+        Cookies._getExpiresDate = function (expires, now) {
+            now = now || new Date();
+
+            if (typeof expires === 'number') {
+                expires = expires === Infinity ?
+                    Cookies._maxExpireDate : new Date(now.getTime() + expires * 1000);
+            } else if (typeof expires === 'string') {
+                expires = new Date(expires);
+            }
+
+            if (expires && !Cookies._isValidDate(expires)) {
+                throw new Error('`expires` parameter cannot be converted to a valid Date instance');
+            }
+
+            return expires;
+        };
+
+        Cookies._generateCookieString = function (key, value, options) {
+            key = key.replace(/[^#$&+\^`|]/g, encodeURIComponent);
+            key = key.replace(/\(/g, '%28').replace(/\)/g, '%29');
+            value = (value + '').replace(/[^!#$&-+\--:<-\[\]-~]/g, encodeURIComponent);
+            options = options || {};
+
+            var cookieString = key + '=' + value;
+            cookieString += options.path ? ';path=' + options.path : '';
+            cookieString += options.domain ? ';domain=' + options.domain : '';
+            cookieString += options.expires ? ';expires=' + options.expires.toUTCString() : '';
+            cookieString += options.secure ? ';secure' : '';
+
+            return cookieString;
+        };
+
+        Cookies._getCacheFromString = function (documentCookie) {
+            var cookieCache = {};
+            var cookiesArray = documentCookie ? documentCookie.split('; ') : [];
+
+            for (var i = 0; i < cookiesArray.length; i++) {
+                var cookieKvp = Cookies._getKeyValuePairFromCookieString(cookiesArray[i]);
+
+                if (cookieCache[Cookies._cacheKeyPrefix + cookieKvp.key] === undefined) {
+                    cookieCache[Cookies._cacheKeyPrefix + cookieKvp.key] = cookieKvp.value;
+                }
+            }
+
+            return cookieCache;
+        };
+
+        Cookies._getKeyValuePairFromCookieString = function (cookieString) {
+            // "=" is a valid character in a cookie value according to RFC6265, so cannot `split('=')`
+            var separatorIndex = cookieString.indexOf('=');
+
+            // IE omits the "=" when the cookie value is an empty string
+            separatorIndex = separatorIndex < 0 ? cookieString.length : separatorIndex;
+
+            return {
+                key: decodeURIComponent(cookieString.substr(0, separatorIndex)),
+                value: decodeURIComponent(cookieString.substr(separatorIndex + 1))
+            };
+        };
+
+        Cookies._renewCache = function () {
+            Cookies._cache = Cookies._getCacheFromString(Cookies._document.cookie);
+            Cookies._cachedDocumentCookie = Cookies._document.cookie;
+        };
+
+        Cookies._areEnabled = function () {
+            var testKey = 'cookies.js';
+            var areEnabled = Cookies.set(testKey, 1).get(testKey) === '1';
+            Cookies.expire(testKey);
+            return areEnabled;
+        };
+
+        Cookies.enabled = Cookies._areEnabled();
+
+        return Cookies;
+    };
+
+    var cookiesExport = typeof global.document === 'object' ? factory(global) : factory;
+
+    // AMD support
+    if (typeof define === 'function' && define.amd) {
+        define(function () { return cookiesExport; });
+    // CommonJS/Node.js support
+    } else if (typeof exports === 'object') {
+        // Support Node.js specific `module.exports` (which can be a function)
+        if (typeof module === 'object' && typeof module.exports === 'object') {
+            exports = module.exports = cookiesExport;
+        }
+        // But always support CommonJS module 1.1.1 spec (`exports` cannot be a function)
+        exports.Cookies = cookiesExport;
+    } else {
+        global.Cookies = cookiesExport;
+    }
+})(typeof window === 'undefined' ? this : window);
+},{}],3:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -9377,7 +9539,7 @@ return jQuery;
 
 }));
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -21732,7 +21894,7 @@ return jQuery;
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
@@ -21773,7 +21935,7 @@ module.exports = Object.assign || function (target, source) {
 	return to;
 };
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 // Load modules
 
 var Stringify = require('./stringify');
@@ -21790,7 +21952,7 @@ module.exports = {
     parse: Parse
 };
 
-},{"./parse":6,"./stringify":7}],6:[function(require,module,exports){
+},{"./parse":7,"./stringify":8}],7:[function(require,module,exports){
 // Load modules
 
 var Utils = require('./utils');
@@ -21978,7 +22140,7 @@ module.exports = function (str, options) {
     return Utils.compact(obj);
 };
 
-},{"./utils":8}],7:[function(require,module,exports){
+},{"./utils":9}],8:[function(require,module,exports){
 // Load modules
 
 var Utils = require('./utils');
@@ -22101,7 +22263,7 @@ module.exports = function (obj, options) {
     return keys.join(delimiter);
 };
 
-},{"./utils":8}],8:[function(require,module,exports){
+},{"./utils":9}],9:[function(require,module,exports){
 // Load modules
 
 
@@ -22293,7 +22455,481 @@ exports.isBuffer = function (obj) {
               obj.constructor.isBuffer(obj));
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
+/*!
+ * EventEmitter v4.2.11 - git.io/ee
+ * Unlicense - http://unlicense.org/
+ * Oliver Caldwell - http://oli.me.uk/
+ * @preserve
+ */
+
+;(function () {
+    'use strict';
+
+    /**
+     * Class for managing events.
+     * Can be extended to provide event functionality in other classes.
+     *
+     * @class EventEmitter Manages event registering and emitting.
+     */
+    function EventEmitter() {}
+
+    // Shortcuts to improve speed and size
+    var proto = EventEmitter.prototype;
+    var exports = this;
+    var originalGlobalValue = exports.EventEmitter;
+
+    /**
+     * Finds the index of the listener for the event in its storage array.
+     *
+     * @param {Function[]} listeners Array of listeners to search through.
+     * @param {Function} listener Method to look for.
+     * @return {Number} Index of the specified listener, -1 if not found
+     * @api private
+     */
+    function indexOfListener(listeners, listener) {
+        var i = listeners.length;
+        while (i--) {
+            if (listeners[i].listener === listener) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    /**
+     * Alias a method while keeping the context correct, to allow for overwriting of target method.
+     *
+     * @param {String} name The name of the target method.
+     * @return {Function} The aliased method
+     * @api private
+     */
+    function alias(name) {
+        return function aliasClosure() {
+            return this[name].apply(this, arguments);
+        };
+    }
+
+    /**
+     * Returns the listener array for the specified event.
+     * Will initialise the event object and listener arrays if required.
+     * Will return an object if you use a regex search. The object contains keys for each matched event. So /ba[rz]/ might return an object containing bar and baz. But only if you have either defined them with defineEvent or added some listeners to them.
+     * Each property in the object response is an array of listener functions.
+     *
+     * @param {String|RegExp} evt Name of the event to return the listeners from.
+     * @return {Function[]|Object} All listener functions for the event.
+     */
+    proto.getListeners = function getListeners(evt) {
+        var events = this._getEvents();
+        var response;
+        var key;
+
+        // Return a concatenated array of all matching events if
+        // the selector is a regular expression.
+        if (evt instanceof RegExp) {
+            response = {};
+            for (key in events) {
+                if (events.hasOwnProperty(key) && evt.test(key)) {
+                    response[key] = events[key];
+                }
+            }
+        }
+        else {
+            response = events[evt] || (events[evt] = []);
+        }
+
+        return response;
+    };
+
+    /**
+     * Takes a list of listener objects and flattens it into a list of listener functions.
+     *
+     * @param {Object[]} listeners Raw listener objects.
+     * @return {Function[]} Just the listener functions.
+     */
+    proto.flattenListeners = function flattenListeners(listeners) {
+        var flatListeners = [];
+        var i;
+
+        for (i = 0; i < listeners.length; i += 1) {
+            flatListeners.push(listeners[i].listener);
+        }
+
+        return flatListeners;
+    };
+
+    /**
+     * Fetches the requested listeners via getListeners but will always return the results inside an object. This is mainly for internal use but others may find it useful.
+     *
+     * @param {String|RegExp} evt Name of the event to return the listeners from.
+     * @return {Object} All listener functions for an event in an object.
+     */
+    proto.getListenersAsObject = function getListenersAsObject(evt) {
+        var listeners = this.getListeners(evt);
+        var response;
+
+        if (listeners instanceof Array) {
+            response = {};
+            response[evt] = listeners;
+        }
+
+        return response || listeners;
+    };
+
+    /**
+     * Adds a listener function to the specified event.
+     * The listener will not be added if it is a duplicate.
+     * If the listener returns true then it will be removed after it is called.
+     * If you pass a regular expression as the event name then the listener will be added to all events that match it.
+     *
+     * @param {String|RegExp} evt Name of the event to attach the listener to.
+     * @param {Function} listener Method to be called when the event is emitted. If the function returns true then it will be removed after calling.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.addListener = function addListener(evt, listener) {
+        var listeners = this.getListenersAsObject(evt);
+        var listenerIsWrapped = typeof listener === 'object';
+        var key;
+
+        for (key in listeners) {
+            if (listeners.hasOwnProperty(key) && indexOfListener(listeners[key], listener) === -1) {
+                listeners[key].push(listenerIsWrapped ? listener : {
+                    listener: listener,
+                    once: false
+                });
+            }
+        }
+
+        return this;
+    };
+
+    /**
+     * Alias of addListener
+     */
+    proto.on = alias('addListener');
+
+    /**
+     * Semi-alias of addListener. It will add a listener that will be
+     * automatically removed after its first execution.
+     *
+     * @param {String|RegExp} evt Name of the event to attach the listener to.
+     * @param {Function} listener Method to be called when the event is emitted. If the function returns true then it will be removed after calling.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.addOnceListener = function addOnceListener(evt, listener) {
+        return this.addListener(evt, {
+            listener: listener,
+            once: true
+        });
+    };
+
+    /**
+     * Alias of addOnceListener.
+     */
+    proto.once = alias('addOnceListener');
+
+    /**
+     * Defines an event name. This is required if you want to use a regex to add a listener to multiple events at once. If you don't do this then how do you expect it to know what event to add to? Should it just add to every possible match for a regex? No. That is scary and bad.
+     * You need to tell it what event names should be matched by a regex.
+     *
+     * @param {String} evt Name of the event to create.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.defineEvent = function defineEvent(evt) {
+        this.getListeners(evt);
+        return this;
+    };
+
+    /**
+     * Uses defineEvent to define multiple events.
+     *
+     * @param {String[]} evts An array of event names to define.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.defineEvents = function defineEvents(evts) {
+        for (var i = 0; i < evts.length; i += 1) {
+            this.defineEvent(evts[i]);
+        }
+        return this;
+    };
+
+    /**
+     * Removes a listener function from the specified event.
+     * When passed a regular expression as the event name, it will remove the listener from all events that match it.
+     *
+     * @param {String|RegExp} evt Name of the event to remove the listener from.
+     * @param {Function} listener Method to remove from the event.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.removeListener = function removeListener(evt, listener) {
+        var listeners = this.getListenersAsObject(evt);
+        var index;
+        var key;
+
+        for (key in listeners) {
+            if (listeners.hasOwnProperty(key)) {
+                index = indexOfListener(listeners[key], listener);
+
+                if (index !== -1) {
+                    listeners[key].splice(index, 1);
+                }
+            }
+        }
+
+        return this;
+    };
+
+    /**
+     * Alias of removeListener
+     */
+    proto.off = alias('removeListener');
+
+    /**
+     * Adds listeners in bulk using the manipulateListeners method.
+     * If you pass an object as the second argument you can add to multiple events at once. The object should contain key value pairs of events and listeners or listener arrays. You can also pass it an event name and an array of listeners to be added.
+     * You can also pass it a regular expression to add the array of listeners to all events that match it.
+     * Yeah, this function does quite a bit. That's probably a bad thing.
+     *
+     * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to add to multiple events at once.
+     * @param {Function[]} [listeners] An optional array of listener functions to add.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.addListeners = function addListeners(evt, listeners) {
+        // Pass through to manipulateListeners
+        return this.manipulateListeners(false, evt, listeners);
+    };
+
+    /**
+     * Removes listeners in bulk using the manipulateListeners method.
+     * If you pass an object as the second argument you can remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.
+     * You can also pass it an event name and an array of listeners to be removed.
+     * You can also pass it a regular expression to remove the listeners from all events that match it.
+     *
+     * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to remove from multiple events at once.
+     * @param {Function[]} [listeners] An optional array of listener functions to remove.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.removeListeners = function removeListeners(evt, listeners) {
+        // Pass through to manipulateListeners
+        return this.manipulateListeners(true, evt, listeners);
+    };
+
+    /**
+     * Edits listeners in bulk. The addListeners and removeListeners methods both use this to do their job. You should really use those instead, this is a little lower level.
+     * The first argument will determine if the listeners are removed (true) or added (false).
+     * If you pass an object as the second argument you can add/remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.
+     * You can also pass it an event name and an array of listeners to be added/removed.
+     * You can also pass it a regular expression to manipulate the listeners of all events that match it.
+     *
+     * @param {Boolean} remove True if you want to remove listeners, false if you want to add.
+     * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to add/remove from multiple events at once.
+     * @param {Function[]} [listeners] An optional array of listener functions to add/remove.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.manipulateListeners = function manipulateListeners(remove, evt, listeners) {
+        var i;
+        var value;
+        var single = remove ? this.removeListener : this.addListener;
+        var multiple = remove ? this.removeListeners : this.addListeners;
+
+        // If evt is an object then pass each of its properties to this method
+        if (typeof evt === 'object' && !(evt instanceof RegExp)) {
+            for (i in evt) {
+                if (evt.hasOwnProperty(i) && (value = evt[i])) {
+                    // Pass the single listener straight through to the singular method
+                    if (typeof value === 'function') {
+                        single.call(this, i, value);
+                    }
+                    else {
+                        // Otherwise pass back to the multiple function
+                        multiple.call(this, i, value);
+                    }
+                }
+            }
+        }
+        else {
+            // So evt must be a string
+            // And listeners must be an array of listeners
+            // Loop over it and pass each one to the multiple method
+            i = listeners.length;
+            while (i--) {
+                single.call(this, evt, listeners[i]);
+            }
+        }
+
+        return this;
+    };
+
+    /**
+     * Removes all listeners from a specified event.
+     * If you do not specify an event then all listeners will be removed.
+     * That means every event will be emptied.
+     * You can also pass a regex to remove all events that match it.
+     *
+     * @param {String|RegExp} [evt] Optional name of the event to remove all listeners for. Will remove from every event if not passed.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.removeEvent = function removeEvent(evt) {
+        var type = typeof evt;
+        var events = this._getEvents();
+        var key;
+
+        // Remove different things depending on the state of evt
+        if (type === 'string') {
+            // Remove all listeners for the specified event
+            delete events[evt];
+        }
+        else if (evt instanceof RegExp) {
+            // Remove all events matching the regex.
+            for (key in events) {
+                if (events.hasOwnProperty(key) && evt.test(key)) {
+                    delete events[key];
+                }
+            }
+        }
+        else {
+            // Remove all listeners in all events
+            delete this._events;
+        }
+
+        return this;
+    };
+
+    /**
+     * Alias of removeEvent.
+     *
+     * Added to mirror the node API.
+     */
+    proto.removeAllListeners = alias('removeEvent');
+
+    /**
+     * Emits an event of your choice.
+     * When emitted, every listener attached to that event will be executed.
+     * If you pass the optional argument array then those arguments will be passed to every listener upon execution.
+     * Because it uses `apply`, your array of arguments will be passed as if you wrote them out separately.
+     * So they will not arrive within the array on the other side, they will be separate.
+     * You can also pass a regular expression to emit to all events that match it.
+     *
+     * @param {String|RegExp} evt Name of the event to emit and execute listeners for.
+     * @param {Array} [args] Optional array of arguments to be passed to each listener.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.emitEvent = function emitEvent(evt, args) {
+        var listeners = this.getListenersAsObject(evt);
+        var listener;
+        var i;
+        var key;
+        var response;
+
+        for (key in listeners) {
+            if (listeners.hasOwnProperty(key)) {
+                i = listeners[key].length;
+
+                while (i--) {
+                    // If the listener returns true then it shall be removed from the event
+                    // The function is executed either with a basic call or an apply if there is an args array
+                    listener = listeners[key][i];
+
+                    if (listener.once === true) {
+                        this.removeListener(evt, listener.listener);
+                    }
+
+                    response = listener.listener.apply(this, args || []);
+
+                    if (response === this._getOnceReturnValue()) {
+                        this.removeListener(evt, listener.listener);
+                    }
+                }
+            }
+        }
+
+        return this;
+    };
+
+    /**
+     * Alias of emitEvent
+     */
+    proto.trigger = alias('emitEvent');
+
+    /**
+     * Subtly different from emitEvent in that it will pass its arguments on to the listeners, as opposed to taking a single array of arguments to pass on.
+     * As with emitEvent, you can pass a regex in place of the event name to emit to all events that match it.
+     *
+     * @param {String|RegExp} evt Name of the event to emit and execute listeners for.
+     * @param {...*} Optional additional arguments to be passed to each listener.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.emit = function emit(evt) {
+        var args = Array.prototype.slice.call(arguments, 1);
+        return this.emitEvent(evt, args);
+    };
+
+    /**
+     * Sets the current value to check against when executing listeners. If a
+     * listeners return value matches the one set here then it will be removed
+     * after execution. This value defaults to true.
+     *
+     * @param {*} value The new value to check for when executing listeners.
+     * @return {Object} Current instance of EventEmitter for chaining.
+     */
+    proto.setOnceReturnValue = function setOnceReturnValue(value) {
+        this._onceReturnValue = value;
+        return this;
+    };
+
+    /**
+     * Fetches the current value to check against when executing listeners. If
+     * the listeners return value matches this one then it should be removed
+     * automatically. It will return true by default.
+     *
+     * @return {*|Boolean} The current value to check for or the default, true.
+     * @api private
+     */
+    proto._getOnceReturnValue = function _getOnceReturnValue() {
+        if (this.hasOwnProperty('_onceReturnValue')) {
+            return this._onceReturnValue;
+        }
+        else {
+            return true;
+        }
+    };
+
+    /**
+     * Fetches the events object and creates one if required.
+     *
+     * @return {Object} The events storage object.
+     * @api private
+     */
+    proto._getEvents = function _getEvents() {
+        return this._events || (this._events = {});
+    };
+
+    /**
+     * Reverts the global {@link EventEmitter} to its previous value and returns a reference to this version.
+     *
+     * @return {Function} Non conflicting EventEmitter class.
+     */
+    EventEmitter.noConflict = function noConflict() {
+        exports.EventEmitter = originalGlobalValue;
+        return EventEmitter;
+    };
+
+    // Expose the class either via AMD, CommonJS or the global object
+    if (typeof define === 'function' && define.amd) {
+        define(function () {
+            return EventEmitter;
+        });
+    }
+    else if (typeof module === 'object' && module.exports){
+        module.exports = EventEmitter;
+    }
+    else {
+        exports.EventEmitter = EventEmitter;
+    }
+}.call(this));
+
+},{}],11:[function(require,module,exports){
 'use strict';
 
 /**
@@ -22303,10 +22939,19 @@ exports.isBuffer = function (obj) {
  *
  */
 
+var Cookies = require('cookies-js');
+
 exports = module.exports = {};
 
-exports.AUTH = document.cookie;
-},{}],10:[function(require,module,exports){
+exports.set = function(token) {
+	Cookies.set('AUTH', token, { expires: new Date() });
+};
+
+exports.get = function() {
+	return Cookies.get('AUTH');
+};
+
+},{"cookies-js":2}],12:[function(require,module,exports){
 'use strict';
 
 /**
@@ -22354,7 +22999,7 @@ exports.headerUrl 	 	= `${base}/views/includes/header/main.html`;
 exports.APIUrl  		= `${base}/api/`;
 exports.imageUrl 	 	= `${base}/images/`;
 
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 var $ = window.jQuery = require('jquery');
@@ -22365,7 +23010,76 @@ exports = module.exports = {};
 exports.include = function(){
 	$("#header").load(config.headerUrl);
 }
-},{"../config/url":10,"jquery":2}],12:[function(require,module,exports){
+},{"../config/url":12,"jquery":3}],14:[function(require,module,exports){
+'use strict';
+
+var $ = window.jQuery = require('jquery');
+require('bootstrap/js/dropdown');
+
+var _ = require('lodash');
+var userId = require('../../config/auth');
+var config = require('../../config/url');
+var EventEmitter = require('wolfy87-eventemitter');
+
+var selectedFactoryId;
+var emitter = new EventEmitter();
+
+/* DOM */
+var $factoryFocusName = $('.factory-focus-name');
+var $factoryList = $('.factory-list');
+
+exports = module.exports = {};
+
+exports.emitter = emitter;
+
+initialize();
+
+function initialize() {
+	bindEvents();
+	createFactoryListThenRenderRows();
+}
+
+function bindEvents() {
+	bindSetFocusNameBlockEventOnSelector();
+}
+
+function bindSetFocusNameBlockEventOnSelector() {
+	$factoryList.on('click', '.option-item', setFocusNameBlock);
+}
+
+function setFocusNameBlock(target) {
+	selectedFactoryId = target.type==='click' ? $(this).data('id') : target.id;
+	var displayName = target.type==='click' ? $(this).text() : target.name;
+
+	$factoryFocusName.text(displayName).data(selectedFactoryId);
+
+	emitter.emit('factoryChanged', selectedFactoryId);
+}
+
+function createFactoryListThenRenderRows() {
+	// $.get(config.APIUrl + 'factory/list/:' + userId)
+	$.get(config.APIUrl + 'factory/list')
+	 .done(function(response){
+		var factoryListRows = renderFactoryDropdown({ factories : response });
+
+		$factoryList.empty().html( factoryListRows );
+
+		setFocusNameBlock(response[0]);
+	 });
+}
+
+function renderFactoryDropdown(factories) {
+  var menuTemp = _.template(
+	 `<% _.forEach(factories, function(factory) {  %>
+      <li><a class="option-item" data-id=<%= factory.id %>>
+      		<%= factory.name %>
+      </a></li>
+    <% });                                          %>`
+	);
+
+  return menuTemp(factories);
+}
+},{"../../config/auth":11,"../../config/url":12,"bootstrap/js/dropdown":1,"jquery":3,"lodash":4,"wolfy87-eventemitter":10}],15:[function(require,module,exports){
 'use strict';
 
 var qs = require('qs');
@@ -22404,7 +23118,7 @@ function getQueryString() {
   return window.location.search.substr(1);
 }
 
-},{"object-assign":4,"qs":5}],13:[function(require,module,exports){
+},{"object-assign":5,"qs":6}],16:[function(require,module,exports){
 'use strict';
 
 var qs = require('qs');
@@ -22423,12 +23137,13 @@ function redirect(where, queries) {
   window.location.href = url;
 }
 
-},{"../../config/url":10,"qs":5}],14:[function(require,module,exports){
+},{"../../config/url":12,"qs":6}],17:[function(require,module,exports){
 'use strict';
 var $ = window.jQuery = require('jquery');
 var header = require('../includes/header');
 var userId = require('../config/auth');
 var config = require('../config/url');
+var factoryDropdown = require('../lib/component/dropdown-factory');
 var templates = require('../realtime/templates');
 var queryParameter = require('../lib/helper/query-parameter');
 var redirect = require('../lib/helper/redirect');
@@ -22439,8 +23154,6 @@ var isImageMode = false;
 var focusFactoryId = undefined;
 
 /* DOM */
-var $factoryFocus = $('#realtime-factory-focus');
-var $factoryList = $('#realtime-factory-list');
 var $modeFocus = $('#realtime-mode-focus');
 var $tableListBlock = $('#realtime-table-mode');
 var $imageListBlock = $('#realtime-img-mode');
@@ -22457,22 +23170,21 @@ initialize();
 function initialize() {
 	header.include();
 	bindEvents();
-	createFactoryListThenRenderRows();
 
 	$tableModeSwitcher.trigger('click');
 	$filterItem.eq(0).trigger('click');
 }
 
 function bindEvents() {
-	bindSelectFactoryOnDropdownMenu();
+	bindFactoryChangedEventListener();
 	bindSwitchViewModeOnDropdownMenu();
 	bindSelectFilterOnDropdownMenu();
 	bindSearchByFilterOnButton();
 	bindLinkToPicturesPageOnButton();
 }
 
-function bindSelectFactoryOnDropdownMenu() {
-	$factoryList.on('click', '.realtime-factory-item', selectFactory);
+function bindFactoryChangedEventListener() {
+	factoryDropdown.emitter.on('factoryChanged', setFocusFactoryIdThenRenderRows);
 }
 
 function bindSwitchViewModeOnDropdownMenu() {
@@ -22493,12 +23205,22 @@ function bindLinkToPicturesPageOnButton() {
 	// $imageListBlock.on('click', '.realtime-showpic-btn', redirectToPicPage);
 }
 
-function selectFactory(target){
-	focusFactoryId = target.type==='click' ? $(this).data('id') : target.id;
-	var factoryName = target.type==='click' ? $(this).text() : target.name;
+function setFocusFactoryIdThenRenderRows(factoryId) {
+	focusFactoryId = factoryId;
 
-	$factoryFocus.text(factoryName);
 	createRealtimeListThenRenderRows();
+}
+
+function createRealtimeListThenRenderRows(type, searchKey) {
+	// $.get(config.APIUrl + 'workorder/list/:' + userId + '?factory_id=' + focusFactoryId + 'type=' + type + '&search_key=' + searchKey)
+	$.get(config.APIUrl + 'realtime/info/?factory_id=' + focusFactoryId + 'type=' + type + '&search_key=' + searchKey)
+	 .done(function(response){
+		var tableListRows = templates.renderTableList({ infos : response });
+		// var imageListRows = templates.renderImageList({ infos : response });
+
+		$tableBody.empty().append( tableListRows );
+		// $imageListBlock.empty().html( imageListRows );
+	 });
 }
 
 function switchViewMode(){
@@ -22530,18 +23252,6 @@ function searchByFilter(){
 	createRealtimeListThenRenderRows(type, searchKey)
 }
 
-function createRealtimeListThenRenderRows(type, searchKey) {
-	// $.get(config.APIUrl + 'workorder/list/:' + userId + '?factory_id=' + focusFactoryId + 'type=' + type + '&search_key=' + searchKey)
-	$.get(config.APIUrl + 'workorder/list/?factory_id=' + focusFactoryId + 'type=' + type + '&search_key=' + searchKey)
-	 .done(function(response){
-		var tableListRows = templates.renderTableList({ infos : response });
-		// var imageListRows = templates.renderImageList({ infos : response });
-
-		$tableBody.empty().append( tableListRows );
-		// $imageListBlock.empty().html( imageListRows );
-	 });
-}
-
 function redirectToPicPage() {
 	var title = $(this).data('info');
 	var workorder_id = title.split('/')[0];
@@ -22550,41 +23260,12 @@ function redirectToPicPage() {
 	redirect('realtimePic', {workorder_id, type, title});
 }
 
-function createFactoryListThenRenderRows() {
-	// $.get(config.APIUrl + 'factory/list/:' + userId)
-	$.get(config.APIUrl + 'factory/list')
-	 .done(function(response){
-		var factoryListRows = templates.renderFactoryDropdown({ factories : response });
-
-		$factoryList.empty().html( factoryListRows );
-
-		selectFactory(response[0]);
-	 });
-}
-
-
-
-
-
-},{"../config/auth":9,"../config/url":10,"../includes/header":11,"../lib/helper/query-parameter":12,"../lib/helper/redirect":13,"../realtime/templates":15,"bootstrap/js/dropdown":1,"jquery":2}],15:[function(require,module,exports){
+},{"../config/auth":11,"../config/url":12,"../includes/header":13,"../lib/component/dropdown-factory":14,"../lib/helper/query-parameter":15,"../lib/helper/redirect":16,"../realtime/templates":18,"bootstrap/js/dropdown":1,"jquery":3}],18:[function(require,module,exports){
 'use strict';
 
 var _ = require('lodash');
 
 exports = module.exports = {};
-
-exports.renderFactoryDropdown = function(factories) {
-
-  var menuTemp = _.template(
-	 `<% _.forEach(factories, function(factory) {  %>
-      <li><a class="realtime-factory-item" data-id=<%= factory.id %>>
-      		<%= factory.name %>
-      </a></li>
-    <% });                                          %>`
-	);
-
-  return menuTemp(factories);
-}
 
 exports.renderTableList = function(infos) {
 
@@ -22601,7 +23282,7 @@ exports.renderTableList = function(infos) {
       	<div class="table-col-sm"><%= info.abnormal_num %></div>
       	<div class="table-col-lg">
       		<button class="realtime-showpic-btn" data-type="current" data-info=<%= info.workorder_id %>/<%= info.machine_id %>/<%= info.mold_id %>>即時</button>
-        	<button class="realtime-showpic-btn" data-type="safety" data-info=<%= info.workorder_id %>/<%= info.machine_id %>/<%= info.mold_id %>>安全</button>
+        	<button class="realtime-showpic-btn" data-type="noremal" data-info=<%= info.workorder_id %>/<%= info.machine_id %>/<%= info.mold_id %>>安全</button>
         	<button class="realtime-showpic-btn" data-type="error" data-info=<%= info.workorder_id %>/<%= info.machine_id %>/<%= info.mold_id %>>異常</button>
       	</div>
 		  </li>
@@ -22616,11 +23297,11 @@ exports.renderPicList = function(pictures) {
   var menuTemp = _.template(
    `<% _.forEach(pictures, function(picture) {  %>
       <div class="realtime-pic-item">
-        <a class="thumbnail" title= <%= picture.date %> >
+        <a class="thumbnail" title= <%= picture.current_time %> >
           <img src= <%= picture.url %> >
         </a>
         <div class="realtime-pic-label">
-          <span><%= picture.date %></span>
+          <span><%= picture.current_time %></span>
         </div>
       </div>
 
@@ -22629,4 +23310,4 @@ exports.renderPicList = function(pictures) {
 
   return menuTemp(pictures);
 }
-},{"lodash":3}]},{},[14]);
+},{"lodash":4}]},{},[17]);

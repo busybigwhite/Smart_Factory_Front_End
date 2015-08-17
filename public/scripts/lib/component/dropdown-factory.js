@@ -3,21 +3,27 @@
 var $ = window.jQuery = require('jquery');
 require('bootstrap/js/dropdown');
 
+var _ = require('lodash');
 var userId = require('../../config/auth');
 var config = require('../../config/url');
-var valueDropdown = require('./dropdown-filter-value');
+var EventEmitter = require('wolfy87-eventemitter');
+
+var selectedFactoryId;
+var emitter = new EventEmitter();
 
 /* DOM */
-var $filterDropdown = $('#dropdown-history-filter');
-var $filterFocusName = $('#filter-focus-item-name');
+var $factoryFocusName = $('.factory-focus-name');
+var $factoryList = $('.factory-list');
 
 exports = module.exports = {};
+
+exports.emitter = emitter;
 
 initialize();
 
 function initialize() {
 	bindEvents();
-	setDefault();
+	createFactoryListThenRenderRows();
 }
 
 function bindEvents() {
@@ -25,34 +31,38 @@ function bindEvents() {
 }
 
 function bindSetFocusNameBlockEventOnSelector() {
-	$filterDropdown.on('click', '.option-item', setFocusNameBlock);
+	$factoryList.on('click', '.option-item', setFocusNameBlock);
 }
 
-function setFocusNameBlock() {
-	var displayName = $(this).text();
-	var id = $(this).data('id');
+function setFocusNameBlock(target) {
+	selectedFactoryId = target.type==='click' ? $(this).data('id') : target.id;
+	var displayName = target.type==='click' ? $(this).text() : target.name;
 
-	$filterFocusName.text(displayName).data(id);
+	$factoryFocusName.text(displayName).data(selectedFactoryId);
 
-	displaySelector(id);
+	emitter.emit('factoryChanged', selectedFactoryId);
 }
 
-function setDefault() {
-	var $defaultItem = $filterDropdown.find('.option-item').eq(0);
-	var displayName = $defaultItem.text();
-	var id = $defaultItem.data('id');
+function createFactoryListThenRenderRows() {
+	// $.get(config.APIUrl + 'factory/list/:' + userId)
+	$.get(config.APIUrl + 'factory/list')
+	 .done(function(response){
+		var factoryListRows = renderFactoryDropdown({ factories : response });
 
-	$filterFocusName.text(displayName).data(id);
+		$factoryList.empty().html( factoryListRows );
 
-	displaySelector(id);
+		setFocusNameBlock(response[0]);
+	 });
 }
 
-function displaySelector(id) {
-	var type = id.split('_')[0];
+function renderFactoryDropdown(factories) {
+  var menuTemp = _.template(
+	 `<% _.forEach(factories, function(factory) {  %>
+      <li><a class="option-item" data-id=<%= factory.id %>>
+      		<%= factory.name %>
+      </a></li>
+    <% });                                          %>`
+	);
 
-	if(type === 'date'){
-		valueDropdown.hide();
-	}else {
-		valueDropdown.showAndRenderDropdown(type);
-	}
+  return menuTemp(factories);
 }

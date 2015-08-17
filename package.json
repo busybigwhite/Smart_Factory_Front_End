@@ -7,7 +7,9 @@
     "body-parser": "^1.13.3",
     "bootstrap": "^3.3.5",
     "browserify": "^11.0.1",
+    "cookies-js": "^1.2.1",
     "del": "^1.2.0",
+    "eonasdan-bootstrap-datetimepicker": "^4.15.35",
     "express": "^4.13.3",
     "factor-bundle": "^2.5.0",
     "fancybox": "^3.0.0",
@@ -32,7 +34,8 @@
     "qs": "^4.0.0",
     "run-sequence": "^1.1.2",
     "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0"
+    "vinyl-source-stream": "^1.1.0",
+    "wolfy87-eventemitter": "^4.2.11"
   },
   "devDependencies": {
     "fancybox": "^3.0.0",

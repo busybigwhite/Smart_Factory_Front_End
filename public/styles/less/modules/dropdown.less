@@ -7,6 +7,7 @@
 	.dropdown-toggle {
 		min-width: 100px;
 		font-size: @font-size;
+		text-align: right;
 
 		.dropdown-focus-name {
 			min-width: 80px;
@@ -21,4 +22,11 @@
 	.dropdown-menu {
 		font-size: @font-size;
 	}
+}
+
+.dropdown-factory-filter,
+#dropdown-realtime-view-mode,
+.dropdown-history-filter,
+#dropdown-value-list {
+	.custom-dropdown();
 }

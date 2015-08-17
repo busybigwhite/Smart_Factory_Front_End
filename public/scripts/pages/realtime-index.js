@@ -3,6 +3,7 @@ var $ = window.jQuery = require('jquery');
 var header = require('../includes/header');
 var userId = require('../config/auth');
 var config = require('../config/url');
+var factoryDropdown = require('../lib/component/dropdown-factory');
 var templates = require('../realtime/templates');
 var queryParameter = require('../lib/helper/query-parameter');
 var redirect = require('../lib/helper/redirect');
@@ -13,8 +14,6 @@ var isImageMode = false;
 var focusFactoryId = undefined;
 
 /* DOM */
-var $factoryFocus = $('#realtime-factory-focus');
-var $factoryList = $('#realtime-factory-list');
 var $modeFocus = $('#realtime-mode-focus');
 var $tableListBlock = $('#realtime-table-mode');
 var $imageListBlock = $('#realtime-img-mode');
@@ -31,22 +30,21 @@ initialize();
 function initialize() {
 	header.include();
 	bindEvents();
-	createFactoryListThenRenderRows();
 
 	$tableModeSwitcher.trigger('click');
 	$filterItem.eq(0).trigger('click');
 }
 
 function bindEvents() {
-	bindSelectFactoryOnDropdownMenu();
+	bindFactoryChangedEventListener();
 	bindSwitchViewModeOnDropdownMenu();
 	bindSelectFilterOnDropdownMenu();
 	bindSearchByFilterOnButton();
 	bindLinkToPicturesPageOnButton();
 }
 
-function bindSelectFactoryOnDropdownMenu() {
-	$factoryList.on('click', '.realtime-factory-item', selectFactory);
+function bindFactoryChangedEventListener() {
+	factoryDropdown.emitter.on('factoryChanged', setFocusFactoryIdThenRenderRows);
 }
 
 function bindSwitchViewModeOnDropdownMenu() {
@@ -67,12 +65,22 @@ function bindLinkToPicturesPageOnButton() {
 	// $imageListBlock.on('click', '.realtime-showpic-btn', redirectToPicPage);
 }
 
-function selectFactory(target){
-	focusFactoryId = target.type==='click' ? $(this).data('id') : target.id;
-	var factoryName = target.type==='click' ? $(this).text() : target.name;
+function setFocusFactoryIdThenRenderRows(factoryId) {
+	focusFactoryId = factoryId;
 
-	$factoryFocus.text(factoryName);
 	createRealtimeListThenRenderRows();
+}
+
+function createRealtimeListThenRenderRows(type, searchKey) {
+	// $.get(config.APIUrl + 'workorder/list/:' + userId + '?factory_id=' + focusFactoryId + 'type=' + type + '&search_key=' + searchKey)
+	$.get(config.APIUrl + 'realtime/info/?factory_id=' + focusFactoryId + 'type=' + type + '&search_key=' + searchKey)
+	 .done(function(response){
+		var tableListRows = templates.renderTableList({ infos : response });
+		// var imageListRows = templates.renderImageList({ infos : response });
+
+		$tableBody.empty().append( tableListRows );
+		// $imageListBlock.empty().html( imageListRows );
+	 });
 }
 
 function switchViewMode(){
@@ -104,18 +112,6 @@ function searchByFilter(){
 	createRealtimeListThenRenderRows(type, searchKey)
 }
 
-function createRealtimeListThenRenderRows(type, searchKey) {
-	// $.get(config.APIUrl + 'workorder/list/:' + userId + '?factory_id=' + focusFactoryId + 'type=' + type + '&search_key=' + searchKey)
-	$.get(config.APIUrl + 'workorder/list/?factory_id=' + focusFactoryId + 'type=' + type + '&search_key=' + searchKey)
-	 .done(function(response){
-		var tableListRows = templates.renderTableList({ infos : response });
-		// var imageListRows = templates.renderImageList({ infos : response });
-
-		$tableBody.empty().append( tableListRows );
-		// $imageListBlock.empty().html( imageListRows );
-	 });
-}
-
 function redirectToPicPage() {
 	var title = $(this).data('info');
 	var workorder_id = title.split('/')[0];
@@ -123,19 +119,3 @@ function redirectToPicPage() {
 
 	redirect('realtimePic', {workorder_id, type, title});
 }
-
-function createFactoryListThenRenderRows() {
-	// $.get(config.APIUrl + 'factory/list/:' + userId)
-	$.get(config.APIUrl + 'factory/list')
-	 .done(function(response){
-		var factoryListRows = templates.renderFactoryDropdown({ factories : response });
-
-		$factoryList.empty().html( factoryListRows );
-
-		selectFactory(response[0]);
-	 });
-}
-
-
-
-
