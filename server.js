@@ -26,7 +26,7 @@ app.get('/realtime/listpic', function(req, res) {
 app.get('/api/workorder/list', function(req, res) {
 	res.send(data.liveinfos);
 });
-app.get('/api/realtime/listpic', function(req, res) {
+app.get('/api/workorder/listpic', function(req, res) {
 	res.send(data.listpics);
 });
 
