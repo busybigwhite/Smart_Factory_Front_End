@@ -1,5 +1,7 @@
 var gulp = require('gulp');
 var connect = require('gulp-connect');
+var mkdirp = require('mkdirp');
+var fs = require('fs');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var less = require('gulp-less');
@@ -24,7 +26,27 @@ gulp.task('connect', function () {
 	connect.server({livereload: true});
 });
 
-gulp.task('pre-build-less', function () {
+gulp.task('mkdir-bundle', function(done) {
+  fs.exists(paths.destJsDir, function(exists) {
+    if (exists) {
+      done();
+    } else {
+      mkdirp(paths.destJsDir, done);
+    }
+  });
+});
+
+gulp.task('mkdir-build', function(done) {
+  fs.exists(paths.destCssDir, function(exists) {
+    if (exists) {
+      done();
+    } else {
+      mkdirp(paths.destCssDir, done);
+    }
+  });
+});
+
+gulp.task('pre-build-less', [ 'mkdir-build' ], function () {
   	gulp.src(paths.mainLess)
     	.pipe(less())
     	.pipe(gulp.dest(paths.mainCssDir))
@@ -37,7 +59,7 @@ gulp.task('less', [ 'pre-build-less' ], function() {
         .pipe(connect.reload());
 });
 
-gulp.task('bundle', function(done) {
+gulp.task('bundle', [ 'mkdir-bundle' ], function(done) {
     glob(paths.jsGlob, function(err, files) {
         if(err) done(err);
 

@@ -41,7 +41,7 @@ function setFocusNameBlock() {
 	var displayName = $(this).text();
 	selectedFilter = $(this).data('id');
 
-	$filterFocusName.text(displayName).data(selectedFilter);
+	$filterFocusName.text(displayName).data('id', selectedFilter);
 
 	emitter.emit('filterChanged', selectedFilter);
 }
