@@ -90,11 +90,11 @@
 			}
 		}
 
+		.record-changed-table-body,
 		.record-table-body {
 	    .custom-table;
 			margin: 0;
 	    padding: 0;
-	    display: none;
 
 			.record-list {
 				.clearfix();
@@ -118,11 +118,23 @@
 				}
 			}
 		}
-	}
 
-	.record-table.edditing {
-		.record-form {
-			display: block;
+		.record-table-body {
+	    display: none;
+		}
+
+		.record-changed-table-body {
+			.record-list {
+				background-color: floralwhite!important;
+
+				&:last-child {
+					border-bottom: 1px solid #ddd;
+				}
+
+				&.delete {
+					display: none;
+				}
+			}
 		}
 	}
 }

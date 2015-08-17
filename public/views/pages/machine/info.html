@@ -131,43 +131,22 @@
 				<span class="resume-value">
 				</span>
 			</li>
-			<div class="record-table">
+			<div class="record-table" id="error-record-table">
 				<h4 class="record-header">異常維修紀錄<i class="fa fa-chevron-down pul-right"></i></h4>
-				<div class="record-form clearfix">
+				<div class="record-form clearfix" id="error-record-form">
 					<div class="record-date-picker-column">
 						<input type="text" data-date-format="YYYY/MM/DD" id="error-record-date-picker" readonly/>
 					</div>
 					<div class="record-detail-column">
-						<input type="text" placeholder="說明文字">
+						<input type="text" class="record-content-input" placeholder="說明文字" required>
 					</div>
 					<div class="record-action-column">
 						<button type="button" class="record-new-button">新增</button>
 						<button type="button" class="record-cancel-button">取消</button>
 					</div>
 				</div>
-				<ul class="record-table-body" id="error-record-table-body">
-					<li class="record-list">
-						<div class="table-col">test-1</div>
-						<div class="table-col">test-2</div>
-						<div class="table-col">
-							<button type="button" class="record-delete-button">刪除</button>
-						</div>
-					</li>
-					<li class="record-list">
-						<div class="table-col">test-1</div>
-						<div class="table-col">test-2</div>
-						<div class="table-col">
-							<button type="button" class="record-delete-button">刪除</button>
-						</div>
-					</li>
-					<li class="record-list">
-						<div class="table-col">test-1</div>
-						<div class="table-col">test-2</div>
-						<div class="table-col">
-							<button type="button" class="record-delete-button">刪除</button>
-						</div>
-					</li>
-				</ul>
+				<ul class="record-changed-table-body" id="error-record-changed-table-body"></ul>
+				<ul class="record-table-body" id="error-record-table-body"></ul>
 			</div>
 		</ul>
 	</section>
