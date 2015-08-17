@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Smart Factory</title>
+	<link rel="stylesheet" type="text/css" href="../../../build/style.css">
+</head>
+<body>
+
+<div id="header"></div>
+
+<div class="main-container">
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+      <button type="button" class="info-delete-button" id="member-add-btn">新增</button>
+      <button type="button" class="info-delete-button" id="member-edit-btn">編輯</button>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+
+      <form class="form-horizontal">
+        <div class="form-group">
+          <label for="userName" class="col-sm-2 control-label">帳號</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="userName">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword" class="col-sm-2 control-label">密碼</label>
+          <div class="col-sm-10">
+            <input type="password" class="form-control" id="userPassword">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword" class="col-sm-2 control-label">確認密碼</label>
+          <div class="col-sm-10">
+            <input type="password" class="form-control" id="userPasswordConfirm">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="userEmail" class="col-sm-2 control-label">信箱</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="userEmail">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword" class="col-sm-2 control-label">身份</label>
+          <div class="col-sm-5">
+            <div class="radio">
+              <label>
+                <input type="radio" name="userGroup" id="userGroup1" value="Manager" checked>
+                Manager
+              </label>
+            </div>
+          </div>
+          <div class="col-sm-5">
+            <div class="radio">
+              <label>
+                <input type="radio" name="userGroup" id="userGroup2" value="Customer">
+                Customer
+              </label>
+            </div>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<script src="../../../build/bundle/member-manage.js"></script>
+
+</body>
+</html>

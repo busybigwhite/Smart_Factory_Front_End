@@ -7,31 +7,31 @@ var memberApiUrl  = config.APIUrl + 'user/';
 
 exports = module.exports = {
 	getMemberList: getMemberList,
-	// createMember: createMember,
+	createMember: createMember,
 	// deleteMember: deleteMember,
-	// getMember: getMember,
-	// editMember: editMember,
+	getMember: getMember,
+	editMember: editMember,
 };
 
 function getMemberList() {
 	return getData(memberApiUrl);
 };
 
-// function createMember(data) {
-// 	return createData(memberApiUrl, data);
-// }
+function createMember(data) {
+	return createData(memberApiUrl, data);
+}
 
 // function deleteMember(id) {
 // 	return deleteData(memberApiUrl + id);
 // }
 
-// function getMember(id) {
-// 	return getData(memberApiUrl + id);
-// };
+function getMember(id) {
+	return getData(memberApiUrl + id);
+};
 
-// function editMember(id, data) {
-// 	return editData(memberApiUrl + id);
-// }
+function editMember(id, data) {
+	return editData(memberApiUrl + id);
+}
 
 
 /* private */

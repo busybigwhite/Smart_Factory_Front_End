@@ -20,9 +20,17 @@ function initialize() {
 }
 
 function getInitialData() {
-	api.getMemberList()
-		 .done(initialView)
-		 .fail(function(err) { console.log("GET Member List error: ", err); });
+
+	// api.getMemberList()
+	// 	 .done(initialView)
+	// 	 .fail(function(err) { console.log("GET Member List error: ", err); });
+	var response = [
+		{"id":"1","name":"admin","group":"Administrator","email":"admin@moremote.com"},
+		{"id":"2","name":"louk","group":"Manager","email":"louk@moremote.com"},
+		{"id":"3","name":"unknown","group":"Customer","email":"unknown@moremote.com"}
+	];
+
+	initialView(response);
 }
 
 function bindEvents() {
@@ -36,10 +44,10 @@ function initialView(data) {
 }
 
 function gotoMemberNewPage() {
-	window.location.href = config.memberUrl + 'new/';
+	window.location.href = config.memberUrl + 'manage?type=add';
 }
 
 function gotoMemberEditPage() {
 	var id = $(this).data('id');
-	window.location.href = config.memberUrl + 'edit?id=' + id;
+	window.location.href = config.memberUrl + 'manage?type=edit&id=' + id;
 }
