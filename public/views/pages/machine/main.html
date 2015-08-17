@@ -12,8 +12,21 @@
 <div class="main-container">
     <div class="row">
         <div class="col-xs-12">
-            <button class="new-button" id="machine-new-button">新增機台</button>
-            <ul id="machine-table">
+            <div class="col-xs-10">
+                <div class="dropdown-factory-filter">
+                    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span class="factory-focus-name"></span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="factory-list dropdown-menu"></ul>
+                </div>
+            </div>
+            <div class="col-xs-2 text-center">
+                <button class="new-button" id="machine-new-button">新增機台</button>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <ul class="col-xs-12" id="machine-table">
                 <li class="table-header">
                     <div class="table-col">射出機台編號</div>
                     <div class="table-col">機種名稱</div>
