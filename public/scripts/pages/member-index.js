@@ -4,6 +4,7 @@ var $ = window.jQuery = require('jquery');
 var config = require('../config/url');
 var header = require('../includes/header');
 var template = require('../member/template');
+var api = require('../member/api');
 
 /* DOM */
 var $memberNewBtn = $('#member-new-button');
@@ -19,12 +20,9 @@ function initialize() {
 }
 
 function getInitialData() {
-	var response = [
-		{"id":"1","name":"admin","group":"Administrator","email":"admin@moremote.com"},
-		{"id":"2","name":"louk","group":"Manager","email":"louk@moremote.com"}
-	];
-
-	initialView(response);
+	api.getMemberList()
+		 .done(initialView)
+		 .fail(function(err) { console.log("GET Member List error: ", err); });
 }
 
 function bindEvents() {
