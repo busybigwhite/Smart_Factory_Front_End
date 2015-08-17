@@ -23052,7 +23052,7 @@ function setFocusNameBlock(target) {
 	selectedFactoryId = target.type==='click' ? $(this).data('id') : target.id;
 	var displayName = target.type==='click' ? $(this).text() : target.name;
 
-	$factoryFocusName.text(displayName).data(selectedFactoryId);
+	$factoryFocusName.text(displayName).data('id', selectedFactoryId);
 
 	emitter.emit('factoryChanged', selectedFactoryId);
 }

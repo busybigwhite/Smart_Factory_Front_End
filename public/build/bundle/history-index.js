@@ -27909,7 +27909,7 @@ function setFocusNameBlock() {
 	var displayName = $(this).text();
 	selectedFilter = $(this).data('id');
 
-	$filterFocusName.text(displayName).data(selectedFilter);
+	$filterFocusName.text(displayName).data('id', selectedFilter);
 
 	emitter.emit('filterChanged', selectedFilter);
 }
@@ -27978,7 +27978,7 @@ function setFocusValueBlock(target) {
 	var displayName = target.type==='click' ? $(this).text() : target.name;
 	selectedValue = target.type==='click' ? $(this).data('id') : target.id;
 
-	$filterValueFocusName.text(displayName).data(selectedValue);
+	$filterValueFocusName.text(displayName).data('id', selectedValue);
 
 	emitter.emit('valueChanged', selectedValue);
 }
@@ -28118,7 +28118,7 @@ function setFocusNameBlock(target) {
 	selectedFactoryId = target.type==='click' ? $(this).data('id') : target.id;
 	var displayName = target.type==='click' ? $(this).text() : target.name;
 
-	$factoryFocusName.text(displayName).data(selectedFactoryId);
+	$factoryFocusName.text(displayName).data('id', selectedFactoryId);
 
 	emitter.emit('factoryChanged', selectedFactoryId);
 }
