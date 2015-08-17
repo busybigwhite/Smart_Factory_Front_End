@@ -5,15 +5,18 @@ require('bootstrap/js/dropdown');
 
 var userId = require('../../config/auth');
 var config = require('../../config/url');
-var valueDropdown = require('./dropdown-filter-value');
+var EventEmitter = require('wolfy87-eventemitter');
 
 var selectedFilter;
+var emitter = new EventEmitter();
 
 /* DOM */
 var $filterDropdown = $('.dropdown-history-filter');
 var $filterFocusName = $('#filter-focus-item-name');
 
 exports = module.exports = {};
+
+exports.emitter = emitter;
 
 exports.getSelectedFilter = function() {
 	return selectedFilter;
@@ -38,9 +41,9 @@ function setFocusNameBlock() {
 	var displayName = $(this).text();
 	selectedFilter = $(this).data('id');
 
-	$filterFocusName.text(displayName).data(selectedFilter);
+	$filterFocusName.text(displayName).data('id', selectedFilter);
 
-	displaySelector();
+	emitter.emit('filterChanged', selectedFilter);
 }
 
 function setDefault() {
@@ -50,13 +53,5 @@ function setDefault() {
 
 	$filterFocusName.text(displayName).data(selectedFilter);
 
-	displaySelector();
-}
-
-function displaySelector() {
-	if(selectedFilter === 'date_period'){
-		valueDropdown.hide();
-	}else {
-		valueDropdown.showAndRenderDropdown(selectedFilter);
-	}
+	emitter.emit('filterChanged', selectedFilter);
 }

@@ -50,37 +50,43 @@ var listpics = [
                 'workorder_id': '1',
                 'pic_id': '1',
                 'type': 'normal',
-                'date': '2015/08/11 00:00:00',
+                'current_time': '2015/08/11 00:00:00',
                 'url': '../../../images/sample/sample.jpg',
             },
             {
                 'workorder_id': '1',
                 'mold_id': '2',
                 'type': 'error',
-                'date': '2015/08/11 00:00:00',
+                'current_time': '2015/08/11 00:00:00',
                 'url': '../../../images/sample/sample.jpg',
             },
             {
                 'workorder_id': '1',
                 'pic_id': '0',
                 'type': 'current',
-                'date': '2015/08/11 00:00:00',
+                'current_time': '2015/08/11 00:00:00',
                 'url': '../../../images/sample/sample.jpg'
             },
             {
                 'workorder_id': '1',
                 'mold_id': '2',
                 'type': 'error',
-                'date': '2015/08/11 00:00:00',
+                'current_time': '2015/08/11 00:00:00',
                 'url': '../../../images/sample/sample.jpg',
             },
             {
                 'workorder_id': '1',
                 'pic_id': '0',
                 'type': 'current',
-                'date': '2015/08/11 00:00:00',
+                'current_time': '2015/08/11 00:00:00',
                 'url': '../../../images/sample/sample.jpg'
             }
+]
+
+var workorderLists = [
+    {'id': 'Work01','name': 'workorder1001'},
+    {'id': 'Work02','name': 'workorder1002'},
+    {'id': 'Work03','name': 'workorder1003'}
 ]
 
 var machineLists = [
@@ -95,10 +101,87 @@ var moldLists = [
     {'id': 'Mold003','name': 'mold00003'}
 ]
 
+var historyInfos = [
+      {
+            'factory_id': '1',
+            'workorder_id': '1',
+            'machine_id': '1',
+            'mold_id': '1',
+            'customer_id': '1',
+            'work_st': '2015/08/15 14:00:00',
+            'work_et': '2015/08/16 14:00:00',
+            'sample_num': '5000',
+            'error_num': '123',
+            'heatmap': '../../../images/sample/heatmap.jpg'
+      },
+      {
+            'factory_id': '2',
+            'workorder_id': '2',
+            'machine_id': '2',
+            'mold_id': '2',
+            'customer_id': '2',
+            'work_st': '2015/08/25 02:00:00',
+            'work_et': '2015/08/26 03:00:00',
+            'sample_num': '400',
+            'error_num': '16',
+            'heatmap': '../../../images/sample/heatmap.jpg'
+      },
+      {
+            'factory_id': '1',
+            'workorder_id': '1',
+            'machine_id': '1',
+            'mold_id': '1',
+            'customer_id': '1',
+            'work_st': '2015/08/15 14:00:00',
+            'work_et': '2015/08/16 14:00:00',
+            'sample_num': '5000',
+            'error_num': '123',
+            'heatmap': '../../../images/sample/heatmap.jpg'
+      },
+      {
+            'factory_id': '2',
+            'workorder_id': '2',
+            'machine_id': '2',
+            'mold_id': '2',
+            'customer_id': '2',
+            'work_st': '2015/08/25 02:00:00',
+            'work_et': '2015/08/26 03:00:00',
+            'sample_num': '400',
+            'error_num': '16',
+            'heatmap': '../../../images/sample/heatmap.jpg'
+      },
+      {
+            'factory_id': '1',
+            'workorder_id': '1',
+            'machine_id': '1',
+            'mold_id': '1',
+            'customer_id': '1',
+            'work_st': '2015/08/15 14:00:00',
+            'work_et': '2015/08/16 14:00:00',
+            'sample_num': '5000',
+            'error_num': '123',
+            'heatmap': '../../../images/sample/heatmap.jpg'
+      },
+      {
+            'factory_id': '2',
+            'workorder_id': '2',
+            'machine_id': '2',
+            'mold_id': '2',
+            'customer_id': '2',
+            'work_st': '2015/08/25 02:00:00',
+            'work_et': '2015/08/26 03:00:00',
+            'sample_num': '400',
+            'error_num': '16',
+            'heatmap': '../../../images/sample/heatmap.jpg'
+      }
+]
+
 module.exports = {
       factories: factories,
       liveinfos: liveinfos,
       listpics: listpics,
+      workorderLists: workorderLists,
       machineLists: machineLists,
-      moldLists: moldLists
+      moldLists: moldLists,
+      historyInfos: historyInfos
 };

@@ -26,7 +26,7 @@ app.get('/realtime/listpic', function(req, res) {
 app.get('/api/workorder/list', function(req, res) {
 	res.send(data.liveinfos);
 });
-app.get('/api/realtime/listpic', function(req, res) {
+app.get('/api/workorder/listpic', function(req, res) {
 	res.send(data.listpics);
 });
 
@@ -37,11 +37,15 @@ app.get('/workorder', function(req, res) { res.render('pages/workorder/main'); }
 app.get('/mold', function(req, res) { res.render('pages/mold/main'); });
 app.get('/unusual', function(req, res) { res.render('pages/unusual/main'); });
 app.get('/member', function(req, res) { res.render('pages/member/main'); });
+app.get('/member/manage', function(req, res) { res.render('pages/member/manage'); });
 
 // history
 app.get('/history', function(req, res) { res.render('pages/history/main'); });
-app.get('/api/history/list', function(req, res) {
+app.get('/api/history/filter', function(req, res) {
 	switch(req.query.type){
+		case "workorder_id":
+			res.send(data.workorderLists);
+		break;
 		case "machine_id":
 			res.send(data.machineLists);
 		break;
@@ -52,6 +56,9 @@ app.get('/api/history/list', function(req, res) {
 			res.send({});
 		break;
 	}
+});
+app.get('/api/history/list', function(req, res) {
+	res.send(data.historyInfos);
 });
 
 app.get('/api/factory/list', function(req, res) {

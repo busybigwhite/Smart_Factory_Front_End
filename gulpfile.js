@@ -1,9 +1,11 @@
 var gulp = require('gulp');
 var connect = require('gulp-connect');
+var mkdirp = require('mkdirp');
+var rimraf = require('rimraf');
+var fs = require('fs');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var less = require('gulp-less');
-var notify = require('gulp-notify');
 var rename = require('gulp-rename');
 var glob = require('glob');
 var minifyCss = require('gulp-minify-css');
@@ -11,6 +13,7 @@ var minifyCss = require('gulp-minify-css');
 var base = 'public/';
 
 var paths = {
+    lessGlob: base + 'styles/less/**/*.less',
 	mainLess: base + 'styles/less/style.less',
     mainCssDir: base + 'styles',
     cssGlob: base + 'styles/*.css',
@@ -25,7 +28,31 @@ gulp.task('connect', function () {
 	connect.server({livereload: true});
 });
 
-gulp.task('pre-build-less', function () {
+gulp.task('clean', function (done) {
+    rimraf(paths.destDir + '/*', done);
+});
+
+gulp.task('mkdir-bundle', function(done) {
+  fs.exists(paths.destJsDir, function(exists) {
+    if (exists) {
+      done();
+    } else {
+      mkdirp(paths.destJsDir, done);
+    }
+  });
+});
+
+gulp.task('mkdir-build', function(done) {
+  fs.exists(paths.destCssDir, function(exists) {
+    if (exists) {
+      done();
+    } else {
+      mkdirp(paths.destCssDir, done);
+    }
+  });
+});
+
+gulp.task('pre-build-less', [ 'mkdir-build' ], function () {
   	gulp.src(paths.mainLess)
     	.pipe(less())
     	.pipe(gulp.dest(paths.mainCssDir))
@@ -35,7 +62,6 @@ gulp.task('less', [ 'pre-build-less' ], function() {
     gulp.src(paths.cssGlob)
         .pipe(minifyCss())
         .pipe(gulp.dest(paths.destCssDir))
-        .pipe(notify('v Build Less Success v'))
         .pipe(connect.reload());
 });
 
@@ -49,14 +75,22 @@ gulp.task('bundle', function(done) {
                 .pipe(source(entry))
                 .pipe(rename({dirname: ""}))
                 .pipe(gulp.dest(paths.destJsDir))
-                .pipe(notify('v Build JavaScript Success v'))
 	    		.pipe(connect.reload());
         });
     })
 });
 
+gulp.task('watch-less', function () {
+    gulp.watch(paths.lessGlob, ['less']);
+});
+
+//TODO only build one
+gulp.task('watch-js', function () {
+    gulp.watch(paths.jsGlob, ['bundle']);
+});
+
 gulp.task('watch', function () {
-	gulp.watch(paths.mainLess, ['less']);
+	gulp.watch(paths.lessGlob, ['less']);
 	gulp.watch(paths.jsGlob, ['bundle']);
 });
 

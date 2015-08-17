@@ -3,26 +3,51 @@
 var $ = window.jQuery = require('jquery');
 var config = require('../config/url');
 var header = require('../includes/header');
+var template = require('../member/template');
+var api = require('../member/api');
 
 /* DOM */
-var $machineNewBtn = $('#machine-new-button');
-var $machineTable = $('#machine-table');
+var $memberNewBtn = $('#member-new-button');
+var $memberTable = $('#member-table');
+var $memberTableBody = $('#member-table-body');
 
 initialize();
 
 function initialize() {
 	header.include();
-	// info.init();
-	// getInitialData();
-	// bindEvents();
+	getInitialData();
+	bindEvents();
 }
 
 function getInitialData() {
-	var fakeResponse = {"id":"1","name":"\u6e2c\u8a66\u6a5f\u578b01","weight":"10","date":"2015\/08\/14 14:00:00","acquisition_date":"2015\/08\/15 14:00:00","admin_id":"U0001","check_period":"3","maintain_period":"10"};
-	initialView(fakeResponse);
+
+	api.getMemberList()
+		 .done(initialView)
+		 .fail(function(err) { console.log("GET Member List error: ", err); });
+	// var response = [
+	// 	{"id":"1","name":"admin","group":"Administrator","email":"admin@moremote.com"},
+	// 	{"id":"2","name":"louk","group":"Manager","email":"louk@moremote.com"},
+	// 	{"id":"3","name":"unknown","group":"Customer","email":"unknown@moremote.com"}
+	// ];
+
+	// initialView(response);
 }
 
 function bindEvents() {
-	$machineNewBtn.on('click', gotoMachineNewInfoPage);
-	$machineTable.on('click', '.detail-info-button', gotoMachineDetailInfoPage);
+	$memberNewBtn.on('click', gotoMemberNewPage);
+	$memberTable.on('click', '.member-edit-button', gotoMemberEditPage);
+}
+
+function initialView(data) {
+	var tableListRows = template.render({ infos : data });
+	$memberTableBody.empty().append( tableListRows );
+}
+
+function gotoMemberNewPage() {
+	window.location.href = config.memberUrl + 'manage?type=add';
+}
+
+function gotoMemberEditPage() {
+	var id = $(this).data('id');
+	window.location.href = config.memberUrl + 'manage?type=edit&id=' + id;
 }
