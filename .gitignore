@@ -2,5 +2,7 @@ node_modules/*
 
 *.log
 
-public/build/
+# gulp build file
+public/build/*
+public/styles/style.css
 
