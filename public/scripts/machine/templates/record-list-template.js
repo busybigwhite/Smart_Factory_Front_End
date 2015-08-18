@@ -28,12 +28,16 @@ exports.render = function(records) {
 
 exports.renderNewOne= function(record) {
   var menuTemp = _.template(
+<<<<<<< HEAD
       `<li class="record-list new" data-record='{"content":    "<%= record.content %>",
                                                 "created_at" : "<%= record.created_at %>",
                                                 "id" :         "<%= record.id %>",
                                                 "machine_id" : "<%= record.machine_id %>",
                                                 "type" :       "<%= record.type %>",
                                                 "updated_at" : "<%= record.updated_at %>"}'>
+=======
+      `<li class="record-list new">
+>>>>>>> ccbb3a6b9e0b05d547532276293326817e82f743
         <div class="table-col"><%= record.created_at %></div>
         <div class="table-col"><%= record.content %></div>
         <div class="table-col">
