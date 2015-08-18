@@ -4,18 +4,17 @@ var $ = window.jQuery = require('jquery');
 var header = require('../includes/header');
 var userId = require('../config/auth');
 var config = require('../config/url');
-var templates = require('../history/templates');
+var queryParameter = require('../lib/helper/query-parameter');
 var factoryDropdown = require('../lib/component/dropdown-factory');
+var templates = require('../history/templates');
 var filterDropdown = require('../history/components/dropdown-filter-type');
 var valueDropdown = require('../history/components/dropdown-filter-value');
 var datePicker = require('../history/components/date-picker');
-
 
 /* DOM */
 var $tableListBlock = $('#history-table-block');
 var $tableBody = $('#history-table-body');
 var $imageBlock = $('#history-img-block');
-var $searchBtn = $('#history-search-btn');
 
 var focusFactoryId;
 var selectedFilter;
@@ -32,7 +31,7 @@ function initialize() {
 
 function bindEvents() {
 	bindDropdownsChangedEventListener();
-	bindSearchListEventOnButton();
+	bindPeriodSearchEventListener();
 }
 
 function bindDropdownsChangedEventListener() {
@@ -41,8 +40,8 @@ function bindDropdownsChangedEventListener() {
 	valueDropdown.emitter.on('valueChanged', setSelectedValueThenRenderRows);
 }
 
-function bindSearchListEventOnButton() {
-	$searchBtn.on('click', searchPeriodThenRenderRows);
+function bindPeriodSearchEventListener() {
+	datePicker.emitter.on('periodSearch', searchHistoryThenRenderRows);
 }
 
 function setFocusFactoryIdThenRenderRows(factoryId) {
@@ -55,8 +54,10 @@ function switchDropdownAndDatepicker(filterId) {
 	selectedFilter = filterId;
 
 	if(selectedFilter === 'date_period'){
+		datePicker.show();
 		valueDropdown.hide();
 	}else {
+		datePicker.hide();
 		valueDropdown.showAndRenderDropdown(selectedFilter);
 	}
 }
@@ -67,27 +68,36 @@ function setSelectedValueThenRenderRows(valueId) {
 	searchHistoryThenRenderRows();
 }
 
-function searchHistoryThenRenderRows() {
+function searchHistoryThenRenderRows(searchPeriod) {
 
-	if( !selectedFilter ) return;
+	if( !selectedFilter || (selectedFilter==='date_period' && searchPeriod===undefined) ) return;
 
-	$.ajax({
-		url: config.APIUrl + 'history/list/?factory_id=' + focusFactoryId + '&type=' + selectedFilter + '&search_key=' + selectedValue,
-		beforeSend: function(){
-			$imageBlock.empty();
-			$tableBody.empty();
-		}
-	}).done(function(response){
+	cleanTableAndIamgeBlock();
+
+	var queryURL = createQueryURL(searchPeriod);
+
+	$.get(config.APIUrl + 'history/list/?' + queryURL)
+	 .done(function(response){
 	 	var infos = response || [];
 		var type = selectedFilter.split('_')[0];
 
 		createTableList(infos, type);
 		displayImageBlock(infos, type);
-	});
+
+	}).fail(function(err){ console.log('history list error:', err) });
 }
 
-function searchPeriodThenRenderRows() {
+function cleanTableAndIamgeBlock() {
+	$imageBlock.empty();
+	$tableBody.empty();
+}
 
+function createQueryURL(searchPeriod) {
+	var data = !!searchPeriod
+		? {'factory_id': focusFactoryId, 'type': selectedFilter, 'start_date': searchPeriod.start_date, 'end_date': searchPeriod.end_date}
+		: {'factory_id': focusFactoryId, 'type': selectedFilter, 'search_key': selectedValue }
+
+	return queryParameter.build(data);
 }
 
 function createTableList(infos, type) {
