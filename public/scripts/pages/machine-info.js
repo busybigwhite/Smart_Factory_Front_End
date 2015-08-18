@@ -203,18 +203,13 @@ function initResumeInfo(data) {
 	maintainPeriodDropdown.init(data['maintain_period_value'], data['maintain_period_unit']);
 
 	// ToFix: 小保養紀錄 init data
-<<<<<<< HEAD
 	var fakedata = [{id: '1', created_at: '2015-08-17', type: 'check', content: 'test1'},{id: '1', created_at: '2015-08-17', type: 'check', content: 'test2'}];
-=======
-	var fakedata = api.getErrorRecord();
->>>>>>> ccbb3a6b9e0b05d547532276293326817e82f743
 	checkRecordTable.initialView(fakedata);
 
 	console.log("data['maintain_records'] : ", data['maintain_records']);
 	maintainRecordTable.initialView(data['maintain_records']);
 
 	// ToFix: 異常維修紀錄 init data
-<<<<<<< HEAD
 	var fakedata = [{id: '1', created_at: '2015-08-17', type: 'error', content: 'test1'},{id: '1', created_at: '2015-08-17', type: 'error', content: 'test2'}];
 	errorRecordTable.initialView(fakedata);
 }
@@ -225,10 +220,6 @@ function getAllInfoData() {
 	data.newRecords = getNewRecordList();
 	data.deleteRecords = getDeleteRecordList();
 	return data;
-=======
-	var fakedata = api.getErrorRecord();
-	errorRecordTable.initialView(fakedata);
->>>>>>> ccbb3a6b9e0b05d547532276293326817e82f743
 }
 
 function getInputValue() {
