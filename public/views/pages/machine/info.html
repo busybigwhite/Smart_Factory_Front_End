@@ -96,11 +96,23 @@
 					</div>
 				</span>
 			</li>
-			<li>
-				<span class="resume-name">小保養紀錄</span>
-				<span class="resume-value">
-				</span>
-			</li>
+			<div class="record-table" id="check-record-table">
+				<h4 class="record-header">小保養紀錄<i class="fa fa-chevron-down pul-right"></i></h4>
+				<div class="record-form clearfix" id="check-record-form">
+					<div class="record-date-picker-column">
+						<input type="text" data-date-format="YYYY/MM/DD" id="check-record-date-picker" readonly/>
+					</div>
+					<div class="record-detail-column">
+						<input type="text" class="record-content-input" placeholder="說明文字">
+					</div>
+					<div class="record-action-column">
+						<button type="button" class="record-new-button">新增</button>
+						<button type="button" class="record-cancel-button">取消</button>
+					</div>
+				</div>
+				<ul class="record-changed-table-body" id="check-record-changed-table-body"></ul>
+				<ul class="record-table-body" id="check-record-table-body"></ul>
+			</div>
 			<li id="machine-maintain-period">
 				<span class="resume-name">大保養週期</span>
 				<span class="resume-value">
@@ -123,11 +135,23 @@
 					</div>
 				</span>
 			</li>
-			<li>
-				<span class="resume-name">大保養紀錄</span>
-				<span class="resume-value">
-				</span>
-			</li>
+			<div class="record-table" id="maintain-record-table">
+				<h4 class="record-header">大保養紀錄<i class="fa fa-chevron-down pul-right"></i></h4>
+				<div class="record-form clearfix" id="maintain-record-form">
+					<div class="record-date-picker-column">
+						<input type="text" data-date-format="YYYY/MM/DD" id="maintain-record-date-picker" readonly/>
+					</div>
+					<div class="record-detail-column">
+						<input type="text" class="record-content-input" placeholder="說明文字">
+					</div>
+					<div class="record-action-column">
+						<button type="button" class="record-new-button">新增</button>
+						<button type="button" class="record-cancel-button">取消</button>
+					</div>
+				</div>
+				<ul class="record-changed-table-body" id="maintain-record-changed-table-body"></ul>
+				<ul class="record-table-body" id="maintain-record-table-body"></ul>
+			</div>
 			<div class="record-table" id="error-record-table">
 				<h4 class="record-header">異常維修紀錄<i class="fa fa-chevron-down pul-right"></i></h4>
 				<div class="record-form clearfix" id="error-record-form">

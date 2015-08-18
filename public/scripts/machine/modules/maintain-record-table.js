@@ -4,12 +4,12 @@ var $ = window.jQuery = require('jquery');
 var template = require('../templates/record-list-template');
 
 /* DOM */
-var $recordTable        = $('#error-record-table');
+var $recordTable        = $('#maintain-record-table');
 var $tableHeader        = $recordTable.find('.record-header');
-var $tableBody          = $('#error-record-table-body');
-var $changedTable       = $('#error-record-changed-table-body');
-var $recordForm         = $('#error-record-form');
-var $datePicker         = $('#error-record-date-picker');
+var $tableBody          = $('#maintain-record-table-body');
+var $changedTable       = $('#maintain-record-changed-table-body');
+var $recordForm         = $('#maintain-record-form');
+var $datePicker         = $('#maintain-record-date-picker');
 var $contentInput       = $recordForm.find('.record-content-input');
 var $addRecordBtn       = $recordForm.find('.record-new-button');
 var $clearInputBtn      = $recordForm.find('.record-cancel-button');

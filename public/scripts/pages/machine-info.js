@@ -11,7 +11,9 @@ var checkPeriodDropdown    = require('../machine/modules/check-period-dropdown')
 var maintainPeriodDropdown = require('../machine/modules/maintain-period-dropdown');
 
 require('eonasdan-bootstrap-datetimepicker');
-var errorRecordTable = require('../machine/modules/error-record-table');
+var checkRecordTable    = require('../machine/modules/check-record-table');
+var maintainRecordTable = require('../machine/modules/maintain-record-table');
+var errorRecordTable    = require('../machine/modules/error-record-table');
 
 
 /* DOM */
@@ -49,6 +51,9 @@ function initialize() {
 	}
 	getInitialData();
 	bindEvents();
+	checkRecordTable.init();
+	maintainRecordTable.init();
+	errorRecordTable.init();
 }
 
 function getInitialData() {
@@ -78,6 +83,8 @@ function showEditMode() {
 	$backBtn  .hide();
 	$viewModeCollection.addClass('editting');
 	$editModeCollection.addClass('editting');
+	checkRecordTable.setEditMode(true);
+	maintainRecordTable.setEditMode(true);
 	errorRecordTable.setEditMode(true);
 }
 
@@ -91,6 +98,8 @@ function hideEditMode() {
 	$backBtn  .show();
 	$viewModeCollection.removeClass('editting');
 	$editModeCollection.removeClass('editting');
+	checkRecordTable.setEditMode(false);
+	maintainRecordTable.setEditMode(false);
 	errorRecordTable.setEditMode(false);
 }
 
@@ -102,6 +111,8 @@ function showCreateMode() {
 	$backBtn  .show();
 	$viewModeCollection.addClass('editting');
 	$editModeCollection.addClass('editting');
+	checkRecordTable.setEditMode(true);
+	maintainRecordTable.setEditMode(true);
 	errorRecordTable.setEditMode(true);
 }
 
@@ -176,11 +187,17 @@ function initResumeInfo(data) {
 	noticeedPersonDropdown.init(data['admin_id']);
 	checkPeriodDropdown   .init(data['check_period_value'], data['check_period_unit']);
 	maintainPeriodDropdown.init(data['maintain_period_value'], data['maintain_period_unit']);
-	// TODO: 小保養紀錄
-	// TODO: 大保養紀錄
+	// ToFix: 小保養紀錄 init data
+	var data = api.getErrorRecord();
+	checkRecordTable.initialView(data);
+
+	// ToFix: 大保養紀錄 init data
+	var data = api.getErrorRecord();
+	maintainRecordTable.initialView(data);
+
 	// ToFix: 異常維修紀錄 init data
 	var data = api.getErrorRecord();
-	errorRecordTable.init(data);
+	errorRecordTable.initialView(data);
 }
 
 function getChangedData() {

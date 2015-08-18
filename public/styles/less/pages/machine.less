@@ -23,6 +23,8 @@
 #machine-detail-page {
 	.record-table {
 		.make-row();
+		box-shadow: 1px 1px 5px grey;
+		margin: 10px 0;
 
 		.record-header {
 			background-color: whitesmoke;
@@ -31,10 +33,6 @@
 
 			.fa {
 				float: right;
-			}
-
-			&:hover {
-				background-color: @silver;
 			}
 
 			&.open {
@@ -48,6 +46,10 @@
 				     -o-transform: rotate(180deg);
 				        transform: rotate(180deg);
 				}
+			}
+
+			&:hover {
+				background-color: @silver;
 			}
 		}
 
