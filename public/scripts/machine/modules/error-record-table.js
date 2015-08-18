@@ -1,7 +1,6 @@
 'use strict';
 
 var $ = window.jQuery = require('jquery');
-var api = require('../api');
 var template = require('../templates/record-list-template');
 
 /* DOM */
@@ -32,14 +31,14 @@ exports = module.exports = {
 };
 
 
-function initialize() {
-	initialView();
+function initialize(data) {
+	initialView(data);
 	bindEvents();
 	initializeDatetimePicker();
 }
 
-function initialView() {
-	var tableListRows = template.render({ records : api.getErrorRecord() });
+function initialView(data) {
+	var tableListRows = template.render({ records : data });
 	$tableBody.empty().append( tableListRows );
 }
 

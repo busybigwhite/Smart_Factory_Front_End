@@ -170,7 +170,8 @@ function initResumeInfo(data) {
 	// TODO: 小保養紀錄
 	// TODO: 大保養紀錄
 	// ToFix: 異常維修紀錄 init data
-	errorRecordTable.init();
+	var data = api.getErrorRecord();
+	errorRecordTable.init(data);
 }
 
 function getChangedData() {
@@ -183,11 +184,6 @@ function getChangedData() {
 		if (name) {
 			value = value ? value : '';
 			newData[name] = value;
-
-		} else if ($dropdownSelected) {
-			var selectedName  = $dropdownSelected.attr('name');
-			var selectedValue = $dropdownSelected.text();
-			newData[selectedName] = selectedValue;
 
 		} else {
 			console.log('getChangedData error: missing some value');
