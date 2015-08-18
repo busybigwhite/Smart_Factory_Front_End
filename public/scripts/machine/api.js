@@ -14,7 +14,8 @@ exports = module.exports = {
 	deleteMachine: deleteMachine,
 	getMachineInfo: getMachineInfo,
 	editMachineInfo: editMachineInfo,
-	getErrorRecord: getErrorRecord
+	createMachineRecord: createMachineRecord,
+	deleteMachineRecord: deleteMachineRecord,
 };
 
 function goToMachineIndex() {
@@ -55,10 +56,14 @@ function editMachineInfo(id, data) {
 	return editData(machineApiUrl + id, data);
 }
 
-function getErrorRecord(id) {
+function createMachineRecord(id, data) {
 	// TODO:
-	// return getData(URL, id);
-	return [{id: '1', created_at: '2015-08-17', content: 'test1'},{id: '1', created_at: '2015-08-17', content: 'test2'}];
+	// return createData(machineApiUrl, data);
+}
+
+function deleteMachineRecord(id, data) {
+	// TODO:
+	// return deleteData(machineApiUrl, data);
 }
 
 

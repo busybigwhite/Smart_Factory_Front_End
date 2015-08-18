@@ -8,11 +8,16 @@ exports.render = function(records) {
 
   var menuTemp = _.template(
 	 `<% _.forEach(records, function(record) {  %>
-      <li class="record-list">
+      <li class="record-list" data-record='{"content":     "<%= record.content %>",
+                                            "created_at" : "<%= record.created_at %>",
+                                            "id" :         "<%= record.id %>",
+                                            "machine_id" : "<%= record.machine_id %>",
+                                            "type" :       "<%= record.type %>",
+                                            "updated_at" : "<%= record.updated_at %>"}'>
       	<div class="table-col"><%= record.created_at %></div>
       	<div class="table-col"><%= record.content %></div>
       	<div class="table-col">
-      		<button type="button" class="record-delete-button" data-record="<%= record %>">刪除</button>
+      		<button type="button" class="record-delete-button">刪除</button>
       	</div>
       </li>
     <% }); %>`
@@ -22,13 +27,17 @@ exports.render = function(records) {
 }
 
 exports.renderNewOne= function(record) {
-
   var menuTemp = _.template(
-      `<li class="record-list new">
+      `<li class="record-list new" data-record='{"content":    "<%= record.content %>",
+                                                "created_at" : "<%= record.created_at %>",
+                                                "id" :         "<%= record.id %>",
+                                                "machine_id" : "<%= record.machine_id %>",
+                                                "type" :       "<%= record.type %>",
+                                                "updated_at" : "<%= record.updated_at %>"}'>
         <div class="table-col"><%= record.created_at %></div>
         <div class="table-col"><%= record.content %></div>
         <div class="table-col">
-          <button type="button" class="record-delete-button" data-record="<%= record %>">刪除</button>
+          <button type="button" class="record-delete-button">刪除</button>
         </div>
       </li>`
   );

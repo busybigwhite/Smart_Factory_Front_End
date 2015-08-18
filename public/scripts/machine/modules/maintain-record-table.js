@@ -27,6 +27,8 @@ var dateTimePickerOpt = {
 exports = module.exports = {
 	init: initialize,
 	initialView: initialView,
+	getNewList: getNewList,
+	getDeleteList: getDeleteList,
 	setEditMode: setEditMode,
 	clearChangedTable: clearChangedTable,
 };
@@ -51,6 +53,23 @@ function bindEvents() {
 	// $contentInput.on('keypress', contentInputPressed);
 }
 
+function getNewList() {
+	var data = [];
+	var $lists = $changedTable.find('.record-list').filter('.new');
+	$lists.each(function(i, el) {
+		data.push($(el).data('record'));
+	});
+	return data;
+}
+
+function getDeleteList() {
+	var data = [];
+	var $lists = $changedTable.find('.record-list').filter('.delete');
+	$lists.each(function(i, el) {
+		data.push($(el).data('record'));
+	});
+	return data;
+}
 function initializeDatetimePicker() {
 	$datePicker.datetimepicker(dateTimePickerOpt);
 	$datePicker.data("DateTimePicker").defaultDate(today);
@@ -107,6 +126,8 @@ function getFormData() {
 	var data = {};
 	data.created_at = $datePicker.val();
 	data.content = $contentInput.val();
+	data.type = 'maintain';
+	data.updated_at = $datePicker.val();
 	return data.content ? data : false ;
 }
 
