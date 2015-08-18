@@ -36,6 +36,7 @@ var $weight = $('#machine-weight');
 var isEditMode   = false;
 var isCreateMode = false;
 var machineId;
+var originalData;
 
 
 initialize();
@@ -52,11 +53,11 @@ function initialize() {
 
 function getInitialData() {
 	machineId = queryParameter.get('ID');
-	// api.getMachineInfo(machineId)
-	// 	 .done(initialView)
-	// 	 .fail(function(err) { console.log("GET Machine Info error: ", err); });
-	var fakeResponse ={"id":1,"name":"Fritsch","weight":516,"acquisition":"1991-07-09 00:00:00","admin_id":1,"check_period_unit":"times","check_period_value":42,"maintain_period_unit":"time","maintain_period_value":10,"created_at":"2015-08-17 11:56:02","updated_at":"2015-08-17 11:56:02","maintain_records":[{"id":1,"machine_id":1,"type":"maintain","content":"test","created_at":"2015-08-17 11:56:02","updated_at":"2015-08-17 11:56:02"},{"id":2,"machine_id":1,"type":"check","content":"test","created_at":"2015-08-17 11:56:02","updated_at":"2015-08-17 11:56:02"},{"id":3,"machine_id":1,"type":"check","content":"test","created_at":"2015-08-17 11:56:02","updated_at":"2015-08-17 11:56:02"}]};
-	initialView(fakeResponse);
+	api.getMachineInfo(machineId)
+		 .done(initialView)
+		 .fail(function(err) { console.log("GET Machine Info error: ", err); });
+	// var fakeResponse ={"id":1,"name":"Fritsch","weight":516,"acquisition":"1991-07-09 00:00:00","admin_id":1,"check_period_unit":"times","check_period_value":42,"maintain_period_unit":"times","maintain_period_value":10,"created_at":"2015-08-17 11:56:02","updated_at":"2015-08-17 11:56:02","maintain_records":[{"id":1,"machine_id":1,"type":"maintain","content":"test","created_at":"2015-08-17 11:56:02","updated_at":"2015-08-17 11:56:02"},{"id":2,"machine_id":1,"type":"check","content":"test","created_at":"2015-08-17 11:56:02","updated_at":"2015-08-17 11:56:02"},{"id":3,"machine_id":1,"type":"check","content":"test","created_at":"2015-08-17 11:56:02","updated_at":"2015-08-17 11:56:02"}]};
+	// initialView(fakeResponse);
 }
 
 function bindEvents() {
@@ -81,6 +82,7 @@ function showEditMode() {
 
 function hideEditMode() {
 	isEditMode = false;
+	resetViewData();
 	$editBtn  .show();
 	$cancelBtn.hide();
 	$saveBtn  .hide();
@@ -104,13 +106,14 @@ function showCreateMode() {
 
 function saveData() {
 	var data = getChangedData();
-	console.log('Changed or New Data : ', data);
 
 	if (isEditMode && !isCreateMode) {
 		saveChangedData(data);
+		console.log('Changed Data : ', data);
 
 	} else if (!isEditMode && isCreateMode) {
 		saveNewData(data);
+		console.log('New Data : ', data);
 
 	} else {
 		console.log('machine info page has error: Undefined Mode');
@@ -137,8 +140,14 @@ function deleteMachine() {
 }
 
 function initialView(data) {
+	originalData = data;
 	initBaseInfo(data);
 	initResumeInfo(data);
+}
+
+function resetViewData() {
+	initBaseInfo(originalData);
+	initResumeInfo(originalData);
 }
 
 function initBaseInfo(data) {
@@ -184,5 +193,9 @@ function getChangedData() {
 			console.log('getChangedData error: missing some value');
 		}
 	});
+	newData['check_period_value']    = checkPeriodDropdown.getValue();
+	newData['check_period_unit']     = checkPeriodDropdown.getType();
+	newData['maintain_period_value'] = maintainPeriodDropdown.getValue();
+	newData['maintain_period_unit']  = maintainPeriodDropdown.getType();
 	return newData;
 }

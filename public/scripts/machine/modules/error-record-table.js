@@ -101,6 +101,7 @@ function addRecordListView() {
 	if (!data) return;
 	var tableListRows = template.renderNewOne({ record : data });
 	$changedTable.append( tableListRows );
+	clearInput();
 }
 
 function getFormData() {
