@@ -105,7 +105,7 @@ function addRecordListView() {
 
 function getFormData() {
 	var data = {};
-	data.date = $datePicker.val();
+	data.created_at = $datePicker.val();
 	data.content = $contentInput.val();
 	return data.content ? data : false ;
 }
