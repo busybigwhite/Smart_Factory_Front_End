@@ -65,6 +65,7 @@ function bindEvents() {
 	$cancelBtn.on('click', hideEditMode);
 	$deleteBtn.on('click', deleteMachine);
 	$backBtn  .on('click', api.goToMachineIndex);
+	$machineDetailPage.on('keypress', 'input', preventSubmitOnInputEnter);
 	$machineDetailPage.submit(saveData);
 }
 
@@ -102,6 +103,14 @@ function showCreateMode() {
 	$viewModeCollection.addClass('editting');
 	$editModeCollection.addClass('editting');
 	errorRecordTable.setEditMode(true);
+}
+
+function preventSubmitOnInputEnter(e) {
+	var code = e.keyCode || e.which;
+	if (code === 13) {
+	  e.preventDefault();
+	  return false;
+	}
 }
 
 function saveData() {
