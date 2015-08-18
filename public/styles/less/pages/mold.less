@@ -1,0 +1,159 @@
+#mold-table {
+	.custom-table;
+
+	.table-col {
+
+		&:nth-of-type(1),
+		&:nth-of-type(2),
+		&:nth-of-type(3),
+		&:nth-of-type(4) {
+			.custom-table-col(1.5);
+		}
+
+		&:nth-of-type(5),
+		&:nth-of-type(6) {
+			.custom-table-col(2);
+		}
+
+		&:nth-of-type(7) {
+			.custom-table-col(1);
+		}
+
+		&:last-of-type {
+			.custom-table-col(1);
+			text-align: center;
+		}
+	}
+}
+
+#mold-detail-page {
+	.record-table {
+		.make-row();
+		box-shadow: 1px 1px 5px grey;
+		margin: 10px 0 10px -15px;
+
+		.record-header {
+			background-color: whitesmoke;
+			margin: 0;
+			padding: 15px;
+
+			.fa {
+				float: right;
+			}
+
+			&.open {
+				background-color: cadetblue;
+				color: white;
+
+				.fa {
+				-webkit-transform: rotate(180deg);
+				   -moz-transform: rotate(180deg);
+				    -ms-transform: rotate(180deg);
+				     -o-transform: rotate(180deg);
+				        transform: rotate(180deg);
+				}
+			}
+
+			&:hover {
+				background-color: @silver;
+			}
+		}
+
+		.record-form {
+			background-color: floralwhite;
+			border: 1px solid lightgray;
+			border-left-style: none;
+			border-right-style: none;
+			height: 60px;
+			display: none;
+
+			.record-date-picker-column {
+				.make-xs-column(3);
+				height: inherit;
+				display: flex;
+				input {
+					height: 30px;
+					align-self: center;
+				}
+			}
+
+			.record-detail-column {
+				.make-xs-column(6);
+				height: inherit;
+				display: flex;
+				input {
+					width: 350px;
+					height: 30px;
+					align-self: center;
+				}
+			}
+
+			.record-action-column {
+				.make-xs-column(3);
+				text-align: right;
+				height: inherit;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+			}
+		}
+
+		.record-changed-table-body,
+		.record-table-body {
+	    .custom-table;
+			margin: 0;
+	    padding: 0;
+
+	    .record-list .record-delete-button {
+	    		display: none;
+	    	}
+
+	    &.editting {
+	    	.record-list .record-delete-button {
+	    		display: inline-block;
+	    	}
+	    }
+
+			.record-list {
+				.clearfix();
+				.table-item;
+				padding: 0 15px;
+
+				.table-col {
+					&:nth-of-type(1) {
+						.custom-table-col(3);
+					}
+					&:nth-of-type(2) {
+						.custom-table-col(6);
+					}
+					&:nth-of-type(3) {
+						.custom-table-col(3);
+						text-align: right;
+						padding: 0;
+					}
+
+					margin: 0;
+					padding: 0;
+				}
+			}
+		}
+
+		.record-table-body {
+	    display: none;
+		}
+
+		.record-changed-table-body {
+			.record-list {
+				background-color: floralwhite!important;
+
+				&:last-child {
+					border-bottom: 1px solid #ddd;
+				}
+
+				&.delete {
+					display: none;
+				}
+			}
+		}
+	}
+}
