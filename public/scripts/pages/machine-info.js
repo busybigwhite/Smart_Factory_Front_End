@@ -24,7 +24,7 @@ var $machineDetailPage  = $('#machine-detail-page');
 var $viewModeCollection = $machineDetailPage.find('.view-mode');
 var $editModeCollection = $machineDetailPage.find('.edit-mode');
 
-var $id = $('#machine-id');
+var $serialNumber = $('#machine-serial-num');
 var $name = $('#machine-name');
 var $weight = $('#machine-weight');
 // TODO: 機台稼動率
@@ -151,8 +151,8 @@ function resetViewData() {
 }
 
 function initBaseInfo(data) {
-	$id.find('.view-mode').text(data['id']);
-	$id.find('.edit-mode').val(data['id']);
+	$serialNumber.find('.view-mode').text(data['serial_num']);
+	$serialNumber.find('.edit-mode').val(data['serial_num']);
 
 	$name.find('.view-mode').text(data['name']);
 	$name.find('.edit-mode').val(data['name']);
@@ -169,7 +169,7 @@ function initResumeInfo(data) {
 	maintainPeriodDropdown.init(data['maintain_period_value'], data['maintain_period_unit']);
 	// TODO: 小保養紀錄
 	// TODO: 大保養紀錄
-	// TODO: 異常維修紀錄
+	// ToFix: 異常維修紀錄 init data
 	errorRecordTable.init();
 }
 
