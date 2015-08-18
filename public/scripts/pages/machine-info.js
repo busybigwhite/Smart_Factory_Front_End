@@ -5,6 +5,7 @@ var header = require('../includes/header');
 var api = require('../machine/api');
 var queryParameter = require('../lib/helper/query-parameter');
 
+// ToFix: default option
 require('bootstrap/js/dropdown');
 var noticeedPersonDropdown = require('../machine/modules/noticed-person-dropdown');
 var checkPeriodDropdown    = require('../machine/modules/check-period-dropdown');
@@ -31,9 +32,6 @@ var $name = $('#machine-name');
 var $weight = $('#machine-weight');
 // TODO: 機台稼動率
 
-// TODO: 小保養紀錄
-// TODO: 大保養紀錄
-// TODO: 異常維修紀錄
 
 var isEditMode   = false;
 var isCreateMode = false;
@@ -61,7 +59,7 @@ function getInitialData() {
 	api.getMachineInfo(machineId)
 		 .done(initialView)
 		 .fail(function(err) { console.log("GET Machine Info error: ", err); });
-	// var fakeResponse ={"id":1,"name":"Fritsch","weight":516,"acquisition":"1991-07-09 00:00:00","admin_id":1,"check_period_unit":"times","check_period_value":42,"maintain_period_unit":"times","maintain_period_value":10,"created_at":"2015-08-17 11:56:02","updated_at":"2015-08-17 11:56:02","maintain_records":[{"id":1,"machine_id":1,"type":"maintain","content":"test","created_at":"2015-08-17 11:56:02","updated_at":"2015-08-17 11:56:02"},{"id":2,"machine_id":1,"type":"check","content":"test","created_at":"2015-08-17 11:56:02","updated_at":"2015-08-17 11:56:02"},{"id":3,"machine_id":1,"type":"check","content":"test","created_at":"2015-08-17 11:56:02","updated_at":"2015-08-17 11:56:02"}]};
+	// var fakeResponse ={"id":2,"serial_num":"Helga","name":"Schmidt","weight":187,"acquisition":"1991-06-10 00:00:00","admin_id":1,"check_period_unit":"time","check_period_value":62,"maintain_period_unit":"times","maintain_period_value":85,"created_at":"2015-08-18 06:57:31","updated_at":"2015-08-18 06:57:31","maintain_records":[{"id":1,"machine_id":2,"type":"check","content":"test","created_at":"2015-08-18 06:57:31","updated_at":"2015-08-18 06:57:31"}]};
 	// initialView(fakeResponse);
 }
 
@@ -188,16 +186,15 @@ function initResumeInfo(data) {
 	checkPeriodDropdown   .init(data['check_period_value'], data['check_period_unit']);
 	maintainPeriodDropdown.init(data['maintain_period_value'], data['maintain_period_unit']);
 	// ToFix: 小保養紀錄 init data
-	var data = api.getErrorRecord();
-	checkRecordTable.initialView(data);
+	var fakedata = api.getErrorRecord();
+	checkRecordTable.initialView(fakedata);
 
-	// ToFix: 大保養紀錄 init data
-	var data = api.getErrorRecord();
-	maintainRecordTable.initialView(data);
+	console.log("data['maintain_records'] : ", data['maintain_records']);
+	maintainRecordTable.initialView(data['maintain_records']);
 
 	// ToFix: 異常維修紀錄 init data
-	var data = api.getErrorRecord();
-	errorRecordTable.initialView(data);
+	var fakedata = api.getErrorRecord();
+	errorRecordTable.initialView(fakedata);
 }
 
 function getChangedData() {

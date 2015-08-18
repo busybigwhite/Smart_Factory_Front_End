@@ -58,7 +58,7 @@ function editMachineInfo(id, data) {
 function getErrorRecord(id) {
 	// TODO:
 	// return getData(URL, id);
-	return [{id: '1', date: '2015-08-17', content: 'test1'},{id: '1', date: '2015-08-17', content: 'test2'}];
+	return [{id: '1', created_at: '2015-08-17', content: 'test1'},{id: '1', created_at: '2015-08-17', content: 'test2'}];
 }
 
 
