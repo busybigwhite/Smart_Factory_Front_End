@@ -8,9 +8,7 @@ var template = require('../templates/record-list-template');
 var $recordTable        = $('#error-record-table');
 var $tableHeader        = $recordTable.find('.record-header');
 var $tableBody          = $('#error-record-table-body');
-// var $deleteBtn          = $tableBody.find('.record-delete-button');
 var $changedTable       = $('#error-record-changed-table-body');
-// var $removeNewRecordBtn = $changedTable.find('.record-delete-button');
 var $recordForm         = $('#error-record-form');
 var $datePicker         = $('#error-record-date-picker');
 var $contentInput       = $recordForm.find('.record-content-input');
@@ -49,9 +47,9 @@ function bindEvents() {
 	$tableHeader.on('click', toggleTable);
 	$addRecordBtn.on('click', addRecordListView);
 	$clearInputBtn.on('click', clearInput);
-	// $deleteBtn.on('click', deleteRecord);
 	$changedTable.on('click', '.record-delete-button', removeNewRecord);
 	$tableBody.on('click', '.record-delete-button', deleteRecord);
+	// $contentInput.on('keypress', contentInputPressed);
 }
 
 function initializeDatetimePicker() {
@@ -60,7 +58,19 @@ function initializeDatetimePicker() {
 }
 
 function setEditMode(boolean) {
-	boolean ? $recordForm.show() : $recordForm.hide();
+	boolean ? showEditModeTable() : hideEditModeTable();
+}
+
+function showEditModeTable() {
+	$recordForm.show();
+	$changedTable.addClass('editting');
+	$tableBody.addClass('editting');
+}
+
+function hideEditModeTable() {
+	$recordForm.hide();
+	$changedTable.removeClass('editting');
+	$tableBody.removeClass('editting');
 }
 
 function clearChangedTable() {
@@ -91,6 +101,7 @@ function addRecordListView() {
 	if (!data) return;
 	var tableListRows = template.renderNewOne({ record : data });
 	$changedTable.append( tableListRows );
+	clearInput();
 }
 
 function getFormData() {
@@ -99,6 +110,15 @@ function getFormData() {
 	data.content = $contentInput.val();
 	return data.content ? data : false ;
 }
+
+// function contentInputPressed(e) {
+// 	console.log('contentInputPressed');
+// 	if (e.keyCode === 13 && !e.target.value) {
+// 		console.log('contentInputPressed:',e);
+// 		addRecordListView();
+// 	}
+// 	e.stopPropagation();
+// }
 
 function removeNewRecord() {
 	$(this).closest('.record-list').remove();
