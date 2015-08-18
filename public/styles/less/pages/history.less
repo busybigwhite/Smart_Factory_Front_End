@@ -6,18 +6,23 @@
 		height: 60px;
 		padding: 0 25px;
 
-		#history-date-block {
-			display: inline-block;
+		#history-date-period-block {
+			.make-xs-column(6);
 
-			#history-start-date-picker,
-			#history-end-date-picker {
-				width: 170px;
-				height: 35px;
-				padding: 0 8px;
-			    margin: 0 5px;
-				border-radius: 4px;
-			    border: 1px solid #ccc;
-			    cursor: pointer;
+			#history-date-block {
+				position: relative;
+				display: inline-block;
+
+				#history-start-date-picker,
+				#history-end-date-picker {
+					width: 170px;
+					height: 35px;
+					padding: 0 8px;
+				    margin: 0 5px;
+					border-radius: 4px;
+				    border: 1px solid #ccc;
+				    cursor: pointer;
+				}
 			}
 		}
 	}
