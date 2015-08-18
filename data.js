@@ -95,10 +95,16 @@ var moldLists = [
     {'id': 'Mold003','name': 'mold00003'}
 ]
 
+var workorderInfo = {
+    'workorder_id':'W001','order_id':'ORDER001','customer_name':'Moremote','factories':'台中梧棲',
+    'workorder_status':'finish'
+};
+
 module.exports = {
       factories: factories,
       liveinfos: liveinfos,
       listpics: listpics,
       machineLists: machineLists,
-      moldLists: moldLists
+      moldLists: moldLists,
+      workorderInfo: workorderInfo
 };

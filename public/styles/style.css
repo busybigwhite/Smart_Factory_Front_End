@@ -9219,6 +9219,10 @@ a:active {
   -moz-box-shadow: 0 0 10px 1px #95a5a6;
   box-shadow: 0 0 10px 1px #95a5a6;
 }
+.workorder-container {
+  max-width: 80%;
+  margin: 100px auto;
+}
 .navbar {
   min-width: 1200px;
   background-color: #ecf0f1;
@@ -10132,6 +10136,507 @@ fieldset[disabled] .info-back-button.active {
   cursor: pointer;
   pointer-events: none;
 }
+.workorder-info-save-button {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-size: 16px;
+  min-width: 120px;
+  height: 2.2em;
+  line-height: 2.2em;
+  padding: 0;
+  color: #333333;
+  background-color: #ffffff;
+  border-color: #cccccc;
+  display: none;
+}
+.workorder-info-save-button:focus,
+.workorder-info-save-button:active:focus,
+.workorder-info-save-button.active:focus,
+.workorder-info-save-button.focus,
+.workorder-info-save-button:active.focus,
+.workorder-info-save-button.active.focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.workorder-info-save-button:hover,
+.workorder-info-save-button:focus,
+.workorder-info-save-button.focus {
+  color: #333333;
+  text-decoration: none;
+}
+.workorder-info-save-button:active,
+.workorder-info-save-button.active {
+  outline: 0;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+.workorder-info-save-button.disabled,
+.workorder-info-save-button[disabled],
+fieldset[disabled] .workorder-info-save-button {
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+a.workorder-info-save-button.disabled,
+fieldset[disabled] a.workorder-info-save-button {
+  pointer-events: none;
+}
+.workorder-info-save-button:focus,
+.workorder-info-save-button.focus {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #8c8c8c;
+}
+.workorder-info-save-button:hover {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.workorder-info-save-button:active,
+.workorder-info-save-button.active,
+.open > .dropdown-toggle.workorder-info-save-button {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.workorder-info-save-button:active:hover,
+.workorder-info-save-button.active:hover,
+.open > .dropdown-toggle.workorder-info-save-button:hover,
+.workorder-info-save-button:active:focus,
+.workorder-info-save-button.active:focus,
+.open > .dropdown-toggle.workorder-info-save-button:focus,
+.workorder-info-save-button:active.focus,
+.workorder-info-save-button.active.focus,
+.open > .dropdown-toggle.workorder-info-save-button.focus {
+  color: #333333;
+  background-color: #d4d4d4;
+  border-color: #8c8c8c;
+}
+.workorder-info-save-button:active,
+.workorder-info-save-button.active,
+.open > .dropdown-toggle.workorder-info-save-button {
+  background-image: none;
+}
+.workorder-info-save-button.disabled,
+.workorder-info-save-button[disabled],
+fieldset[disabled] .workorder-info-save-button,
+.workorder-info-save-button.disabled:hover,
+.workorder-info-save-button[disabled]:hover,
+fieldset[disabled] .workorder-info-save-button:hover,
+.workorder-info-save-button.disabled:focus,
+.workorder-info-save-button[disabled]:focus,
+fieldset[disabled] .workorder-info-save-button:focus,
+.workorder-info-save-button.disabled.focus,
+.workorder-info-save-button[disabled].focus,
+fieldset[disabled] .workorder-info-save-button.focus,
+.workorder-info-save-button.disabled:active,
+.workorder-info-save-button[disabled]:active,
+fieldset[disabled] .workorder-info-save-button:active,
+.workorder-info-save-button.disabled.active,
+.workorder-info-save-button[disabled].active,
+fieldset[disabled] .workorder-info-save-button.active {
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+.workorder-info-save-button .badge {
+  color: #ffffff;
+  background-color: #333333;
+}
+.workorder-info-edit-button {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-size: 16px;
+  min-width: 120px;
+  height: 2.2em;
+  line-height: 2.2em;
+  padding: 0;
+  color: #333333;
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+.workorder-info-edit-button:focus,
+.workorder-info-edit-button:active:focus,
+.workorder-info-edit-button.active:focus,
+.workorder-info-edit-button.focus,
+.workorder-info-edit-button:active.focus,
+.workorder-info-edit-button.active.focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.workorder-info-edit-button:hover,
+.workorder-info-edit-button:focus,
+.workorder-info-edit-button.focus {
+  color: #333333;
+  text-decoration: none;
+}
+.workorder-info-edit-button:active,
+.workorder-info-edit-button.active {
+  outline: 0;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+.workorder-info-edit-button.disabled,
+.workorder-info-edit-button[disabled],
+fieldset[disabled] .workorder-info-edit-button {
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+a.workorder-info-edit-button.disabled,
+fieldset[disabled] a.workorder-info-edit-button {
+  pointer-events: none;
+}
+.workorder-info-edit-button:focus,
+.workorder-info-edit-button.focus {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #8c8c8c;
+}
+.workorder-info-edit-button:hover {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.workorder-info-edit-button:active,
+.workorder-info-edit-button.active,
+.open > .dropdown-toggle.workorder-info-edit-button {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.workorder-info-edit-button:active:hover,
+.workorder-info-edit-button.active:hover,
+.open > .dropdown-toggle.workorder-info-edit-button:hover,
+.workorder-info-edit-button:active:focus,
+.workorder-info-edit-button.active:focus,
+.open > .dropdown-toggle.workorder-info-edit-button:focus,
+.workorder-info-edit-button:active.focus,
+.workorder-info-edit-button.active.focus,
+.open > .dropdown-toggle.workorder-info-edit-button.focus {
+  color: #333333;
+  background-color: #d4d4d4;
+  border-color: #8c8c8c;
+}
+.workorder-info-edit-button:active,
+.workorder-info-edit-button.active,
+.open > .dropdown-toggle.workorder-info-edit-button {
+  background-image: none;
+}
+.workorder-info-edit-button.disabled,
+.workorder-info-edit-button[disabled],
+fieldset[disabled] .workorder-info-edit-button,
+.workorder-info-edit-button.disabled:hover,
+.workorder-info-edit-button[disabled]:hover,
+fieldset[disabled] .workorder-info-edit-button:hover,
+.workorder-info-edit-button.disabled:focus,
+.workorder-info-edit-button[disabled]:focus,
+fieldset[disabled] .workorder-info-edit-button:focus,
+.workorder-info-edit-button.disabled.focus,
+.workorder-info-edit-button[disabled].focus,
+fieldset[disabled] .workorder-info-edit-button.focus,
+.workorder-info-edit-button.disabled:active,
+.workorder-info-edit-button[disabled]:active,
+fieldset[disabled] .workorder-info-edit-button:active,
+.workorder-info-edit-button.disabled.active,
+.workorder-info-edit-button[disabled].active,
+fieldset[disabled] .workorder-info-edit-button.active {
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+.workorder-info-edit-button .badge {
+  color: #ffffff;
+  background-color: #333333;
+}
+.workorder-info-cancel-button {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-size: 16px;
+  min-width: 120px;
+  height: 2.2em;
+  line-height: 2.2em;
+  padding: 0;
+  color: #333333;
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+.workorder-info-cancel-button:focus,
+.workorder-info-cancel-button:active:focus,
+.workorder-info-cancel-button.active:focus,
+.workorder-info-cancel-button.focus,
+.workorder-info-cancel-button:active.focus,
+.workorder-info-cancel-button.active.focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.workorder-info-cancel-button:hover,
+.workorder-info-cancel-button:focus,
+.workorder-info-cancel-button.focus {
+  color: #333333;
+  text-decoration: none;
+}
+.workorder-info-cancel-button:active,
+.workorder-info-cancel-button.active {
+  outline: 0;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+.workorder-info-cancel-button.disabled,
+.workorder-info-cancel-button[disabled],
+fieldset[disabled] .workorder-info-cancel-button {
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+a.workorder-info-cancel-button.disabled,
+fieldset[disabled] a.workorder-info-cancel-button {
+  pointer-events: none;
+}
+.workorder-info-cancel-button:focus,
+.workorder-info-cancel-button.focus {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #8c8c8c;
+}
+.workorder-info-cancel-button:hover {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.workorder-info-cancel-button:active,
+.workorder-info-cancel-button.active,
+.open > .dropdown-toggle.workorder-info-cancel-button {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.workorder-info-cancel-button:active:hover,
+.workorder-info-cancel-button.active:hover,
+.open > .dropdown-toggle.workorder-info-cancel-button:hover,
+.workorder-info-cancel-button:active:focus,
+.workorder-info-cancel-button.active:focus,
+.open > .dropdown-toggle.workorder-info-cancel-button:focus,
+.workorder-info-cancel-button:active.focus,
+.workorder-info-cancel-button.active.focus,
+.open > .dropdown-toggle.workorder-info-cancel-button.focus {
+  color: #333333;
+  background-color: #d4d4d4;
+  border-color: #8c8c8c;
+}
+.workorder-info-cancel-button:active,
+.workorder-info-cancel-button.active,
+.open > .dropdown-toggle.workorder-info-cancel-button {
+  background-image: none;
+}
+.workorder-info-cancel-button.disabled,
+.workorder-info-cancel-button[disabled],
+fieldset[disabled] .workorder-info-cancel-button,
+.workorder-info-cancel-button.disabled:hover,
+.workorder-info-cancel-button[disabled]:hover,
+fieldset[disabled] .workorder-info-cancel-button:hover,
+.workorder-info-cancel-button.disabled:focus,
+.workorder-info-cancel-button[disabled]:focus,
+fieldset[disabled] .workorder-info-cancel-button:focus,
+.workorder-info-cancel-button.disabled.focus,
+.workorder-info-cancel-button[disabled].focus,
+fieldset[disabled] .workorder-info-cancel-button.focus,
+.workorder-info-cancel-button.disabled:active,
+.workorder-info-cancel-button[disabled]:active,
+fieldset[disabled] .workorder-info-cancel-button:active,
+.workorder-info-cancel-button.disabled.active,
+.workorder-info-cancel-button[disabled].active,
+fieldset[disabled] .workorder-info-cancel-button.active {
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+.workorder-info-cancel-button .badge {
+  color: #ffffff;
+  background-color: #333333;
+}
+.workorder-info-delete-button {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-size: 16px;
+  min-width: 120px;
+  height: 2.2em;
+  line-height: 2.2em;
+  padding: 0;
+  color: #333333;
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+.workorder-info-delete-button:focus,
+.workorder-info-delete-button:active:focus,
+.workorder-info-delete-button.active:focus,
+.workorder-info-delete-button.focus,
+.workorder-info-delete-button:active.focus,
+.workorder-info-delete-button.active.focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.workorder-info-delete-button:hover,
+.workorder-info-delete-button:focus,
+.workorder-info-delete-button.focus {
+  color: #333333;
+  text-decoration: none;
+}
+.workorder-info-delete-button:active,
+.workorder-info-delete-button.active {
+  outline: 0;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+.workorder-info-delete-button.disabled,
+.workorder-info-delete-button[disabled],
+fieldset[disabled] .workorder-info-delete-button {
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+a.workorder-info-delete-button.disabled,
+fieldset[disabled] a.workorder-info-delete-button {
+  pointer-events: none;
+}
+.workorder-info-delete-button:focus,
+.workorder-info-delete-button.focus {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #8c8c8c;
+}
+.workorder-info-delete-button:hover {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.workorder-info-delete-button:active,
+.workorder-info-delete-button.active,
+.open > .dropdown-toggle.workorder-info-delete-button {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.workorder-info-delete-button:active:hover,
+.workorder-info-delete-button.active:hover,
+.open > .dropdown-toggle.workorder-info-delete-button:hover,
+.workorder-info-delete-button:active:focus,
+.workorder-info-delete-button.active:focus,
+.open > .dropdown-toggle.workorder-info-delete-button:focus,
+.workorder-info-delete-button:active.focus,
+.workorder-info-delete-button.active.focus,
+.open > .dropdown-toggle.workorder-info-delete-button.focus {
+  color: #333333;
+  background-color: #d4d4d4;
+  border-color: #8c8c8c;
+}
+.workorder-info-delete-button:active,
+.workorder-info-delete-button.active,
+.open > .dropdown-toggle.workorder-info-delete-button {
+  background-image: none;
+}
+.workorder-info-delete-button.disabled,
+.workorder-info-delete-button[disabled],
+fieldset[disabled] .workorder-info-delete-button,
+.workorder-info-delete-button.disabled:hover,
+.workorder-info-delete-button[disabled]:hover,
+fieldset[disabled] .workorder-info-delete-button:hover,
+.workorder-info-delete-button.disabled:focus,
+.workorder-info-delete-button[disabled]:focus,
+fieldset[disabled] .workorder-info-delete-button:focus,
+.workorder-info-delete-button.disabled.focus,
+.workorder-info-delete-button[disabled].focus,
+fieldset[disabled] .workorder-info-delete-button.focus,
+.workorder-info-delete-button.disabled:active,
+.workorder-info-delete-button[disabled]:active,
+fieldset[disabled] .workorder-info-delete-button:active,
+.workorder-info-delete-button.disabled.active,
+.workorder-info-delete-button[disabled].active,
+fieldset[disabled] .workorder-info-delete-button.active {
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+.workorder-info-delete-button .badge {
+  color: #ffffff;
+  background-color: #333333;
+}
 .custom-dropdown {
   position: relative;
   padding: 0;
@@ -10279,6 +10784,34 @@ fieldset[disabled] .info-back-button.active {
   display: none;
 }
 .production-resume-panel .resume-value .edit-mode.editting {
+  display: inline-block;
+}
+.workorder-info-panel {
+  font-size: 18px;
+}
+.workorder-info-panel > ul > li {
+  height: 55px;
+  line-height: 55px;
+}
+.workorder-info-panel > ul > li input {
+  height: 34px;
+  line-height: 34px;
+  padding: 0 10px;
+}
+.workorder-info-panel .info-name {
+  width: 260px;
+  display: inline-block;
+}
+.workorder-info-panel .info-value .view-mode {
+  display: inline-block;
+}
+.workorder-info-panel .info-value .view-mode.editting {
+  display: none;
+}
+.workorder-info-panel .info-value .edit-mode {
+  display: none;
+}
+.workorder-info-panel .info-value .edit-mode.editting {
   display: inline-block;
 }
 .login-background {

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Smart Factory</title>
+	<link rel="stylesheet" type="text/css" href="../../../build/style.css">
+</head>
+<body>
+
+<div id="header"></div>
+
+<div class="workorder-container">
+	<div class="base-action-panel">
+		<button type="button" class="workorder-info-delete-button" id="workorder-info-delete-button">刪除</button>
+		<button type="button" class="workorder-info-edit-button" id="workorder-info-edit-button">編輯</button>
+		<button type="submit" class="workorder-info-save-button" id="workorder-info-save-button">儲存</button>
+		<button type="button" class="workorder-info-cancel-button" id="workorder-info-cancel-button">取消</button>
+	</div>
+
+	<div class="workorder-info-panel">
+		<ul>
+			<li id="machine-id">
+				<span class="info-name">工單編號</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="id" value="" pattern="[A-Za-z0-9]{1,10}" title="輸入1~10個英數字" required>
+				</span>
+			</li>
+			<li id="machine-name">
+				<span class="info-name">訂單編號</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="name" value="">
+				</span>
+			</li>
+			<li id="machine-weight">
+				<span class="info-name">客戶名稱</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="weight" value="" pattern="[0-9]{1,10}" title="輸入數字">
+				</span>
+			</li>
+			<li>
+				<span class="info-name">生產廠區別</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="todo" value="" pattern="[0-9]{1,3}" title="輸入數字">
+				</span>
+			</li>
+			<li>
+				<span class="info-name">工單狀態</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="todo" value="" pattern="[0-9]{1,3}" title="輸入數字">
+				</span>
+			</li>
+		</ul>
+	
+
+	
+		<h3 class="resume-header">詳細資訊</h3>
+		<ul>
+			<li>
+				<span class="info-name">輸入日期</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="todo" value="" pattern="[0-9]{1,3}" title="輸入數字">
+				</span>
+			</li>
+			<li>
+				<span class="info-name">說明</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="todo" value="" pattern="[0-9]{1,3}" title="輸入數字">
+				</span>
+			</li>
+			<li>
+				<span class="info-name">預定生產時程</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="todo" value="" pattern="[0-9]{1,3}" title="輸入數字">
+				</span>
+			</li>
+			<li>
+				<span class="info-name">預定生產數量</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="todo" value="" pattern="[0-9]{1,3}" title="輸入數字">
+				</span>
+			</li>
+			<li>
+				<span class="info-name">類別</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="todo" value="" pattern="[0-9]{1,3}" title="輸入數字">
+				</span>
+			</li>
+			<li>
+				<span class="info-name">實際開始生產日期</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="todo" value="" pattern="[0-9]{1,3}" title="輸入數字">
+				</span>
+			</li>
+			<li>
+				<span class="info-name">實際完成數量</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="todo" value="" pattern="[0-9]{1,3}" title="輸入數字">
+				</span>
+			</li>
+			<li>
+				<span class="info-name">實際結案日期</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="todo" value="" pattern="[0-9]{1,3}" title="輸入數字">
+				</span>
+			</li>
+		</ul>
+	</div>
+</div>
+
+
+<script src="../../../build/bundle/workorder-info.js"></script>
+
+</body>
+</html>
