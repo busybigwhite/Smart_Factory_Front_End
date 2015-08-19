@@ -27,6 +27,7 @@ var pwd2Input = document.getElementById("userPasswordConfirm");
 var memberId = queryParameter.get('id');
 var origName = '';
 var memberList = [];
+var isEditMode = false;
 
 initialize();
 
@@ -37,6 +38,7 @@ function initialize() {
 		$editBtn.hide();
 		$deleteBtn.hide();
 	} else {
+		isEditMode = true;
 		$addBtn.hide();
 		getInitialData();
 	}
@@ -69,9 +71,14 @@ function supports_input_validity(){
 }
 
 function checkUsername(){
-	if($.inArray((this.value, memberList) > -1) && (this.value !== origName)){
-		this.pattern = "";
-		this.title = "帳號名稱已被使用";
+	if($.inArray(this.value, memberList) > -1){
+		if ((isEditMode == true) && (this.value == origName)) {
+			this.pattern = "^[a-z0-9]{4,16}$";
+			this.title = "帳號需至少4碼，限用小寫與數字";
+		} else {
+			this.pattern = "";
+			this.title = "帳號名稱已被使用";	
+		}
 	} else {
 		this.pattern = "^[a-z0-9]{4,16}$";
 		this.title = "帳號需至少4碼，限用小寫與數字";	
@@ -119,7 +126,9 @@ function getmemberList(){
 function getInitialData() {
 	api.getMember(memberId)
 		 .done(function(res){
-		 		origName = res.name;
+		 		if (isEditMode == true) {
+		 			origName = res.name;
+		 		}	 		
 			 	$userName.val(res.name);
 				$userEmail.val(res.email);
 

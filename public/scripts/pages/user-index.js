@@ -18,12 +18,13 @@ var $editBtn = $('#user-edit-btn');
 var pwd1Input = document.getElementById("userPassword");
 var pwd2Input = document.getElementById("userPasswordConfirm");
 
-var memberId = api.getUser.id;
+var memberId;
 // var memberId = '1';
 
 initialize();
 
 function initialize() {
+	memberId = api.getUser.id;
 	header.include();
 	getInitialData();
 	bindEvents();
