@@ -43,9 +43,8 @@ function initialize() {
 		$addBtn.hide();
 		getInitialData();
 	}
-
-	getmemberList();
 	bindEvents();
+	getmemberList();
 }
 
 function bindEvents() {
@@ -122,6 +121,8 @@ function getmemberList(){
  // 	response.forEach(function (element){
 	// 	memberList.push(element.name);
 	// });
+
+	console.log(memberList);
 }
 
 function getInitialData() {
@@ -157,6 +158,8 @@ function getChangedData() {
 
 function addMemberSubmit() {
 	var data = getChangedData();
+	console.log(data);
+	console.log(formValidate());
 
 	if (formValidate()) {
 		api.createMember(data)

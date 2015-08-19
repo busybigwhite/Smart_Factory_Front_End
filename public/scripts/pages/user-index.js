@@ -25,7 +25,12 @@ var memberId;
 initialize();
 
 function initialize() {
-	memberId = api.getUser.id;
+	var userInfo = api.getUser;
+	console.log(userInfo);
+
+	memberId = userInfo.id;
+	console.log(memberId);
+	
 	header.include();
 	getInitialData();
 	bindEvents();
