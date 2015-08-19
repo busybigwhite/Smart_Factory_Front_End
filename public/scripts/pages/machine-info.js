@@ -5,13 +5,16 @@ var header = require('../includes/header');
 var api = require('../machine/api');
 var queryParameter = require('../lib/helper/query-parameter');
 
+// ToFix: default option
 require('bootstrap/js/dropdown');
 var noticeedPersonDropdown = require('../machine/modules/noticed-person-dropdown');
 var checkPeriodDropdown    = require('../machine/modules/check-period-dropdown');
 var maintainPeriodDropdown = require('../machine/modules/maintain-period-dropdown');
 
 require('eonasdan-bootstrap-datetimepicker');
-var errorRecordTable = require('../machine/modules/error-record-table');
+var checkRecordTable    = require('../machine/modules/check-record-table');
+var maintainRecordTable = require('../machine/modules/maintain-record-table');
+var errorRecordTable    = require('../machine/modules/error-record-table');
 
 
 /* DOM */
@@ -24,14 +27,11 @@ var $machineDetailPage  = $('#machine-detail-page');
 var $viewModeCollection = $machineDetailPage.find('.view-mode');
 var $editModeCollection = $machineDetailPage.find('.edit-mode');
 
-var $id = $('#machine-id');
+var $serialNumber = $('#machine-serial-num');
 var $name = $('#machine-name');
 var $weight = $('#machine-weight');
 // TODO: 機台稼動率
 
-// TODO: 小保養紀錄
-// TODO: 大保養紀錄
-// TODO: 異常維修紀錄
 
 var isEditMode   = false;
 var isCreateMode = false;
@@ -49,6 +49,9 @@ function initialize() {
 	}
 	getInitialData();
 	bindEvents();
+	checkRecordTable.init();
+	maintainRecordTable.init();
+	errorRecordTable.init();
 }
 
 function getInitialData() {
@@ -56,7 +59,7 @@ function getInitialData() {
 	api.getMachineInfo(machineId)
 		 .done(initialView)
 		 .fail(function(err) { console.log("GET Machine Info error: ", err); });
-	// var fakeResponse ={"id":1,"name":"Fritsch","weight":516,"acquisition":"1991-07-09 00:00:00","admin_id":1,"check_period_unit":"times","check_period_value":42,"maintain_period_unit":"times","maintain_period_value":10,"created_at":"2015-08-17 11:56:02","updated_at":"2015-08-17 11:56:02","maintain_records":[{"id":1,"machine_id":1,"type":"maintain","content":"test","created_at":"2015-08-17 11:56:02","updated_at":"2015-08-17 11:56:02"},{"id":2,"machine_id":1,"type":"check","content":"test","created_at":"2015-08-17 11:56:02","updated_at":"2015-08-17 11:56:02"},{"id":3,"machine_id":1,"type":"check","content":"test","created_at":"2015-08-17 11:56:02","updated_at":"2015-08-17 11:56:02"}]};
+	// var fakeResponse ={"id":2,"serial_num":"Helga","name":"Schmidt","weight":187,"acquisition":"1991-06-10 00:00:00","admin_id":1,"check_period_unit":"times","check_period_value":62,"maintain_period_unit":"times","maintain_period_value":85,"created_at":"2015-08-18 06:57:31","updated_at":"2015-08-18 06:57:31","maintain_records":[{"id":1,"machine_id":2,"type":"maintain","content":"test","created_at":"2015-08-18 06:57:31","updated_at":"2015-08-18 06:57:31"}]};
 	// initialView(fakeResponse);
 }
 
@@ -65,6 +68,7 @@ function bindEvents() {
 	$cancelBtn.on('click', hideEditMode);
 	$deleteBtn.on('click', deleteMachine);
 	$backBtn  .on('click', api.goToMachineIndex);
+	$machineDetailPage.on('keypress', 'input', preventSubmitOnInputEnter);
 	$machineDetailPage.submit(saveData);
 }
 
@@ -77,6 +81,8 @@ function showEditMode() {
 	$backBtn  .hide();
 	$viewModeCollection.addClass('editting');
 	$editModeCollection.addClass('editting');
+	checkRecordTable.setEditMode(true);
+	maintainRecordTable.setEditMode(true);
 	errorRecordTable.setEditMode(true);
 }
 
@@ -90,6 +96,8 @@ function hideEditMode() {
 	$backBtn  .show();
 	$viewModeCollection.removeClass('editting');
 	$editModeCollection.removeClass('editting');
+	checkRecordTable.setEditMode(false);
+	maintainRecordTable.setEditMode(false);
 	errorRecordTable.setEditMode(false);
 }
 
@@ -101,18 +109,31 @@ function showCreateMode() {
 	$backBtn  .show();
 	$viewModeCollection.addClass('editting');
 	$editModeCollection.addClass('editting');
+	checkRecordTable.setEditMode(true);
+	maintainRecordTable.setEditMode(true);
 	errorRecordTable.setEditMode(true);
 }
 
-function saveData() {
-	var data = getChangedData();
+function preventSubmitOnInputEnter(e) {
+	var code = e.keyCode || e.which;
+	if (code === 13) {
+	  e.preventDefault();
+	  return false;
+	}
+}
 
+function saveData() {
+	var data = getAllInfoData();
+	console.log(data);
 	if (isEditMode && !isCreateMode) {
-		saveChangedData(data);
+		saveChangedData(data.info);
+		saveNewRecord(data.newRecords);
+		saveDeleteRecord(data.deleteRecords);
 		console.log('Changed Data : ', data);
 
 	} else if (!isEditMode && isCreateMode) {
-		saveNewData(data);
+		saveNewData(data.info);
+		saveNewRecord(data.newRecords);
 		console.log('New Data : ', data);
 
 	} else {
@@ -133,6 +154,19 @@ function saveNewData(data) {
 		 .fail(function(err) { console.log("CREATE Machine error: ", err); });
 }
 
+function saveNewRecord(data) {
+	api.createMachineRecord(data)
+		 .done(function(data) { console.log("CREATE Machine Record res: ", data); })
+		 .fail(function(err) { console.log("CREATE Machine Record error: ", err); });
+}
+
+function saveDeleteRecord(data) {
+	api.deleteMachineRecord(data)
+		 .done(function(data) { console.log("CREATE Machine Record res: ", data); })
+		 .fail(function(err) { console.log("CREATE Machine Record error: ", err); });
+}
+
+
 function deleteMachine() {
 	api.deleteMachine(machineId)
 		 .done(function(data) { console.log("DELETE Machine res: ", data); })
@@ -151,8 +185,8 @@ function resetViewData() {
 }
 
 function initBaseInfo(data) {
-	$id.find('.view-mode').text(data['id']);
-	$id.find('.edit-mode').val(data['id']);
+	$serialNumber.find('.view-mode').text(data['serial_num']);
+	$serialNumber.find('.edit-mode').val(data['serial_num']);
 
 	$name.find('.view-mode').text(data['name']);
 	$name.find('.edit-mode').val(data['name']);
@@ -167,35 +201,64 @@ function initResumeInfo(data) {
 	noticeedPersonDropdown.init(data['admin_id']);
 	checkPeriodDropdown   .init(data['check_period_value'], data['check_period_unit']);
 	maintainPeriodDropdown.init(data['maintain_period_value'], data['maintain_period_unit']);
-	// TODO: 小保養紀錄
-	// TODO: 大保養紀錄
-	// TODO: 異常維修紀錄
-	errorRecordTable.init();
+
+	// ToFix: 小保養紀錄 init data
+	var fakedata = [{id: '1', created_at: '2015-08-17', type: 'check', content: 'test1'},{id: '1', created_at: '2015-08-17', type: 'check', content: 'test2'}];
+	checkRecordTable.initialView(fakedata);
+
+	console.log("data['maintain_records'] : ", data['maintain_records']);
+	maintainRecordTable.initialView(data['maintain_records']);
+
+	// ToFix: 異常維修紀錄 init data
+	var fakedata = [{id: '1', created_at: '2015-08-17', type: 'error', content: 'test1'},{id: '1', created_at: '2015-08-17', type: 'error', content: 'test2'}];
+	errorRecordTable.initialView(fakedata);
 }
 
-function getChangedData() {
-	var newData = {};
+function getAllInfoData() {
+	var data = {};
+	data.info = getInputValue();
+	data.newRecords = getNewRecordList();
+	data.deleteRecords = getDeleteRecordList();
+	return data;
+}
+
+function getInputValue() {
+	var data = {};
 	$editModeCollection.each(function(index, el) {
 		var name  = $(el).attr('name');
 		var value = $(el).val();
-		var $dropdownSelected = $(el).find('.selected-option');
 
 		if (name) {
 			value = value ? value : '';
-			newData[name] = value;
-
-		} else if ($dropdownSelected) {
-			var selectedName  = $dropdownSelected.attr('name');
-			var selectedValue = $dropdownSelected.text();
-			newData[selectedName] = selectedValue;
-
-		} else {
-			console.log('getChangedData error: missing some value');
+			data[name] = value;
 		}
 	});
-	newData['check_period_value']    = checkPeriodDropdown.getValue();
-	newData['check_period_unit']     = checkPeriodDropdown.getType();
-	newData['maintain_period_value'] = maintainPeriodDropdown.getValue();
-	newData['maintain_period_unit']  = maintainPeriodDropdown.getType();
-	return newData;
+	data['check_period_value']    = checkPeriodDropdown.getValue();
+	data['check_period_unit']     = checkPeriodDropdown.getType();
+	data['maintain_period_value'] = maintainPeriodDropdown.getValue();
+	data['maintain_period_unit']  = maintainPeriodDropdown.getType();
+	return data;
+}
+
+function getNewRecordList() {
+	var data = {};
+	data.check    = addMachineIdIntoData(checkRecordTable.getNewList());
+	data.maintain = addMachineIdIntoData(maintainRecordTable.getNewList());
+	data.error    = addMachineIdIntoData(errorRecordTable.getNewList());
+	return data;
+}
+
+function getDeleteRecordList() {
+	var data = {};
+	data.check    = addMachineIdIntoData(checkRecordTable.getDeleteList());
+	data.maintain = addMachineIdIntoData(maintainRecordTable.getDeleteList());
+	data.error    = addMachineIdIntoData(errorRecordTable.getDeleteList());
+	return data;
+}
+
+function addMachineIdIntoData(array) {
+	return array.map(function(el, i) {
+		el.machine_id = machineId;
+		return el;
+	});
 }
