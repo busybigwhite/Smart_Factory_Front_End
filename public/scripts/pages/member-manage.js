@@ -138,7 +138,7 @@ function getChangedData() {
 	data.password_confirmation = $userPasswordConfirm.val();
 	data.email = $userEmail.val();
 	data.group = $("[name='userGroup']:checked").val()
-	data._token = auth.get();
+	data._token = auth.getToken();
 
 	return data;
 }
