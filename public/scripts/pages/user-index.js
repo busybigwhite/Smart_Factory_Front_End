@@ -5,7 +5,7 @@ var config = require('../config/url');
 var auth = require('../config/auth');
 var header = require('../includes/header');
 var api = require('../member/api');
-var factoryDropdown = require('../lib/component/dropdown-factory');
+var factoryDropdown = require('../lib/component/dropdown');
 
 /* DOM */
 var $userForm = $('#user-setting');
@@ -25,12 +25,12 @@ var memberId;
 initialize();
 
 function initialize() {
-	var userInfo = api.getUser;
+	var userInfo = api.getUser();
 	console.log(userInfo);
 
 	memberId = userInfo.id;
 	console.log(memberId);
-	
+
 	header.include();
 	getInitialData();
 	bindEvents();

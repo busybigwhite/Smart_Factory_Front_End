@@ -6,7 +6,7 @@ var auth = require('../config/auth');
 var header = require('../includes/header');
 var api = require('../member/api');
 var queryParameter = require('../lib/helper/query-parameter');
-var factoryDropdown = require('../lib/component/dropdown-factory');
+var factoryDropdown = require('../lib/component/dropdown');
 
 /* DOM */
 var $manageForm = $('#manage-form');
@@ -158,8 +158,6 @@ function getChangedData() {
 
 function addMemberSubmit() {
 	var data = getChangedData();
-	console.log(data);
-	console.log(formValidate());
 
 	if (formValidate()) {
 		api.createMember(data)

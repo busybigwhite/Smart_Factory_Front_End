@@ -5,7 +5,7 @@ var config = require('../config/url');
 var header = require('../includes/header');
 var template = require('../member/template');
 var api = require('../member/api');
-var factoryDropdown = require('../lib/component/dropdown-factory');
+var factoryDropdown = require('../lib/component/dropdown');
 
 /* DOM */
 var $memberNewBtn = $('#member-new-button');
