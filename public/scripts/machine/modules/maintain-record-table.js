@@ -2,6 +2,7 @@
 
 var $ = window.jQuery = require('jquery');
 var template = require('../templates/record-list-template');
+require('eonasdan-bootstrap-datetimepicker');
 
 /* DOM */
 var $recordTable        = $('#maintain-record-table');
