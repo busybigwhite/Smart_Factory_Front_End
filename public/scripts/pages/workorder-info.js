@@ -21,12 +21,24 @@ var $editModeCollection = $workorderForm.find('.edit-mode');
 
 var isEditMode   = false;
 var isCreateMode = false;
-var workorderID = $('#workorder-num span').text();
+
+//FOR TEST
+var workorderID = "";
+var factory = "A";
+
+// var parameters = location.search.substring(1).split("&");
+// var temp = parameters[0].split("=");
+// var workorderID = temp[1];
+// temp = parameters[1].split("=");
+// var factory = temp[1];
+
+
+var backupJdata;
 
 initialize();
 
 function initialize() {
-	// workorderID = GET FROM LIST
+	// workorderID = GET FROM PREV PAGE
 	header.include();
 	showInitView();
 	bindEvents();
@@ -40,7 +52,6 @@ function bindEvents() {
 }
 
 function showEditMode() {
-	console.log("show edit");
 	isEditMode = true;
 	$editBtn  .hide();
 	$cancelBtn.show();
@@ -52,7 +63,6 @@ function showEditMode() {
 
 function hideEditMode() {
 	if(isEditMode){
-		console.log("hide edit");
 		isEditMode = false;
 		$editBtn  .show();
 		$cancelBtn.show();
@@ -61,8 +71,8 @@ function hideEditMode() {
 		$viewModeCollection.removeClass('editting');
 		$editModeCollection.removeClass('editting');
 	}else{
-		window.location="./";
-		// api.goToWorkOrderIndex();
+		// window.location="./";
+		api.goToWorkOrderIndex();
 	}
 }
 
@@ -74,28 +84,61 @@ function showInitView() {
 	$deleteBtn.show();
 	$viewModeCollection.removeClass('editting');
 	$editModeCollection.removeClass('editting');
+	$('#workorder-num').find('p').text(workorderID);
+	$('#workorder-num').find('input').val(workorderID);
+	$('#factory').find('p').text(factory);
+	$('#factory').find('input').val(factory);
+
+	api.getWorkOrderInfo(workorderID)
+		.done(function(data) { 
+			console.log("GET workorder res: ", data); 
+			backupJdata = data;
+			$.each(data, fillList);
+		})
+		 .fail(function(err) { console.log("GET workorder error: ", err); });
 }
+
+
+function fillList(key, value){
+	console.log(key);
+	$('#'+api.transferKeyS2C(key)).find('p').text(value);
+	$('#'+api.transferKeyS2C(key)).find('input').val(value);
+}
+
+
 
 function saveData() {
 	var data = getChangedData();
 	console.log('Changed or New Data : ', data);
-	//if update success refresh layout
 	saveChangedData(data);
 	return false;
 }
 
 function saveChangedData(data) {
 	api.editWorkOrderInfo(workorderID, data)
-		 .done(function(data) { console.log("EDIT Machine Info res: ", data); })
-		 .fail(function(err) { console.log("EDIT Machine Info error: ", err); });
+		 .done(function(data) { 
+		 	console.log("EDIT Machine Info res: ", data); 
+		 })
+		 .fail(function(err) { 
+		 	console.log("EDIT Machine Info error: ", err);
+		 	// if fail restore old page
+		 	$.each(backupJdata, fillList);
+		  });
 }
 
 
 
 function deleteWorkOrderInfo() {
 	api.deleteWorkOrder(workorderID)
-		 .done(function(data) { console.log("DELETE Machine res: ", data); })
-		 .fail(function(err) { console.log("DELETE Machine error: ", err); });
+		 .done(function(data) { 
+		 	console.log("DELETE Machine res: ", data); 
+		 	//back to list
+		 	api.goToWorkOrderIndex();
+		})
+		 .fail(function(err) { 
+		 	console.log("DELETE Machine error: ", err);
+		 	// TODO ??
+		 });
 }
 
 
@@ -107,6 +150,7 @@ function getChangedData() {
 		var $dropdownSelected = $(el).find('.selected-option');
 
 		if (name) {
+			name = api.transferKeyC2S(name);
 			value = value ? value : '';
 			newData[name] = value;
 

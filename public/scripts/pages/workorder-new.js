@@ -34,25 +34,27 @@ function bindEvents() {
 
 
 function backToList() {
-	//TODO return to workorder list
-	console.log("backToList");
-	window.location="./";
-	// api.goToWorkOrderIndex();
+	// window.location="./";
+	api.goToWorkOrderIndex();
 }
 
 function createData() {
 	var data = getChangedData();
 	console.log('Changed or New Data : ', data);
-	//TODO create new data
-	//should ask to set workerorder id
 	saveNewData(data);
 	return false;
 }
 
 function saveNewData(data) {
 	api.createWorkOrder(data)
-		 .done(function(data) { console.log("CREATE Machine res: ", data); })
-		 .fail(function(err) { console.log("CREATE Machine error: ", err); });
+		 .done(function(data) { 
+		 	console.log("CREATE Machine res: ", data); 
+		 	api.goToWorkOrderIndex();
+		 })
+		 .fail(function(err) { 
+		 	console.log("CREATE Machine error: ", err); 
+		 	//TODO ??
+		 });
 }
 
 function getChangedData() {
@@ -61,8 +63,8 @@ function getChangedData() {
 		var name  = $(el).attr('name');
 		var value = $(el).val();
 		var $dropdownSelected = $(el).find('.selected-option');
-
 		if (name) {
+			name = api.transferKeyC2S(name);
 			value = value ? value : '';
 			newData[name] = value;
 
@@ -77,4 +79,3 @@ function getChangedData() {
 	});
 	return newData;
 }
-
