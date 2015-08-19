@@ -23,13 +23,14 @@ var usernameInput = document.getElementById("userName");
 var pwd1Input = document.getElementById("userPassword");
 var pwd2Input = document.getElementById("userPasswordConfirm");
 
-
 var memberId = queryParameter.get('id');
+var memberList = [];
 
 initialize();
 
 function initialize() {
 	header.include();
+
 	if (queryParameter.get('type') === 'add') {
 		$editBtn.hide();
 		$deleteBtn.hide();
@@ -37,6 +38,8 @@ function initialize() {
 		$addBtn.hide();
 		getInitialData();
 	}
+
+	getmemberList();
 	bindEvents();
 }
 
@@ -46,37 +49,69 @@ function bindEvents() {
 	$deleteBtn.on('click', deleteMemberSubmit);
 	$backBtn.on('click', goToMemberList);
 
-	var supports_input_validity = function()
-	{
-	  var i = document.createElement("input");
-	  return "setCustomValidity" in i;
-	}
-
 	if(supports_input_validity()) {
-	  
+
 	  usernameInput.setCustomValidity(usernameInput.title);
 	  pwd1Input.setCustomValidity(pwd1Input.title);
 
-	  usernameInput.addEventListener("keyup", function() {
-	    usernameInput.setCustomValidity(this.validity.patternMismatch ? usernameInput.title : "");
-	  }, false);
-
-	  pwd1Input.addEventListener("keyup", function() {
-	    this.setCustomValidity(this.validity.patternMismatch ? pwd1Input.title : "");
-	    if(this.checkValidity()) {
-	      pwd2Input.pattern = this.value;
-	      pwd2Input.setCustomValidity(pwd2Input.title);
-	    } else {
-	      pwd2Input.pattern = this.pattern;
-	      pwd2Input.setCustomValidity("");
-	    }
-	  }, false);
-
-	  pwd2Input.addEventListener("keyup", function() {
-	    this.setCustomValidity(this.validity.patternMismatch ? pwd2Input.title : "");
-	  }, false);
+	  usernameInput.addEventListener('keyup', checkUsername, false);
+	  pwd1Input.addEventListener('keyup', checkPwd1, false);
+	  pwd2Input.addEventListener('keyup', checkPwd2, false);
 
 	}
+}
+
+function supports_input_validity(){
+	var i = document.createElement("input");
+  return "setCustomValidity" in i;
+}
+
+function checkUsername(){
+	if($.inArray(this.value, memberList) > -1){
+		this.pattern = "";
+		this.title = "帳號名稱已被使用";
+	} else {
+		this.pattern = "^[a-z0-9]{4,16}$";
+		this.title = "帳號需至少4碼，限用小寫與數字";	
+	}
+  usernameInput.setCustomValidity(this.validity.patternMismatch ? usernameInput.title : "");
+}
+
+function checkPwd1(){
+	this.setCustomValidity(this.validity.patternMismatch ? pwd1Input.title : "");
+}
+
+function checkPwd2(){
+	this.setCustomValidity(this.validity.patternMismatch ? pwd2Input.title : "");
+}
+
+function formValidate(){
+	if (!$manageForm[0].checkValidity()) {
+		$('<input type="submit">').hide().appendTo($manageForm).click().remove();
+  	return false;
+	} else {
+		return true;
+	}
+}
+
+function getmemberList(){
+	// var response = [
+	// 	{"id":"1","name":"admin","group":"Administrator","email":"admin@moremote.com"},
+	// 	{"id":"2","name":"louk","group":"Manager","email":"louk@moremote.com"},
+	// 	{"id":"3","name":"unknown","group":"Customer","email":"unknown@moremote.com"}
+	// ];
+
+	api.getMemberList()
+	 .done(function(res){
+	 		res.forEach(function (element){
+				memberList.push(element.name);
+			});
+	 })
+	 .fail(function(err) { console.log("GET Member List error: ", err); });
+
+ // 	response.forEach(function (element){
+	// 	memberList.push(element.name);
+	// });
 }
 
 function getInitialData() {
@@ -92,7 +127,6 @@ function getInitialData() {
 				}
 		 })
 		 .fail(function(err) { console.log("GET Member error: ", err); });
-	// var response = {"id":"1","name":"admin","group":"Administrator","email":"admin@moremote.com"};
 }
 
 function getChangedData() {
@@ -137,18 +171,4 @@ function deleteMemberSubmit() {
 
 function goToMemberList(){
 	window.location.href = config.memberUrl;
-}
-
-function formValidate(){
-	if (!$manageForm[0].checkValidity()) {
-		$('<input type="submit">').hide().appendTo($manageForm).click().remove();
-  	return false;
-	} else {
-		return true;
-	}
-}
-
-function checkPassword(str) {
-	var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-	return re.test(str);
 }
