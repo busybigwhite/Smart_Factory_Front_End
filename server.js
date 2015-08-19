@@ -32,6 +32,18 @@ app.get('/api/workorder/info', function(req, res) {
 app.get('/api/realtime/listpic', function(req, res) {
 	res.send(data.listpics);
 });
+app.get('/api/workorder', function(req, res) {
+	res.send(data.workorders);
+});
+app.get('/api/workorder', function(req, res) {
+	res.send(data.workorders);
+});
+app.get('/api/workorder/1', function(req, res) {
+	res.send(data.workorder);
+});
+app.get('/api/user', function(req, res) {
+	res.send(data.users);
+});
 
 app.get('/machine', function(req, res) { res.render('pages/machine/main'); });
 app.get('/machine/new', function(req, res) { res.render('pages/machine/new'); });
@@ -59,6 +71,7 @@ app.get('/api/history/filter', function(req, res) {
 		break;
 		default:
 			res.send({});
+			
 		break;
 	}
 });
