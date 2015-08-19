@@ -11,7 +11,6 @@ var noticeedPersonDropdown = require('../machine/modules/noticed-person-dropdown
 var checkPeriodDropdown    = require('../machine/modules/check-period-dropdown');
 var maintainPeriodDropdown = require('../machine/modules/maintain-period-dropdown');
 
-require('eonasdan-bootstrap-datetimepicker');
 var checkRecordTable    = require('../machine/modules/check-record-table');
 var maintainRecordTable = require('../machine/modules/maintain-record-table');
 var errorRecordTable    = require('../machine/modules/error-record-table');
