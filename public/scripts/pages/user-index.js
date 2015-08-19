@@ -101,9 +101,9 @@ function editUserSubmit() {
 	if (formValidate()) {
 		api.editMember(memberId, data)
 		 .done(function(data) { console.log("EDIT Member res: ", data); })
-		 .fail(function(err) { console.log("EDIT Member error: ", err); });
+		 .fail(function(err) { console.log("EDIT Member error: ", err); })
 		 .always(function(){
-		 	window.location.href = config.memberUrl
+		 	window.location.href = config.memberUrl;
 		 });
 	};
 }
