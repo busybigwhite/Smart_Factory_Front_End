@@ -1,6 +1,7 @@
 'use strict';
 
 var $ = window.jQuery = require('jquery');
+require('bootstrap/js/dropdown');
 
 var $noticedPerson = $('#machine-noticed-person');
 var $noticedPersonDropdown = $('#machine-notice-dropdown');

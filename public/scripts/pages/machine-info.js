@@ -5,8 +5,6 @@ var header = require('../includes/header');
 var api = require('../machine/api');
 var queryParameter = require('../lib/helper/query-parameter');
 
-// ToFix: default option
-require('bootstrap/js/dropdown');
 var noticeedPersonDropdown = require('../machine/modules/noticed-person-dropdown');
 var checkPeriodDropdown    = require('../machine/modules/check-period-dropdown');
 var maintainPeriodDropdown = require('../machine/modules/maintain-period-dropdown');
@@ -55,6 +53,7 @@ function initialize() {
 
 function getInitialData() {
 	machineId = queryParameter.get('ID');
+	if (!machineId) return;
 	api.getMachineInfo(machineId)
 		 .done(initialView)
 		 .fail(function(err) { console.log("GET Machine Info error: ", err); });
@@ -111,6 +110,8 @@ function showCreateMode() {
 	checkRecordTable.setEditMode(true);
 	maintainRecordTable.setEditMode(true);
 	errorRecordTable.setEditMode(true);
+	checkPeriodDropdown.setDefaultType();
+	maintainPeriodDropdown.setDefaultType();
 }
 
 function preventSubmitOnInputEnter(e) {
