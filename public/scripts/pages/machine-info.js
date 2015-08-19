@@ -46,6 +46,7 @@ function initialize() {
 	}
 	getInitialData();
 	bindEvents();
+	noticeedPersonDropdown.init();
 	checkRecordTable.init();
 	maintainRecordTable.init();
 	errorRecordTable.init();
@@ -112,6 +113,7 @@ function showCreateMode() {
 	errorRecordTable.setEditMode(true);
 	checkPeriodDropdown.setDefaultType();
 	maintainPeriodDropdown.setDefaultType();
+	noticeedPersonDropdown.setDefault();
 }
 
 function preventSubmitOnInputEnter(e) {
@@ -198,7 +200,8 @@ function initBaseInfo(data) {
 }
 
 function initResumeInfo(data) {
-	noticeedPersonDropdown.init(data['admin_id']);
+	// ToFix: admin_name
+	noticeedPersonDropdown.setNoticeedPerson(data['admin_id'], 'default name');
 	checkPeriodDropdown   .init(data['check_period_value'], data['check_period_unit']);
 	maintainPeriodDropdown.init(data['maintain_period_value'], data['maintain_period_unit']);
 
@@ -216,13 +219,13 @@ function initResumeInfo(data) {
 
 function getAllInfoData() {
 	var data = {};
-	data.info = getInputValue();
+	data.info = getInfoValue();
 	data.newRecords = getNewRecordList();
 	data.deleteRecords = getDeleteRecordList();
 	return data;
 }
 
-function getInputValue() {
+function getInfoValue() {
 	var data = {};
 	$editModeCollection.each(function(index, el) {
 		var name  = $(el).attr('name');
@@ -233,6 +236,7 @@ function getInputValue() {
 			data[name] = value;
 		}
 	});
+	data['admin_id']  = noticeedPersonDropdown.getId();
 	data['check_period_value']    = checkPeriodDropdown.getValue();
 	data['check_period_unit']     = checkPeriodDropdown.getType();
 	data['maintain_period_value'] = maintainPeriodDropdown.getValue();
