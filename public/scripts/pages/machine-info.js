@@ -106,8 +106,8 @@ function showCreateMode() {
 	$saveBtn  .show();
 	$deleteBtn.hide();
 	$backBtn  .show();
-	$viewModeCollection.addClass('editting');
-	$editModeCollection.addClass('editting');
+	$viewModeCollection.addClass('creating');
+	$editModeCollection.addClass('creating');
 	checkRecordTable.setEditMode(true);
 	maintainRecordTable.setEditMode(true);
 	errorRecordTable.setEditMode(true);
