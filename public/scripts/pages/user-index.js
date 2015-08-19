@@ -102,6 +102,8 @@ function editUserSubmit() {
 		api.editMember(memberId, data)
 		 .done(function(data) { console.log("EDIT Member res: ", data); })
 		 .fail(function(err) { console.log("EDIT Member error: ", err); });
-		window.location.href = config.memberUrl;
+		 .always(function(){
+		 	window.location.href = config.memberUrl
+		 });
 	};
 }
