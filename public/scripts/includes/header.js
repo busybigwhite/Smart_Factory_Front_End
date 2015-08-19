@@ -6,7 +6,7 @@ var Auth = require('../config/auth');
 var redirect = require('../lib/helper/redirect');
 
 /* DOM */
-$logoutBtn;
+var $logoutBtn;
 
 exports = module.exports = {};
 
@@ -35,7 +35,7 @@ function bindLogoutOnButton() {
 
 function logout() {
 	//TODO call logout API
-	Auth.remove();
+	Auth.set('', '');
 	redirect('login');
 }
 

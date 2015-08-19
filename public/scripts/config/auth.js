@@ -16,11 +16,6 @@ exports.set = function(name, token) {
 	Cookies.set('token', token);
 };
 
-exports.remove = function() {
-	Cookies.remove('name');
-	Cookies.remove('token');
-};
-
 exports.getName = function() {
 	return Cookies.get('name');
 };

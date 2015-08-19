@@ -4,59 +4,61 @@
     border-bottom: @silver 3px solid;
 
     #navbar-item-block {
-        a {
-            color: @silver;
-            margin-bottom: -3px;
-            padding-top: 25px;
-            padding-bottom: 25px;
-            border-bottom: @silver 3px solid;
+        li {
+            a {
+                color: @silver;
+                margin-bottom: -3px;
+                padding-top: 25px;
+                padding-bottom: 25px;
+                border-bottom: @silver 3px solid;
 
-            &:hover {
-                color: @concrete;
-                background-color: @clouds;
-                border-bottom: @concrete 3px solid;
+                &:hover {
+                    color: @concrete;
+                    background-color: @clouds;
+                    border-bottom: @concrete 3px solid;
+                }
             }
-        }
 
-        &:first-child {
-            &.realtime {
-                .header-focus();
+            &:first-child {
+                &.realtime {
+                    .header-focus();
+                }
             }
-        }
 
-        &:nth-child(2) {
-            &.machine {
-                .header-focus();
+            &:nth-child(2) {
+                &.machine {
+                    .header-focus();
+                }
             }
-        }
 
-        &:nth-child(3) {
-            &.mold {
-                .header-focus();
+            &:nth-child(3) {
+                &.mold {
+                    .header-focus();
+                }
             }
-        }
 
-        &:nth-child(4) {
-            &.workorder {
-                .header-focus();
+            &:nth-child(4) {
+                &.workorder {
+                    .header-focus();
+                }
             }
-        }
 
-        &:nth-child(5) {
-            &.unusual {
-                .header-focus();
+            &:nth-child(5) {
+                &.unusual {
+                    .header-focus();
+                }
             }
-        }
 
-        &:nth-child(6) {
-            &.member {
-                .header-focus();
+            &:nth-child(6) {
+                &.member {
+                    .header-focus();
+                }
             }
-        }
 
-        &:last-child {
-            &.history {
-                .header-focus();
+            &:last-child {
+                &.history {
+                    .header-focus();
+                }
             }
         }
     }
