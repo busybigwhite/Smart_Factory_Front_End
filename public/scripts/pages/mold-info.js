@@ -32,6 +32,8 @@ var $length = $('#mold-size').find('.length');
 var $width  = $('#mold-size').find('.width');
 var $height = $('#mold-size').find('.height');
 
+var $moldPicsBlock = $('#mold-pics-block');
+
 
 var isEditMode   = false;
 var isCreateMode = false;
@@ -81,6 +83,7 @@ function showEditMode() {
 	$backBtn  .hide();
 	$viewModeCollection.addClass('editting');
 	$editModeCollection.addClass('editting');
+	$moldPicsBlock.addClass('editting');
 	maintainRecordTable.setEditMode(true);
 }
 
@@ -94,6 +97,7 @@ function hideEditMode() {
 	$backBtn  .show();
 	$viewModeCollection.removeClass('editting');
 	$editModeCollection.removeClass('editting');
+	$moldPicsBlock.removeClass('editting');
 	maintainRecordTable.setEditMode(false);
 }
 
@@ -105,6 +109,7 @@ function showCreateMode() {
 	$backBtn  .show();
 	$viewModeCollection.addClass('creating');
 	$editModeCollection.addClass('creating');
+	$moldPicsBlock.addClass('creating');
 	maintainRecordTable.setEditMode(true);
 	maintainPeriodDropdown.setDefaultType();
 	noticeedPersonDropdown.setDefault();

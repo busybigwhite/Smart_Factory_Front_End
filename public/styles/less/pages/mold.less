@@ -30,10 +30,45 @@
 	.record-table {
 		.record-table-wrap;
 	}
+
+	.info-name,
+	.resume-name {
+		width: 232px;
+	}
 }
 
 #mold-size {
 	.edit-mode {
 		max-width: 60px;
+	}
+}
+
+#mold-pics-block {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	display: flex;
+
+	.pic-list-item {
+		margin: 0 20px;
+	}
+
+	.pic-block img {
+		width: 150px;
+	}
+
+	.pic-upload-button {
+		display: none;
+		margin-top: 15px;
+		width: 150px;
+	}
+
+	&.editting,
+	&.creating {
+	 .pic-upload-button {
+			display: block;
+		}
 	}
 }
