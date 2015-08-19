@@ -48,38 +48,38 @@ var liveinfos = [
 var listpics = [
             {
                 'work_order_id': '1',
-                'pic_id': '1',
-                'type': 'normal',
+                'ipc_id': 'images',
+                'type': 'sample',
                 'current_time': '2015/08/11 00:00:00',
-                'url': '../../../images/sample/sample.jpg',
+                'url': 'sample.jpg',
             },
             {
                 'work_order_id': '1',
-                'mold_id': '2',
-                'type': 'error',
+                'ipc_id': 'images',
+                'type': 'sample',
                 'current_time': '2015/08/11 00:00:00',
-                'url': '../../../images/sample/sample.jpg',
+                'url': 'sample.jpg',
             },
             {
                 'work_order_id': '1',
-                'pic_id': '0',
-                'type': 'current',
+                'ipc_id': 'images',
+                'type': 'sample',
                 'current_time': '2015/08/11 00:00:00',
-                'url': '../../../images/sample/sample.jpg'
+                'url': 'sample.jpg'
             },
             {
                 'work_order_id': '1',
-                'mold_id': '2',
-                'type': 'error',
+                'ipc_id': 'images',
+                'type': 'sample',
                 'current_time': '2015/08/11 00:00:00',
-                'url': '../../../images/sample/sample.jpg',
+                'url': 'sample.jpg',
             },
             {
                 'work_order_id': '1',
-                'pic_id': '0',
-                'type': 'current',
+                'ipc_id': 'images',
+                'type': 'sample',
                 'current_time': '2015/08/11 00:00:00',
-                'url': '../../../images/sample/sample.jpg'
+                'url': 'sample.jpg'
             }
 ]
 
