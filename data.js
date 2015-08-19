@@ -4,7 +4,7 @@ var factories = [{'id': 'F001','name': '中山廠'},
 
 var liveinfos = [
       {
-            'workorder_id': 'W001',
+            'work_order_id': 'W001',
             'factory_id': 'F001',
             'machine_id': 'MA001',
             'mold_id': 'MOLD001',
@@ -24,7 +24,7 @@ var liveinfos = [
             'content': '測試資料1'
       },
       {
-            'workorder_id': 'W002',
+            'work_order_id': 'W002',
             'factory_id': 'F002',
             'machine_id': 'MA002',
             'mold_id': 'MOLD002',
@@ -47,35 +47,35 @@ var liveinfos = [
 
 var listpics = [
             {
-                'workorder_id': '1',
+                'work_order_id': '1',
                 'pic_id': '1',
                 'type': 'normal',
                 'current_time': '2015/08/11 00:00:00',
                 'url': '../../../images/sample/sample.jpg',
             },
             {
-                'workorder_id': '1',
+                'work_order_id': '1',
                 'mold_id': '2',
                 'type': 'error',
                 'current_time': '2015/08/11 00:00:00',
                 'url': '../../../images/sample/sample.jpg',
             },
             {
-                'workorder_id': '1',
+                'work_order_id': '1',
                 'pic_id': '0',
                 'type': 'current',
                 'current_time': '2015/08/11 00:00:00',
                 'url': '../../../images/sample/sample.jpg'
             },
             {
-                'workorder_id': '1',
+                'work_order_id': '1',
                 'mold_id': '2',
                 'type': 'error',
                 'current_time': '2015/08/11 00:00:00',
                 'url': '../../../images/sample/sample.jpg',
             },
             {
-                'workorder_id': '1',
+                'work_order_id': '1',
                 'pic_id': '0',
                 'type': 'current',
                 'current_time': '2015/08/11 00:00:00',
@@ -104,7 +104,7 @@ var moldLists = [
 var historyInfos = [
       {
             'factory_id': '1',
-            'workorder_id': '1',
+            'work_order_id': '1',
             'machine_id': '1',
             'mold_id': '1',
             'customer_id': '1',
@@ -116,7 +116,7 @@ var historyInfos = [
       },
       {
             'factory_id': '2',
-            'workorder_id': '2',
+            'work_order_id': '2',
             'machine_id': '2',
             'mold_id': '2',
             'customer_id': '2',
@@ -128,7 +128,7 @@ var historyInfos = [
       },
       {
             'factory_id': '1',
-            'workorder_id': '1',
+            'work_order_id': '1',
             'machine_id': '1',
             'mold_id': '1',
             'customer_id': '1',
@@ -140,7 +140,7 @@ var historyInfos = [
       },
       {
             'factory_id': '2',
-            'workorder_id': '2',
+            'work_order_id': '2',
             'machine_id': '2',
             'mold_id': '2',
             'customer_id': '2',
@@ -152,7 +152,7 @@ var historyInfos = [
       },
       {
             'factory_id': '1',
-            'workorder_id': '1',
+            'work_order_id': '1',
             'machine_id': '1',
             'mold_id': '1',
             'customer_id': '1',
@@ -164,7 +164,7 @@ var historyInfos = [
       },
       {
             'factory_id': '2',
-            'workorder_id': '2',
+            'work_order_id': '2',
             'machine_id': '2',
             'mold_id': '2',
             'customer_id': '2',

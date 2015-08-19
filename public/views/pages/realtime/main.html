@@ -13,7 +13,7 @@
 
     <div id="realtime-panel">
     	<div id="realtime-select-block">
-    		<div class="col-xs-8">
+    		<div class="col-xs-6">
 	    		<div class="dropdown-factory-filter">
 					<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 						<span class="factory-focus-name"></span>
@@ -32,7 +32,7 @@
 					</ul>
 				</div>
     		</div>
-    		<div class="col-xs-4">
+    		<div class="col-xs-6">
     			<div class="input-group pull-right">
 					<input id="realtime-search-input" type="text" class="form-control" placeholder="Search for...">
 					<span class="input-group-btn">
@@ -47,7 +47,7 @@
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-						<li><a class="filter-item" data-id="workorder_id">工單編號</a></li>
+						<li><a class="filter-item" data-id="work_order_id">工單編號</a></li>
 						<li><a class="filter-item" data-id="machine_id">射出機台編號</a></li>
 						<li><a class="filter-item" data-id="mold_id">模具編號</a></li>
 						<li><a class="filter-item" data-id="customer_id">客戶名稱</a></li>
@@ -56,6 +56,8 @@
 			</div>
     	</div>
 
+    	<div class="divide-line"></div>
+
         <div id="realtime-list-block">
         	<ul id="realtime-table-mode">
 				<li class="table-header">
@@ -63,10 +65,10 @@
                 	<div class="table-col">射出機台編號</div>
                 	<div class="table-col">模具編號</div>
                 	<div class="table-col">客戶名稱</div>
-                	<div class="table-col-sm">預計生產總數量</div>
+                	<div class="table-col-sm">預計生產總數</div>
                 	<div class="table-col">本次開始生產時間</div>
-                	<div class="table-col-sm">目前正常/異常數量</div>
-                	<div class="table-col-sm">不良品數量</div>
+                	<div class="table-col-sm">正常/異常</div>
+                	<div class="table-col-sm">不良品數</div>
                 	<div class="table-col-lg">圖像列表</div>
 				</li>
 				<div class="realtime-table-body"></div>

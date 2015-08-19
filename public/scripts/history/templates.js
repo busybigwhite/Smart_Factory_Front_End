@@ -22,7 +22,7 @@ exports.renderTableList = function(infos) {
   var listTemp = _.template(
 	 `<% _.forEach(infos, function(info) {  %>
       <li class="table-item">
-      	<div class="table-col"><%= info.workorder_id %></div>
+      	<div class="table-col"><%= info.work_order_id %></div>
         <div class="table-col"><%= info.machine_id %></div>
         <div class="table-col"><%= info.mold_id %></div>
         <div class="table-col"><%= info.customer_id %></div>

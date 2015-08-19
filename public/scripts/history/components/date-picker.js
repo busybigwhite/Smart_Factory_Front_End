@@ -28,6 +28,7 @@ var endDateTimePickerOpt = {
     },
     defaultDate: today,
     maxDate: today,
+    useCurrent: false,
 	ignoreReadonly: true
 };
 
@@ -59,16 +60,26 @@ function initializeDatetimePicker() {
 }
 
 function bindEvents() {
+	bindChangeLimitDateEventOnDatetimePickers();
 	bindSearchListEventOnButton();
+}
+
+function bindChangeLimitDateEventOnDatetimePickers() {
+	$startDatePicker.on("dp.change", changeLimitDate);
+	$endDatePicker.on("dp.change", changeLimitDate);
+}
+
+function changeLimitDate(e) {
+	e.target.id.split('-')[1] === 'start'
+		? $endDatePicker.data("DateTimePicker").minDate( e.date )
+		: $startDatePicker.data("DateTimePicker").maxDate( e.date );
 }
 
 function bindSearchListEventOnButton() {
 	$searchBtn.on('click', searchPeriodList);
 }
 
-function searchPeriodList(evt) {
-
-	if( !validateDate() ) return;
+function searchPeriodList() {
 
 	searchPeriod = {
 		'start_date': $startDatePicker.val(),
@@ -76,16 +87,4 @@ function searchPeriodList(evt) {
 	}
 
 	emitter.emit('periodSearch', searchPeriod);
-}
-
-function validateDate(){
-	var start = new Date( $startDatePicker.val() );
-	var end = new Date( $endDatePicker.val() );
-
-	if(start > end){
-		alert("起始日期不得大於結束日期");
-		return false;
-	}else {
-		return true;
-	}
 }

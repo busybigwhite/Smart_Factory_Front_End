@@ -11,10 +11,15 @@ var Cookies = require('cookies-js');
 
 exports = module.exports = {};
 
-exports.set = function(token) {
-	Cookies.set('AUTH', token, { expires: new Date() });
+exports.set = function(name, token) {
+	Cookies.set('name', name);
+	Cookies.set('token', token);
 };
 
-exports.get = function() {
-	return Cookies.get('AUTH');
+exports.getName = function() {
+	return Cookies.get('name');
+};
+
+exports.getToken = function() {
+	return Cookies.get('token');
 };

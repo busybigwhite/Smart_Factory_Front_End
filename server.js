@@ -43,7 +43,7 @@ app.get('/member/manage', function(req, res) { res.render('pages/member/manage')
 app.get('/history', function(req, res) { res.render('pages/history/main'); });
 app.get('/api/history/filter', function(req, res) {
 	switch(req.query.type){
-		case "workorder_id":
+		case "work_order_id":
 			res.send(data.workorderLists);
 		break;
 		case "machine_id":
@@ -64,5 +64,7 @@ app.get('/api/history/list', function(req, res) {
 app.get('/api/factory/list', function(req, res) {
 	res.send(data.factories);
 });
+
+app.get('/user', function(req, res) { res.render('pages/user/main'); });
 
 app.listen(app.get('port'));
