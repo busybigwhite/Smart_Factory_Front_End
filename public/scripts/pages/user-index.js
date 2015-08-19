@@ -18,17 +18,17 @@ var $editBtn = $('#user-edit-btn');
 
 var pwd1Input = document.getElementById("userPassword");
 var pwd2Input = document.getElementById("userPasswordConfirm");
-
-var memberId;
-// var memberId = '1';
+var memberId = '';
 
 initialize();
 
 function initialize() {
-	var userInfo = api.getUser();
-	console.log(userInfo);
+	api.getUser()
+		.done(function(res){
+			memberId = res.id;
+		})
+		.fail(function(err) { console.log("GET Member Id error: ", err); });
 
-	memberId = userInfo.id;
 	console.log(memberId);
 
 	header.include();

@@ -44,7 +44,7 @@ function initialize() {
 		getInitialData();
 	}
 	bindEvents();
-	getmemberList();
+	getMemberArray();
 }
 
 function bindEvents() {
@@ -103,7 +103,7 @@ function formValidate(){
 	}
 }
 
-function getmemberList(){
+function getMemberArray(){
 	// var response = [
 	// 	{"id":"1","name":"admin","group":"Administrator","email":"admin@moremote.com"},
 	// 	{"id":"2","name":"louk","group":"Manager","email":"louk@moremote.com"},
@@ -116,7 +116,7 @@ function getmemberList(){
 				memberList.push(element.name);
 			});
 	 })
-	 .fail(function(err) { console.log("GET Member List error: ", err); });
+	 .fail(function(err) { console.log("GET Member Array error: ", err); });
 
  // 	response.forEach(function (element){
 	// 	memberList.push(element.name);
