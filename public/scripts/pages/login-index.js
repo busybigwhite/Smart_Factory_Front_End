@@ -40,7 +40,7 @@ function userLogin(e){
 	} else {
 		$.post(config.APIUrl + 'auth/login?name=' + $userName.val() + '&password=' + $userPassword.val() + '&_token=' + $csrfToken.val())
 		 .done(function(res){
-			Auth.set($userName.val(), res.csrf_token);
+			Auth.set($userName.val(), $csrfToken.val());
 			redirect('realtime');
 		 });
 	}
