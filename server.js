@@ -26,14 +26,35 @@ app.get('/realtime/listpic', function(req, res) {
 app.get('/api/workorder/list', function(req, res) {
 	res.send(data.liveinfos);
 });
+<<<<<<< HEAD
 app.get('/api/workorder/listpic', function(req, res) {
+=======
+app.get('/api/workorder/info', function(req, res) {
+	res.send(data.workorderInfo);
+});
+app.get('/api/realtime/listpic', function(req, res) {
+>>>>>>> 197d094965778e61618cb0cc1fafb463dc7be00b
 	res.send(data.listpics);
+});
+app.get('/api/workorder', function(req, res) {
+	res.send(data.workorders);
+});
+app.get('/api/workorder', function(req, res) {
+	res.send(data.workorders);
+});
+app.get('/api/workorder/1', function(req, res) {
+	res.send(data.workorder);
+});
+app.get('/api/user', function(req, res) {
+	res.send(data.users);
 });
 
 app.get('/machine', function(req, res) { res.render('pages/machine/main'); });
 app.get('/machine/new', function(req, res) { res.render('pages/machine/new'); });
 app.get('/machine/info', function(req, res) { res.render('pages/machine/info'); });
 app.get('/workorder', function(req, res) { res.render('pages/workorder/main'); });
+app.get('/workorder/info', function(req, res) { res.render('pages/workorder/info'); });
+app.get('/workorder/new', function(req, res) { res.render('pages/workorder/new'); });
 app.get('/mold', function(req, res) { res.render('pages/mold/main'); });
 app.get('/unusual', function(req, res) { res.render('pages/unusual/main'); });
 app.get('/member', function(req, res) { res.render('pages/member/main'); });
@@ -54,6 +75,7 @@ app.get('/api/history/filter', function(req, res) {
 		break;
 		default:
 			res.send({});
+			
 		break;
 	}
 });
