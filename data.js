@@ -101,6 +101,7 @@ var moldLists = [
     {'id': 'Mold003','name': 'mold00003'}
 ]
 
+
 var historyInfos = [
       {
             'factory_id': '1',
@@ -176,6 +177,32 @@ var historyInfos = [
       }
 ]
 
+// var workorderInfo = {
+//     'workorder_id':'W001','order_id':'ORDER001','customer_name':'Moremote','factories':'台中梧棲',
+//     'workorder_status':'finish'
+// };
+
+var workorderInfo = {
+  'id': '3',
+  'customer_id': '1',
+  'order_id': 'S57',
+  'target_num': '100',
+  'order_date': '2015-08-19 02:59:38',
+  'status': 'non-schedule',
+  'schedule_date': '2015-08-19 02:59:38',
+  'start_date': '2015-08-19 02:59:38',
+  'finish_date': '2015-08-19 02:59:38',
+  'produce_type': '塑膠',
+  'current_num': '0',
+  'current_fail_num': '0',
+  'abnormal_num': '0',
+  'content': 'test',
+  'created_at': '2015-08-19 02:59:38',
+  'updated_at': '2015-08-19 02:59:38',
+  'work_order_records': []
+};
+
+
 module.exports = {
       factories: factories,
       liveinfos: liveinfos,
@@ -183,5 +210,7 @@ module.exports = {
       workorderLists: workorderLists,
       machineLists: machineLists,
       moldLists: moldLists,
+
       historyInfos: historyInfos
+      workorderInfo: workorderInfo
 };
