@@ -121,8 +121,6 @@ function getMemberArray(){
  // 	response.forEach(function (element){
 	// 	memberList.push(element.name);
 	// });
-
-	console.log(memberList);
 }
 
 function getInitialData() {
