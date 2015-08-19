@@ -45,12 +45,12 @@ function openFancyBoxManually() {
 }
 
 function getPictureListAndRenderRow() {
-    var workorderId = queryParameter.get('workorder_id');
+    var workorderId = queryParameter.get('work_order_id');
     var type = queryParameter.get('type');
     var title = queryParameter.get('title');
 
-    // $.get(config.APIUrl + 'realtime/listpic/:' + userId + '?workorder_id=' + workorderId + '&type=' + type)
-    $.get(config.APIUrl + 'realtime/listpic/?workorder_id=' + workorderId + '&type=' + type)
+    // $.get(config.APIUrl + 'workorder/listpic/:' + userId + '?work_order_id=' + workorderId + '&type=' + type)
+    $.get(config.APIUrl + 'workorder/listpic/?work_order_id=' + workorderId + '&type=' + type)
      .done(function(response){
         $navTitle.text(title);
         renderPictureRows(response);

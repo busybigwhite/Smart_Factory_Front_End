@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Smart Factory</title>
+	<link rel="stylesheet" type="text/css" href="../../../build/style.css">
+</head>
+<body>
+
+<div id="header"></div>
+
+<div class="main-container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="col-xs-10">
+                <div class="dropdown-factory-filter">
+                    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span class="factory-focus-name"></span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="factory-list dropdown-menu"></ul>
+                </div>
+            </div>
+            <div class="col-xs-2 text-center">
+                <button class="new-button" id="mold-new-button">新增模具</button>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <ul class="col-xs-12" id="mold-table">
+                <li class="table-header">
+                    <div class="table-col">模具圖面</div>
+                    <div class="table-col">成品圖面</div>
+                    <div class="table-col">模具編號</div>
+                    <div class="table-col">說明</div>
+                    <div class="table-col">建立日期</div>
+                    <div class="table-col">尺寸(單位:mm)(長/寬/高)</div>
+                    <div class="table-col">重量(單位 : kg)</div>
+                    <div class="table-col"></div>
+                </li>
+                <div id="mold-table-body">
+                    <li class="table-header">
+                        <div class="table-col">模具圖面</div>
+                        <div class="table-col">成品圖面</div>
+                        <div class="table-col">模具編號</div>
+                        <div class="table-col">說明</div>
+                        <div class="table-col">建立日期</div>
+                        <div class="table-col">尺寸(單位:mm)(長/寬/高)</div>
+                        <div class="table-col">重量(單位 : kg)</div>
+                        <div class="table-col">
+                            <button class="detail-info-button" data-id="<%= info.id %>">詳細資訊</button>
+                        </div>
+                    </li>
+                </div>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="../../../build/bundle/mold-index.js"></script>
+
+</body>
+</html>

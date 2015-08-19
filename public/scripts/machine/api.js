@@ -14,6 +14,8 @@ exports = module.exports = {
 	deleteMachine: deleteMachine,
 	getMachineInfo: getMachineInfo,
 	editMachineInfo: editMachineInfo,
+	createMachineRecord: createMachineRecord,
+	deleteMachineRecord: deleteMachineRecord,
 };
 
 function goToMachineIndex() {
@@ -47,11 +49,21 @@ function deleteMachine(id) {
 }
 
 function getMachineInfo(id) {
-	return getData(machineApiUrl + 'info/' + id);
+	return getData(machineApiUrl + id);
 };
 
 function editMachineInfo(id, data) {
-	return editData(machineApiUrl + 'info/' + id);
+	return editData(machineApiUrl + id, data);
+}
+
+function createMachineRecord(id, data) {
+	// TODO:
+	// return createData(machineApiUrl, data);
+}
+
+function deleteMachineRecord(id, data) {
+	// TODO:
+	// return deleteData(machineApiUrl, data);
 }
 
 

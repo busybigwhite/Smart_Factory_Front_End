@@ -21,6 +21,10 @@ exports = module.exports = {};
 
 exports.emitter = emitter;
 
+exports.getSelectedValue = function(){
+	return selectedValue;
+}
+
 exports.showAndRenderDropdown = function(type) {
 	getValueThenRenderDropdown(type);
 	$valueDropdown.removeClass('hidden');

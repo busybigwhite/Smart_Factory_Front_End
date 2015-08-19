@@ -114,8 +114,8 @@ function searchByFilter(){
 
 function redirectToPicPage() {
 	var title = $(this).data('info');
-	var workorder_id = title.split('/')[0];
+	var work_order_id = title.split('/')[0];
 	var type = $(this).data('type');
 
-	redirect('realtimePic', {workorder_id, type, title});
+	redirect('realtimePic', {work_order_id, type, title});
 }

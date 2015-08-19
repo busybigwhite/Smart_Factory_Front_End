@@ -18,8 +18,12 @@ exports = module.exports = {};
 
 exports.emitter = emitter;
 
-exports.getSelectedFilter = function() {
+exports.getSelectedFilter = function(){
 	return selectedFilter;
+}
+
+exports.triggerClick = function(){
+	$filterDropdown.find('.option-item').eq(0).trigger('click');
 }
 
 initialize();

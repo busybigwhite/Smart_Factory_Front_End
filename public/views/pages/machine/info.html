@@ -19,32 +19,31 @@
 	</div>
 	<div class="base-info-panel">
 		<ul>
-			<li id="machine-id">
+			<li id="machine-serial-num">
 				<span class="info-name">射出機台編號</span>
 				<span class="info-value">
 					<p class="view-mode"></p>
-					<input class="edit-mode" type="text" name="id" value="" pattern="[A-Za-z0-9]{1,10}" title="輸入1~10個英數字" required>
+					<input class="edit-mode" type="text" name="serial_num" value="" pattern="[A-Za-z0-9]{1,10}" title="輸入1~10個英數字" required>
 				</span>
 			</li>
 			<li id="machine-name">
 				<span class="info-name">機種名稱</span>
 				<span class="info-value">
 					<p class="view-mode"></p>
-					<input class="edit-mode" type="text" name="name" value="">
+					<input class="edit-mode" type="text" name="name" value="" required>
 				</span>
 			</li>
 			<li id="machine-weight">
 				<span class="info-name">噸數</span>
 				<span class="info-value">
 					<p class="view-mode"></p>
-					<input class="edit-mode" type="text" name="weight" value="" pattern="[0-9]{1,10}" title="輸入數字">
+					<input class="edit-mode" type="text" name="weight" value="" pattern="[0-9]{1,10}" title="輸入數字" required>
 				</span>
 			</li>
-			<li><!-- TODO: add id -->
+			<li>
 				<span class="info-name">機台稼動率</span>
 				<span class="info-value">
-					<p class="view-mode"></p>
-					<input class="edit-mode" type="text" name="todo" value="" pattern="[0-9]{1,3}" title="輸入數字">
+					<span id="todo"></span><!-- TODO: add id -->
 					<span>%</span>
 				</span>
 			</li>
@@ -87,22 +86,33 @@
 										data-toggle="dropdown"
 										aria-haspopup="true"
 										aria-expanded="true">
-							<span class="selected-option" name="todo"></span>
+							<span class="selected-option"></span>
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="machine-check-period-dropdown">
-							<li><a class="option" type="天">天</a></li>
-							<li><a class="option" type="週">週</a></li>
-							<li><a class="option" type="月">月</a></li>
+							<li><a class="option" type="times">次</a></li>
+							<li><a class="option" type="days">天</a></li>
 						</ul>
 					</div>
 				</span>
 			</li>
-			<li>
-				<span class="resume-name">小保養紀錄</span>
-				<span class="resume-value">
-				</span>
-			</li>
+			<div class="record-table" id="check-record-table">
+				<h4 class="record-header">小保養紀錄<i class="fa fa-chevron-down pul-right"></i></h4>
+				<div class="record-form clearfix" id="check-record-form">
+					<div class="record-date-picker-column">
+						<input type="text" data-date-format="YYYY/MM/DD" id="check-record-date-picker" readonly/>
+					</div>
+					<div class="record-detail-column">
+						<input type="text" class="record-content-input" placeholder="說明文字">
+					</div>
+					<div class="record-action-column">
+						<button type="button" class="record-new-button">新增</button>
+						<button type="button" class="record-cancel-button">取消</button>
+					</div>
+				</div>
+				<ul class="record-changed-table-body" id="check-record-changed-table-body"></ul>
+				<ul class="record-table-body" id="check-record-table-body"></ul>
+			</div>
 			<li id="machine-maintain-period">
 				<span class="resume-name">大保養週期</span>
 				<span class="resume-value">
@@ -115,27 +125,50 @@
 										data-toggle="dropdown"
 										aria-haspopup="true"
 										aria-expanded="true">
-							<span class="selected-option" name="todo"></span>
+							<span class="selected-option"></span>
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="machine-maintain-period-dropdown">
-							<li><a class="option" type="週">週</a></li>
-							<li><a class="option" type="月">月</a></li>
-							<li><a class="option" type="年">年</a></li>
+							<li><a class="option" type="times">次</a></li>
+							<li><a class="option" type="days">天</a></li>
 						</ul>
 					</div>
 				</span>
 			</li>
-			<li>
-				<span class="resume-name">大保養紀錄</span>
-				<span class="resume-value">
-				</span>
-			</li>
-			<li>
-				<span class="resume-name">異常維修紀錄</span>
-				<span class="resume-value">
-				</span>
-			</li>
+			<div class="record-table" id="maintain-record-table">
+				<h4 class="record-header">大保養紀錄<i class="fa fa-chevron-down pul-right"></i></h4>
+				<div class="record-form clearfix" id="maintain-record-form">
+					<div class="record-date-picker-column">
+						<input type="text" data-date-format="YYYY/MM/DD" id="maintain-record-date-picker" readonly/>
+					</div>
+					<div class="record-detail-column">
+						<input type="text" class="record-content-input" placeholder="說明文字">
+					</div>
+					<div class="record-action-column">
+						<button type="button" class="record-new-button">新增</button>
+						<button type="button" class="record-cancel-button">取消</button>
+					</div>
+				</div>
+				<ul class="record-changed-table-body" id="maintain-record-changed-table-body"></ul>
+				<ul class="record-table-body" id="maintain-record-table-body"></ul>
+			</div>
+			<div class="record-table" id="error-record-table">
+				<h4 class="record-header">異常維修紀錄<i class="fa fa-chevron-down pul-right"></i></h4>
+				<div class="record-form clearfix" id="error-record-form">
+					<div class="record-date-picker-column">
+						<input type="text" data-date-format="YYYY/MM/DD" id="error-record-date-picker" readonly/>
+					</div>
+					<div class="record-detail-column">
+						<input type="text" class="record-content-input" placeholder="說明文字">
+					</div>
+					<div class="record-action-column">
+						<button type="button" class="record-new-button">新增</button>
+						<button type="button" class="record-cancel-button">取消</button>
+					</div>
+				</div>
+				<ul class="record-changed-table-body" id="error-record-changed-table-body"></ul>
+				<ul class="record-table-body" id="error-record-table-body"></ul>
+			</div>
 		</ul>
 	</section>
 </form>

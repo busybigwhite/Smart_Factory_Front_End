@@ -42,7 +42,7 @@ function userLogin(e){
 		 .done(function(res){
 		 	console.log("name=" + $userName.val() + "&password=" + $userPassword.val() + "&_token=" + $csrfToken.val());
 			Auth.set(res.csrf_token);
-			redirect('realtimeUrl');
+			redirect('realtime');
 		 });
 	}
 };

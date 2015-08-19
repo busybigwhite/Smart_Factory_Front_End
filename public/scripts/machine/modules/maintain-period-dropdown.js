@@ -8,17 +8,25 @@ var $periodInput  = $maintainPeriod.find('.edit-mode').eq(0);
 var $typeView     = $maintainPeriod.find('.view-mode').eq(1);
 var $selectedType = $('#machine-maintain-period-dropdown').find('.selected-option');
 var $typeDropdownList = $('ul[aria-labelledby="machine-maintain-period-dropdown"]').find('.option');
+var TYPE = {
+	times: '次',
+	days: '天',
+};
 
 exports.init     = initMaintainPeriod;
 exports.getValue = getValue;
 exports.getType  = getType;
 
 function initMaintainPeriod(val, type) {
+	initialView(val, type);
+	bindEvents();
+}
+
+function initialView(val, type) {
 	$periodView.text(val);
 	$periodInput.val(val);
-	$typeView.text(type);
-	$selectedType.text(type);
-	bindEvents();
+	$typeView.text(TYPE[type]);
+	$selectedType.text(TYPE[type]).data('type', type);
 }
 
 function bindEvents() {
@@ -27,7 +35,7 @@ function bindEvents() {
 
 function changeType() {
 	var type = $(this).attr('type');
-	$selectedType.text(type);
+	$selectedType.text(TYPE[type]).data('type', type);
 }
 
 function getValue() {
@@ -35,5 +43,5 @@ function getValue() {
 }
 
 function getType() {
-	return $selectedType.text();
+	return $selectedType.data('type');
 }
