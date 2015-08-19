@@ -5,6 +5,7 @@ var config = require('../config/url');
 var auth = require('../config/auth');
 var header = require('../includes/header');
 var api = require('../member/api');
+var factoryDropdown = require('../lib/component/dropdown');
 
 /* DOM */
 var $userForm = $('#user-setting');
@@ -17,13 +18,19 @@ var $editBtn = $('#user-edit-btn');
 
 var pwd1Input = document.getElementById("userPassword");
 var pwd2Input = document.getElementById("userPasswordConfirm");
-
-var memberId = api.getUser.id;
-// var memberId = '1';
+var memberId = '';
 
 initialize();
 
 function initialize() {
+	api.getUser()
+		.done(function(res){
+			memberId = res.id;
+		})
+		.fail(function(err) { console.log("GET Member Id error: ", err); });
+
+	console.log(memberId);
+
 	header.include();
 	getInitialData();
 	bindEvents();

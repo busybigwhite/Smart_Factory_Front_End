@@ -6,6 +6,7 @@ var auth = require('../config/auth');
 var header = require('../includes/header');
 var api = require('../member/api');
 var queryParameter = require('../lib/helper/query-parameter');
+var factoryDropdown = require('../lib/component/dropdown');
 
 /* DOM */
 var $manageForm = $('#manage-form');
@@ -27,6 +28,7 @@ var pwd2Input = document.getElementById("userPasswordConfirm");
 var memberId = queryParameter.get('id');
 var origName = '';
 var memberList = [];
+var isEditMode = false;
 
 initialize();
 
@@ -37,12 +39,12 @@ function initialize() {
 		$editBtn.hide();
 		$deleteBtn.hide();
 	} else {
+		isEditMode = true;
 		$addBtn.hide();
 		getInitialData();
 	}
-
-	getmemberList();
 	bindEvents();
+	getMemberArray();
 }
 
 function bindEvents() {
@@ -69,9 +71,14 @@ function supports_input_validity(){
 }
 
 function checkUsername(){
-	if($.inArray((this.value, memberList) > -1) && (this.value !== origName)){
-		this.pattern = "";
-		this.title = "帳號名稱已被使用";
+	if($.inArray(this.value, memberList) > -1){
+		if ((isEditMode == true) && (this.value == origName)) {
+			this.pattern = "^[a-z0-9]{4,16}$";
+			this.title = "帳號需至少4碼，限用小寫與數字";
+		} else {
+			this.pattern = "";
+			this.title = "帳號名稱已被使用";	
+		}
 	} else {
 		this.pattern = "^[a-z0-9]{4,16}$";
 		this.title = "帳號需至少4碼，限用小寫與數字";	
@@ -96,7 +103,7 @@ function formValidate(){
 	}
 }
 
-function getmemberList(){
+function getMemberArray(){
 	// var response = [
 	// 	{"id":"1","name":"admin","group":"Administrator","email":"admin@moremote.com"},
 	// 	{"id":"2","name":"louk","group":"Manager","email":"louk@moremote.com"},
@@ -109,17 +116,21 @@ function getmemberList(){
 				memberList.push(element.name);
 			});
 	 })
-	 .fail(function(err) { console.log("GET Member List error: ", err); });
+	 .fail(function(err) { console.log("GET Member Array error: ", err); });
 
  // 	response.forEach(function (element){
 	// 	memberList.push(element.name);
 	// });
+
+	console.log(memberList);
 }
 
 function getInitialData() {
 	api.getMember(memberId)
 		 .done(function(res){
-		 		origName = res.name;
+		 		if (isEditMode == true) {
+		 			origName = res.name;
+		 		}	 		
 			 	$userName.val(res.name);
 				$userEmail.val(res.email);
 

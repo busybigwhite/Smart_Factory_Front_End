@@ -109,3 +109,37 @@
 		}
 	}
 }
+
+.workorder-info-panel {
+	font-size: 18px;
+	& > ul > li {
+		height: 55px;
+		line-height: 55px;
+
+		& input {
+			height: 34px;
+			line-height: 34px;
+			padding: 0 10px;
+		}
+	}
+
+	.info-name {
+		width: 260px;
+    display: inline-block;
+	}
+
+	.info-value {
+		.view-mode {
+			display: inline-block;
+			&.editting {
+				display: none;
+			}
+		}
+		.edit-mode {
+			display: none;
+			&.editting {
+				display: inline-block;
+			}
+		}
+	}
+}
