@@ -70,10 +70,21 @@
 			.record-date-picker-column {
 				.make-xs-column(3);
 				height: inherit;
+				padding-right: 0;
 				display: flex;
-				input {
-					height: 30px;
-					align-self: center;
+
+				label {
+					position: absolute;
+					right: 10px;
+					line-height: 60px;
+					cursor: pointer;
+
+					& + input {
+						height: 30px;
+						width: 100%;
+						align-self: center;
+						cursor: pointer;
+					}
 				}
 			}
 
@@ -157,3 +168,4 @@
 		}
 	}
 }
+

@@ -25,7 +25,7 @@ function getInitialData() {
 	api.setFactoryId(ID);
 	api.getMachineList()
 		 .done(initialView)
-		 .fail(function(err) { console.log("GET Machine Info error: ", err); });
+		 .fail(function(err) { console.log("GET Machine List error: ", err); });
 }
 
 function bindEvents() {
