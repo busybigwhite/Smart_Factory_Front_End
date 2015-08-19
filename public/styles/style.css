@@ -6507,7 +6507,9 @@ button.close {
 #realtime-panel:before,
 #realtime-panel:after,
 #history-panel:before,
-#history-panel:after {
+#history-panel:after,
+#workorder-panel:before,
+#workorder-panel:after {
   content: " ";
   display: table;
 }
@@ -6527,7 +6529,8 @@ button.close {
 .panel-body:after,
 .modal-footer:after,
 #realtime-panel:after,
-#history-panel:after {
+#history-panel:after,
+#workorder-panel:after {
   clear: both;
 }
 .center-block {
@@ -11173,4 +11176,89 @@ fieldset[disabled] #history-panel #history-list-block #history-table-mode .histo
   display: inline-block;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+#workorder-panel {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+#workorder-panel #workorder-select-block {
+  position: relative;
+  float: left;
+  width: 100%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding: 0;
+}
+#workorder-panel #workorder-list-block {
+  position: relative;
+  float: left;
+  width: 100%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+#workorder-panel #workorder-list-block #workorder-table-mode {
+  margin: 20px 0;
+  padding: 0;
+}
+#workorder-panel #workorder-list-block #workorder-table-mode .table-header {
+  height: 40px;
+  border-bottom: 2px solid #ddd;
+  line-height: 2.3em;
+}
+#workorder-panel #workorder-list-block #workorder-table-mode .table-item {
+  height: 48px;
+  border-bottom: 1px solid #ddd;
+  line-height: 2.8em;
+}
+#workorder-panel #workorder-list-block #workorder-table-mode .table-item:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+#workorder-panel #workorder-list-block #workorder-table-mode .table-item:last-child {
+  border-bottom: none;
+}
+#workorder-panel #workorder-list-block #workorder-table-mode .table-col {
+  position: relative;
+  float: left;
+  width: 16.66666667%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: inherit;
+  padding: 0 5px;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#workorder-panel #workorder-list-block #workorder-table-mode .table-col-sm {
+  position: relative;
+  float: left;
+  width: 8.33333333%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: inherit;
+  padding: 0 5px;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
+}
+#workorder-panel #workorder-list-block #workorder-table-mode .table-col-lg {
+  position: relative;
+  float: left;
+  width: 16.66666667%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: inherit;
+  padding: 0 5px;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
 }
