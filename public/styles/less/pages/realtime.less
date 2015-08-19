@@ -1,8 +1,10 @@
 #realtime-panel {
 	.make-row();
+	min-width: 1320px;
 
 	#realtime-select-block {
-		.make-xs-column(12);
+		width: 100%;
+		height: 60px;
 		padding: 0 25px;
 
 		.input-group {
@@ -28,7 +30,13 @@
 	}
 
 	#realtime-list-block {
-		.make-xs-column(12);
+		width: 100%;
+		max-width: 1600px;
+	    min-height: 800px;
+	    margin: 0 auto;
+	    padding: 10px 15px;
+	    box-shadow: 0 1px 8px 1px rgba(0,0,0,.3);
+	    z-index: 1;
 
 		#realtime-table-mode {
 			.custom-table();
@@ -50,6 +58,7 @@
 			.realtime-showpic-btn {
 				.btn;
 				.btn-success;
+				padding: 4px 6px;
 
 				&:first-child {
 					.btn-info;
