@@ -161,7 +161,9 @@ function addMemberSubmit() {
 		api.createMember(data)
 		 .done(function(data) { console.log("CREATE Member res: ", data); })
 		 .fail(function(err) { console.log("CREATE Member error: ", err); });
-		window.location.href = config.memberUrl;
+		 .always(function(){
+		 	window.location.href = config.memberUrl
+		 };)
 	};
 }
 
@@ -172,7 +174,9 @@ function editMemberSubmit() {
 		api.editMember(memberId, data)
 		 .done(function(data) { console.log("EDIT Member res: ", data); })
 		 .fail(function(err) { console.log("EDIT Member error: ", err); });
-		window.location.href = config.memberUrl;
+		 .always(function(){
+		 	window.location.href = config.memberUrl
+		 };)
 	};
 }
 
@@ -180,7 +184,9 @@ function deleteMemberSubmit() {
 	api.deleteMember(memberId)
 		 .done(function(data) { console.log("DELETE Member res: ", data); })
 		 .fail(function(err) { console.log("DELETE Member error: ", err); });
-	window.location.href = config.memberUrl;
+		 .always(function(){
+		 	window.location.href = config.memberUrl
+		 };)
 }
 
 function goToMemberList(){
