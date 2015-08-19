@@ -48,6 +48,6 @@ function getFactoryId() {
 }
 
 function initialView(data) {
-	var tableListRows = template.render({ infos : data });
+	var tableListRows = template.render({ infos : data , api: api});
 	$moldTableBody.empty().append( tableListRows );
 }

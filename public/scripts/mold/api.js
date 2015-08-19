@@ -11,6 +11,7 @@ var moldPageUrl = config.moldUrl;
 var isLocal = window.location.hostname === 'localhost';
 
 exports = module.exports = {
+	moldApiUrl: function() { return moldApiUrl },
 	setFactoryId: setFactoryId,
 	goToMoldIndex: goToMoldIndex,
 	goToMoldInfo: goToMoldInfo,
