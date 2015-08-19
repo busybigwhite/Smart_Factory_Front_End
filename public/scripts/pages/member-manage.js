@@ -7,6 +7,7 @@ var api = require('../member/api');
 var queryParameter = require('../lib/helper/query-parameter');
 
 /* DOM */
+var $manageForm = $('#manage-form');
 var $userName = $('#userName');
 var $userEmail = $('#userEmail');
 var $userPassword = $('#userPassword');
@@ -17,6 +18,11 @@ var $addBtn = $('#member-add-btn');
 var $editBtn = $('#member-edit-btn');
 var $deleteBtn = $('#member-delete-btn');
 var $backBtn = $('#member-back-btn');
+
+var usernameInput = document.getElementById("userName");
+var pwd1Input = document.getElementById("userPassword");
+var pwd2Input = document.getElementById("userPasswordConfirm");
+
 
 var memberId = queryParameter.get('id');
 
@@ -39,6 +45,38 @@ function bindEvents() {
 	$editBtn.on('click', editMemberSubmit);
 	$deleteBtn.on('click', deleteMemberSubmit);
 	$backBtn.on('click', goToMemberList);
+
+	var supports_input_validity = function()
+	{
+	  var i = document.createElement("input");
+	  return "setCustomValidity" in i;
+	}
+
+	if(supports_input_validity()) {
+	  
+	  usernameInput.setCustomValidity(usernameInput.title);
+	  pwd1Input.setCustomValidity(pwd1Input.title);
+
+	  usernameInput.addEventListener("keyup", function() {
+	    usernameInput.setCustomValidity(this.validity.patternMismatch ? usernameInput.title : "");
+	  }, false);
+
+	  pwd1Input.addEventListener("keyup", function() {
+	    this.setCustomValidity(this.validity.patternMismatch ? pwd1Input.title : "");
+	    if(this.checkValidity()) {
+	      pwd2Input.pattern = this.value;
+	      pwd2Input.setCustomValidity(pwd2Input.title);
+	    } else {
+	      pwd2Input.pattern = this.pattern;
+	      pwd2Input.setCustomValidity("");
+	    }
+	  }, false);
+
+	  pwd2Input.addEventListener("keyup", function() {
+	    this.setCustomValidity(this.validity.patternMismatch ? pwd2Input.title : "");
+	  }, false);
+
+	}
 }
 
 function getInitialData() {
@@ -71,19 +109,23 @@ function getChangedData() {
 function addMemberSubmit() {
 	var data = getChangedData();
 
-	api.createMember(data)
+	if (formValidate()) {
+		api.createMember(data)
 		 .done(function(data) { console.log("CREATE Member res: ", data); })
 		 .fail(function(err) { console.log("CREATE Member error: ", err); });
-	window.location.href = config.memberUrl;
+		window.location.href = config.memberUrl;
+	};
 }
 
 function editMemberSubmit() {
 	var data = getChangedData();
 
-	api.editMember(memberId, data)
+	if (formValidate()) {
+		api.editMember(memberId, data)
 		 .done(function(data) { console.log("EDIT Member res: ", data); })
 		 .fail(function(err) { console.log("EDIT Member error: ", err); });
-	window.location.href = config.memberUrl;
+		window.location.href = config.memberUrl;
+	};
 }
 
 function deleteMemberSubmit() {
@@ -95,4 +137,18 @@ function deleteMemberSubmit() {
 
 function goToMemberList(){
 	window.location.href = config.memberUrl;
+}
+
+function formValidate(){
+	if (!$manageForm[0].checkValidity()) {
+		$('<input type="submit">').hide().appendTo($manageForm).click().remove();
+  	return false;
+	} else {
+		return true;
+	}
+}
+
+function checkPassword(str) {
+	var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+	return re.test(str);
 }
