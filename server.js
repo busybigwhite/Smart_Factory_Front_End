@@ -43,7 +43,7 @@ app.get('/member/manage', function(req, res) { res.render('pages/member/manage')
 app.get('/history', function(req, res) { res.render('pages/history/main'); });
 app.get('/api/history/filter', function(req, res) {
 	switch(req.query.type){
-		case "workorder_id":
+		case "work_order_id":
 			res.send(data.workorderLists);
 		break;
 		case "machine_id":
