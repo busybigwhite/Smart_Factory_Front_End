@@ -40,8 +40,7 @@ function userLogin(e){
 	} else {
 		$.post(config.APIUrl + 'auth/login?name=' + $userName.val() + '&password=' + $userPassword.val() + '&_token=' + $csrfToken.val())
 		 .done(function(res){
-		 	console.log("name=" + $userName.val() + "&password=" + $userPassword.val() + "&_token=" + $csrfToken.val());
-			Auth.set(res.csrf_token);
+			Auth.set($userName.val(), res.csrf_token);
 			redirect('realtime');
 		 });
 	}

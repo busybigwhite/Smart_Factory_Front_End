@@ -65,4 +65,6 @@ app.get('/api/factory/list', function(req, res) {
 	res.send(data.factories);
 });
 
+app.get('/user', function(req, res) { res.render('pages/user/main'); });
+
 app.listen(app.get('port'));

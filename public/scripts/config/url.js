@@ -32,6 +32,7 @@ var base          = exports.baseUrl = `${protocol}://${hostname}${portDisplay}`;
 // exports.eventsUrl    = `${base}/${projectName}/${restNamespace}/events/`;
 // exports.publishesUrl = `${base}/${projectName}/${restNamespace}/publishes/`;
 
+exports.loginUrl  		= `${base}/login/`;
 exports.realtimeUrl  	= `${base}/realtime/`;
 exports.realtimePicUrl  = `${base}/realtime/listpic`;
 exports.machineUrl 	 	= `${base}/machine/`;

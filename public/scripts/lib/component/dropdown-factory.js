@@ -48,7 +48,6 @@ function setFocusNameBlock(target) {
 }
 
 function createFactoryListThenRenderRows() {
-	// $.get(config.APIUrl + 'factory/list/:' + userId)
 	$.get(config.APIUrl + 'factory/list')
 	 .done(function(response){
 		var factoryListRows = renderFactoryDropdown({ factories : response });

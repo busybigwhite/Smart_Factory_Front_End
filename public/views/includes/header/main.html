@@ -1,17 +1,26 @@
 <header id="header">
 	<nav class="navbar navbar-fixed-top">
-	    <ul class="nav navbar-nav">
-	        <li class="active"><a href="../realtime">實時資訊</a></li>
-	        <li><a href="../machine">射出機台管理</a></li>
-	        <li><a href="../mold">模具管理</a></li>
-	        <li><a href="../workorder">工單管理</a></li>
-	        <li><a href="../unusual">異常管理</a></li>
-	        <li><a href="../member">使用者帳號管理</a></li>
-	        <li><a href="../history">歷史資料分析</a></li>
+	    <ul id="navbar-item-block" class="nav navbar-nav" >
+	        <li class="navbar-item"><a href="../realtime">實時資訊</a></li>
+	        <li class="navbar-item"><a href="../machine">射出機台管理</a></li>
+	        <li class="navbar-item"><a href="../mold">模具管理</a></li>
+	        <li class="navbar-item"><a href="../workorder">工單管理</a></li>
+	        <li class="navbar-item"><a href="../unusual">異常管理</a></li>
+	        <li class="navbar-item"><a href="../member">使用者帳號管理</a></li>
+	        <li class="navbar-item"><a href="../history">歷史資料分析</a></li>
 	    </ul>
 	    <ul class="nav navbar-nav pull-right">
-	        <li class="account"><a href="#"><img src="../../../images/account-type/customer.png" height="70" width="100" alt=""></a></li>
-	        <li><a href="#">客戶名稱</a></li>
+	        <li class="account">
+	        	<span id="user-name">客戶名稱</span>
+	        	<div id="user-avatar" class="dropdown-toggle" data-toggle="dropdown">
+					<img src="../../../images/account-type/customer.png" height="70" width="100" alt="">
+				</div>
+				<ul class="dropdown-menu">
+					<li><a href="../user">帳戶設定</a></li>
+					<li><a id="logout-btn">登出</a></li>
+				</ul>
+	        </li>
+
 	    </ul>
 	</nav>
 </header>

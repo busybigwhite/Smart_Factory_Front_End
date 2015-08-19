@@ -67,6 +67,7 @@ function getValueThenRenderDropdown(type) {
 		url: config.APIUrl + 'history/filter?type=' + type,
 		beforeSend: function(){
 			selectedValue = undefined;
+			$filterValueFocusName.empty();
 			$filterValueMenu.empty();
 		}
 	}).done(function(response){
