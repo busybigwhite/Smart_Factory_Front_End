@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Smart Factory</title>
+	<link rel="stylesheet" type="text/css" href="../../../build/style.css">
+</head>
+<body>
+
+<div id="header"></div>
+
+<div class="workorder-container">
+<form id="workorder-new-form">
+	<div class="base-action-panel">
+		<button type="button" class="workorder-info-edit-button" id="workorder-new-edit-button">取消</button>
+		<button type="submit" class="workorder-info-save-button" id="workorder-new-new-button">新增</button>
+		<button type="button" class="workorder-info-cancel-button" id="workorder-new-cancel-button">取消</button>
+	</div>
+
+	<div class="workorder-info-panel">
+		<ul>
+			<li id="workorder-num">
+				<span class="info-name">工單編號</span>
+				<span class="info-value">
+					<input class="newOrder" type="text" name="workorder-num" value="">
+				</span>
+			</li>
+			<li id="order-num">
+				<span class="info-name">訂單編號</span>
+				<span class="info-value">
+					<input class="newOrder" type="text" name="order-num" value="">
+				</span>
+			</li>
+			<li id="customer-name">
+				<span class="info-name">客戶名稱</span>
+				<span class="info-value">
+					<input class="newOrder" type="text" name="customer-name" value="">
+				</span>
+			</li>
+			<li id="factory">
+				<span class="info-name">生產廠區別</span>
+				<span class="info-value">
+					<input class="newOrder" type="text" name="factory" value="">
+				</span>
+			</li>
+			<li id="workorder-status">
+				<span class="info-name">工單狀態</span>
+				<span class="info-value">
+					<input class="newOrder" type="text" name="workorder-status" value="">
+				</span>
+			</li>
+		</ul>
+	
+
+	
+		<h3 class="resume-header">詳細資訊</h3>
+		<ul>
+			<li id="input-date">
+				<span class="info-name">輸入日期</span>
+				<span class="info-value">
+					<input class="newOrder" type="text" name="input-date" value="">
+				</span>
+			</li>
+			<li id="description">
+				<span class="info-name">說明</span>
+				<span class="info-value">
+					<input class="newOrder" type="text" name="description" value="" >
+				</span>
+			</li>
+			<li id="forecast-time">
+				<span class="info-name">預定生產時程</span>
+				<span class="info-value">
+					<input class="newOrder" type="text" name="forecast-time" value="">
+				</span>
+			</li>
+			<li id="forecast-amount">
+				<span class="info-name">預定生產數量</span>
+				<span class="info-value">
+					<input class="newOrder" type="text" name="forecast-amount" value="">
+				</span>
+			</li>
+			<li id="type">
+				<span class="info-name">類別</span>
+				<span class="info-value">
+					<input class="newOrder" type="text" name="type" value="">
+				</span>
+			</li>
+			<li id="real-produce-date">
+				<span class="info-name">實際開始生產日期</span>
+				<span class="info-value">
+					<input class="newOrder" type="text" name="real-produce-date" value="">
+				</span>
+			</li>
+			<li id="real-amount">
+				<span class="info-name">實際完成數量</span>
+				<span class="info-value">
+					<input class="newOrder" type="text" name="real-amount" value="">
+				</span>
+			</li>
+			<li id="real-finish">
+				<span class="info-name">實際結案日期</span>
+				<span class="info-value">
+					<input class="newOrder" type="text" name="real-finish" value="">
+				</span>
+			</li>
+		</ul>
+	</div>
+
+</form>
+</div>
+
+
+<script src="../../../build/bundle/workorder-new.js"></script>
+
+</body>
+</html>
