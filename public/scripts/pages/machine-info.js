@@ -44,8 +44,11 @@ function initialize() {
 		isCreateMode = true;
 		showCreateMode();
 	}
+	machineId = queryParameter.get('ID');
+	api.setFactoryId(queryParameter.get('factoryId'));
 	getInitialData();
 	bindEvents();
+
 	noticeedPersonDropdown.init();
 	checkRecordTable.init();
 	maintainRecordTable.init();
@@ -53,13 +56,10 @@ function initialize() {
 }
 
 function getInitialData() {
-	machineId = queryParameter.get('ID');
 	if (!machineId) return;
 	api.getMachineInfo(machineId)
 		 .done(initialView)
 		 .fail(function(err) { console.log("GET Machine Info error: ", err); });
-	// var fakeResponse ={"id":2,"serial_num":"Helga","name":"Schmidt","weight":187,"acquisition":"1991-06-10 00:00:00","admin_id":1,"check_period_unit":"times","check_period_value":62,"maintain_period_unit":"times","maintain_period_value":85,"created_at":"2015-08-18 06:57:31","updated_at":"2015-08-18 06:57:31","maintain_records":[{"id":1,"machine_id":2,"type":"maintain","content":"test","created_at":"2015-08-18 06:57:31","updated_at":"2015-08-18 06:57:31"}]};
-	// initialView(fakeResponse);
 }
 
 function bindEvents() {
@@ -157,13 +157,13 @@ function saveNewData(data) {
 }
 
 function saveNewRecord(data) {
-	api.createMachineRecord(data)
+	api.createMachineRecord(machineId, data)
 		 .done(function(data) { console.log("CREATE Machine Record res: ", data); })
 		 .fail(function(err) { console.log("CREATE Machine Record error: ", err); });
 }
 
 function saveDeleteRecord(data) {
-	api.deleteMachineRecord(data)
+	api.deleteMachineRecord(machineId, data)
 		 .done(function(data) { console.log("CREATE Machine Record res: ", data); })
 		 .fail(function(err) { console.log("CREATE Machine Record error: ", err); });
 }

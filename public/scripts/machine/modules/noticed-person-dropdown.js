@@ -2,7 +2,7 @@
 
 var $ = window.jQuery = require('jquery');
 var _ = require('lodash');
-var config = require('../../config/url');
+var api = require('../api');
 require('bootstrap/js/dropdown');
 
  /* DOM */
@@ -30,13 +30,9 @@ function bindEvents() {
 }
 
 function createListThenRenderRows() {
-	$.get(config.APIUrl + 'user/list')
-	 .done(initialView)
-	 .fail(function(err) { console.log('noticedPersonDropdown GET user list error:', err) });
-	// setTimeout(function() {
-	// 	var fakeResponse = [{"id":1,"name":"admin","group":"Administrator","email":"admin@moremote.com","created_at":"2015-08-19 02:59:36","updated_at":"2015-08-19 02:59:36"},{"id":2,"name":"louk","group":"Manager","email":"admin@moremote.com","created_at":"2015-08-19 02:59:36","updated_at":"2015-08-19 02:59:36"}];
-	// 	initialView(fakeResponse);
-	// }, 3000);
+	api.getUserList()
+		.done(initialView)
+		.fail(function(err) { console.log('noticedPersonDropdown GET user list error:', err) });
 }
 
 function initialView(data) {
