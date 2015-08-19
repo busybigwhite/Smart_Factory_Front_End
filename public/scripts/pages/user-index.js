@@ -26,13 +26,13 @@ function initialize() {
 	api.getUser()
 		.done(function(res){
 			memberId = res.id;
+			getInitialData();
 		})
 		.fail(function(err) { console.log("GET Member Id error: ", err); });
 
 	console.log(memberId);
 
 	header.include();
-	getInitialData();
 	bindEvents();
 }
 
