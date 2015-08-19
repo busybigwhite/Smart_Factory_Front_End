@@ -18,7 +18,8 @@ var $editBtn = $('#user-edit-btn');
 var pwd1Input = document.getElementById("userPassword");
 var pwd2Input = document.getElementById("userPasswordConfirm");
 
-var memberId = '';
+var memberId = api.getUser.id;
+// var memberId = '1';
 
 initialize();
 
@@ -63,29 +64,25 @@ function formValidate(){
 }
 
 function getInitialData() {
-	// api.getMember(memberId)
-	// 	 .done(function(res){
-	// 		 	$userName.text(res.name);
-	// 			$userEmail.val(res.email);
-	// 			$userGroup.text(res.group);
-	// 			memberId = res.id;
-	// 	 })
-	// 	 .fail(function(err) { console.log("GET Member error: ", err); });
+	api.getMember(memberId)
+		 .done(function(res){
+			 	$userName.text(res.name);
+				$userEmail.val(res.email);
+				$userGroup.text(res.group);
+		 })
+		 .fail(function(err) { console.log("GET Member error: ", err); });
 
-		$userName.text('admin');
-		$userEmail.val('admin@moremote.com');
-		$userGroup.text('Administrator');
-		memberId = '1';
+		// $userName.text('admin');
+		// $userEmail.val('admin@moremote.com');
+		// $userGroup.text('Administrator');
 }
 
 function getChangedData() {
 	var data = {};
 
-	data.name = $userName.val();
 	data.password = $userPassword.val();
 	data.password_confirmation = $userPasswordConfirm.val();
 	data.email = $userEmail.val();
-	data.group = $("[name='userGroup']:checked").val()
 	data._token = auth.getToken();
 
 	return data;
