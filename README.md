@@ -2,9 +2,9 @@
 Smart Factory Front End
 
 ```
-npm i
+npm install
 
-sudo npm i -g gulp
+sudo npm install -g gulp
 
 // build css
 gulp less
