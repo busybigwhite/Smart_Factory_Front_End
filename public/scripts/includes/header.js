@@ -20,7 +20,7 @@ function initialize() {
 	$logoutBtn = $('#logout-btn');
 
 	bindEvents();
-	Auth.set('Moremote', '1234567890');
+	// Auth.set('Moremote', '1234567890');
 	getPathAndFocusOnNavItem();
     getUserName();
 }
@@ -34,9 +34,12 @@ function bindLogoutOnButton() {
 }
 
 function logout() {
-	//TODO call logout API
-	Auth.set('', '');
-	redirect('login');
+	$.get(config.APIUrl + 'auth/logout')
+	 .done(function(res){
+	 		Auth.set('', '');
+			redirect('login');
+	 })
+	 .fail(function(err) { console.log("LOGOUT error: ", err); });
 }
 
 function getPathAndFocusOnNavItem() {
