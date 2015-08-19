@@ -26,14 +26,10 @@ app.get('/realtime/listpic', function(req, res) {
 app.get('/api/workorder/list', function(req, res) {
 	res.send(data.liveinfos);
 });
-<<<<<<< HEAD
-app.get('/api/workorder/listpic', function(req, res) {
-=======
 app.get('/api/workorder/info', function(req, res) {
 	res.send(data.workorderInfo);
 });
-app.get('/api/realtime/listpic', function(req, res) {
->>>>>>> 197d094965778e61618cb0cc1fafb463dc7be00b
+app.get('/api/workorder/listpic', function(req, res) {
 	res.send(data.listpics);
 });
 app.get('/api/workorder', function(req, res) {
