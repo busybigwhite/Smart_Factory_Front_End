@@ -2,6 +2,7 @@
 
 var $ = window.jQuery = require('jquery');
 var config = require('../config/url');
+var auth = require('../config/auth');
 var header = require('../includes/header');
 var api = require('../member/api');
 var queryParameter = require('../lib/helper/query-parameter');
@@ -136,6 +137,7 @@ function getChangedData() {
 	data.password = $userPassword.val();
 	data.email = $userEmail.val();
 	data.group = $("[name='userGroup']:checked").val()
+	data._token = auth.get();
 
 	return data;
 }
