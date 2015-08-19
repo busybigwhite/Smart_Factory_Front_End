@@ -3,12 +3,12 @@
 var $ = window.jQuery = require('jquery');
 require('bootstrap/js/dropdown');
 
-var $maintainPeriod = $('#machine-maintain-period');
+var $maintainPeriod = $('#mold-maintain-period');
 var $periodView   = $maintainPeriod.find('.view-mode').eq(0);
 var $periodInput  = $maintainPeriod.find('.edit-mode').eq(0);
 var $typeView     = $maintainPeriod.find('.view-mode').eq(1);
-var $selectedType = $('#machine-maintain-period-dropdown').find('.selected-option');
-var $typeDropdownList = $('ul[aria-labelledby="machine-maintain-period-dropdown"]').find('.option');
+var $selectedType = $('#mold-maintain-period-dropdown').find('.selected-option');
+var $typeDropdownList = $('ul[aria-labelledby="mold-maintain-period-dropdown"]').find('.option');
 var TYPE = {
 	times: '次',
 	days: '天',

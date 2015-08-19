@@ -6,12 +6,8 @@ var api = require('../mold/api');
 var queryParameter = require('../lib/helper/query-parameter');
 
 var noticeedPersonDropdown = require('../mold/modules/noticed-person-dropdown');
-var checkPeriodDropdown    = require('../mold/modules/check-period-dropdown');
 var maintainPeriodDropdown = require('../mold/modules/maintain-period-dropdown');
-
-var checkRecordTable    = require('../mold/modules/check-record-table');
 var maintainRecordTable = require('../mold/modules/maintain-record-table');
-var errorRecordTable    = require('../mold/modules/error-record-table');
 
 
 /* DOM */
@@ -24,9 +20,17 @@ var $moldDetailPage  = $('#mold-detail-page');
 var $viewModeCollection = $moldDetailPage.find('.view-mode');
 var $editModeCollection = $moldDetailPage.find('.edit-mode');
 
-var $serialNumber = $('#mold-serial-num');
-var $name = $('#mold-name');
-var $weight = $('#mold-weight');
+var $serialNumber  = $('#mold-serial-num');
+var $name          = $('#mold-name');
+var $createdAt     = $('#mold-created-at');
+var $weight        = $('#mold-weight');
+var $manufacturer  = $('#mold-manufacturer');
+var $lifetime      = $('#mold-lifetime');
+var $currentUsage  = $('#mold-current-usage');
+
+var $length = $('#mold-size').find('.length');
+var $width  = $('#mold-size').find('.width');
+var $height = $('#mold-size').find('.height');
 
 
 var isEditMode   = false;
@@ -49,9 +53,7 @@ function initialize() {
 	bindEvents();
 
 	noticeedPersonDropdown.init();
-	checkRecordTable.init();
 	maintainRecordTable.init();
-	errorRecordTable.init();
 }
 
 function getInitialData() {
@@ -79,9 +81,7 @@ function showEditMode() {
 	$backBtn  .hide();
 	$viewModeCollection.addClass('editting');
 	$editModeCollection.addClass('editting');
-	checkRecordTable.setEditMode(true);
 	maintainRecordTable.setEditMode(true);
-	errorRecordTable.setEditMode(true);
 }
 
 function hideEditMode() {
@@ -94,9 +94,7 @@ function hideEditMode() {
 	$backBtn  .show();
 	$viewModeCollection.removeClass('editting');
 	$editModeCollection.removeClass('editting');
-	checkRecordTable.setEditMode(false);
 	maintainRecordTable.setEditMode(false);
-	errorRecordTable.setEditMode(false);
 }
 
 function showCreateMode() {
@@ -107,10 +105,7 @@ function showCreateMode() {
 	$backBtn  .show();
 	$viewModeCollection.addClass('editting');
 	$editModeCollection.addClass('editting');
-	checkRecordTable.setEditMode(true);
 	maintainRecordTable.setEditMode(true);
-	errorRecordTable.setEditMode(true);
-	checkPeriodDropdown.setDefaultType();
 	maintainPeriodDropdown.setDefaultType();
 	noticeedPersonDropdown.setDefault();
 }
@@ -192,6 +187,19 @@ function initBaseInfo(data) {
 	$name.find('.view-mode').text(data['name']);
 	$name.find('.edit-mode').val(data['name']);
 
+// ToFix: datetimepicker
+	$createdAt.find('.view-mode').text(data['created_at']);
+	$createdAt.find('.edit-mode').val(data['created_at']);
+
+	$length.filter('.view-mode').text(data['length']);
+	$length.filter('.edit-mode').val(data['length']);
+
+	$width.filter('.view-mode').text(data['width']);
+	$width.filter('.edit-mode').val(data['width']);
+
+	$height.filter('.view-mode').text(data['height']);
+	$height.filter('.edit-mode').val(data['height']);
+
 	$weight.find('.view-mode').text(data['weight']);
 	$weight.find('.edit-mode').val(data['weight']);
 }
@@ -199,19 +207,19 @@ function initBaseInfo(data) {
 function initResumeInfo(data) {
 	// ToFix: admin_name
 	noticeedPersonDropdown.setNoticeedPerson(data['admin_id'], 'default name');
-	checkPeriodDropdown   .init(data['check_period_value'], data['check_period_unit']);
 	maintainPeriodDropdown.init(data['maintain_period_value'], data['maintain_period_unit']);
-
-	// ToFix: 小保養紀錄 init data
-	var fakedata = [{id: '1', created_at: '2015-08-17', type: 'check', content: 'test1'},{id: '1', created_at: '2015-08-17', type: 'check', content: 'test2'}];
-	checkRecordTable.initialView(fakedata);
 
 	console.log("data['maintain_records'] : ", data['maintain_records']);
 	maintainRecordTable.initialView(data['maintain_records']);
 
-	// ToFix: 異常維修紀錄 init data
-	var fakedata = [{id: '1', created_at: '2015-08-17', type: 'error', content: 'test1'},{id: '1', created_at: '2015-08-17', type: 'error', content: 'test2'}];
-	errorRecordTable.initialView(fakedata);
+	$manufacturer.find('.view-mode').text(data['manufacturer']);
+	$manufacturer.find('.edit-mode').val(data['manufacturer']);
+
+	$lifetime.find('.view-mode').text(data['lifetime']);
+	$lifetime.find('.edit-mode').val(data['lifetime']);
+
+	$currentUsage.find('.view-mode').text(data['current_usage']);
+	$currentUsage.find('.edit-mode').text(data['current_usage']);
 }
 
 function getAllInfoData() {
@@ -234,8 +242,6 @@ function getInfoValue() {
 		}
 	});
 	data['admin_id']  = noticeedPersonDropdown.getId();
-	data['check_period_value']    = checkPeriodDropdown.getValue();
-	data['check_period_unit']     = checkPeriodDropdown.getType();
 	data['maintain_period_value'] = maintainPeriodDropdown.getValue();
 	data['maintain_period_unit']  = maintainPeriodDropdown.getType();
 	return data;
@@ -243,17 +249,13 @@ function getInfoValue() {
 
 function getNewRecordList() {
 	var data = {};
-	data.check    = addMoldIdIntoData(checkRecordTable.getNewList());
 	data.maintain = addMoldIdIntoData(maintainRecordTable.getNewList());
-	data.error    = addMoldIdIntoData(errorRecordTable.getNewList());
 	return data;
 }
 
 function getDeleteRecordList() {
 	var data = {};
-	data.check    = addMoldIdIntoData(checkRecordTable.getDeleteList());
 	data.maintain = addMoldIdIntoData(maintainRecordTable.getDeleteList());
-	data.error    = addMoldIdIntoData(errorRecordTable.getDeleteList());
 	return data;
 }
 

@@ -6,9 +6,9 @@ var api = require('../api');
 require('bootstrap/js/dropdown');
 
  /* DOM */
-var $noticedPersonBlock = $('#machine-noticed-person');
-var $noticedPersonDropdown = $('#machine-notice-dropdown');
-var $selectedOption = $('#machine-notice-dropdown-btn').find('.selected-option');
+var $noticedPersonBlock = $('#mold-noticed-person');
+var $noticedPersonDropdown = $('#mold-notice-dropdown');
+var $selectedOption = $('#mold-notice-dropdown-btn').find('.selected-option');
 
 var peopleList;
 var firstPerson;

@@ -14,7 +14,7 @@ exports.render = function(infos) {
           </div>
           <div class="table-col"><%= info.product_pic %></div>
           <div class="table-col"><%= info.serial_num %></div>
-          <div class="table-col"><%= info.manufacturer %></div>
+          <div class="table-col"><%= info.name %></div>
           <div class="table-col"><%= info.created_at %></div>
           <div class="table-col"><%= info.length %> / <%= info.width %> / <%= info.height %></div>
           <div class="table-col"><%= info.weight %></div>

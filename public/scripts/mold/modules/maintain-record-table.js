@@ -5,12 +5,12 @@ var template = require('../templates/record-list-template');
 require('eonasdan-bootstrap-datetimepicker');
 
 /* DOM */
-var $recordTable        = $('#maintain-record-table');
+var $recordTable        = $('#mold-maintain-record-table');
 var $tableHeader        = $recordTable.find('.record-header');
-var $tableBody          = $('#maintain-record-table-body');
-var $changedTable       = $('#maintain-record-changed-table-body');
-var $recordForm         = $('#maintain-record-form');
-var $datePicker         = $('#maintain-record-date-picker');
+var $tableBody          = $('#mold-maintain-record-table-body');
+var $changedTable       = $('#mold-maintain-record-changed-table-body');
+var $recordForm         = $('#mold-maintain-record-form');
+var $datePicker         = $('#mold-maintain-record-date-picker');
 var $contentInput       = $recordForm.find('.record-content-input');
 var $addRecordBtn       = $recordForm.find('.record-new-button');
 var $clearInputBtn      = $recordForm.find('.record-cancel-button');
