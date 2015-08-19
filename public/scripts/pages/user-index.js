@@ -5,6 +5,7 @@ var config = require('../config/url');
 var auth = require('../config/auth');
 var header = require('../includes/header');
 var api = require('../member/api');
+var factoryDropdown = require('../lib/component/dropdown-factory');
 
 /* DOM */
 var $userForm = $('#user-setting');

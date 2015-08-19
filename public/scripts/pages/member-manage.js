@@ -6,6 +6,7 @@ var auth = require('../config/auth');
 var header = require('../includes/header');
 var api = require('../member/api');
 var queryParameter = require('../lib/helper/query-parameter');
+var factoryDropdown = require('../lib/component/dropdown-factory');
 
 /* DOM */
 var $manageForm = $('#manage-form');
