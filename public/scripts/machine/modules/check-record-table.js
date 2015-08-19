@@ -2,6 +2,7 @@
 
 var $ = window.jQuery = require('jquery');
 var template = require('../templates/record-list-template');
+require('eonasdan-bootstrap-datetimepicker');
 
 /* DOM */
 var $recordTable        = $('#check-record-table');
@@ -71,7 +72,6 @@ function getDeleteList() {
 	return data;
 }
 
-// ToFix: lack of hh:mm:ss
 function initializeDatetimePicker() {
 	$datePicker.datetimepicker(dateTimePickerOpt);
 	$datePicker.data("DateTimePicker").defaultDate(today);

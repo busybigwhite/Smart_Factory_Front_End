@@ -11,9 +11,34 @@
 
 <div class="main-container">
 
-
+    <div id="workorder-panel">
+    	<div id="workorder-select-block">
+    		<div class="col-xs-12">
+	    		<div class="dropdown-factory-filter">
+					<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						<span class="factory-focus-name"></span>
+						<span class="caret"></span>
+					</button>
+					<ul class="factory-list dropdown-menu"></ul>
+				</div>
+                <button class="new-button" id="workorder-new-button">新增工單</button>
+    		</div>
+    	</div>
+        <div id="workorder-list-block">
+        	<ul id="workorder-table-mode">
+				<li class="table-header">
+					<div class="table-col">工單編號</div>
+                	<div class="table-col">訂單編號</div>
+                	<div class="table-col">客戶名稱</div>
+                	<div class="table-col">生產廠區別</div>
+                	<div class="table-col">工單狀態</div>
+                	<div class="table-col-lg"></div>
+				</li>
+				<div class="workorder-table-body"></div>
+			</ul>
+        </div>
+    </div>
 </div>
-
 
 <script src="../../../build/bundle/workorder-index.js"></script>
 
