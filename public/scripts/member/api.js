@@ -4,13 +4,19 @@ var $ = window.jQuery = require('jquery');
 var config = require('../config/url');
 
 var memberApiUrl  = config.APIUrl + 'user/';
+var userApiUrl = config.APIUrl + 'me';
 
 exports = module.exports = {
+	getUser: getUser,
 	getMemberList: getMemberList,
 	createMember: createMember,
 	deleteMember: deleteMember,
 	getMember: getMember,
 	editMember: editMember,
+};
+
+function getUser() {
+	return getData(userApiUrl);
 };
 
 function getMemberList() {

@@ -1,6 +1,7 @@
 'use strict';
 
 var $ = window.jQuery = require('jquery');
+require('bootstrap/js/dropdown');
 
 var $maintainPeriod = $('#machine-maintain-period');
 var $periodView   = $maintainPeriod.find('.view-mode').eq(0);
@@ -12,12 +13,17 @@ var TYPE = {
 	times: '次',
 	days: '天',
 };
+var defaultType = 'times';
+var defaultTypeStirng = TYPE.times;
+
 
 exports.init     = initMaintainPeriod;
 exports.getValue = getValue;
 exports.getType  = getType;
+exports.setDefaultType  = setDefaultType;
 
 function initMaintainPeriod(val, type) {
+	console.log('maintain initialView:', val, type);
 	initialView(val, type);
 	bindEvents();
 }
@@ -27,6 +33,14 @@ function initialView(val, type) {
 	$periodInput.val(val);
 	$typeView.text(TYPE[type]);
 	$selectedType.text(TYPE[type]).data('type', type);
+
+	if (!type) setDefaultType();
+}
+
+function setDefaultType() {
+	console.log('setDefaultType:', defaultTypeStirng, defaultType);
+	$typeView.text(defaultTypeStirng);
+	$selectedType.text(defaultTypeStirng).data('type', defaultType);
 }
 
 function bindEvents() {
