@@ -35,7 +35,7 @@ exports.renderPicList = function(pictures) {
    `<% _.forEach(pictures, function(picture, key) {  %>
       <div class="realtime-pic-item">
         <a class="thumbnail" title= <%= picture.current_time %> >
-          <img src= ../pic/ipc/<%= picture.ipc_id %>/<%= picture.type %>/<%= picture.url %> >
+          <img src= ../api/pic/ipc/<%= picture.ipc_id %>/<%= picture.type %>/<%= picture.url %> >
         </a>
         <div class="realtime-pic-label">
           <span><%= picture.current_time %></span>
