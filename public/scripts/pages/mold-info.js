@@ -2,37 +2,40 @@
 
 var $ = window.jQuery = require('jquery');
 var header = require('../includes/header');
-var api = require('../machine/api');
+var api = require('../mold/api');
 var queryParameter = require('../lib/helper/query-parameter');
 
-var noticeedPersonDropdown = require('../machine/modules/noticed-person-dropdown');
-var checkPeriodDropdown    = require('../machine/modules/check-period-dropdown');
-var maintainPeriodDropdown = require('../machine/modules/maintain-period-dropdown');
-
-var checkRecordTable    = require('../machine/modules/check-record-table');
-var maintainRecordTable = require('../machine/modules/maintain-record-table');
-var errorRecordTable    = require('../machine/modules/error-record-table');
+var noticeedPersonDropdown = require('../mold/modules/noticed-person-dropdown');
+var maintainPeriodDropdown = require('../mold/modules/maintain-period-dropdown');
+var maintainRecordTable = require('../mold/modules/maintain-record-table');
 
 
 /* DOM */
-var $editBtn   = $('#machine-edit-button');
-var $cancelBtn = $('#machine-cancel-button');
-var $saveBtn   = $('#machine-save-button');
-var $deleteBtn = $('#machine-delete-button');
-var $backBtn   = $('#machine-back-button');
-var $machineDetailPage  = $('#machine-detail-page');
-var $viewModeCollection = $machineDetailPage.find('.view-mode');
-var $editModeCollection = $machineDetailPage.find('.edit-mode');
+var $editBtn   = $('#mold-edit-button');
+var $cancelBtn = $('#mold-cancel-button');
+var $saveBtn   = $('#mold-save-button');
+var $deleteBtn = $('#mold-delete-button');
+var $backBtn   = $('#mold-back-button');
+var $moldDetailPage  = $('#mold-detail-page');
+var $viewModeCollection = $moldDetailPage.find('.view-mode');
+var $editModeCollection = $moldDetailPage.find('.edit-mode');
 
-var $serialNumber = $('#machine-serial-num');
-var $name = $('#machine-name');
-var $weight = $('#machine-weight');
-// TODO: 機台稼動率
+var $serialNumber  = $('#mold-serial-num');
+var $name          = $('#mold-name');
+var $createdAt     = $('#mold-created-at');
+var $weight        = $('#mold-weight');
+var $manufacturer  = $('#mold-manufacturer');
+var $lifetime      = $('#mold-lifetime');
+var $currentUsage  = $('#mold-current-usage');
+
+var $length = $('#mold-size').find('.length');
+var $width  = $('#mold-size').find('.width');
+var $height = $('#mold-size').find('.height');
 
 
 var isEditMode   = false;
 var isCreateMode = false;
-var machineId;
+var moldId;
 var originalData;
 
 
@@ -44,31 +47,29 @@ function initialize() {
 		isCreateMode = true;
 		showCreateMode();
 	}
-	machineId = queryParameter.get('ID');
+	moldId = queryParameter.get('ID');
 	api.setFactoryId(queryParameter.get('factoryId'));
 	getInitialData();
 	bindEvents();
 
 	noticeedPersonDropdown.init();
-	checkRecordTable.init();
 	maintainRecordTable.init();
-	errorRecordTable.init();
 }
 
 function getInitialData() {
-	if (!machineId) return;
-	api.getMachineInfo(machineId)
+	if (!moldId) return;
+	api.getMoldInfo(moldId)
 		 .done(initialView)
-		 .fail(function(err) { console.log("GET Machine Info error: ", err); });
+		 .fail(function(err) { console.log("GET Mold Info error: ", err); });
 }
 
 function bindEvents() {
 	$editBtn  .on('click', showEditMode);
 	$cancelBtn.on('click', hideEditMode);
-	$deleteBtn.on('click', deleteMachine);
-	$backBtn  .on('click', api.goToMachineIndex);
-	$machineDetailPage.on('keypress', 'input', preventSubmitOnInputEnter);
-	$machineDetailPage.submit(saveData);
+	$deleteBtn.on('click', deleteMold);
+	$backBtn  .on('click', api.goToMoldIndex);
+	$moldDetailPage.on('keypress', 'input', preventSubmitOnInputEnter);
+	$moldDetailPage.submit(saveData);
 }
 
 function showEditMode() {
@@ -80,9 +81,7 @@ function showEditMode() {
 	$backBtn  .hide();
 	$viewModeCollection.addClass('editting');
 	$editModeCollection.addClass('editting');
-	checkRecordTable.setEditMode(true);
 	maintainRecordTable.setEditMode(true);
-	errorRecordTable.setEditMode(true);
 }
 
 function hideEditMode() {
@@ -95,9 +94,7 @@ function hideEditMode() {
 	$backBtn  .show();
 	$viewModeCollection.removeClass('editting');
 	$editModeCollection.removeClass('editting');
-	checkRecordTable.setEditMode(false);
 	maintainRecordTable.setEditMode(false);
-	errorRecordTable.setEditMode(false);
 }
 
 function showCreateMode() {
@@ -108,10 +105,7 @@ function showCreateMode() {
 	$backBtn  .show();
 	$viewModeCollection.addClass('creating');
 	$editModeCollection.addClass('creating');
-	checkRecordTable.setEditMode(true);
 	maintainRecordTable.setEditMode(true);
-	errorRecordTable.setEditMode(true);
-	checkPeriodDropdown.setDefaultType();
 	maintainPeriodDropdown.setDefaultType();
 	noticeedPersonDropdown.setDefault();
 }
@@ -139,40 +133,40 @@ function saveData() {
 		console.log('New Data : ', data);
 
 	} else {
-		console.log('machine info page has error: Undefined Mode');
+		console.log('mold info page has error: Undefined Mode');
 	}
 	return false;
 }
 
 function saveChangedData(data) {
-	api.editMachineInfo(machineId, data)
-		 .done(function(data) { console.log("EDIT Machine Info res: ", data); })
-		 .fail(function(err) { console.log("EDIT Machine Info error: ", err); });
+	api.editMoldInfo(moldId, data)
+		 .done(function(data) { console.log("EDIT Mold Info res: ", data); })
+		 .fail(function(err) { console.log("EDIT Mold Info error: ", err); });
 }
 
 function saveNewData(data) {
-	api.createMachine(data)
-		 .done(function(data) { console.log("CREATE Machine res: ", data); })
-		 .fail(function(err) { console.log("CREATE Machine error: ", err); });
+	api.createMold(data)
+		 .done(function(data) { console.log("CREATE Mold res: ", data); })
+		 .fail(function(err) { console.log("CREATE Mold error: ", err); });
 }
 
 function saveNewRecord(data) {
-	api.createMachineRecord(machineId, data)
-		 .done(function(data) { console.log("CREATE Machine Record res: ", data); })
-		 .fail(function(err) { console.log("CREATE Machine Record error: ", err); });
+	api.createMoldRecord(moldId, data)
+		 .done(function(data) { console.log("CREATE Mold Record res: ", data); })
+		 .fail(function(err) { console.log("CREATE Mold Record error: ", err); });
 }
 
 function saveDeleteRecord(data) {
-	api.deleteMachineRecord(machineId, data)
-		 .done(function(data) { console.log("CREATE Machine Record res: ", data); })
-		 .fail(function(err) { console.log("CREATE Machine Record error: ", err); });
+	api.deleteMoldRecord(moldId, data)
+		 .done(function(data) { console.log("CREATE Mold Record res: ", data); })
+		 .fail(function(err) { console.log("CREATE Mold Record error: ", err); });
 }
 
 
-function deleteMachine() {
-	api.deleteMachine(machineId)
-		 .done(function(data) { console.log("DELETE Machine res: ", data); })
-		 .fail(function(err) { console.log("DELETE Machine error: ", err); });
+function deleteMold() {
+	api.deleteMold(moldId)
+		 .done(function(data) { console.log("DELETE Mold res: ", data); })
+		 .fail(function(err) { console.log("DELETE Mold error: ", err); });
 }
 
 function initialView(data) {
@@ -193,28 +187,39 @@ function initBaseInfo(data) {
 	$name.find('.view-mode').text(data['name']);
 	$name.find('.edit-mode').val(data['name']);
 
+// ToFix: datetimepicker
+	$createdAt.find('.view-mode').text(data['created_at']);
+	$createdAt.find('.edit-mode').val(data['created_at']);
+
+	$length.filter('.view-mode').text(data['length']);
+	$length.filter('.edit-mode').val(data['length']);
+
+	$width.filter('.view-mode').text(data['width']);
+	$width.filter('.edit-mode').val(data['width']);
+
+	$height.filter('.view-mode').text(data['height']);
+	$height.filter('.edit-mode').val(data['height']);
+
 	$weight.find('.view-mode').text(data['weight']);
 	$weight.find('.edit-mode').val(data['weight']);
-
-	// TODO: 機台稼動率
 }
 
 function initResumeInfo(data) {
 	// ToFix: admin_name
 	noticeedPersonDropdown.setNoticeedPerson(data['admin_id'], 'default name');
-	checkPeriodDropdown   .init(data['check_period_value'], data['check_period_unit']);
 	maintainPeriodDropdown.init(data['maintain_period_value'], data['maintain_period_unit']);
-
-	// ToFix: 小保養紀錄 init data
-	var fakedata = [{id: '1', created_at: '2015-08-17', type: 'check', content: 'test1'},{id: '1', created_at: '2015-08-17', type: 'check', content: 'test2'}];
-	checkRecordTable.initialView(fakedata);
 
 	console.log("data['maintain_records'] : ", data['maintain_records']);
 	maintainRecordTable.initialView(data['maintain_records']);
 
-	// ToFix: 異常維修紀錄 init data
-	var fakedata = [{id: '1', created_at: '2015-08-17', type: 'error', content: 'test1'},{id: '1', created_at: '2015-08-17', type: 'error', content: 'test2'}];
-	errorRecordTable.initialView(fakedata);
+	$manufacturer.find('.view-mode').text(data['manufacturer']);
+	$manufacturer.find('.edit-mode').val(data['manufacturer']);
+
+	$lifetime.find('.view-mode').text(data['lifetime']);
+	$lifetime.find('.edit-mode').val(data['lifetime']);
+
+	$currentUsage.find('.view-mode').text(data['current_usage']);
+	$currentUsage.find('.edit-mode').text(data['current_usage']);
 }
 
 function getAllInfoData() {
@@ -237,8 +242,6 @@ function getInfoValue() {
 		}
 	});
 	data['admin_id']  = noticeedPersonDropdown.getId();
-	data['check_period_value']    = checkPeriodDropdown.getValue();
-	data['check_period_unit']     = checkPeriodDropdown.getType();
 	data['maintain_period_value'] = maintainPeriodDropdown.getValue();
 	data['maintain_period_unit']  = maintainPeriodDropdown.getType();
 	return data;
@@ -246,23 +249,19 @@ function getInfoValue() {
 
 function getNewRecordList() {
 	var data = {};
-	data.check    = addMachineIdIntoData(checkRecordTable.getNewList());
-	data.maintain = addMachineIdIntoData(maintainRecordTable.getNewList());
-	data.error    = addMachineIdIntoData(errorRecordTable.getNewList());
+	data.maintain = addMoldIdIntoData(maintainRecordTable.getNewList());
 	return data;
 }
 
 function getDeleteRecordList() {
 	var data = {};
-	data.check    = addMachineIdIntoData(checkRecordTable.getDeleteList());
-	data.maintain = addMachineIdIntoData(maintainRecordTable.getDeleteList());
-	data.error    = addMachineIdIntoData(errorRecordTable.getDeleteList());
+	data.maintain = addMoldIdIntoData(maintainRecordTable.getDeleteList());
 	return data;
 }
 
-function addMachineIdIntoData(array) {
+function addMoldIdIntoData(array) {
 	return array.map(function(el, i) {
-		el.machine_id = machineId;
+		el.mold_id = moldId;
 		return el;
 	});
 }

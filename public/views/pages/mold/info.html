@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Smart Factory</title>
+	<link rel="stylesheet" type="text/css" href="../../../build/style.css">
+</head>
+<body class="detail-page-html-body">
+
+<div id="header"></div>
+
+<form class="detail-page-container" id="mold-detail-page">
+	<div class="base-action-panel">
+		<button type="button" class="info-delete-button" id="mold-delete-button">刪除</button>
+		<button type="button" class="info-edit-button" id="mold-edit-button">編輯</button>
+		<button type="submit" class="info-save-button" id="mold-save-button">儲存</button>
+		<button type="button" class="info-back-button" id="mold-back-button">回列表</button>
+		<button type="button" class="info-cancel-button" id="mold-cancel-button">取消</button>
+	</div>
+	<div class="base-info-panel">
+		<ul>
+			<li id="mold-serial-num">
+				<span class="info-name">模具編號</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="serial_num" value="" pattern="[A-Za-z0-9]{1,30}" title="輸入1~30個英數字" required>
+				</span>
+			</li>
+			<li id="mold-name">
+				<span class="info-name">模具名稱</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="name" value="" pattern="[A-Za-z0-9]{1,30}" title="輸入1~30個英數字" required>
+				</span>
+			</li>
+			<li>
+				<span class="info-name">模具建立日期</span>
+				<span class="info-value">
+					<span class="info-value">
+						<p class="view-mode"></p>
+						<input class="edit-mode" type="text" name="created_at" value="" pattern="[0-9]{1,10}" title="輸入數字" required><!-- ToFix: datetimepicker -->
+					</span>
+				</span>
+			</li>
+			<li id="mold-size">
+				<span class="info-name">尺寸(長/寬/高)</span>
+				<span class="info-value">
+					<span class="view-mode length"></span>
+					<input class="edit-mode length" type="text" name="length" value="" pattern="[0-9]{1,4}" title="輸入數字" required> /
+					<span class="view-mode width"></span>
+					<input class="edit-mode width" type="text" name="width" value="" pattern="[0-9]{1,4}" title="輸入數字" required> /
+					<span class="view-mode height"></span>
+					<input class="edit-mode height" type="text" name="height" value="" pattern="[0-9]{1,4}" title="輸入數字" required> (mm)
+				</span>
+			</li>
+			<li id="mold-weight">
+				<span class="info-name">重量</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="weight" value="" pattern="[0-9]{1,10}" title="輸入數字" required> (kg)
+				</span>
+			</li>
+		</ul>
+	</div>
+	<section class="production-resume-panel">
+		<h3 class="resume-header">生產履歷</h3>
+		<ul>
+			<li id="mold-noticed-person">
+				<span class="resume-name">保養通知</span>
+				<span class="resume-value">
+					<p class="view-mode"></p>
+					<div class="edit-mode dropdown">
+						<button class="btn btn-default dropdown-toggle"
+										id="mold-notice-dropdown-btn"
+										data-toggle="dropdown"
+										aria-haspopup="true"
+										aria-expanded="true">
+							<span class="selected-option" name="admin_id"></span>
+							<span class="caret"></span>
+						</button>
+						<ul id="mold-notice-dropdown" class="dropdown-menu" aria-labelledby="mold-notice-dropdown-btn"></ul>
+					</div>
+				</span>
+			</li>
+			<li id="mold-maintain-period">
+				<span class="resume-name">保養週期</span>
+				<span class="resume-value">
+					<span class="view-mode"></span>
+					<span class="view-mode"></span>
+					<input class="edit-mode" type="text" name="maintain_period_value" value="" pattern="[0-9]{1,10}" title="輸入數字" required>
+					<div class="edit-mode dropdown">
+						<button class="btn btn-default dropdown-toggle"
+										id="mold-maintain-period-dropdown"
+										data-toggle="dropdown"
+										aria-haspopup="true"
+										aria-expanded="true">
+							<span class="selected-option"></span>
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="mold-maintain-period-dropdown">
+							<li><a class="option" type="times">次</a></li>
+							<li><a class="option" type="days">天</a></li>
+						</ul>
+					</div>
+				</span>
+			</li>
+			<div class="record-table" id="mold-maintain-record-table">
+				<h4 class="record-header">保養紀錄<i class="fa fa-chevron-down pul-right"></i></h4>
+				<div class="record-form clearfix" id="mold-maintain-record-form">
+					<div class="record-date-picker-column">
+						<label for="mold-maintain-record-date-picker" class="fa fa-calendar"></label>
+						<input type="text" data-date-format="YYYY-MM-DD HH:mm:ss" id="mold-maintain-record-date-picker" readonly/>
+					</div>
+					<div class="record-detail-column">
+						<input type="text" class="record-content-input" placeholder="說明文字">
+					</div>
+					<div class="record-action-column">
+						<button type="button" class="record-new-button">新增</button>
+						<button type="button" class="record-cancel-button">取消</button>
+					</div>
+				</div>
+				<ul class="record-changed-table-body" id="mold-maintain-record-changed-table-body"></ul>
+				<ul class="record-table-body" id="mold-maintain-record-table-body"></ul>
+			</div>
+			<li id="mold-manufacturer">
+				<span class="resume-name">製造廠商</span>
+				<span class="resume-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="manufacturer" value="" required>
+				</span>
+			</li>
+			<li id="mold-lifetime">
+				<span class="resume-name">使用壽命</span>
+				<span class="resume-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="lifetime" value="" pattern="[0-9]{1,20}" title="輸入數字" required> 次
+				</span>
+			</li>
+			<li id="mold-current-usage">
+				<span class="resume-name">目前使用總次數</span>
+				<span class="resume-value">
+					<p class="view-mode"></p>
+					<p class="edit-mode"></p>
+					<span class="creating-default-value">0</span> 次
+				</span>
+			</li>
+		</ul>
+	</section>
+</form>
+
+<script src="../../../build/bundle/mold-info.js"></script>
+
+</body>
+</html>

@@ -30,13 +30,25 @@
 	.info-value {
 		.view-mode {
 			display: inline-block;
-			&.editting {
+			&.editting,
+			&.creating {
 				display: none;
 			}
 		}
 		.edit-mode {
 			display: none;
-			&.editting {
+			&.editting,
+			&.creating {
+				display: inline-block;
+			}
+		}
+
+		.creating-default-value {
+			display: none;
+		}
+		.view-mode.creating,
+		.edit-mode.creating {
+			& + .creating-default-value {
 				display: inline-block;
 			}
 		}
@@ -74,13 +86,24 @@
 	.resume-value {
 		.view-mode {
 			display: inline-block;
-			&.editting {
+			&.editting,
+			&.creating {
 				display: none;
 			}
 		}
 		.edit-mode {
 			display: none;
-			&.editting {
+			&.editting,
+			&.creating {
+				display: inline-block;
+			}
+		}
+		.creating-default-value {
+			display: none;
+		}
+		.view-mode.creating,
+		.edit-mode.creating {
+			& + .creating-default-value {
 				display: inline-block;
 			}
 		}
