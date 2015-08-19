@@ -25,6 +25,7 @@ var pwd1Input = document.getElementById("userPassword");
 var pwd2Input = document.getElementById("userPasswordConfirm");
 
 var memberId = queryParameter.get('id');
+var origName = '';
 var memberList = [];
 
 initialize();
@@ -68,7 +69,7 @@ function supports_input_validity(){
 }
 
 function checkUsername(){
-	if($.inArray(this.value, memberList) > -1){
+	if($.inArray((this.value, memberList) > -1) && (this.value !== origName)){
 		this.pattern = "";
 		this.title = "帳號名稱已被使用";
 	} else {
@@ -118,6 +119,7 @@ function getmemberList(){
 function getInitialData() {
 	api.getMember(memberId)
 		 .done(function(res){
+		 		origName = res.name;
 			 	$userName.val(res.name);
 				$userEmail.val(res.email);
 
