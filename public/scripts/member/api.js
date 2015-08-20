@@ -12,9 +12,7 @@ exports = module.exports = {
 	createMember: createMember,
 	deleteMember: deleteMember,
 	getMember: getMember,
-	editMember: editMember,
-	memberApiUrl: memberApiUrl,
-	userApiUrl: userApiUrl
+	editMember: editMember
 };
 
 function getUser() {
@@ -38,7 +36,7 @@ function getMember(id) {
 };
 
 function editMember(id, data) {
-	return editData(memberApiUrl + '/' + id);
+	return editData(memberApiUrl + '/' + id, data);
 }
 
 

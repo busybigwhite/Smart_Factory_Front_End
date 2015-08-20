@@ -5,6 +5,7 @@ var header = require('../includes/header');
 var template = require('../member/template');
 var api = require('../member/api');
 var factoryDropdown = require('../lib/component/dropdown');
+var redirect = require('../lib/helper/redirect');
 
 /* DOM */
 var $memberNewBtn = $('#member-new-button');
@@ -44,10 +45,11 @@ function initialView(data) {
 }
 
 function gotoMemberNewPage() {
-	window.location.href = api.memberApiUrl + 'manage?type=add';
+	redirect('memberManage', { type: 'add' });
 }
 
 function gotoMemberEditPage() {
 	var id = $(this).data('id');
-	window.location.href = api.memberApiUrl + 'manage?type=edit&id=' + id;
+
+	redirect('memberManage', { type: 'edit', id: id });
 }
