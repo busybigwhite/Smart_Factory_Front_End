@@ -115,7 +115,7 @@ function displayImageBlock(infos, type) {
 			$imageBlock.empty().append( chart ).removeClass('hidden');
 		break;
 		case "mold":
-			getHeatmap(infos[0]);
+			getHeatmap(infos[0].mold_id);
 		break;
 		default:
 			$imageBlock.addClass('hidden');
@@ -123,9 +123,9 @@ function displayImageBlock(infos, type) {
 	}
 }
 
-function getHeatmap(info) {
+function getHeatmap(id) {
 
-	$.get(config.APIUrl + 'pic/heatmap/list/?' + 'mold_id=' + moldId)
+	$.get(config.APIUrl + 'pic/heatmap/list/?' + 'mold_id=' + id)
 	 .done(function(response){
 	 	var heatmap = templates.renderHeatmap({ heatmapUrls: response });
 
