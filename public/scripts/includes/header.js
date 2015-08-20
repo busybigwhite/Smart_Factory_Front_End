@@ -20,7 +20,7 @@ function initialize() {
 	$logoutBtn = $('#logout-btn');
 
 	bindEvents();
-	// Auth.set('Moremote', '1234567890');
+	resetHrefLink();
 	getPathAndFocusOnNavItem();
     getUserName();
 }
@@ -40,6 +40,12 @@ function logout() {
 			redirect('login');
 	 })
 	 .fail(function(err) { console.log("LOGOUT error: ", err); });
+}
+
+function resetHrefLink() {
+	$('.navbar-item').each(function(){
+		this.href.replace('..', config.baseUrl);
+	}
 }
 
 function getPathAndFocusOnNavItem() {
