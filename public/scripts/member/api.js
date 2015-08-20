@@ -3,7 +3,7 @@
 var $ = window.jQuery = require('jquery');
 var config = require('../config/url');
 
-var memberApiUrl  = config.APIUrl + 'user/';
+var memberApiUrl  = config.APIUrl + 'user';
 var userApiUrl = config.APIUrl + 'me';
 
 exports = module.exports = {
@@ -16,11 +16,11 @@ exports = module.exports = {
 };
 
 function getUser() {
-	return getData(userApiUrl);
+	return getData(userApiUrl + '/');
 };
 
 function getMemberList() {
-	return getData(memberApiUrl);
+	return getData(memberApiUrl + '/');
 };
 
 function createMember(data) {
@@ -28,15 +28,15 @@ function createMember(data) {
 }
 
 function deleteMember(id) {
-	return deleteData(memberApiUrl + id);
+	return deleteData(memberApiUrl + '/' + id);
 }
 
 function getMember(id) {
-	return getData(memberApiUrl + id);
+	return getData(memberApiUrl + '/' + id);
 };
 
 function editMember(id, data) {
-	return editData(memberApiUrl + id);
+	return editData(memberApiUrl + '/' + id);
 }
 
 
