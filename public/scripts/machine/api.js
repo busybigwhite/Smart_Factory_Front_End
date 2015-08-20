@@ -4,6 +4,7 @@ var $ = window.jQuery = require('jquery');
 var qs = require('qs');
 var assign = require('object-assign');
 var config = require('../config/url');
+var token = require('../config/auth').getToken();
 
 var factoryId;
 var machineApiUrl  = config.APIUrl + 'machine/';
@@ -104,6 +105,7 @@ function deleteData(url, data) {
 function ajax(method, url, data) {
 	var data = assign({}, data); // prevent data is undefined
 	data.factory_id = factoryId;
+	data['_token'] = token;
 
 	return $.ajax({
 		method: method,
