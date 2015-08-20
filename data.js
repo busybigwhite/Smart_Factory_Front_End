@@ -46,41 +46,135 @@ var liveinfos = [
 ]
 
 var listpics = [
-            {
-                'work_order_id': '1',
-                'ipc_id': 'images',
-                'type': 'sample',
-                'current_time': '2015/08/11 00:00:00',
-                'url': 'sample.jpg',
-            },
-            {
-                'work_order_id': '1',
-                'ipc_id': 'images',
-                'type': 'sample',
-                'current_time': '2015/08/11 00:00:00',
-                'url': 'sample.jpg',
-            },
-            {
-                'work_order_id': '1',
-                'ipc_id': 'images',
-                'type': 'sample',
-                'current_time': '2015/08/11 00:00:00',
-                'url': 'sample.jpg'
-            },
-            {
-                'work_order_id': '1',
-                'ipc_id': 'images',
-                'type': 'sample',
-                'current_time': '2015/08/11 00:00:00',
-                'url': 'sample.jpg',
-            },
-            {
-                'work_order_id': '1',
-                'ipc_id': 'images',
-                'type': 'sample',
-                'current_time': '2015/08/11 00:00:00',
-                'url': 'sample.jpg'
-            }
+        {
+            "id":1,
+            "work_order_id":1,
+            "factory_id":1,
+            "machine_id":3,
+            "mold_id":3,
+            "ipc_id":3,
+            "camera_id":1,
+            "type":"normal",
+            "url":"a5ccad3a048c07b064c420fbb7337913",
+            "created_at":"2015-08-19 12:51:57",
+            "updated_at":"2015-08-19 12:51:57"
+        },
+        {
+            "id":2,
+            "work_order_id":1,
+            "factory_id":1,
+            "machine_id":1,
+            "mold_id":1,
+            "ipc_id":1,
+            "camera_id":1,
+            "type":"current",
+            "url":"current_img",
+            "created_at":"2015-08-19 12:52:05",
+            "updated_at":"2015-08-19 12:52:05"
+        },
+        {
+            "id":3,
+            "work_order_id":1,
+            "factory_id":1,
+            "machine_id":1,
+            "mold_id":1,
+            "ipc_id":1,
+            "camera_id":1,
+            "type":"normal",
+            "url":"5a1c473733e5ac0868da6d26786b5c24",
+            "created_at":"2015-08-19 12:54:55",
+            "updated_at":"2015-08-19 12:54:55"
+        },
+        {
+            "id":4,
+            "work_order_id":1,
+            "factory_id":1,
+            "machine_id":1,
+            "mold_id":1,
+            "ipc_id":1,
+            "camera_id":1,
+            "type":"error",
+            "url":"14651e4e03a4e41e01595d09e8714d0b",
+            "created_at":"2015-08-19 12:56:44",
+            "updated_at":"2015-08-19 12:56:44"
+        },
+        {
+            "id":5,
+            "work_order_id":1,
+            "factory_id":1,
+            "machine_id":1,
+            "mold_id":1,
+            "ipc_id":1,
+            "camera_id":1,
+            "type":"mask",
+            "url":"cc1b16d255e99c8c0ab3ce46e8c3acf2",
+            "created_at":"2015-08-19 12:56:44",
+            "updated_at":"2015-08-19 12:56:44"
+        },
+        {
+            "id":6,
+            "work_order_id":1,
+            "factory_id":1,
+            "machine_id":1,
+            "mold_id":1,
+            "ipc_id":1,
+            "camera_id":2,
+            "type":"error",
+            "url":"1f8b6ad1ceb54ea9a74c2dc46d52d510",
+            "created_at":"2015-08-19 13:00:31",
+            "updated_at":"2015-08-19 13:00:31"
+        },
+        {
+            "id":7,
+            "work_order_id":1,
+            "factory_id":1,
+            "machine_id":1,
+            "mold_id":1,
+            "ipc_id":1,
+            "camera_id":2,
+            "type":"mask",
+            "url":"9dc6e05f815f44a7d75af7ecf437354d",
+            "created_at":"2015-08-19 13:00:31",
+            "updated_at":"2015-08-19 13:00:31"
+        },
+        {
+            "id":8,
+            "work_order_id":1,
+            "factory_id":1,
+            "machine_id":1,
+            "mold_id":1,
+            "ipc_id":1,
+            "camera_id":2,
+            "type":"normal",
+            "url":"e1fbd4ca450db03d2ff6e0a7997f8ae8",
+            "created_at":"2015-08-19 13:00:59",
+            "updated_at":"2015-08-19 13:00:59"
+        },
+        {
+            "id":9,
+            "work_order_id":1,
+            "factory_id":1,
+            "machine_id":1,
+            "mold_id":1,
+            "ipc_id":1,
+            "camera_id":3,
+            "type":"current",
+            "url":"current_img",
+            "created_at":"2015-08-19 13:01:19",
+            "updated_at":"2015-08-19 13:01:19"
+        },
+        {
+            "id":10,
+            "work_order_id":1,
+            "factory_id":1,
+            "machine_id":1,
+            "mold_id":1,
+            "ipc_id":1,
+            "camera_id":3,
+            "type":"normal",
+            "url":"c4d7a3c78d3a85727b4abd56bc074b6d",
+            "created_at":"2015-08-19 13:16:14",
+            "updated_at":"2015-08-19 13:16:14"}
 ]
 
 
