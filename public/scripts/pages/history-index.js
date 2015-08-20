@@ -115,11 +115,21 @@ function displayImageBlock(infos, type) {
 			$imageBlock.empty().append( chart ).removeClass('hidden');
 		break;
 		case "mold":
-			var heatmap = templates.renderHeatmap({ info: infos[0] });
-			$imageBlock.append( heatmap ).removeClass('hidden');
+			getHeatmap(infos[0]);
 		break;
 		default:
 			$imageBlock.addClass('hidden');
 		break;
 	}
+}
+
+function getHeatmap(info) {
+
+	$.get(config.APIUrl + 'pic/heatmap/list/?' + 'mold_id=' + moldId)
+	 .done(function(response){
+	 	var heatmap = templates.renderHeatmap({ heatmapUrls: response });
+
+		$imageBlock.append( heatmap ).removeClass('hidden');
+
+	}).fail(function(err){ console.log('get heatmap error:', err) });
 }
