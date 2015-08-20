@@ -40,7 +40,14 @@
 			<li id="factory">
 				<span class="info-name">生產廠區別</span>
 				<span class="info-value">
-					<input class="newOrder" type="text" name="factory" value="">
+					<!-- <input class="newOrder" type="text" name="factory" value=""> -->
+					<div class="dropdown-workorder-factory">
+						<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+							<span class="factory-focus-name selected-option newOrder" selectname="factory"></span>
+							<span class="caret"></span>
+						</button>
+					<ul class="factory-list dropdown-menu"></ul>
+				</div>
 				</span>
 			</li>
 			<li id="workorder-status">
@@ -49,7 +56,7 @@
 					<!-- <input class="newOrder" type="text" name="workorder-status" value=""> -->
 					<div class="dropdown-workorder-status">
 						<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-							<span class="status-focus-name"></span>
+							<span class="status-focus-name selected-option newOrder" selectname="workorder-status"></span>
 							<span class="caret"></span>
 						</button>
 					<ul class="factory-list dropdown-menu"></ul>
@@ -89,7 +96,14 @@
 			<li id="type">
 				<span class="info-name">類別</span>
 				<span class="info-value">
-					<input class="newOrder" type="text" name="type" value="">
+					<!-- <input class="newOrder" type="text" name="type" value=""> -->
+					<div class="dropdown-workorder-type">
+						<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+							<span class="type-focus-name selected-option newOrder" selectname="type"></span>
+							<span class="caret"></span>
+						</button>
+					<ul class="factory-list dropdown-menu"></ul>
+				</div>
 				</span>
 			</li>
 			<li id="real-produce-date">

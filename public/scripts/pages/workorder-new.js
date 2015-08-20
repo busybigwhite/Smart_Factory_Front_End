@@ -4,7 +4,7 @@ var $ = window.jQuery = require('jquery');
 var header = require('../includes/header');
 var api = require('../workorder/api');
 var queryParameter = require('../lib/helper/query-parameter');
-var factoryDropdown = require('../workorder/component/dropdown-status');
+var statusDropdown = require('../workorder/component/dropdown-status');
 
 require('bootstrap/js/dropdown');
 
@@ -24,8 +24,8 @@ function initialize() {
 	initView();
 }
 function getInitialData() {
-	var ID = getFactoryId();
-	console.log('FactoryId : ' + ID);
+	var ID = getStatusName();
+	console.log('Status : ' + ID);
 }
 
 
@@ -37,7 +37,7 @@ function initView(){
 function bindEvents() {
 	$cancelBtn.on('click', backToList);
 	$workorderForm.submit(createData);
-	factoryDropdown.emitter.on('factoryChanged', getInitialData);
+	statusDropdown.emitter.on('statusChanged', getInitialData);
 }
 
 
@@ -77,8 +77,12 @@ function getChangedData() {
 			newData[name] = value;
 
 		} else if ($dropdownSelected) {
-			var selectedName  = $dropdownSelected.attr('name');
-			var selectedValue = $dropdownSelected.text();
+			// var selectedName  = $dropdownSelected.attr('name');
+			var selectedName = api.transferKeyC2S($(el).attr('selectname'));
+			var selectedValue = getStatusName();
+			
+			console.log(selectedName);
+			console.log(selectedValue);
 			newData[selectedName] = selectedValue;
 
 		} else {
@@ -88,7 +92,7 @@ function getChangedData() {
 	return newData;
 }
 
-function getFactoryId() {
-	return factoryDropdown.getSelectedFactoryId();
+function getStatusName() {
+	return statusDropdown.getSelectedStatus();
 }
 
