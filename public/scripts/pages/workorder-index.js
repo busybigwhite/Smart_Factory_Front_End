@@ -95,12 +95,12 @@ function setFocusFactoryIdThenRenderRows(factoryId) {
 }
 
 function createWorkorderListThenRenderRows(type, searchKey) {
-	$.get(config.APIUrl + 'workorder/list/', function(workorderResponse){
+	$.get(config.APIUrl + 'workorder/', function(workorderResponse) {
 		var displayData = []
 
 		for (var i in workorderResponse) {
 			$.ajax({
-			        url: config.APIUrl + 'workorder/list/' + workorderResponse[i].id + '/',
+			        url: config.APIUrl + 'workorder/' + workorderResponse[i].id + '/',
 			        // url: config.APIUrl + 'workorder/1/',
 			        type: 'GET',
 			        async: false,
