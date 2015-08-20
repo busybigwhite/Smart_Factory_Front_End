@@ -13,12 +13,13 @@ var emitter = new EventEmitter();
 
 /* DOM */
 var $statusFocusName = $('.status-focus-name');
-var $statusList = $('.factory-list');
+var $statusList = $('.status-list');
 
-var statusList = [{'key': 'non-schedule','name': '未排程'},
-    		 	{'key': 'schedule','name': '已排程'},
-    		 	{'key': 'producing','name': '生產中'},
-    		 	{'key': 'finish','name': '結案'}];
+var statusListContent = [{'key': '','displayName': ''},
+				{'key': 'non-schedule','displayName': '未排程'},
+    		 	{'key': 'schedule','displayName': '已排程'},
+    		 	{'key': 'producing','displayName': '生產中'},
+    		 	{'key': 'finish','displayName': '結案'}];
 
 exports = module.exports = {};
 
@@ -45,7 +46,7 @@ function bindSetFocusNameBlockEventOnSelector() {
 
 function setFocusNameBlock(target) {
 	selectedStatus = target.type==='click' ? $(this).data('key') : target.key;
-	var displayName = target.type==='click' ? $(this).text() : target.name;
+	var displayName = target.type==='click' ? $(this).text() : target.displayName;
 
 	$statusFocusName.text(displayName).data('key', selectedStatus);
 
@@ -53,18 +54,18 @@ function setFocusNameBlock(target) {
 }
 
 function createFactoryListThenRenderRows() {
-		var statusListRows = renderFactoryDropdown({ allstatus : statusList });
+		var statusListRows = renderFactoryDropdown({ allstatus : statusListContent });
 
 		$statusList.empty().html( statusListRows );
 
-		setFocusNameBlock(statusList[0]);
+		setFocusNameBlock(statusListContent[0]);
 }
 
 function renderFactoryDropdown(allstatus) {
   var menuTemp = _.template(
 	 `<% _.forEach(allstatus, function(status) {  %>
       <li><a class="option-item" data-key=<%= status.key %>>
-      		<%= status.name %>
+      		<%= status.displayName %>
       </a></li>
     <% });                                          %>`
 	);

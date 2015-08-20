@@ -12,8 +12,8 @@
 <div class="workorder-container">
 <form id="workorder-new-form">
 	<div class="base-action-panel">
-		<button type="button" class="workorder-info-edit-button" id="workorder-new-edit-button">取消</button>
-		<button type="submit" class="workorder-info-save-button" id="workorder-new-new-button">新增</button>
+		<button type="button" class="workorder-info-edit-button" id="workorder-new-edit-button" style="display: none;">編輯</button>
+		<button type="submit" class="workorder-info-save-button" id="workorder-new-new-button" style="display: inline">新增</button>
 		<button type="button" class="workorder-info-cancel-button" id="workorder-new-cancel-button">取消</button>
 	</div>
 
@@ -59,7 +59,7 @@
 							<span class="status-focus-name selected-option newOrder" selectname="workorder-status"></span>
 							<span class="caret"></span>
 						</button>
-					<ul class="factory-list dropdown-menu"></ul>
+					<ul class="status-list dropdown-menu"></ul>
 				</div>
 				</span>
 			</li>
@@ -72,7 +72,7 @@
 			<li id="input-date">
 				<span class="info-name">輸入日期</span>
 				<span class="info-value">
-					<input class="newOrder" type="text" name="input-date" value="">
+					<input id="inputDate" class="newOrder" type="text" name="input-date" value="">
 				</span>
 			</li>
 			<li id="description">
@@ -102,7 +102,7 @@
 							<span class="type-focus-name selected-option newOrder" selectname="type"></span>
 							<span class="caret"></span>
 						</button>
-					<ul class="factory-list dropdown-menu"></ul>
+					<ul class="type-list dropdown-menu"></ul>
 				</div>
 				</span>
 			</li>

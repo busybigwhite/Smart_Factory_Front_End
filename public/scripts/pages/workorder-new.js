@@ -5,11 +5,12 @@ var header = require('../includes/header');
 var api = require('../workorder/api');
 var queryParameter = require('../lib/helper/query-parameter');
 var statusDropdown = require('../workorder/component/dropdown-status');
+var typeDropdown = require('../workorder/component/dropdown-type');
+var factoryDropdown = require('../workorder/component/dropdown-factory');
 
 require('bootstrap/js/dropdown');
 
 /* DOM */
-var $editBtn   = $('#workorder-new-edit-button');//always hide
 var $cancelBtn = $('#workorder-new-cancel-button');
 var $newBtn   = $('#workorder-new-new-button');
 var $workorderForm  = $('#workorder-new-form');
@@ -20,24 +21,23 @@ initialize();
 function initialize() {
 	header.include();
 	bindEvents();
-	getInitialData();
 	initView();
 }
-function getInitialData() {
-	var ID = getStatusName();
-	console.log('Status : ' + ID);
+function doNothing(){
+	
 }
 
 
 function initView(){
-	$editBtn.hide();
-	$newBtn.show();
+	$("#inputDate").val(getDateTime());
 }
 
 function bindEvents() {
 	$cancelBtn.on('click', backToList);
 	$workorderForm.submit(createData);
-	statusDropdown.emitter.on('statusChanged', getInitialData);
+	statusDropdown.emitter.on('statusChanged', doNothing);
+	typeDropdown.emitter.on('statusChanged', doNothing);
+	factoryDropdown.emitter.on('factoryChanged', doNothing);
 }
 
 
@@ -79,10 +79,21 @@ function getChangedData() {
 		} else if ($dropdownSelected) {
 			// var selectedName  = $dropdownSelected.attr('name');
 			var selectedName = api.transferKeyC2S($(el).attr('selectname'));
-			var selectedValue = getStatusName();
-			
-			console.log(selectedName);
-			console.log(selectedValue);
+			var selectedValue;
+			switch(selectedName){
+				case "status":
+					selectedValue = getStatusName();
+					break;
+				case "factory":
+					selectedValue = getFactoryId();
+					break;
+				case "produce_type":
+					selectedValue = getTypeName();
+					break;
+				default:
+					selectedValue = "";
+					break;
+			}
 			newData[selectedName] = selectedValue;
 
 		} else {
@@ -94,5 +105,41 @@ function getChangedData() {
 
 function getStatusName() {
 	return statusDropdown.getSelectedStatus();
+}
+
+function getTypeName(){
+	return typeDropdown.getSelectedType();
+}
+
+function getFactoryId() {
+	return factoryDropdown.getSelectedFactoryId();
+}
+
+
+ function getDateTime() {
+    var now     = new Date(); 
+    var year    = now.getFullYear();
+    var month   = now.getMonth()+1; 
+    var day     = now.getDate();
+    var hour    = now.getHours();
+    var minute  = now.getMinutes();
+    var second  = now.getSeconds(); 
+    if(month.toString().length == 1) {
+        var month = '0'+month;
+    }
+    if(day.toString().length == 1) {
+        var day = '0'+day;
+    }   
+    if(hour.toString().length == 1) {
+        var hour = '0'+hour;
+    }
+    if(minute.toString().length == 1) {
+        var minute = '0'+minute;
+    }
+    if(second.toString().length == 1) {
+        var second = '0'+second;
+    }   
+    var dateTime = year+'/'+month+'/'+day+' '+hour+':'+minute+':'+second;   
+     return dateTime;
 }
 
