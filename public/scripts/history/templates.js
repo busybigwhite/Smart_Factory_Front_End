@@ -42,7 +42,7 @@ exports.renderHeatmap = function(heatmapUrls) {
 
   var imgTemp = _.template(
    `<% _.forEach(heatmapUrls, function(heatmapUrl) {  %>
-      <img src= ..api/pic/heatmap/<%= heatmapUrl %>>
+      <img src=api/pic/heatmap/<%= heatmapUrl %>>
     <% });                                          %>`
   );
 
