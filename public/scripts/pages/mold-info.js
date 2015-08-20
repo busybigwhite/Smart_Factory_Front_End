@@ -9,6 +9,9 @@ var noticeedPersonDropdown = require('../mold/modules/noticed-person-dropdown');
 var maintainPeriodDropdown = require('../mold/modules/maintain-period-dropdown');
 var maintainRecordTable = require('../mold/modules/maintain-record-table');
 
+var moldPicUploadBlock = require('../mold/modules/upload-mold-pic');
+var productPicUploadBlock = require('../mold/modules/upload-product-pic');
+
 
 /* DOM */
 var $editBtn   = $('#mold-edit-button');
@@ -32,6 +35,8 @@ var $length = $('#mold-size').find('.length');
 var $width  = $('#mold-size').find('.width');
 var $height = $('#mold-size').find('.height');
 
+var $moldPicsBlock = $('#mold-pics-block');
+
 
 var isEditMode   = false;
 var isCreateMode = false;
@@ -52,6 +57,8 @@ function initialize() {
 	getInitialData();
 	bindEvents();
 
+	moldPicUploadBlock.init();
+	productPicUploadBlock.init();
 	noticeedPersonDropdown.init();
 	maintainRecordTable.init();
 }
@@ -81,6 +88,7 @@ function showEditMode() {
 	$backBtn  .hide();
 	$viewModeCollection.addClass('editting');
 	$editModeCollection.addClass('editting');
+	$moldPicsBlock.addClass('editting');
 	maintainRecordTable.setEditMode(true);
 }
 
@@ -94,7 +102,10 @@ function hideEditMode() {
 	$backBtn  .show();
 	$viewModeCollection.removeClass('editting');
 	$editModeCollection.removeClass('editting');
+	$moldPicsBlock.removeClass('editting');
 	maintainRecordTable.setEditMode(false);
+	moldPicUploadBlock.clear();
+	productPicUploadBlock.clear();
 }
 
 function showCreateMode() {
@@ -105,6 +116,7 @@ function showCreateMode() {
 	$backBtn  .show();
 	$viewModeCollection.addClass('creating');
 	$editModeCollection.addClass('creating');
+	$moldPicsBlock.addClass('creating');
 	maintainRecordTable.setEditMode(true);
 	maintainPeriodDropdown.setDefaultType();
 	noticeedPersonDropdown.setDefault();
@@ -173,6 +185,7 @@ function initialView(data) {
 	originalData = data;
 	initBaseInfo(data);
 	initResumeInfo(data);
+	initPics(data);
 }
 
 function resetViewData() {
@@ -222,6 +235,13 @@ function initResumeInfo(data) {
 	$currentUsage.find('.edit-mode').text(data['current_usage']);
 }
 
+function initPics(data) {
+	// ToFix:
+	var fakeSrc = 'http://placehold.it/150x150';
+	moldPicUploadBlock.setImageOriginalSrc(fakeSrc);
+	productPicUploadBlock.setImageOriginalSrc(fakeSrc);
+}
+
 function getAllInfoData() {
 	var data = {};
 	data.info = getInfoValue();
@@ -244,6 +264,12 @@ function getInfoValue() {
 	data['admin_id']  = noticeedPersonDropdown.getId();
 	data['maintain_period_value'] = maintainPeriodDropdown.getValue();
 	data['maintain_period_unit']  = maintainPeriodDropdown.getType();
+	data['mold_pic'] = moldPicUploadBlock.getImageDataUri();
+	data['product_pic'] = productPicUploadBlock.getImageDataUri();
+
+	console.log('mold_pic => ', data['mold_pic']);
+	console.log('product_pic => ', data['product_pic']);
+
 	return data;
 }
 
