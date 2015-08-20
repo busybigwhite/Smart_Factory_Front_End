@@ -33,13 +33,14 @@
 					<input class="edit-mode" type="text" name="name" value="" pattern="[A-Za-z0-9]{1,30}" title="輸入1~30個英數字" required>
 				</span>
 			</li>
-			<li>
+			<li id="mold-created-at">
 				<span class="info-name">模具建立日期</span>
 				<span class="info-value">
-					<span class="info-value">
-						<p class="view-mode"></p>
-						<input class="edit-mode" type="text" name="created_at" value="" pattern="[0-9]{1,10}" title="輸入數字" required><!-- ToFix: datetimepicker -->
-					</span>
+					<p class="view-mode"></p>
+					<div class="edit-mode">
+						<label for="mold-create-at-date-picker" class="fa fa-calendar"></label>
+						<input type="text" data-date-format="YYYY-MM-DD HH:mm:ss" id="mold-create-at-date-picker" name="created_at" readonly required/>
+					</div>
 				</span>
 			</li>
 			<li id="mold-size">
