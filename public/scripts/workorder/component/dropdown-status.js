@@ -12,13 +12,13 @@ var selectedFactoryId;
 var emitter = new EventEmitter();
 
 /* DOM */
-var $factoryFocusName = $('.factory-focus-name');
+var $factoryFocusName = $('.status-focus-name');
 var $factoryList = $('.factory-list');
 
-var statusList = [{'id': 'F001','name': '為排程'},
-    		 {'id': 'F002','name': '已排程'},
-    		 {'id': 'F003','name': '生產中'},
-    		 {'id': 'F003','name': '結案'}];
+var statusList = [{'id': 'F001','name': '未排程'},
+    		 	{'id': 'F002','name': '已排程'},
+    		 	{'id': 'F003','name': '生產中'},
+    		 	{'id': 'F003','name': '結案'}];
 
 exports = module.exports = {};
 
@@ -53,14 +53,11 @@ function setFocusNameBlock(target) {
 }
 
 function createFactoryListThenRenderRows() {
-	$.get(config.APIUrl + 'factory/list')
-	 .done(function(response){
 		var factoryListRows = renderFactoryDropdown({ factories : statusList });
 
 		$factoryList.empty().html( factoryListRows );
 
-		setFocusNameBlock(response[0]);
-	 });
+		setFocusNameBlock(statusList[0]);
 }
 
 function renderFactoryDropdown(factories) {

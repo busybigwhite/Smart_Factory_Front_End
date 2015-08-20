@@ -26,7 +26,6 @@ function initialize() {
 function getInitialData() {
 	var ID = getFactoryId();
 	console.log('FactoryId : ' + ID);
-	
 }
 
 

@@ -37,9 +37,43 @@
 	}
 }
 
+.long-dropdown {
+	.dropdown();
+	padding: 0;
+	margin-right: 10px;
+	display: inline-block;
+
+	.dropdown-toggle {
+		width: 212px;
+		font-size: @font-size;
+		text-align: right;
+
+		.status-focus-name,
+		.factory-focus-name,
+		.time-focus-name,
+		.dropdown-focus-name {
+			width: 85%;
+			margin-right: 5px;
+			display: inline-block;
+			text-align: left;
+		}
+	}
+
+	.dropdown-menu {
+		min-width: 212px;
+		font-size: @font-size;
+	}
+}
+
 .dropdown-factory-filter,
 #dropdown-realtime-view-mode,
 .dropdown-history-filter,
 #dropdown-value-list {
 	.custom-dropdown();
+}
+
+.dropdown-workorder-status,
+.dropdown-workorder-factory,
+.dropdown-workorder-type {
+	.long-dropdown();
 }
