@@ -10,8 +10,8 @@ exports.renderTableList = function(infos) {
 	 `<% _.forEach(infos, function(info) {  %>
       <li class="table-item">
         <div class="table-col"><%= info.id %></div>
-      	<div class="table-col"><%= info.machine_id %></div>
-      	<div class="table-col"><%= info.mold_id %></div>
+      	<div class="table-col"><%= info.work_order_records[0].machine_id %></div>
+      	<div class="table-col"><%= info.work_order_records[0].mold_id %></div>
       	<div class="table-col"><%= info.customer_id %></div>
       	<div class="table-col-sm"><%= info.target_num %></div>
       	<div class="table-col"><%= info.start_date %></div>
