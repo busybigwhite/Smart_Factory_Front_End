@@ -93,9 +93,14 @@ function cleanTableAndIamgeBlock() {
 }
 
 function createQueryURL(searchPeriod) {
-	var data = !!searchPeriod
-		? {'factory_id': focusFactoryId, 'type': selectedFilter, 'start_date': searchPeriod.start_date, 'end_date': searchPeriod.end_date}
-		: {'factory_id': focusFactoryId, 'type': selectedFilter, 'search_key': selectedValue }
+	var data = {};
+
+	if( searchPeriod ){
+		data = {'factory_id': focusFactoryId, 'start_date': searchPeriod.start_date, 'end_date': searchPeriod.end_date};
+	}else {
+		data['factory_id'] = focusFactoryId;
+		data[selectedFilter] = selectedValue;
+	}
 
 	return queryParameter.build(data);
 }
