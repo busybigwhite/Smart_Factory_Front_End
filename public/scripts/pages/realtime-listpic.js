@@ -39,6 +39,7 @@ function openFancyBoxManually() {
     $.fancybox.open({
         href : url,
         title : title,
+        type: 'image',
         helpers : {
             title : {type : 'float'}
         }
