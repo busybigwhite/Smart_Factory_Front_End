@@ -22,7 +22,8 @@ var dateTimePickerOpt = {
 			vertical: 'bottom'
 		},
 		maxDate: today,
-		ignoreReadonly: true
+		ignoreReadonly: true,
+		sideBySide: true,
 	};
 
 exports = module.exports = {
