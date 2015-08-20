@@ -4,6 +4,7 @@ var $ = window.jQuery = require('jquery');
 var header = require('../includes/header');
 var api = require('../workorder/api');
 var queryParameter = require('../lib/helper/query-parameter');
+var factoryDropdown = require('../workorder/component/dropdown-status');
 
 require('bootstrap/js/dropdown');
 
@@ -19,8 +20,15 @@ initialize();
 function initialize() {
 	header.include();
 	bindEvents();
+	getInitialData();
 	initView();
 }
+function getInitialData() {
+	var ID = getFactoryId();
+	console.log('FactoryId : ' + ID);
+	
+}
+
 
 function initView(){
 	$editBtn.hide();
@@ -30,6 +38,7 @@ function initView(){
 function bindEvents() {
 	$cancelBtn.on('click', backToList);
 	$workorderForm.submit(createData);
+	factoryDropdown.emitter.on('factoryChanged', getInitialData);
 }
 
 
@@ -79,3 +88,8 @@ function getChangedData() {
 	});
 	return newData;
 }
+
+function getFactoryId() {
+	return factoryDropdown.getSelectedFactoryId();
+}
+

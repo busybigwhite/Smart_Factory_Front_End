@@ -46,7 +46,14 @@
 			<li id="workorder-status">
 				<span class="info-name">工單狀態</span>
 				<span class="info-value">
-					<input class="newOrder" type="text" name="workorder-status" value="">
+					<!-- <input class="newOrder" type="text" name="workorder-status" value=""> -->
+					<div class="dropdown-factory-filter">
+						<button class="btn btn-default workorder-dropdown-toggle" data-toggle="dropdown">
+							<span class="factory-focus-name"></span>
+							<span class="caret"></span>
+						</button>
+					<ul class="factory-list dropdown-menu"></ul>
+				</div>
 				</span>
 			</li>
 		</ul>
