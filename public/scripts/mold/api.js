@@ -53,7 +53,7 @@ function getMoldList() {
 };
 
 function getMoldInfo(id) {
-	var fakeData = {"id":1,"serial_num":"Tamara","name":"Morar","factory_id":4,"weight":225,"type":"\u91d1\u5c6c","mold_pic":"af98a11227e26e53dca2b575dda24ec7","product_pic":"a6133659937b2a2079665e3602720067","length":989,"width":526,"height":675,"admin_id":1,"manufacturer":"\u4e09\u83f1","maintain_period_unit":"time","maintain_period_value":35,"lifetime":500000,"current_usage":100,"created_at":"2015-08-19 02:59:38","updated_at":"2015-08-19 02:59:38","maintain_records":[]};
+	var fakeData = {"id":5,"serial_num":"Vincenzo","name":"Weimann","factory_id":4,"weight":237,"type":"\u91d1\u5c6c","mold_pic":"e12eaae655640c44070b323349693563","product_pic":"870f1eea03c76da52dc2ed1bf26b6cd4","length":354,"width":683,"height":43,"admin_id":1,"manufacturer":"\u8c50\u7530","maintain_period_unit":"times","maintain_period_value":98,"lifetime":500000,"current_usage":100,"created_at":"2015-08-20 06:10:20","updated_at":"2015-08-20 06:10:20","maintain_records":[{"id":8,"mold_id":5,"type":"maintain","content":"test","created_at":"2015-08-20 06:10:20","updated_at":"2015-08-20 06:10:20"},{"id":9,"mold_id":5,"type":"maintain","content":"test","created_at":"2015-08-20 06:10:20","updated_at":"2015-08-20 06:10:20"},{"id":10,"mold_id":5,"type":"check","content":"test","created_at":"2015-08-20 06:10:20","updated_at":"2015-08-20 06:10:20"},{"id":11,"mold_id":5,"type":"error","content":"test","created_at":"2015-08-20 06:10:20","updated_at":"2015-08-20 06:10:20"},{"id":12,"mold_id":5,"type":"check","content":"test","created_at":"2015-08-20 06:10:20","updated_at":"2015-08-20 06:10:20"}]};
 	return isLocal ? mockAjax(fakeData) : getData(moldApiUrl + id);
 };
 
