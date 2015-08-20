@@ -44,8 +44,6 @@ function initialUserList() {
 	    	for (var i in data) {
 	    		userList[data[i].id] = data[i].name;
 	    	}
-	    	console.log(userList);
-	    	// userList = data;
 	    }
 	});
 }
@@ -64,8 +62,6 @@ function initialFactoryList() {
 	    	for (var i in data) {
 	    		factoryList[data[i].id] = data[i].name;
 	    	}
-	    	console.log(factoryList);
-	    	// factoryList = data;
 	    }
 	});
 }
