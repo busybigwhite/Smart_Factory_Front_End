@@ -77,11 +77,11 @@ function checkUsername(){
 			this.title = "帳號需至少4碼，限用小寫與數字";
 		} else {
 			this.pattern = "";
-			this.title = "帳號名稱已被使用";	
+			this.title = "帳號名稱已被使用";
 		}
 	} else {
 		this.pattern = "^[a-z0-9]{4,16}$";
-		this.title = "帳號需至少4碼，限用小寫與數字";	
+		this.title = "帳號需至少4碼，限用小寫與數字";
 	}
   usernameInput.setCustomValidity(this.validity.patternMismatch ? usernameInput.title : "");
 }
@@ -128,7 +128,7 @@ function getInitialData() {
 		 .done(function(res){
 		 		if (isEditMode == true) {
 		 			origName = res.name;
-		 		}	 		
+		 		}
 			 	$userName.val(res.name);
 				$userEmail.val(res.email);
 
@@ -181,7 +181,9 @@ function editMemberSubmit() {
 }
 
 function deleteMemberSubmit() {
-	api.deleteMember(memberId)
+	var token = auth.getToken();
+
+	api.deleteMember(memberId, { _token: token })
 		 .done(function(data) { console.log("DELETE Member res: ", data); })
 		 .fail(function(err) { console.log("DELETE Member error: ", err); })
 		 .always(function(){

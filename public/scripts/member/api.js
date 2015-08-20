@@ -27,8 +27,8 @@ function createMember(data) {
 	return createData(memberApiUrl, data);
 }
 
-function deleteMember(id) {
-	return deleteData(memberApiUrl + '/' + id);
+function deleteMember(id, token) {
+	return deleteData(memberApiUrl + '/' + id, token);
 }
 
 function getMember(id) {
@@ -53,8 +53,8 @@ function createData(url, data) {
 	return ajax('POST', url, data);
 }
 
-function deleteData(url) {
-	return ajax('DELETE', url);
+function deleteData(url, token) {
+	return ajax('DELETE', url, token);
 }
 
 function ajax(method, url, data) {
