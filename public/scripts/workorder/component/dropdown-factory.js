@@ -8,6 +8,8 @@ var userId = require('../../config/auth');
 var config = require('../../config/url');
 var EventEmitter = require('wolfy87-eventemitter');
 
+
+
 var selectedFactoryId;
 var emitter = new EventEmitter();
 
@@ -25,9 +27,12 @@ exports.getSelectedFactoryId = function(){
 exports.setDropdownbyKey = setDropdownbyKey;
 
 function setDropdownbyKey(key){
-	// $statusFocusName.text(value).data('key', key);
+	$factoryFocusName.text(key).data('key', key);
 	console.log(key);
 }
+
+
+
 
 initialize();
 
@@ -57,9 +62,7 @@ function createFactoryListThenRenderRows() {
 	$.get(config.APIUrl + 'factory/list')
 	 .done(function(response){
 		var factoryListRows = renderFactoryDropdown({ factories : response });
-
 		$factoryList.empty().html( factoryListRows );
-
 		setFocusNameBlock(response[0]);
 	 });
 }
@@ -72,6 +75,7 @@ function renderFactoryDropdown(factories) {
       </a></li>
     <% });                                          %>`
 	);
+
 
   return menuTemp(factories);
 }

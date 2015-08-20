@@ -9,6 +9,7 @@ var config = require('../../config/url');
 var EventEmitter = require('wolfy87-eventemitter');
 
 var selectedType;
+
 var emitter = new EventEmitter();
 
 /* DOM */
@@ -30,7 +31,7 @@ exports.getSelectedType = function(){
 exports.setDropdownbyValue = setDropdownbyValue;
 
 function setDropdownbyValue(key,value){
-	$statusFocusName.text(value).data('key', value);
+	$typeFocusName.text(value).data('key', key);
 }
 
 initialize();

@@ -4,6 +4,7 @@ var $ = window.jQuery = require('jquery');
 var header = require('../includes/header');
 var api = require('../workorder/api');
 var queryParameter = require('../lib/helper/query-parameter');
+var config = require('../config/url');
 
 require('bootstrap/js/dropdown');
 var statusDropdown = require('../workorder/component/dropdown-status');
@@ -24,7 +25,7 @@ var isCreateMode = false;
 
 //FOR TEST
 var workorderID = "";
-var factory = "F002";
+var factoryID = "F002";
 
 // var parameters = location.search.substring(1).split("&");
 // var temp = parameters[0].split("=");
@@ -40,6 +41,7 @@ initialize();
 function initialize() {
 	// workorderID = GET FROM PREV PAGE
 	header.include();
+	getFactoryList();
 	showInitView();
 	bindEvents();
 }
@@ -55,6 +57,18 @@ function bindEvents() {
 }
 function doNothing(){
 	
+}
+function getFactoryList(){
+	$.get(config.APIUrl + 'factory/list')
+	 .done(function(response){
+		for (var i = 0; i < response.length; i++) {
+			console.log(response[i].id+"@"+response[i].name+"&"+factoryID);
+			if(response[i].id==factoryID){
+				$('#factory').find('p').text(response[i].name);
+				factoryDropdown.setDropdownbyKey(response[i].name);
+			}
+		};
+	 });
 }
 
 function showEditMode() {
@@ -92,8 +106,6 @@ function showInitView() {
 	$editModeCollection.removeClass('editting');
 	$('#workorder-num').find('p').text(workorderID);
 	$('#workorder-num').find('input').val(workorderID);
-	$('#factory').find('p').text(factory);
-	$('#factory').find('input').val(factory);
 
 	api.getWorkOrderInfo(workorderID)
 		.done(function(data) { 
@@ -102,16 +114,21 @@ function showInitView() {
 			$.each(data, fillList);
 		})
 		 .fail(function(err) { console.log("GET workorder error: ", err); });
+
+	
 }
 
 
 function fillList(key, value){
-	console.log(key+"!@@@@@ = "+value);
+	// console.log(key+"!@@@@@ = "+value);
 	switch(key){
 		case "status":
 			statusDropdown.setDropdownbyValue(key,value);
+			$('#'+api.transferKeyS2C(key)).find('p').text(statusDropdown.getDisplayName(value));
+			console.log(getStatusName());
 			break;
 		case "produce_type":
+			$('#'+api.transferKeyS2C(key)).find('p').text(value);
 			typeDropdown.setDropdownbyValue(key,value);
 			break;
 		default:

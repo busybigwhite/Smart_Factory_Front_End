@@ -15,6 +15,8 @@ var emitter = new EventEmitter();
 var $statusFocusName = $('.status-focus-name');
 var $statusList = $('.status-list');
 
+var Namedic = {};
+
 var statusListContent = [{'key': '','displayName': ''},
 				{'key': 'non-schedule','displayName': '未排程'},
     		 	{'key': 'schedule','displayName': '已排程'},
@@ -28,12 +30,16 @@ exports.emitter = emitter;
 exports.getSelectedStatus = function(){
 	return selectedStatus;
 }
+exports.getDisplayName = getDisplayName;
+
+function getDisplayName(key){
+	return Namedic[key];
+}
 
 exports.setDropdownbyValue = setDropdownbyValue;
 
 function setDropdownbyValue(key, value){
-	// $statusFocusName.text(value).data('key', key);
-	console.log(key+"*******"+ value);
+	$statusFocusName.text(Namedic[value]).data('key', key);
 }
 
 
@@ -42,6 +48,9 @@ initialize();
 function initialize() {
 	bindEvents();
 	createFactoryListThenRenderRows();
+	for (var i = 0; i < statusListContent.length; i++) {
+		Namedic[statusListContent[i].key] = statusListContent[i].displayName;
+	};
 }
 
 function bindEvents() {
