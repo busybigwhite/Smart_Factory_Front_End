@@ -20,7 +20,7 @@ function initialize() {
 	$logoutBtn = $('#logout-btn');
 
 	bindEvents();
-	// Auth.set('Moremote', '1234567890');
+	resetHrefLink();
 	getPathAndFocusOnNavItem();
     getUserName();
 }
@@ -40,6 +40,14 @@ function logout() {
 			redirect('login');
 	 })
 	 .fail(function(err) { console.log("LOGOUT error: ", err); });
+}
+
+function resetHrefLink() {
+	$('.navbar-item').each(function(){
+		var path = $(this).children('a').attr('href').split('/')[1];
+		$(this).children('a').attr('href', config.baseUrl + '/' + path);
+	});
+	console.log('replace herf link done');
 }
 
 function getPathAndFocusOnNavItem() {

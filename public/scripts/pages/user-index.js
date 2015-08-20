@@ -26,13 +26,13 @@ function initialize() {
 	api.getUser()
 		.done(function(res){
 			memberId = res.id;
+			getInitialData();
 		})
 		.fail(function(err) { console.log("GET Member Id error: ", err); });
 
 	console.log(memberId);
 
 	header.include();
-	getInitialData();
 	bindEvents();
 }
 
@@ -101,7 +101,9 @@ function editUserSubmit() {
 	if (formValidate()) {
 		api.editMember(memberId, data)
 		 .done(function(data) { console.log("EDIT Member res: ", data); })
-		 .fail(function(err) { console.log("EDIT Member error: ", err); });
-		window.location.href = config.memberUrl;
+		 .fail(function(err) { console.log("EDIT Member error: ", err); })
+		 .always(function(){
+		 	window.location.href = config.memberUrl;
+		 });
 	};
 }

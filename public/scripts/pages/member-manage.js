@@ -77,11 +77,11 @@ function checkUsername(){
 			this.title = "帳號需至少4碼，限用小寫與數字";
 		} else {
 			this.pattern = "";
-			this.title = "帳號名稱已被使用";	
+			this.title = "帳號名稱已被使用";
 		}
 	} else {
 		this.pattern = "^[a-z0-9]{4,16}$";
-		this.title = "帳號需至少4碼，限用小寫與數字";	
+		this.title = "帳號需至少4碼，限用小寫與數字";
 	}
   usernameInput.setCustomValidity(this.validity.patternMismatch ? usernameInput.title : "");
 }
@@ -121,8 +121,6 @@ function getMemberArray(){
  // 	response.forEach(function (element){
 	// 	memberList.push(element.name);
 	// });
-
-	console.log(memberList);
 }
 
 function getInitialData() {
@@ -130,7 +128,7 @@ function getInitialData() {
 		 .done(function(res){
 		 		if (isEditMode == true) {
 		 			origName = res.name;
-		 		}	 		
+		 		}
 			 	$userName.val(res.name);
 				$userEmail.val(res.email);
 
@@ -162,8 +160,10 @@ function addMemberSubmit() {
 	if (formValidate()) {
 		api.createMember(data)
 		 .done(function(data) { console.log("CREATE Member res: ", data); })
-		 .fail(function(err) { console.log("CREATE Member error: ", err); });
-		window.location.href = config.memberUrl;
+		 .fail(function(err) { console.log("CREATE Member error: ", err); })
+		 .always(function(){
+		 	window.location.href = config.memberUrl;
+		 });
 	};
 }
 
@@ -173,16 +173,22 @@ function editMemberSubmit() {
 	if (formValidate()) {
 		api.editMember(memberId, data)
 		 .done(function(data) { console.log("EDIT Member res: ", data); })
-		 .fail(function(err) { console.log("EDIT Member error: ", err); });
-		window.location.href = config.memberUrl;
+		 .fail(function(err) { console.log("EDIT Member error: ", err); })
+		 .always(function(){
+		 	window.location.href = config.memberUrl;
+		 });
 	};
 }
 
 function deleteMemberSubmit() {
-	api.deleteMember(memberId)
+	var token = auth.getToken();
+
+	api.deleteMember(memberId, { _token: token })
 		 .done(function(data) { console.log("DELETE Member res: ", data); })
-		 .fail(function(err) { console.log("DELETE Member error: ", err); });
-	window.location.href = config.memberUrl;
+		 .fail(function(err) { console.log("DELETE Member error: ", err); })
+		 .always(function(){
+		 	window.location.href = config.memberUrl;
+		 });
 }
 
 function goToMemberList(){

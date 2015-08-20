@@ -42,6 +42,7 @@ exports.workorderInfoUrl= `${base}/workorder/info`;
 exports.moldUrl   	 	= `${base}/mold/`;
 exports.unusualUrl 	 	= `${base}/unusual/`;
 exports.memberUrl 	 	= `${base}/member/`;
+exports.memberManageUrl = `${base}/member/manage/`;
 exports.historyUrl   	= `${base}/history/`;
 exports.headerUrl 	 	= `${base}/views/includes/header/main.html`;
 
