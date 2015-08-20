@@ -27,6 +27,11 @@ exports.emitter = emitter;
 exports.getSelectedType = function(){
 	return selectedType;
 }
+exports.setDropdownbyValue = setDropdownbyValue;
+
+function setDropdownbyValue(key,value){
+	$statusFocusName.text(value).data('key', value);
+}
 
 initialize();
 

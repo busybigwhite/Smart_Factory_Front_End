@@ -22,6 +22,12 @@ exports.emitter = emitter;
 exports.getSelectedFactoryId = function(){
 	return selectedFactoryId;
 }
+exports.setDropdownbyKey = setDropdownbyKey;
+
+function setDropdownbyKey(key){
+	// $statusFocusName.text(value).data('key', key);
+	console.log(key);
+}
 
 initialize();
 

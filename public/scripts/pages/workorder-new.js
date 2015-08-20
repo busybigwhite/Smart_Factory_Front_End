@@ -36,7 +36,7 @@ function bindEvents() {
 	$cancelBtn.on('click', backToList);
 	$workorderForm.submit(createData);
 	statusDropdown.emitter.on('statusChanged', doNothing);
-	typeDropdown.emitter.on('statusChanged', doNothing);
+	typeDropdown.emitter.on('TypeChanged', doNothing);
 	factoryDropdown.emitter.on('factoryChanged', doNothing);
 }
 

@@ -29,6 +29,14 @@ exports.getSelectedStatus = function(){
 	return selectedStatus;
 }
 
+exports.setDropdownbyValue = setDropdownbyValue;
+
+function setDropdownbyValue(key, value){
+	// $statusFocusName.text(value).data('key', key);
+	console.log(key+"*******"+ value);
+}
+
+
 initialize();
 
 function initialize() {

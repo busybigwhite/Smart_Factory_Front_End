@@ -6,9 +6,9 @@ var api = require('../workorder/api');
 var queryParameter = require('../lib/helper/query-parameter');
 
 require('bootstrap/js/dropdown');
-// var noticeedPersonDropdown = require('../machine/modules/noticed-person-dropdown');
-// var checkPeriodDropdown    = require('../machine/modules/check-period-dropdown');
-// var maintainPeriodDropdown = require('../machine/modules/maintain-period-dropdown');
+var statusDropdown = require('../workorder/component/dropdown-status');
+var typeDropdown = require('../workorder/component/dropdown-type');
+var factoryDropdown = require('../workorder/component/dropdown-factory');
 
 /* DOM */
 var $editBtn   = $('#workorder-info-edit-button');
@@ -24,7 +24,7 @@ var isCreateMode = false;
 
 //FOR TEST
 var workorderID = "";
-var factory = "A";
+var factory = "F002";
 
 // var parameters = location.search.substring(1).split("&");
 // var temp = parameters[0].split("=");
@@ -49,6 +49,12 @@ function bindEvents() {
 	$cancelBtn.on('click', hideEditMode);
 	$deleteBtn.on('click', deleteWorkOrderInfo);
 	$workorderForm.submit(saveData);
+	statusDropdown.emitter.on('statusChanged', doNothing);
+	typeDropdown.emitter.on('TypeChanged', doNothing);
+	factoryDropdown.emitter.on('factoryChanged', doNothing);
+}
+function doNothing(){
+	
 }
 
 function showEditMode() {
@@ -100,9 +106,20 @@ function showInitView() {
 
 
 function fillList(key, value){
-	console.log(key);
-	$('#'+api.transferKeyS2C(key)).find('p').text(value);
-	$('#'+api.transferKeyS2C(key)).find('input').val(value);
+	console.log(key+"!@@@@@ = "+value);
+	switch(key){
+		case "status":
+			statusDropdown.setDropdownbyValue(key,value);
+			break;
+		case "produce_type":
+			typeDropdown.setDropdownbyValue(key,value);
+			break;
+		default:
+			$('#'+api.transferKeyS2C(key)).find('p').text(value);
+			$('#'+api.transferKeyS2C(key)).find('input').val(value);
+			break;
+	}
+	
 }
 
 
@@ -155,8 +172,22 @@ function getChangedData() {
 			newData[name] = value;
 
 		} else if ($dropdownSelected) {
-			var selectedName  = $dropdownSelected.attr('name');
-			var selectedValue = $dropdownSelected.text();
+			var selectedName = api.transferKeyC2S($(el).attr('selectname'));
+			var selectedValue;
+			switch(selectedName){
+				case "status":
+					selectedValue = getStatusName();
+					break;
+				case "factory":
+					selectedValue = getFactoryId();
+					break;
+				case "produce_type":
+					selectedValue = getTypeName();
+					break;
+				default:
+					selectedValue = "";
+					break;
+			}
 			newData[selectedName] = selectedValue;
 
 		} else {
@@ -164,4 +195,16 @@ function getChangedData() {
 		}
 	});
 	return newData;
+}
+
+function getStatusName() {
+	return statusDropdown.getSelectedStatus();
+}
+
+function getTypeName(){
+	return typeDropdown.getSelectedType();
+}
+
+function getFactoryId() {
+	return factoryDropdown.getSelectedFactoryId();
 }
