@@ -45,7 +45,7 @@ function logout() {
 function resetHrefLink() {
 	$('.navbar-item').each(function(){
 		this.href.replace('..', config.baseUrl);
-	}
+	});
 }
 
 function getPathAndFocusOnNavItem() {
