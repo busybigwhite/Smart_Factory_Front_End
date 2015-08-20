@@ -44,8 +44,10 @@ function logout() {
 
 function resetHrefLink() {
 	$('.navbar-item').each(function(){
-		$(this).children('a').attr('href').replace('..', config.baseUrl);
+		var path = $(this).children('a').attr('href').split('/')[1];
+		$(this).children('a').attr('href', config.baseUrl + '/' + path);
 	});
+	console.log('replace herf link done');
 }
 
 function getPathAndFocusOnNavItem() {
