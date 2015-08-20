@@ -13,6 +13,8 @@ exports = module.exports = {
 	deleteMember: deleteMember,
 	getMember: getMember,
 	editMember: editMember,
+	memberApiUrl: memberApiUrl,
+	userApiUrl: userApiUrl
 };
 
 function getUser() {

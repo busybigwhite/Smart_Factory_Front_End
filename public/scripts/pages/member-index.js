@@ -1,7 +1,6 @@
 'use strict';
 
 var $ = window.jQuery = require('jquery');
-var config = require('../config/url');
 var header = require('../includes/header');
 var template = require('../member/template');
 var api = require('../member/api');
@@ -45,10 +44,10 @@ function initialView(data) {
 }
 
 function gotoMemberNewPage() {
-	window.location.href = config.memberUrl + 'manage?type=add';
+	window.location.href = api.memberApiUrl + 'manage?type=add';
 }
 
 function gotoMemberEditPage() {
 	var id = $(this).data('id');
-	window.location.href = config.memberUrl + 'manage?type=edit&id=' + id;
+	window.location.href = api.memberApiUrl + 'manage?type=edit&id=' + id;
 }
