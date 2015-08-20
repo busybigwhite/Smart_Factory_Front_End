@@ -55,8 +55,21 @@
 		margin: 0 20px;
 	}
 
-	.pic-block img {
-		width: 150px;
+	.pic-block {
+		position: relative;
+
+		.pic-img {
+			width: 150px;
+			min-height: 150px;
+			background-color: lightgray;
+			color: darkgray;
+			&:after {
+				content: "no image now";
+				position: absolute;
+				left: 20px;
+				top: 42px;
+			}
+		}
 	}
 
 	.pic-upload-button {
