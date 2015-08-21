@@ -8,11 +8,12 @@ var token = require('../config/auth').getToken();
 
 var factoryId;
 var moldApiUrl  = config.APIUrl + 'mold/';
+var moldApiPicUrl = config.APIUrl + 'pic/mold/';
 var moldPageUrl = config.moldUrl;
 var isLocal = window.location.hostname === 'localhost';
 
 exports = module.exports = {
-	moldApiUrl: function() { return moldApiUrl },
+	getMoldPicApiUrl: function() { return moldApiPicUrl },
 	setFactoryId: setFactoryId,
 	goToMoldIndex: goToMoldIndex,
 	goToMoldInfo: goToMoldInfo,
@@ -64,7 +65,7 @@ function getUserList() {
 }
 
 function createMold(data) {
-	return createData(moldApiUrl, data);
+	return createData(moldApiUrl, data, true);
 }
 
 function deleteMold(id) {
@@ -72,12 +73,12 @@ function deleteMold(id) {
 }
 
 function editMoldInfo(id, data) {
-	return editData(moldApiUrl + id, data);
+	return editData(moldApiUrl + id, data, true);
 }
 
 function createMoldRecord(id, data) {
 	data.id = id;
-	return createData(moldApiUrl + 'maintain/', data);
+	return createData(moldApiUrl + 'maintain/', data, false);
 }
 
 function deleteMoldRecord(id, data) {
@@ -91,24 +92,24 @@ function getData(url) {
 	return ajax('GET', url);
 }
 
-function editData(url, data) {
-	return ajax('PUT', url, data);
+function editData(url, data, isContainPics) {
+	return ajax('PUT', url, data, isContainPics);
 }
 
-function createData(url, data) {
-	return ajax('POST', url, data);
+function createData(url, data, isContainPics) {
+	return ajax('POST', url, data, isContainPics);
 }
 
 function deleteData(url, data) {
 	return ajax('DELETE', url);
 }
 
-function ajax(method, url, data) {
+function ajax(method, url, data, isContainPics) {
 	var data = assign({}, data); // prevent data is undefined
 	data.factory_id = factoryId;
 	data['_token'] = token;
 
-	return $.ajax({
+	var opts = {
 		method: method,
 		url: url,
 		data: data,
@@ -121,7 +122,16 @@ function ajax(method, url, data) {
 		},
 		// cache: false, //aviod ie bug if necessary
 		// timeout: 30000, //ms
-	});
+	};
+
+	var picOpt = {
+		contentType: false,
+		processData: false,
+	};
+
+	var ajaxOpts = isContainPics ? assign(opts, picOpt) : opts ;
+
+	return $.ajax(ajaxOpts);
 }
 
 function mockAjax(response) {
