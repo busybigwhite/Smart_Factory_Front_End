@@ -62,12 +62,8 @@ function getPictureListAndRenderRow() {
     var title = queryParameter.get('title');
     var token = auth.getToken();
 
-    $.ajax({
-        url: config.APIUrl + 'workorder/listpic',
-        data: { work_order_id: workorderId,
-                type: type,
-                _token: token}
-    })
+    $.post(config.APIUrl + 'workorder/listpic/?work_order_id=' + workorderId + '&type=' + type,
+        data: { _token: token })
      .done(function(res){
         resetBlockAndTitle(title);
 
