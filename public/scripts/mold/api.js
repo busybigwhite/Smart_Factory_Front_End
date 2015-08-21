@@ -129,9 +129,9 @@ function ajax(method, url, data, isContainPics) {
 		processData: false,
 	};
 
-	var ajaxOpts = isContainPics ? assign(opts, picOpt) : opts ;
+	// var ajaxOpts = isContainPics ? assign(opts, picOpt) : opts ;
 
-	return $.ajax(ajaxOpts);
+	return $.ajax(opts);
 }
 
 function mockAjax(response) {
