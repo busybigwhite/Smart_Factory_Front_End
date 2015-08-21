@@ -20,16 +20,14 @@ app.get('/login', function(req, res) { res.render('pages/login/main'); });
 
 // realtime
 app.get('/realtime', function(req, res) { res.render('pages/realtime/main'); });
-app.get('/realtime/listpic', function(req, res) {
-	res.render('pages/realtime/listpic');
-});
+app.get('/realtime/listpic', function(req, res) { res.render('pages/realtime/listpic') });
 app.get('/api/workorder/list', function(req, res) {
 	res.send(data.liveinfos);
 });
 app.get('/api/workorder/info', function(req, res) {
 	res.send(data.workorderInfo);
 });
-app.get('/api/workorder/listpic', function(req, res) {
+app.post('/api/workorder/listpic', function(req, res) {
 	res.send(data.listpics);
 });
 app.get('/api/workorder', function(req, res) {
@@ -68,7 +66,7 @@ app.get('/api/history/filter', function(req, res) {
 		break;
 		default:
 			res.send({});
-			
+
 		break;
 	}
 });
