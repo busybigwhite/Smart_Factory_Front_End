@@ -42,19 +42,23 @@ function getWorkOrderList(id) {
 };
 
 function createWorkOrder(data) {
+	console.log("createData use post url = "+wordorderApiUrl);
 	return createData(wordorderApiUrl, data);
 }
 
 function deleteWorkOrder(id, token) {
-	return deleteData(wordorderApiUrl + '/' + id, token);
+	console.log("delete with token as data url = "+wordorderApiUrl + id);
+	return deleteData(wordorderApiUrl + id, token);
 }
 
 function getWorkOrderInfo(id) {
-	return getData(wordorderApiUrl + '/' + id);
+	console.log("get url = "+wordorderApiUrl + id);
+	return getData(wordorderApiUrl + id);
 };
 
 function editWorkOrderInfo(id, data) {
-	return editData(wordorderApiUrl + '/' + id, data);//include token
+	console.log("edit url = "+wordorderApiUrl + id);
+	return editData(wordorderApiUrl + id, data);//include token
 }
 
 
