@@ -76,7 +76,7 @@ function searchHistoryThenRenderRows(searchPeriod) {
 
 	var queryURL = createQueryURL(searchPeriod);
 
-	$.get(config.APIUrl + 'history/list/?' + queryURL)
+	$.get(config.APIUrl + 'history/list?' + queryURL)
 	 .done(function(response){
 	 	var infos = response || [];
 		var type = selectedFilter.split('_')[0];

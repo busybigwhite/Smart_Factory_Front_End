@@ -20,21 +20,7 @@ var liveinfos = [
         "content": "test",
         "created_at": "2015-08-20 06:10:20",
         "updated_at": "2015-08-20 06:10:21",
-        "work_order_records": [{
-            "id": 1,
-            "work_order_id": 'work2',
-            "factory_id": 3,
-            "machine_id": 77,
-            "mold_id": 1234,
-            "ipc_id": 1,
-            "sample_num": 1,
-            "error_num": 0,
-            "work_start_time": "2015-08-20 06:10:20",
-            "work_end_time": "2015-08-20 10:05:20",
-            "work_pause_period": 0,
-            "created_at": "2015-08-20 06:10:20",
-            "updated_at": "2015-08-20 06:10:20"
-        }]
+        "work_order_records": []
       },{
         "id": 2,
         "customer_id": 1,
