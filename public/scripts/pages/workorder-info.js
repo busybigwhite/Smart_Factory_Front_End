@@ -187,7 +187,9 @@ function saveChangedData(data) {
 
 
 function deleteWorkOrderInfo() {
-	api.deleteWorkOrder(workorderID,token)
+	var data={};
+	data._token = token;
+	api.deleteWorkOrder(workorderID,data)
 		 .done(function(data) { 
 		 	console.log("DELETE Workorder res: ", data); 
 		 	//back to list
