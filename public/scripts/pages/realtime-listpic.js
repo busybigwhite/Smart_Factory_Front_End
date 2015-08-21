@@ -60,7 +60,7 @@ function getPictureListAndRenderRow() {
     var type = queryParameter.get('type');
     var title = queryParameter.get('title');
 
-    $.get(config.APIUrl + 'workorder/listpic/?work_order_id=' + workorderId + '&type=' + type)
+    $.post(config.APIUrl + 'workorder/listpic/?work_order_id=' + workorderId + '&type=' + type)
      .done(function(res){
         resetBlockAndTitle(title);
 
