@@ -7,7 +7,7 @@ var config = require('../config/url');
 var token = require('../config/auth').getToken();
 
 var factoryId;
-var machineApiUrl  = config.APIUrl + 'machine/';
+var machineApiUrl  = config.APIUrl + 'machine';
 var machinePageUrl = config.machineUrl;
 var isLocal = window.location.hostname === 'localhost';
 
@@ -44,7 +44,7 @@ function goToMachineInfo(type, data) {
 		default:
 			action = '?' + qs.stringify(data);
 	}
-	window.location.href = machinePageUrl + 'info' + action;
+	window.location.href = machinePageUrl + '/info' + action;
 }
 
 function getMachineList() {
@@ -54,7 +54,7 @@ function getMachineList() {
 
 function getMachineInfo(id) {
 	var fakeData = {"id":2,"serial_num":"fakeData Helga","name":"Schmidt","weight":187,"acquisition":"1991-06-10 00:00:00","admin_id":1,"check_period_unit":"times","check_period_value":62,"maintain_period_unit":"times","maintain_period_value":85,"created_at":"2015-08-18 06:57:31","updated_at":"2015-08-18 06:57:31","maintain_records":[{"id":1,"machine_id":2,"type":"maintain","content":"test","created_at":"2015-08-18 06:57:31","updated_at":"2015-08-18 06:57:31"}]};
-	return isLocal ? mockAjax(fakeData) : getData(machineApiUrl + id);
+	return isLocal ? mockAjax(fakeData) : getData(machineApiUrl + '/' + id);
 };
 
 function getUserList() {
@@ -67,21 +67,21 @@ function createMachine(data) {
 }
 
 function deleteMachine(id) {
-	return deleteData(machineApiUrl + id);
+	return deleteData(machineApiUrl + '/' + id);
 }
 
 function editMachineInfo(id, data) {
-	return editData(machineApiUrl + id, data);
+	return editData(machineApiUrl + '/'  + id, data);
 }
 
 function createMachineRecord(id, data) {
 	data.id = id;
-	return createData(machineApiUrl + 'maintain/', data);
+	return createData(machineApiUrl + '/maintain', data);
 }
 
 function deleteMachineRecord(id, data) {
 	data.id = id;
-	return deleteData(machineApiUrl + 'maintain/', data);
+	return deleteData(machineApiUrl + '/maintain', data);
 }
 
 
