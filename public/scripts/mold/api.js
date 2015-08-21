@@ -113,13 +113,6 @@ function ajax(method, url, data, isContainPics) {
 		method: method,
 		url: url,
 		data: data,
-		beforeSend: function() {
-			console.log('AJAX INFO ----------------');
-			console.log('method: ', method);
-			console.log('url: ', url);
-			console.log('data: ', data);
-			console.log('--------------------------');
-		},
 		// cache: false, //aviod ie bug if necessary
 		// timeout: 30000, //ms
 	};
@@ -129,9 +122,21 @@ function ajax(method, url, data, isContainPics) {
 		processData: false,
 	};
 
-	// var ajaxOpts = isContainPics ? assign(opts, picOpt) : opts ;
+	var beforeSendOpt = {
+		beforeSend: function() {
+			console.log('AJAX INFO ----------------');
+			console.log('method: ', method);
+			console.log('url: ', url);
+			console.log('contentType: ', picOpt.contentType);
+			console.log('processData: ', picOpt.processData);
+			console.log('data: ', data);
+			console.log('--------------------------');
+		}
+	};
 
-	return $.ajax(opts);
+	var ajaxOpts = isContainPics ? assign(opts, picOpt, beforeSendOpt) : assign(opts, beforeSendOpt) ;
+
+	return $.ajax(ajaxOpts);
 }
 
 function mockAjax(response) {

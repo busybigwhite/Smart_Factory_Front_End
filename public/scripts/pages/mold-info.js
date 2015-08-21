@@ -4,6 +4,7 @@ var $ = window.jQuery = require('jquery');
 var header = require('../includes/header');
 var api = require('../mold/api');
 var queryParameter = require('../lib/helper/query-parameter');
+require('eonasdan-bootstrap-datetimepicker');
 
 var noticeedPersonDropdown = require('../mold/modules/noticed-person-dropdown');
 var maintainPeriodDropdown = require('../mold/modules/maintain-period-dropdown');
@@ -75,7 +76,10 @@ function initialize() {
 }
 
 function getInitialData() {
-	if (!moldId) return;
+	if (!moldId) {
+		initializeDatetimePicker();
+		return;
+	}
 	api.getMoldInfo(moldId)
 		 .done(initialView)
 		 .fail(function(err) { console.log("GET Mold Info error: ", err); });
@@ -201,7 +205,7 @@ function initialView(data) {
 }
 
 function initializeDatetimePicker(data) {
-	var defaultDate = data['created_at'] ? data['created_at'] : today;
+	var defaultDate = data && data['created_at'] ? data['created_at'] : today;
 	$datePicker.datetimepicker(dateTimePickerOpt);
 	$datePicker.data("DateTimePicker").defaultDate(defaultDate);
 }
