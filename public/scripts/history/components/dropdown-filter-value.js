@@ -72,7 +72,7 @@ function renderDropdown(type) {
 
 	resetBlock();
 
-	var filterType = _.trim(type, '_').replace('id', 's');
+	var filterType = type.replace('_', '').replace('id', 's');
 
 	if( filterValues[filterType].length ){
 	 	var filters = _.uniq( filterValues[filterType] );
