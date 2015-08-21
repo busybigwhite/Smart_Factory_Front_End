@@ -216,8 +216,12 @@ function initResumeInfo(data) {
 function getAllInfoData() {
 	var data = {};
 	data.info = getInfoValue();
-	data.newRecords = getNewRecordList();
-	data.deleteRecords = getDeleteRecordList();
+
+	var newRecords = getNewRecordList();
+	if (newRecords.length !== 0) data.newRecords = newRecords;
+
+	var deleteRecords = getDeleteRecordList();
+	if (newRecords.length !== 0) data.deleteRecords = deleteRecords;
 	return data;
 }
 
@@ -241,18 +245,18 @@ function getInfoValue() {
 }
 
 function getNewRecordList() {
-	var data = {};
-	data.check    = addMachineIdIntoData(checkRecordTable.getNewList());
-	data.maintain = addMachineIdIntoData(maintainRecordTable.getNewList());
-	data.error    = addMachineIdIntoData(errorRecordTable.getNewList());
+	var check    = addMachineIdIntoData(checkRecordTable.getNewList());
+	var maintain = addMachineIdIntoData(maintainRecordTable.getNewList());
+	var error    = addMachineIdIntoData(errorRecordTable.getNewList());
+	var data = [].cancat(check, maintain, error);
 	return data;
 }
 
 function getDeleteRecordList() {
-	var data = {};
-	data.check    = addMachineIdIntoData(checkRecordTable.getDeleteList());
-	data.maintain = addMachineIdIntoData(maintainRecordTable.getDeleteList());
-	data.error    = addMachineIdIntoData(errorRecordTable.getDeleteList());
+	var check    = addMachineIdIntoData(checkRecordTable.getDeleteList());
+	var maintain = addMachineIdIntoData(maintainRecordTable.getDeleteList());
+	var error    = addMachineIdIntoData(errorRecordTable.getDeleteList());
+	var data = [].cancat(check, maintain, error);
 	return data;
 }
 
