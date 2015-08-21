@@ -2,6 +2,7 @@
 
 var $ = window.jQuery = require('jquery');
 var _ = require('lodash');
+var auth = require('../config/auth');
 var header = require('../includes/header');
 var config = require('../config/url');
 var templates = require('../realtime/templates');
@@ -59,8 +60,14 @@ function getPictureListAndRenderRow() {
     var workorderId = queryParameter.get('work_order_id');
     var type = queryParameter.get('type');
     var title = queryParameter.get('title');
+    var token = auth.getToken();
 
-    $.post(config.APIUrl + 'workorder/listpic/?work_order_id=' + workorderId + '&type=' + type)
+    $.ajax({
+        url: config.APIUrl + 'workorder/listpic',
+        data: { work_order_id: workorderId,
+                type: type,
+                _token: token}
+    })
      .done(function(res){
         resetBlockAndTitle(title);
 
