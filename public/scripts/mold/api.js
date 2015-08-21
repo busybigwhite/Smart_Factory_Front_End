@@ -8,7 +8,7 @@ var token = require('../config/auth').getToken();
 
 var factoryId;
 var moldApiUrl  = config.APIUrl + 'mold/';
-var moldApiPicUrl = config.APIUrl + 'pic/';
+var moldApiPicUrl = config.APIUrl + 'pic/mold/';
 var moldPageUrl = config.moldUrl;
 var isLocal = window.location.hostname === 'localhost';
 
