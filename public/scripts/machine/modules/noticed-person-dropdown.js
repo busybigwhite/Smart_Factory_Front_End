@@ -74,9 +74,10 @@ function setFocusNameBlock(target) {
 	setNoticeedPerson(selectedId, displayName)
 }
 
-function setNoticeedPerson(id) {
+function setNoticeedPerson(id, name) {
 	noticedId = id;
-	setSelectedId(id);
+	if (id) setSelectedId(id);
+	if (name) setSelectedName(name);
 }
 
 function getId() {
