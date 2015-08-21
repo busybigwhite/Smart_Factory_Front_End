@@ -143,13 +143,13 @@ function saveData() {
 
 	} else if (!isEditMode && isCreateMode) {
 		saveNewData(data.info);
-		if (!data.newRecords) saveNewRecord(data.newRecords);
+		if (_.has(data, data.newRecords)) saveNewRecord(data.newRecords);
 		console.log('New Data : ', data);
 
 	} else {
 		console.log('machine info page has error: Undefined Mode');
 	}
-	return false;
+	// return false;
 }
 
 function saveChangedData(data) {
