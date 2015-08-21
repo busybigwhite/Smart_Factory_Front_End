@@ -16,6 +16,7 @@ require('fancybox')($);
 var $livePicBlock = $('#realtime-pic-block');
 var $navTitle = $('#realtime-pic-title');
 var spinner;
+var token = auth.getToken();
 
 exports = module.exports = {};
 
@@ -61,7 +62,6 @@ function getPictureListAndRenderRow() {
     var workorderId = queryParameter.get('work_order_id');
     var type = queryParameter.get('type');
     var title = queryParameter.get('title');
-    var token = auth.getToken();
 
     $.post(config.APIUrl + 'workorder/listpic/?work_order_id=' + workorderId + '&type=' + type,
         { _token: token })
