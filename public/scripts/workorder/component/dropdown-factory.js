@@ -26,9 +26,9 @@ exports.getSelectedFactoryId = function(){
 }
 exports.setDropdownbyKey = setDropdownbyKey;
 
-function setDropdownbyKey(key){
-	$factoryFocusName.text(key).data('key', key);
-	console.log(key);
+function setDropdownbyKey(key, value){
+	$factoryFocusName.text(value).data('key', value);
+	selectedFactoryId = key;
 }
 
 

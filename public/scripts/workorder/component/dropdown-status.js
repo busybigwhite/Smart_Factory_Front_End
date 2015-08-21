@@ -39,7 +39,9 @@ function getDisplayName(key){
 exports.setDropdownbyValue = setDropdownbyValue;
 
 function setDropdownbyValue(key, value){
+	//ex. key='status' value='non-schedule'
 	$statusFocusName.text(Namedic[value]).data('key', key);
+	selectedStatus = value;
 }
 
 

@@ -33,7 +33,8 @@ var parameters = location.search.substring(1).split("&");
 var temp = parameters[0].split("=");
 var workorderID = temp[1];
 temp = parameters[1].split("=");
-var factory = temp[1];
+
+var factoryID = temp[1];
 
 var today = new Date();
 var DateTimePickerOpt = {
@@ -51,7 +52,6 @@ var backupJdata;
 initialize();
 
 function initialize() {
-	// workorderID = GET FROM PREV PAGE
 	header.include();
 	getFactoryList();
 	showInitView();
@@ -64,6 +64,7 @@ function bindEvents() {
 	$cancelBtn.on('click', hideEditMode);
 	$deleteBtn.on('click', deleteWorkOrderInfo);
 	$workorderForm.submit(saveData);
+<<<<<<< HEAD
 	statusDropdown.emitter.on('statusChanged', doNothing);
 	typeDropdown.emitter.on('TypeChanged', doNothing);
 	factoryDropdown.emitter.on('factoryChanged', doNothing);
@@ -71,6 +72,8 @@ function bindEvents() {
 
 function doNothing(){
 
+=======
+>>>>>>> 10bdaba418382daf4730a661abb1096fc390e596
 }
 
 function initializeDatetimePicker() {
@@ -84,10 +87,9 @@ function getFactoryList(){
 	$.get(config.APIUrl + 'factory/list')
 	 .done(function(response){
 		for (var i = 0; i < response.length; i++) {
-			console.log(response[i].id+"@"+response[i].name+"&"+factoryID);
 			if(response[i].id==factoryID){
 				$('#factory').find('p').text(response[i].name);
-				factoryDropdown.setDropdownbyKey(response[i].name);
+				factoryDropdown.setDropdownbyKey(response[i].id,response[i].name);
 			}
 		};
 	 });
@@ -112,6 +114,8 @@ function hideEditMode() {
 		$deleteBtn.show();
 		$viewModeCollection.removeClass('editting');
 		$editModeCollection.removeClass('editting');
+		//restore original data
+		$.each(backupJdata, fillList);
 	}else{
 		// window.location="./";
 		api.goToWorkOrderIndex();
@@ -132,19 +136,28 @@ function showInitView() {
 	$('#workorder-num').find('input').val(workorderID);
 
 	api.getWorkOrderInfo(workorderID)
+<<<<<<< HEAD
 		.done(function(data) {
 			console.log("GET workorder res: ", data);
+=======
+		.done(function(data) {
+			console.log("GET Workorder res: ", data);
+			//get init data and store it
+>>>>>>> 10bdaba418382daf4730a661abb1096fc390e596
 			backupJdata = data;
 			$.each(data, fillList);
 		})
-		 .fail(function(err) { console.log("GET workorder error: ", err); });
+		 .fail(function(err) {
+		 	console.log("GET Workorder error: ", err);
+		 	//TODO init ERROR
+		 	// api.goToWorkOrderIndex();
+		 });
 
 
 }
 
 
 function fillList(key, value){
-	// console.log(key+"!@@@@@ = "+value);
 	switch(key){
 		case "status":
 			statusDropdown.setDropdownbyValue(key,value);
@@ -173,11 +186,20 @@ function saveData() {
 
 function saveChangedData(data) {
 	api.editWorkOrderInfo(workorderID, data)
+<<<<<<< HEAD
 		 .done(function(data) {
 		 	console.log("EDIT Machine Info res: ", data);
 		 })
 		 .fail(function(err) {
 		 	console.log("EDIT Machine Info error: ", err);
+=======
+		 .done(function(data) {
+		 	console.log("EDIT Workorder Info res: ", data);
+		 	api.goToWorkOrderIndex();
+		 })
+		 .fail(function(err) {
+		 	console.log("EDIT Workorder Info error: ", err);
+>>>>>>> 10bdaba418382daf4730a661abb1096fc390e596
 		 	// if fail restore old page
 		 	$.each(backupJdata, fillList);
 		  });
@@ -187,6 +209,7 @@ function saveChangedData(data) {
 
 function deleteWorkOrderInfo() {
 	api.deleteWorkOrder(workorderID)
+<<<<<<< HEAD
 		 .done(function(data) {
 		 	console.log("DELETE Machine res: ", data);
 		 	//back to list
@@ -194,6 +217,15 @@ function deleteWorkOrderInfo() {
 		})
 		 .fail(function(err) {
 		 	console.log("DELETE Machine error: ", err);
+=======
+		 .done(function(data) {
+		 	console.log("DELETE Workorder res: ", data);
+		 	//back to list
+		 	api.goToWorkOrderIndex();
+		})
+		 .fail(function(err) {
+		 	console.log("DELETE Workorder error: ", err);
+>>>>>>> 10bdaba418382daf4730a661abb1096fc390e596
 		 	// TODO ??
 		 });
 }
@@ -212,7 +244,13 @@ function getChangedData() {
 			newData[name] = value;
 
 		} else if ($dropdownSelected) {
-			var selectedName = api.transferKeyC2S($(el).attr('selectname'));
+			var selectedName;
+			if(typeof $dropdownSelected.attr('selectname')!='undefined'){
+				selectedName = api.transferKeyC2S($dropdownSelected.attr('selectname'));
+			}else{
+				selectedName = api.transferKeyC2S($(el).attr('selectname'));
+			}
+
 			var selectedValue;
 			switch(selectedName){
 				case "status":
@@ -224,11 +262,24 @@ function getChangedData() {
 				case "produce_type":
 					selectedValue = getTypeName();
 					break;
+				case "order_date":
+					selectedValue = $inputDateDatePicker.val();
+					break;
+				case "schedule_date":
+					selectedValue = $reserveDatePicker.val();
+					break;
+				case "start_date":
+					selectedValue = $realProduceDatePicker.val();
+					break;
+				case "finish_date":
+					selectedValue = $realFinishDatePicker.val();
+					break;
 				default:
 					selectedValue = "";
 					break;
 			}
-			newData[selectedName] = selectedValue;
+			if(typeof selectedName!='undefined')
+				newData[selectedName] = selectedValue;
 
 		} else {
 			console.log('getChangedData error: missing some value');
