@@ -36,7 +36,18 @@ var $width  = $('#mold-size').find('.width');
 var $height = $('#mold-size').find('.height');
 
 var $moldPicsBlock = $('#mold-pics-block');
+var $datePicker = $('#mold-create-at-date-picker');
 
+var today = new Date();
+var dateTimePickerOpt = {
+		widgetPositioning: {
+			horizontal: 'auto',
+			vertical: 'bottom'
+		},
+		maxDate: today,
+		ignoreReadonly: true,
+		sideBySide: true,
+	};
 
 var isEditMode   = false;
 var isCreateMode = false;
@@ -186,6 +197,13 @@ function initialView(data) {
 	initBaseInfo(data);
 	initResumeInfo(data);
 	initPics(data);
+	initializeDatetimePicker(data);
+}
+
+function initializeDatetimePicker(data) {
+	var defaultDate = data['created_at'] ? data['created_at'] : today;
+	$datePicker.datetimepicker(dateTimePickerOpt);
+	$datePicker.data("DateTimePicker").defaultDate(defaultDate);
 }
 
 function resetViewData() {
@@ -200,9 +218,7 @@ function initBaseInfo(data) {
 	$name.find('.view-mode').text(data['name']);
 	$name.find('.edit-mode').val(data['name']);
 
-// ToFix: datetimepicker
 	$createdAt.find('.view-mode').text(data['created_at']);
-	$createdAt.find('.edit-mode').val(data['created_at']);
 
 	$length.filter('.view-mode').text(data['length']);
 	$length.filter('.edit-mode').val(data['length']);
@@ -266,6 +282,7 @@ function getInfoValue() {
 	data['maintain_period_unit']  = maintainPeriodDropdown.getType();
 	data['mold_pic'] = moldPicUploadBlock.getImageDataUri();
 	data['product_pic'] = productPicUploadBlock.getImageDataUri();
+	data['created_at'] = $datePicker.val();
 
 	console.log('mold_pic => ', data['mold_pic']);
 	console.log('product_pic => ', data['product_pic']);
