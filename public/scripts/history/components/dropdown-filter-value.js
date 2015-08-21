@@ -48,7 +48,10 @@ function initialize() {
 
 function getValues() {
 	$.get(config.APIUrl + 'history/filter')
-	 .done(function(response){ filterValues = response });
+	 .done(function(response){
+	 	filterValues = response;
+	 	renderDropdown('work_order_id');
+	 });
 }
 
 function bindEvents() {
@@ -72,7 +75,10 @@ function renderDropdown(type) {
 
 	resetBlock();
 
-	_.isEmpty(filterValues) && getValues();
+	if( _.isEmpty(filterValues ){
+		getValues();
+		return;
+	}
 
 	var filterType = _.camelCase(type).toLowerCase().replace('id', 's');
 
@@ -83,8 +89,6 @@ function renderDropdown(type) {
 		$filterValueMenu.html( filterListRows );
 
 		setFocusValueBlock( filters[0] );
-	}else {
-		emitter.emit('valueChanged', selectedValue);
 	}
 }
 
