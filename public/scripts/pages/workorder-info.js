@@ -5,6 +5,7 @@ var header = require('../includes/header');
 var api = require('../workorder/api');
 var queryParameter = require('../lib/helper/query-parameter');
 var config = require('../config/url');
+var auth = require('../config/auth');
 
 require('bootstrap/js/dropdown');
 require('eonasdan-bootstrap-datetimepicker');
@@ -34,6 +35,7 @@ var temp = parameters[0].split("=");
 var workorderID = temp[1];
 temp = parameters[1].split("=");
 var factoryID = temp[1];
+var token = auth.getToken();
 
 
 var today = new Date();
@@ -185,7 +187,7 @@ function saveChangedData(data) {
 
 
 function deleteWorkOrderInfo() {
-	api.deleteWorkOrder(workorderID)
+	api.deleteWorkOrder(workorderID,token)
 		 .done(function(data) { 
 		 	console.log("DELETE Workorder res: ", data); 
 		 	//back to list
@@ -252,6 +254,7 @@ function getChangedData() {
 			console.log('getChangedData error: missing some value');
 		}
 	});
+	newData._token = token;
 	return newData;
 }
 
