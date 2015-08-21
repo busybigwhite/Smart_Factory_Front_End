@@ -11,14 +11,18 @@ exports.renderTableList = function(infos) {
       <li class="table-item">
         <div class="table-col"><%= info.id %></div>
       	<div class="table-col">
-          <% if(info.work_order_records.length){ %>
+
+    <% if(info.work_order_records.length){ %>
             <%= info.work_order_records[0].machine_id %>
-          <% }                                   %>
+    <% }                                   %>
+
         </div>
       	<div class="table-col">
-          <% if(info.work_order_records.length){ %>
+
+    <% if(info.work_order_records.length){ %>
             <%= info.work_order_records[0].mold_id %>
-          <% }                                   %>
+    <% }                                   %>
+
         </div>
       	<div class="table-col"><%= info.customer_id %></div>
       	<div class="table-col-sm"><%= info.target_num %></div>
@@ -26,9 +30,17 @@ exports.renderTableList = function(infos) {
       	<div class="table-col-sm"><%= info.current_fail_num %>/<%= info.current_num %></div>
       	<div class="table-col-sm"><%= info.abnormal_num %></div>
       	<div class="table-col-lg">
-      		<input class="realtime-showpic-btn" value="即時" type="button" data-type="current" data-info=<%= info.id %>/<%= info.machine_id %><%= info.mold_id %> />
-        	<input class="realtime-showpic-btn" value="安全" type="button" data-type="normal" data-info=<%= info.id %>/<%= info.machine_id %>/<%= info.mold_id %> />
-        	<input class="realtime-showpic-btn" value="異常" type="button" data-type="error" data-info=<%= info.id %>/<%= info.machine_id %>/<%= info.mold_id %> />
+
+    <% if(info.work_order_records.length){ %>
+        		<input class="realtime-showpic-btn" value="即時" type="button" data-type="current" data-info=<%= info.id %>/<%= info.work_order_records[0].machine_id %>/<%= info.work_order_records[0].mold_id %> />
+          	<input class="realtime-showpic-btn" value="安全" type="button" data-type="normal" data-info=<%= info.id %>/<%= info.work_order_records[0].machine_id %>/<%= info.work_order_records[0].mold_id %> />
+          	<input class="realtime-showpic-btn" value="異常" type="button" data-type="error" data-info=<%= info.id %>/<%= info.work_order_records[0].machine_id %>/<%= info.work_order_records[0].mold_id %> />
+    <% }else {                              %>
+              <input class="realtime-showpic-btn" value="即時" type="button" data-type="current" data-info=<%= info.id %> />
+              <input class="realtime-showpic-btn" value="安全" type="button" data-type="normal" data-info=<%= info.id %> />
+              <input class="realtime-showpic-btn" value="異常" type="button" data-type="error" data-info=<%= info.id %> />
+    <% }                                    %>
+
       	</div>
 		  </li>
     <% });                                          %>`

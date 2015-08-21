@@ -6,6 +6,7 @@ var userId = require('../config/auth');
 var config = require('../config/url');
 var queryParameter = require('../lib/helper/query-parameter');
 var factoryDropdown = require('../lib/component/dropdown-factory');
+var loadingSpin = require('../lib/component/loading-spin');
 var templates = require('../history/templates');
 var filterDropdown = require('../history/components/dropdown-filter-type');
 var valueDropdown = require('../history/components/dropdown-filter-value');
@@ -19,14 +20,20 @@ var $imageBlock = $('#history-img-block');
 var focusFactoryId;
 var selectedFilter;
 var selectedValue;
-
+var spinner;
 
 initialize();
 
 function initialize() {
 	header.include();
+	initializeLoadingSpinner();
 	bindEvents();
 	filterDropdown.triggerClick();
+}
+
+function initializeLoadingSpinner() {
+    spinner = loadingSpin();
+    spinner.init( $('#history-list-block')[0] );
 }
 
 function bindEvents() {
@@ -73,6 +80,7 @@ function searchHistoryThenRenderRows(searchPeriod) {
 	if( !selectedFilter || (selectedFilter==='date_period' && searchPeriod===undefined) ) return;
 
 	cleanTableAndIamgeBlock();
+	spinner.start();
 
 	var queryURL = createQueryURL(searchPeriod);
 
@@ -84,7 +92,9 @@ function searchHistoryThenRenderRows(searchPeriod) {
 		createTableList(infos, type);
 		displayImageBlock(infos, type);
 
-	}).fail(function(err){ console.log('history list error:', err) });
+	})
+	 .fail(function(err){ console.log('history list error:', err) })
+	 .always(function(){ spinner.stop() });
 }
 
 function cleanTableAndIamgeBlock() {

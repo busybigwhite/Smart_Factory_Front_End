@@ -1,17 +1,21 @@
 'use strict';
 var $ = window.jQuery = require('jquery');
+var _ = require('lodash');
 var header = require('../includes/header');
 var userId = require('../config/auth');
 var config = require('../config/url');
-var factoryDropdown = require('../lib/component/dropdown-factory');
-var templates = require('../realtime/templates');
 var queryParameter = require('../lib/helper/query-parameter');
 var redirect = require('../lib/helper/redirect');
+var factoryDropdown = require('../lib/component/dropdown-factory');
+var loadingSpin = require('../lib/component/loading-spin');
+var templates = require('../realtime/templates');
 
-require('bootstrap/js/dropdown');
+// require('bootstrap/js/dropdown');
 
 var isImageMode = false;
 var focusFactoryId = undefined;
+var spinner;
+
 
 /* DOM */
 var $modeFocus = $('#realtime-mode-focus');
@@ -29,10 +33,16 @@ initialize();
 
 function initialize() {
 	header.include();
+	initializeLoadingSpinner();
 	bindEvents();
 
 	$tableModeSwitcher.trigger('click');
 	$filterItem.eq(0).trigger('click');
+}
+
+function initializeLoadingSpinner() {
+	spinner = loadingSpin();
+	spinner.init( $('#realtime-list-block')[0] );
 }
 
 function bindEvents() {
@@ -72,7 +82,9 @@ function setFocusFactoryIdThenRenderRows(factoryId) {
 }
 
 function createRealtimeListThenRenderRows(type, searchKey) {
-	// $.get(config.APIUrl + 'workorder/list/:' + userId + '?factory_id=' + focusFactoryId + 'type=' + type + '&search_key=' + searchKey)
+
+	spinner.start();
+
 	$.get(config.APIUrl + 'workorder/list/?factory_id=' + focusFactoryId + '&type=' + type + '&search_key=' + searchKey)
 	 .done(function(response){
 		var tableListRows = templates.renderTableList({ infos : response });
@@ -80,6 +92,9 @@ function createRealtimeListThenRenderRows(type, searchKey) {
 
 		$tableBody.empty().append( tableListRows );
 		// $imageListBlock.empty().html( imageListRows );
+	 })
+	 .always(function(){
+	 	spinner.stop();
 	 });
 }
 
@@ -114,8 +129,8 @@ function searchByFilter(){
 
 function redirectToPicPage() {
 	var title = $(this).data('info');
-	var work_order_id = title.split('/')[0];
 	var type = $(this).data('type');
+	var work_order_id = _.isString(title) ? title.split('/')[0] : title;
 
 	redirect('realtimePic', {work_order_id, type, title});
 }

@@ -34,6 +34,7 @@
     "qs": "^4.0.0",
     "rectimage": "^0.2.0",
     "run-sequence": "^1.1.2",
+    "spin": "0.0.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "wolfy87-eventemitter": "^4.2.11"
