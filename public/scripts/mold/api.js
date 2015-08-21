@@ -127,8 +127,8 @@ function ajax(method, url, data, isContainPics) {
 			console.log('AJAX INFO ----------------');
 			console.log('method: ', method);
 			console.log('url: ', url);
-			console.log('contentType: ', contentType);
-			console.log('processData: ', processData);
+			console.log('contentType: ', picOpt.contentType);
+			console.log('processData: ', picOpt.processData);
 			console.log('data: ', data);
 			console.log('--------------------------');
 		}
