@@ -27,7 +27,6 @@ var DateTimePickerOpt = {
         horizontal: 'auto',
         vertical: 'bottom'
     },
-    // defaultDate: today,
 	ignoreReadonly: true
 };
 
@@ -69,14 +68,6 @@ function initializeDatetimePicker() {
 	$realProduceDatePicker.datetimepicker(DateTimePickerOpt);
 	$realFinishDatePicker.datetimepicker(DateTimePickerOpt);
 }
-
-// function getFormData(DatePicker) {
-// 	var data = {};
-// 	data.created_at = DatePicker.val();
-// 	data.content = $contentInput.val();
-// 	data.updated_at = DatePicker.val();
-// 	return data.content ? data : false ;
-// }
 
 function createData() {
 	var data = getChangedData();

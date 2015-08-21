@@ -7,6 +7,8 @@ var queryParameter = require('../lib/helper/query-parameter');
 var config = require('../config/url');
 
 require('bootstrap/js/dropdown');
+require('eonasdan-bootstrap-datetimepicker');
+
 var statusDropdown = require('../workorder/component/dropdown-status');
 var typeDropdown = require('../workorder/component/dropdown-type');
 var factoryDropdown = require('../workorder/component/dropdown-factory');
@@ -19,6 +21,10 @@ var $deleteBtn = $('#workorder-info-delete-button');
 var $workorderForm  = $('#workorder-info-form');
 var $viewModeCollection = $workorderForm.find('.view-mode');
 var $editModeCollection = $workorderForm.find('.edit-mode');
+var $inputDateDatePicker = $('#workorder-inputDate-date-picker');
+var $reserveDatePicker = $('#workorder-reserve-date-picker');
+var $realProduceDatePicker = $('#workorder-real-produce-date-picker');
+var $realFinishDatePicker = $('#workorder-real-finish-date-picker');
 
 var isEditMode   = false;
 var isCreateMode = false;
@@ -33,6 +39,16 @@ var factoryID = "F002";
 // temp = parameters[1].split("=");
 // var factory = temp[1];
 
+var today = new Date();
+var DateTimePickerOpt = {
+	widgetPositioning: {
+        horizontal: 'auto',
+        vertical: 'bottom'
+    },
+    // defaultDate: today,
+	ignoreReadonly: true
+};
+
 
 var backupJdata;
 
@@ -44,6 +60,7 @@ function initialize() {
 	getFactoryList();
 	showInitView();
 	bindEvents();
+	initializeDatetimePicker();
 }
 
 function bindEvents() {
@@ -55,9 +72,18 @@ function bindEvents() {
 	typeDropdown.emitter.on('TypeChanged', doNothing);
 	factoryDropdown.emitter.on('factoryChanged', doNothing);
 }
+
 function doNothing(){
 	
 }
+
+function initializeDatetimePicker() {
+	$inputDateDatePicker.datetimepicker(DateTimePickerOpt);
+	$reserveDatePicker.datetimepicker(DateTimePickerOpt);
+	$realProduceDatePicker.datetimepicker(DateTimePickerOpt);
+	$realFinishDatePicker.datetimepicker(DateTimePickerOpt);
+}
+
 function getFactoryList(){
 	$.get(config.APIUrl + 'factory/list')
 	 .done(function(response){
@@ -104,6 +130,8 @@ function showInitView() {
 	$deleteBtn.show();
 	$viewModeCollection.removeClass('editting');
 	$editModeCollection.removeClass('editting');
+
+	//init list value
 	$('#workorder-num').find('p').text(workorderID);
 	$('#workorder-num').find('input').val(workorderID);
 
@@ -125,11 +153,10 @@ function fillList(key, value){
 		case "status":
 			statusDropdown.setDropdownbyValue(key,value);
 			$('#'+api.transferKeyS2C(key)).find('p').text(statusDropdown.getDisplayName(value));
-			console.log(getStatusName());
 			break;
 		case "produce_type":
-			$('#'+api.transferKeyS2C(key)).find('p').text(value);
 			typeDropdown.setDropdownbyValue(key,value);
+			$('#'+api.transferKeyS2C(key)).find('p').text(value);
 			break;
 		default:
 			$('#'+api.transferKeyS2C(key)).find('p').text(value);
