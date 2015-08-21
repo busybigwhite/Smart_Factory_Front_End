@@ -29,15 +29,11 @@ var $realFinishDatePicker = $('#workorder-real-finish-date-picker');
 var isEditMode   = false;
 var isCreateMode = false;
 
-//FOR TEST
-var workorderID = "";
-var factoryID = "F002";
-
-// var parameters = location.search.substring(1).split("&");
-// var temp = parameters[0].split("=");
-// var workorderID = temp[1];
-// temp = parameters[1].split("=");
-// var factory = temp[1];
+var parameters = location.search.substring(1).split("&");
+var temp = parameters[0].split("=");
+var workorderID = temp[1];
+temp = parameters[1].split("=");
+var factory = temp[1];
 
 var today = new Date();
 var DateTimePickerOpt = {
@@ -74,7 +70,7 @@ function bindEvents() {
 }
 
 function doNothing(){
-	
+
 }
 
 function initializeDatetimePicker() {
@@ -136,14 +132,14 @@ function showInitView() {
 	$('#workorder-num').find('input').val(workorderID);
 
 	api.getWorkOrderInfo(workorderID)
-		.done(function(data) { 
-			console.log("GET workorder res: ", data); 
+		.done(function(data) {
+			console.log("GET workorder res: ", data);
 			backupJdata = data;
 			$.each(data, fillList);
 		})
 		 .fail(function(err) { console.log("GET workorder error: ", err); });
 
-	
+
 }
 
 
@@ -163,7 +159,7 @@ function fillList(key, value){
 			$('#'+api.transferKeyS2C(key)).find('input').val(value);
 			break;
 	}
-	
+
 }
 
 
@@ -177,10 +173,10 @@ function saveData() {
 
 function saveChangedData(data) {
 	api.editWorkOrderInfo(workorderID, data)
-		 .done(function(data) { 
-		 	console.log("EDIT Machine Info res: ", data); 
+		 .done(function(data) {
+		 	console.log("EDIT Machine Info res: ", data);
 		 })
-		 .fail(function(err) { 
+		 .fail(function(err) {
 		 	console.log("EDIT Machine Info error: ", err);
 		 	// if fail restore old page
 		 	$.each(backupJdata, fillList);
@@ -191,12 +187,12 @@ function saveChangedData(data) {
 
 function deleteWorkOrderInfo() {
 	api.deleteWorkOrder(workorderID)
-		 .done(function(data) { 
-		 	console.log("DELETE Machine res: ", data); 
+		 .done(function(data) {
+		 	console.log("DELETE Machine res: ", data);
 		 	//back to list
 		 	api.goToWorkOrderIndex();
 		})
-		 .fail(function(err) { 
+		 .fail(function(err) {
 		 	console.log("DELETE Machine error: ", err);
 		 	// TODO ??
 		 });
