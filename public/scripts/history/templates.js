@@ -38,13 +38,16 @@ exports.renderTableList = function(infos) {
   return listTemp(infos);
 }
 
-exports.renderHeatmap = function(info) {
+exports.renderHeatmap = function(heatmapUrls) {
 
   var imgTemp = _.template(
-      '<img src=<%= info.heatmap %>>'
+   `<% _.forEach(heatmapUrls, function(heatmapUrl) {  %>
+      <img src=api/pic/heatmap/<%= heatmapUrl %>>
+    <% });                                          %>`
   );
 
-  return imgTemp(info);
+  return imgTemp(heatmapUrls);
+
 }
 
 exports.renderChart = function() {

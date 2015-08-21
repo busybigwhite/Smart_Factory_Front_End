@@ -76,7 +76,7 @@ function searchHistoryThenRenderRows(searchPeriod) {
 
 	var queryURL = createQueryURL(searchPeriod);
 
-	$.get(config.APIUrl + 'history/list/?' + queryURL)
+	$.get(config.APIUrl + 'history/list?' + queryURL)
 	 .done(function(response){
 	 	var infos = response || [];
 		var type = selectedFilter.split('_')[0];
@@ -93,9 +93,14 @@ function cleanTableAndIamgeBlock() {
 }
 
 function createQueryURL(searchPeriod) {
-	var data = !!searchPeriod
-		? {'factory_id': focusFactoryId, 'type': selectedFilter, 'start_date': searchPeriod.start_date, 'end_date': searchPeriod.end_date}
-		: {'factory_id': focusFactoryId, 'type': selectedFilter, 'search_key': selectedValue }
+	var data = {};
+
+	if( searchPeriod ){
+		data = {'factory_id': focusFactoryId, 'start_date': searchPeriod.start_date, 'end_date': searchPeriod.end_date};
+	}else {
+		data['factory_id'] = focusFactoryId;
+		data[selectedFilter] = selectedValue;
+	}
 
 	return queryParameter.build(data);
 }
@@ -115,11 +120,21 @@ function displayImageBlock(infos, type) {
 			$imageBlock.empty().append( chart ).removeClass('hidden');
 		break;
 		case "mold":
-			var heatmap = templates.renderHeatmap({ info: infos[0] });
-			$imageBlock.append( heatmap ).removeClass('hidden');
+			getHeatmap(infos[0].mold_id);
 		break;
 		default:
 			$imageBlock.addClass('hidden');
 		break;
 	}
+}
+
+function getHeatmap(id) {
+
+	$.get(config.APIUrl + 'pic/heatmap/list/?' + 'mold_id=' + id)
+	 .done(function(response){
+	 	var heatmap = templates.renderHeatmap({ heatmapUrls: response });
+
+		$imageBlock.append( heatmap ).removeClass('hidden');
+
+	}).fail(function(err){ console.log('get heatmap error:', err) });
 }
