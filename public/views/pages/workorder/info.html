@@ -24,14 +24,14 @@
 				<span class="info-name">工單編號</span>
 				<span class="info-value">
 					<p class="view-mode"></p>
-					<input class="edit-mode" type="text" name="workorder-num" value="">
+					<input class="edit-mode" type="text" name="workorder-num" value="" pattern="[A-Za-z0-9]{1,30}" title="輸入1~30個英數字">
 				</span>
 			</li>
 			<li id="order-num">
 				<span class="info-name">訂單編號</span>
 				<span class="info-value">
 					<p class="view-mode"></p>
-					<input class="edit-mode" type="text" name="order-num" value="">
+					<input class="edit-mode" type="text" name="order-num" value="" pattern="[A-Za-z0-9]{1,30}" title="輸入1~30個英數字">
 				</span>
 			</li>
 			<li id="customer-name">
@@ -91,20 +91,20 @@
 					<input class="edit-mode" type="text" name="description" value="" >
 				</span>
 			</li>
-			<li id="reserve-time">
+			<li id="schedule-date">
 				<span class="info-name">預定生產時程</span>
 				<span class="info-value" style="position:relative">
 					<p class="view-mode"></p>
-					<!-- <input class="edit-mode" type="text" name="reserve-time" value=""> -->
-					<input class="edit-mode selected-option newOrder" type="text" id='workorder-reserve-date-picker' selectname="reserve-time" data-date-format="YYYY/MM/DD HH:mm:ss" readonly/>
+					<!-- <input class="edit-mode" type="text" name="order-date" value=""> -->
+					<input class="edit-mode selected-option newOrder" type="text" id='workorder-reserve-date-picker' selectname="schedule-date" data-date-format="YYYY/MM/DD HH:mm:ss" readonly/>
 	                <span class="edit-mode workerorder-date-picker-btn fa fa-calendar"></span>
 				</span>
 			</li>
-			<li id="forecast-amount">
+			<li id="order-amount">
 				<span class="info-name">預定生產數量</span>
 				<span class="info-value">
 					<p class="view-mode"></p>
-					<input class="edit-mode" type="text" name="forecast-amount" value="">
+					<input class="edit-mode" type="text" name="order-amount" value="" pattern="[0-9]{1,30}" title="輸入數字">
 				</span>
 			</li>
 			<li id="type">
@@ -134,7 +134,7 @@
 				<span class="info-name">實際完成數量</span>
 				<span class="info-value">
 					<p class="view-mode"></p>
-					<input class="edit-mode" type="text" name="real-amount" value="">
+					<input class="edit-mode" type="text" name="real-amount" value="" pattern="[0-9]{1,30}" title="輸入數字">
 				</span>
 			</li>
 			<li id="real-finish">

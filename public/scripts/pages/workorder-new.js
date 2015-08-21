@@ -35,12 +35,7 @@ initialize();
 function initialize() {
 	header.include();
 	bindEvents();
-	initView();
 	initializeDatetimePicker();
-}
-
-function initView(){
-	$("#inputDate").val(getDateTime());
 }
 
 function bindEvents() {
