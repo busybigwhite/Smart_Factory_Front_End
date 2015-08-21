@@ -63,7 +63,10 @@ function bindSetFocusNameBlockEventOnSelector() {
 }
 
 function setFocusValueBlock(target) {
-	var displayName = target.type==='click' ? $(this).text() : target.name;
+	var displayName = target.type==='click' ? $(this).text()
+											: target['name'] === undefined ? target.id
+																		   : target.name;
+
 	selectedValue = target.type==='click' ? $(this).data('id') : target.id;
 
 	$filterValueFocusName.text(displayName).data('id', selectedValue);
