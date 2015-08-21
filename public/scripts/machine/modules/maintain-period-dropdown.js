@@ -11,7 +11,7 @@ var $selectedType = $('#machine-maintain-period-dropdown').find('.selected-optio
 var $typeDropdownList = $('ul[aria-labelledby="machine-maintain-period-dropdown"]').find('.option');
 var TYPE = {
 	time: '次',
-	days: '天',
+	times: '天',
 };
 var defaultType = 'time';
 var defaultTypeStirng = TYPE.time;

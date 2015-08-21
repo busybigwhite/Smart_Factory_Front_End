@@ -10,11 +10,11 @@ var $typeView     = $maintainPeriod.find('.view-mode').eq(1);
 var $selectedType = $('#mold-maintain-period-dropdown').find('.selected-option');
 var $typeDropdownList = $('ul[aria-labelledby="mold-maintain-period-dropdown"]').find('.option');
 var TYPE = {
-	times: '次',
-	days: '天',
+	time: '次',
+	times: '天',
 };
-var defaultType = 'times';
-var defaultTypeStirng = TYPE.times;
+var defaultType = 'time';
+var defaultTypeStirng = TYPE.time;
 
 
 exports.init     = initMaintainPeriod;
