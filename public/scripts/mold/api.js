@@ -1,6 +1,7 @@
 'use strict';
 
 var $ = window.jQuery = require('jquery');
+var _ = require('lodash');
 var qs = require('qs');
 var assign = require('object-assign');
 var config = require('../config/url');
@@ -65,7 +66,7 @@ function getUserList() {
 }
 
 function createMold(data) {
-	return createData(moldApiUrl, data, true);
+	return createData(moldApiUrl, data);
 }
 
 function deleteMold(id) {
@@ -73,12 +74,12 @@ function deleteMold(id) {
 }
 
 function editMoldInfo(id, data) {
-	return editData(moldApiUrl + id, data, true);
+	return editData(moldApiUrl + id, data);
 }
 
 function createMoldRecord(id, data) {
 	data.id = id;
-	return createData(moldApiUrl + 'maintain/', data, false);
+	return createData(moldApiUrl + 'maintain/', data);
 }
 
 function deleteMoldRecord(id, data) {
@@ -92,22 +93,30 @@ function getData(url) {
 	return ajax('GET', url);
 }
 
-function editData(url, data, isContainPics) {
-	return ajax('PUT', url, data, isContainPics);
+function editData(url, data) {
+	return ajax('PUT', url, data);
 }
 
-function createData(url, data, isContainPics) {
-	return ajax('POST', url, data, isContainPics);
+function createData(url, data) {
+	return ajax('POST', url, data);
 }
 
 function deleteData(url, data) {
 	return ajax('DELETE', url);
 }
 
-function ajax(method, url, data, isContainPics) {
+function ajax(method, url, data) {
 	var data = assign({}, data); // prevent data is undefined
 	data.factory_id = factoryId;
 	data['_token'] = token;
+
+	var isContainPics = (!!data['mold_pic']) || (!!data['product_pic']);
+
+	var processedData = new FormData();
+	_.forEach(data, function(key, value) {
+	  processedData.append(key, value);
+	});
+
 
 	var opts = {
 		method: method,
@@ -120,6 +129,8 @@ function ajax(method, url, data, isContainPics) {
 	var picOpt = {
 		contentType: false,
 		processData: false,
+		dataType: 'json',
+		data: processedData,
 	};
 
 	var beforeSendOpt = {
@@ -129,17 +140,17 @@ function ajax(method, url, data, isContainPics) {
 			console.log('url: ', url);
 			console.log('contentType: ', picOpt.contentType);
 			console.log('processData: ', picOpt.processData);
-			console.log('data: ', data);
+			console.log('data: ', isContainPics ? processedData : data);
 			console.log('--------------------------');
 		}
 	};
-
+	// isContainPics = false;
 	var ajaxOpts = isContainPics ? assign(opts, picOpt, beforeSendOpt) : assign(opts, beforeSendOpt) ;
 
 	return $.ajax(ajaxOpts);
 }
 
 function mockAjax(response) {
-    var deferred = $.Deferred().resolve(response);
-    return deferred.promise();
-  }
+  var deferred = $.Deferred().resolve(response);
+  return deferred.promise();
+}
