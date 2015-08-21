@@ -124,6 +124,6 @@ function ajax(method, url, data) {
 }
 
 function mockAjax(response) {
-    var deferred = $.Deferred().resolve(response);
-    return deferred.promise();
-  }
+  var deferred = $.Deferred().resolve(response);
+  return deferred.promise();
+}
