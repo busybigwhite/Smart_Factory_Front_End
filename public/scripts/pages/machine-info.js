@@ -205,16 +205,9 @@ function initResumeInfo(data) {
 	checkPeriodDropdown   .init(data['check_period_value'], data['check_period_unit']);
 	maintainPeriodDropdown.init(data['maintain_period_value'], data['maintain_period_unit']);
 
-	// ToFix: 小保養紀錄 init data
-	var fakedata = [{id: '1', created_at: '2015-08-17', type: 'check', content: 'test1'},{id: '1', created_at: '2015-08-17', type: 'check', content: 'test2'}];
-	checkRecordTable.initialView(fakedata);
-
-	console.log("data['maintain_records'] : ", data['maintain_records']);
-	maintainRecordTable.initialView(data['maintain_records']);
-
-	// ToFix: 異常維修紀錄 init data
-	var fakedata = [{id: '1', created_at: '2015-08-17', type: 'error', content: 'test1'},{id: '1', created_at: '2015-08-17', type: 'error', content: 'test2'}];
-	errorRecordTable.initialView(fakedata);
+	checkRecordTable.initialView(data['maintain_record_check']);
+	maintainRecordTable.initialView(data['maintain_record_maintain']);
+	errorRecordTable.initialView(data['maintain_record_maintain']);
 }
 
 function getAllInfoData() {
