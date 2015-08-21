@@ -1,6 +1,7 @@
 'use strict';
 
 var $ = window.jQuery = require('jquery');
+var _ = require('lodash');
 var header = require('../includes/header');
 var api = require('../machine/api');
 var queryParameter = require('../lib/helper/query-parameter');
@@ -28,6 +29,9 @@ var $serialNumber = $('#machine-serial-num');
 var $name = $('#machine-name');
 var $weight = $('#machine-weight');
 // TODO: 機台稼動率
+var $noticeedPersonName = $('#machine-noticed-person').find('.view-mode');
+var noticedId;
+var userList;
 
 
 var isEditMode   = false;
@@ -60,6 +64,10 @@ function getInitialData() {
 	api.getMachineInfo(machineId)
 		 .done(initialView)
 		 .fail(function(err) { console.log("GET Machine Info error: ", err); });
+
+	api.getUserList()
+		.done(initialNoticedName)
+		.fail(function(err) { console.log('initialNoticedName GET user list error:', err) });
 }
 
 function bindEvents() {
@@ -146,13 +154,13 @@ function saveData() {
 
 function saveChangedData(data) {
 	api.editMachineInfo(machineId, data)
-		 .done(function(data) { console.log("EDIT Machine Info res: ", data); })
+		 .done(function(data) { window.location.reload(); })
 		 .fail(function(err) { console.log("EDIT Machine Info error: ", err); });
 }
 
 function saveNewData(data) {
 	api.createMachine(data)
-		 .done(function(data) { console.log("CREATE Machine res: ", data); })
+		 .done(function(data) { window.location.reload(); })
 		 .fail(function(err) { console.log("CREATE Machine error: ", err); });
 }
 
@@ -171,7 +179,7 @@ function saveDeleteRecord(data) {
 
 function deleteMachine() {
 	api.deleteMachine(machineId)
-		 .done(function(data) { console.log("DELETE Machine res: ", data); })
+		 .done(function(data) { api.goToMachineIndex(); })
 		 .fail(function(err) { console.log("DELETE Machine error: ", err); });
 }
 
@@ -200,28 +208,52 @@ function initBaseInfo(data) {
 }
 
 function initResumeInfo(data) {
-	// ToFix: admin_name
-	noticeedPersonDropdown.setNoticeedPerson(data['admin_id'], 'default name');
+	noticedId = data['admin_id'];
+	setNoticedId(noticedId);
+	noticeedPersonDropdown.setNoticeedPerson(noticedId);
 	checkPeriodDropdown   .init(data['check_period_value'], data['check_period_unit']);
 	maintainPeriodDropdown.init(data['maintain_period_value'], data['maintain_period_unit']);
 
-	// ToFix: 小保養紀錄 init data
-	var fakedata = [{id: '1', created_at: '2015-08-17', type: 'check', content: 'test1'},{id: '1', created_at: '2015-08-17', type: 'check', content: 'test2'}];
-	checkRecordTable.initialView(fakedata);
+	checkRecordTable.initialView(data['maintain_record_check']);
+	maintainRecordTable.initialView(data['maintain_record_maintain']);
+	errorRecordTable.initialView(data['maintain_record_maintain']);
+}
 
-	console.log("data['maintain_records'] : ", data['maintain_records']);
-	maintainRecordTable.initialView(data['maintain_records']);
+function initialNoticedName(data) {
+	if (noticedId) {
+		_.forEach(data, function(value, key) {
+			if (key === noticedId) {
+				setUserName(value.name);
+				return;
+			}
+		});
+	} else {
+		userList = data;
+	}
+}
 
-	// ToFix: 異常維修紀錄 init data
-	var fakedata = [{id: '1', created_at: '2015-08-17', type: 'error', content: 'test1'},{id: '1', created_at: '2015-08-17', type: 'error', content: 'test2'}];
-	errorRecordTable.initialView(fakedata);
+function setNoticedId(id) {
+	_.forEach(userList, function(value, key) {
+		if (key === id) {
+			setUserName(value.name);
+			return;
+		}
+	});
+}
+
+function setUserName(name) {
+	$noticeedPersonName.text(name);
 }
 
 function getAllInfoData() {
 	var data = {};
 	data.info = getInfoValue();
-	data.newRecords = getNewRecordList();
-	data.deleteRecords = getDeleteRecordList();
+
+	var newRecords = getNewRecordList();
+	if (newRecords.length !== 0) data.newRecords = newRecords;
+
+	var deleteRecords = getDeleteRecordList();
+	if (newRecords.length !== 0) data.deleteRecords = deleteRecords;
 	return data;
 }
 
@@ -245,18 +277,18 @@ function getInfoValue() {
 }
 
 function getNewRecordList() {
-	var data = {};
-	data.check    = addMachineIdIntoData(checkRecordTable.getNewList());
-	data.maintain = addMachineIdIntoData(maintainRecordTable.getNewList());
-	data.error    = addMachineIdIntoData(errorRecordTable.getNewList());
+	var check    = addMachineIdIntoData(checkRecordTable.getNewList());
+	var maintain = addMachineIdIntoData(maintainRecordTable.getNewList());
+	var error    = addMachineIdIntoData(errorRecordTable.getNewList());
+	var data = [].cancat(check, maintain, error);
 	return data;
 }
 
 function getDeleteRecordList() {
-	var data = {};
-	data.check    = addMachineIdIntoData(checkRecordTable.getDeleteList());
-	data.maintain = addMachineIdIntoData(maintainRecordTable.getDeleteList());
-	data.error    = addMachineIdIntoData(errorRecordTable.getDeleteList());
+	var check    = addMachineIdIntoData(checkRecordTable.getDeleteList());
+	var maintain = addMachineIdIntoData(maintainRecordTable.getDeleteList());
+	var error    = addMachineIdIntoData(errorRecordTable.getDeleteList());
+	var data = [].cancat(check, maintain, error);
 	return data;
 }
 
