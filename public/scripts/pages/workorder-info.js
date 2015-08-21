@@ -29,15 +29,11 @@ var $realFinishDatePicker = $('#workorder-real-finish-date-picker');
 var isEditMode   = false;
 var isCreateMode = false;
 
-//FOR TEST
-var workorderID = "";
-var factoryID = "F002";
-
-// var parameters = location.search.substring(1).split("&");
-// var temp = parameters[0].split("=");
-// var workorderID = temp[1];
-// temp = parameters[1].split("=");
-// var factory = temp[1];
+var parameters = location.search.substring(1).split("&");
+var temp = parameters[0].split("=");
+var workorderID = temp[1];
+temp = parameters[1].split("=");
+var factory = temp[1];
 
 var today = new Date();
 var DateTimePickerOpt = {
@@ -55,7 +51,6 @@ var backupJdata;
 initialize();
 
 function initialize() {
-	// workorderID = GET FROM PREV PAGE
 	header.include();
 	getFactoryList();
 	showInitView();
@@ -68,13 +63,6 @@ function bindEvents() {
 	$cancelBtn.on('click', hideEditMode);
 	$deleteBtn.on('click', deleteWorkOrderInfo);
 	$workorderForm.submit(saveData);
-	statusDropdown.emitter.on('statusChanged', doNothing);
-	typeDropdown.emitter.on('TypeChanged', doNothing);
-	factoryDropdown.emitter.on('factoryChanged', doNothing);
-}
-
-function doNothing(){
-	
 }
 
 function initializeDatetimePicker() {
@@ -148,7 +136,6 @@ function showInitView() {
 
 
 function fillList(key, value){
-	// console.log(key+"!@@@@@ = "+value);
 	switch(key){
 		case "status":
 			statusDropdown.setDropdownbyValue(key,value);
