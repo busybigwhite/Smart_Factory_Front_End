@@ -8,11 +8,12 @@ var token = require('../config/auth').getToken();
 
 var factoryId;
 var moldApiUrl  = config.APIUrl + 'mold/';
+var moldApiPicUrl = config.APIUrl + 'pic/';
 var moldPageUrl = config.moldUrl;
 var isLocal = window.location.hostname === 'localhost';
 
 exports = module.exports = {
-	moldApiUrl: function() { return moldApiUrl },
+	getMoldPicApiUrl: function() { return moldApiPicUrl },
 	setFactoryId: setFactoryId,
 	goToMoldIndex: goToMoldIndex,
 	goToMoldInfo: goToMoldInfo,

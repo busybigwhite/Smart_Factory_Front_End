@@ -24,6 +24,37 @@
 			text-align: center;
 		}
 	}
+
+	.pic-img {
+		position: relative;
+		width: 100px;
+		min-height: 100px;
+		background-color: lightgray;
+		color: darkgray;
+		&:after {
+			content: "no image now";
+			position: absolute;
+			left: 20px;
+			top: 42px;
+		}
+	}
+
+	.index-list-size-length,
+	.index-list-size-width,
+	.index-list-size-height {
+		.make-xs-column(3);
+		padding: 0;
+		text-align: center;
+	}
+
+	.index-list-size-length,
+	.index-list-size-width {
+		&:after {
+			content: "/";
+			position: absolute;
+			right: 0;
+		}
+	}
 }
 
 #mold-detail-page {
