@@ -63,7 +63,7 @@ function getPictureListAndRenderRow() {
     var token = auth.getToken();
 
     $.post(config.APIUrl + 'workorder/listpic/?work_order_id=' + workorderId + '&type=' + type,
-        data: { _token: token })
+        { _token: token })
      .done(function(res){
         resetBlockAndTitle(title);
 
