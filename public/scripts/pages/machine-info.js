@@ -60,6 +60,10 @@ function getInitialData() {
 	api.getMachineInfo(machineId)
 		 .done(initialView)
 		 .fail(function(err) { console.log("GET Machine Info error: ", err); });
+
+	api.getUserList()
+		.done(initialView)
+		.fail(function(err) { console.log('noticedPersonDropdown GET user list error:', err) });
 }
 
 function bindEvents() {
@@ -200,8 +204,7 @@ function initBaseInfo(data) {
 }
 
 function initResumeInfo(data) {
-	// ToFix: admin_name
-	noticeedPersonDropdown.setNoticeedPerson(data['admin_id'], 'default name');
+	noticeedPersonDropdown.setNoticeedPerson(data['admin_id']);
 	checkPeriodDropdown   .init(data['check_period_value'], data['check_period_unit']);
 	maintainPeriodDropdown.init(data['maintain_period_value'], data['maintain_period_unit']);
 
