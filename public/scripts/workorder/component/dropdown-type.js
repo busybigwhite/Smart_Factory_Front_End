@@ -31,7 +31,9 @@ exports.getSelectedType = function(){
 exports.setDropdownbyValue = setDropdownbyValue;
 
 function setDropdownbyValue(key,value){
+	console.log(key +"@type@"+value);
 	$typeFocusName.text(value).data('key', key);
+	selectedType = value;
 }
 
 initialize();

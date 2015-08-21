@@ -29,11 +29,17 @@ var $realFinishDatePicker = $('#workorder-real-finish-date-picker');
 var isEditMode   = false;
 var isCreateMode = false;
 
+//FOR TEST
+// var workorderID = "";
+// var factoryID = "F002";
+
 var parameters = location.search.substring(1).split("&");
 var temp = parameters[0].split("=");
 var workorderID = temp[1];
 temp = parameters[1].split("=");
-var factory = temp[1];
+var factoryID = temp[1];
+
+
 
 var today = new Date();
 var DateTimePickerOpt = {
@@ -203,7 +209,13 @@ function getChangedData() {
 			newData[name] = value;
 
 		} else if ($dropdownSelected) {
-			var selectedName = api.transferKeyC2S($(el).attr('selectname'));
+			var selectedName;
+			
+			if($dropdownSelected.attr('selectname')=="undefined"){
+				selectedName = api.transferKeyC2S($(el).attr('selectname'));
+			}else{
+				selectedName = api.transferKeyC2S($dropdownSelected.attr('selectname'));
+			}
 			var selectedValue;
 			switch(selectedName){
 				case "status":

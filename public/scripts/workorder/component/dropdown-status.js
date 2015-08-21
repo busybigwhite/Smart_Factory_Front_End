@@ -39,7 +39,9 @@ function getDisplayName(key){
 exports.setDropdownbyValue = setDropdownbyValue;
 
 function setDropdownbyValue(key, value){
+	console.log(key +"@status@"+value);
 	$statusFocusName.text(Namedic[value]).data('key', key);
+	selectedStatus = value;
 }
 
 
