@@ -2,6 +2,7 @@
 
 var $ = window.jQuery = require('jquery');
 var _ = require('lodash');
+var auth = require('../config/auth');
 var header = require('../includes/header');
 var config = require('../config/url');
 var templates = require('../realtime/templates');
@@ -15,6 +16,7 @@ require('fancybox')($);
 var $livePicBlock = $('#realtime-pic-block');
 var $navTitle = $('#realtime-pic-title');
 var spinner;
+var token = auth.getToken();
 
 exports = module.exports = {};
 
@@ -56,15 +58,24 @@ function openFancyBoxManually() {
 }
 
 function getPictureListAndRenderRow() {
+    var group = [];
     var workorderId = queryParameter.get('work_order_id');
     var type = queryParameter.get('type');
     var title = queryParameter.get('title');
 
-    $.get(config.APIUrl + 'workorder/listpic/?work_order_id=' + workorderId + '&type=' + type)
+    $.post(config.APIUrl + 'workorder/listpic/?work_order_id=' + workorderId + '&type=' + type,
+        { _token: token })
+
      .done(function(res){
         resetBlockAndTitle(title);
 
-        var cameraGroup = _.groupBy(res, function(n){ return n.camera_id });
+        if( _.isArray(res) ){
+            group = res;
+        }else {
+            group.push(res);
+        }
+
+        var cameraGroup = _.groupBy(group, function(n){ return n.camera_id });
 
         _.forEach(cameraGroup, function(objects, cameraIds) {
             renderPictureLabels(cameraIds);

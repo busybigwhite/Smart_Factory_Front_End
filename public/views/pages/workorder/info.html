@@ -24,7 +24,8 @@
 				<span class="info-name">工單編號</span>
 				<span class="info-value">
 					<p class="view-mode"></p>
-					<input class="edit-mode" type="text" name="workorder-num" value="" pattern="[A-Za-z0-9]{1,30}" title="輸入1~30個英數字">
+					<!-- <input class="edit-mode" type="text" name="workorder-num" value="" pattern="[A-Za-z0-9]{1,30}" title="輸入1~30個英數字"> -->
+					<input class="edit-mode" type="text" name="workorder-num" value="" readonly>
 				</span>
 			</li>
 			<li id="order-num">
@@ -135,6 +136,20 @@
 				<span class="info-value">
 					<p class="view-mode"></p>
 					<input class="edit-mode" type="text" name="real-amount" value="" pattern="[0-9]{1,30}" title="輸入數字">
+				</span>
+			</li>
+			<li id="defective-amount">
+				<span class="info-name">不良品數量</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="defective-amount" value="" pattern="[0-9]{1,30}" title="輸入數字">
+				</span>
+			</li>
+			<li id="abnormal-amount">
+				<span class="info-name">異常數量</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="abnormal-amount" value="" pattern="[0-9]{1,30}" title="輸入數字">
 				</span>
 			</li>
 			<li id="real-finish">

@@ -7,6 +7,7 @@ var queryParameter = require('../lib/helper/query-parameter');
 var statusDropdown = require('../workorder/component/dropdown-status');
 var typeDropdown = require('../workorder/component/dropdown-type');
 var factoryDropdown = require('../workorder/component/dropdown-factory');
+var auth = require('../config/auth');
 
 require('bootstrap/js/dropdown');
 require('eonasdan-bootstrap-datetimepicker');
@@ -20,6 +21,8 @@ var $inputDateDatePicker = $('#workorder-inputDate-date-picker');
 var $reserveDatePicker = $('#workorder-reserve-date-picker');
 var $realProduceDatePicker = $('#workorder-real-produce-date-picker');
 var $realFinishDatePicker = $('#workorder-real-finish-date-picker');
+
+var token = auth.getToken();
 
 var today = new Date();
 var DateTimePickerOpt = {
@@ -123,6 +126,7 @@ function getChangedData() {
 			console.log('getChangedData error: missing some value');
 		}
 	});
+	newData._token = token;
 	return newData;
 }
 

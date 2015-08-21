@@ -19,7 +19,6 @@ exports = module.exports = {
 };
 
 function goToWorkOrderIndex() {
-	console.log("goToWorkOrderIndex");
 	window.location.href = wordorderPageUrl;
 }
 
@@ -42,19 +41,19 @@ function getWorkOrderList(id) {
 };
 
 function createWorkOrder(data) {
-	return createData(wordorderApiUrl+'new/', data);
+	return createData(wordorderApiUrl, data);
 }
 
-function deleteWorkOrder(id) {
-	return deleteData(wordorderApiUrl + id);
+function deleteWorkOrder(id, token) {
+	return deleteData(wordorderApiUrl + id, token);
 }
 
 function getWorkOrderInfo(id) {
-	return getData(wordorderApiUrl + 'info/' + id);
+	return getData(wordorderApiUrl + id);
 };
 
 function editWorkOrderInfo(id, data) {
-	return editData(wordorderApiUrl + 'edit/' + id, data);
+	return editData(wordorderApiUrl + id, data);//include token
 }
 
 
@@ -71,8 +70,8 @@ function createData(url, data) {
 	return ajax('POST', url, data);
 }
 
-function deleteData(url) {
-	return ajax('DELETE', url);
+function deleteData(url, token) {
+	return ajax('DELETE', url, token);
 }
 
 function ajax(method, url, data) {
@@ -87,7 +86,7 @@ function ajax(method, url, data) {
 
 function transferKeyS2C(key){
 	switch(key){
-		case "id":
+		case "serial_num":
 			return "workorder-num";
 		case "order_id":
 			return "order-num";
@@ -99,12 +98,16 @@ function transferKeyS2C(key){
 			return "workorder-status";
 		case "order_date":
 			return "input-date";
-		case "description":
+		case "content":
 			return "description";
 		case "schedule_date":
 			return "schedule-date";
 		case "target_num":
 			return "order-amount";
+		case "current_fail_num":
+			return "defective-amount";
+		case "abnormal_num":
+			return "abnormal-amount";
 		case "produce_type":
 			return "type";
 		case "start_date":
@@ -119,7 +122,7 @@ function transferKeyS2C(key){
 function transferKeyC2S(key){
 	switch(key){
 		case "workorder-num":
-			return "id";
+			return "serial_num";
 		case "order-num":
 			return "order_id";
 		case "customer-name":
@@ -131,11 +134,15 @@ function transferKeyC2S(key){
 		case "input-date":
 			return "order_date";
 		case "description":
-			return "description";
+			return "content";
 		case "schedule-date":
 			return "schedule_date";
 		case "order-amount":
 			return "target_num";
+		case "defective-amount":
+			return "current_fail_num";
+		case "abnormal-amount":
+			return "abnormal_num";
 		case "type":
 			return "produce_type";
 		case "real-produce-date":
