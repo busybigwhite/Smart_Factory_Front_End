@@ -86,7 +86,7 @@ function ajax(method, url, data) {
 
 function transferKeyS2C(key){
 	switch(key){
-		case "id":
+		case "serial_num":
 			return "workorder-num";
 		case "order_id":
 			return "order-num";
@@ -122,7 +122,7 @@ function transferKeyS2C(key){
 function transferKeyC2S(key){
 	switch(key){
 		case "workorder-num":
-			return "id";
+			return "serial_num";
 		case "order-num":
 			return "order_id";
 		case "customer-name":
