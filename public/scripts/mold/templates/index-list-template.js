@@ -8,7 +8,7 @@ exports.render = function(infos) {
 
   var menuTemp = _.template(
 	 `<% _.forEach(infos, function(info) {  %>
-      <li class="table-header">
+      <li class="table-item">
           <div class="table-col">
             <img class="pic-img" src="` + infos.api.getMoldPicApiUrl() + `<%= info.mold_pic %>" alt="<%= info.mold_pic %>">
           </div>
