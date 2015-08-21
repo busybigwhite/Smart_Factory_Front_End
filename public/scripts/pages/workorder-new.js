@@ -9,12 +9,27 @@ var typeDropdown = require('../workorder/component/dropdown-type');
 var factoryDropdown = require('../workorder/component/dropdown-factory');
 
 require('bootstrap/js/dropdown');
+require('eonasdan-bootstrap-datetimepicker');
 
 /* DOM */
 var $cancelBtn = $('#workorder-new-cancel-button');
 var $newBtn   = $('#workorder-new-new-button');
 var $workorderForm  = $('#workorder-new-form');
 var $newOrderCollection = $workorderForm.find('.newOrder');
+var $inputDateDatePicker = $('#workorder-inputDate-date-picker');
+var $reserveDatePicker = $('#workorder-reserve-date-picker');
+var $realProduceDatePicker = $('#workorder-real-produce-date-picker');
+var $realFinishDatePicker = $('#workorder-real-finish-date-picker');
+
+var today = new Date();
+var DateTimePickerOpt = {
+	widgetPositioning: {
+        horizontal: 'auto',
+        vertical: 'bottom'
+    },
+    // defaultDate: today,
+	ignoreReadonly: true
+};
 
 initialize();
 
@@ -22,6 +37,7 @@ function initialize() {
 	header.include();
 	bindEvents();
 	initView();
+	initializeDatetimePicker();
 }
 function doNothing(){
 	
@@ -45,6 +61,22 @@ function backToList() {
 	// window.location="./";
 	api.goToWorkOrderIndex();
 }
+
+function initializeDatetimePicker() {
+	$inputDateDatePicker.datetimepicker(DateTimePickerOpt);
+	$inputDateDatePicker.data("DateTimePicker").defaultDate(today);
+	$reserveDatePicker.datetimepicker(DateTimePickerOpt);
+	$realProduceDatePicker.datetimepicker(DateTimePickerOpt);
+	$realFinishDatePicker.datetimepicker(DateTimePickerOpt);
+}
+
+// function getFormData(DatePicker) {
+// 	var data = {};
+// 	data.created_at = DatePicker.val();
+// 	data.content = $contentInput.val();
+// 	data.updated_at = DatePicker.val();
+// 	return data.content ? data : false ;
+// }
 
 function createData() {
 	var data = getChangedData();
@@ -89,6 +121,18 @@ function getChangedData() {
 					break;
 				case "produce_type":
 					selectedValue = getTypeName();
+					break;
+				case "order_date":
+					selectedValue = $inputDateDatePicker.val();
+					break;
+				case "schedule_date":
+					selectedValue = $reserveDatePicker.val();
+					break;
+				case "start_date":
+					selectedValue = $realProduceDatePicker.val();
+					break;
+				case "finish_date":
+					selectedValue = $realFinishDatePicker.val();
 					break;
 				default:
 					selectedValue = "";
@@ -142,4 +186,6 @@ function getFactoryId() {
     var dateTime = year+'/'+month+'/'+day+' '+hour+':'+minute+':'+second;   
      return dateTime;
 }
+
+
 
