@@ -30,6 +30,7 @@ function initialize() {
 function initializeLoadingSpinner() {
     spinner = loadingSpin();
     spinner.init( $livePicBlock[0] );
+    spinner.start();
 }
 
 function bindEvents() {
@@ -58,8 +59,6 @@ function getPictureListAndRenderRow() {
     var workorderId = queryParameter.get('work_order_id');
     var type = queryParameter.get('type');
     var title = queryParameter.get('title');
-
-    spinner.start();
 
     $.get(config.APIUrl + 'workorder/listpic/?work_order_id=' + workorderId + '&type=' + type)
      .done(function(res){
