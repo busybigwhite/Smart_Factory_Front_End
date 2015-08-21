@@ -23,22 +23,3 @@ exports.renderTableList = function(infos) {
 
   return menuTemp(infos);
 }
-
-exports.renderPicList = function(pictures) {
-
-  var menuTemp = _.template(
-   `<% _.forEach(pictures, function(picture) {  %>
-      <div class="realtime-pic-item">
-        <a class="thumbnail" title= <%= picture.current_time %> >
-          <img src= <%= picture.url %> >
-        </a>
-        <div class="realtime-pic-label">
-          <span><%= picture.current_time %></span>
-        </div>
-      </div>
-
-    <% });                                          %>`
-  );
-
-  return menuTemp(pictures);
-}

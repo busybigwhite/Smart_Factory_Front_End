@@ -95,54 +95,41 @@ function createWorkorderListThenRenderRows(type, searchKey) {
 		var displayData = []
 
 		for (var i in workorderResponse) {
-			$.ajax({
-			        url: config.APIUrl + 'workorder/' + workorderResponse[i].id + '/',
-			        // url: config.APIUrl + 'workorder/1/',
-			        type: 'GET',
-			        async: false,
-			        cache: false,
-			        timeout: 30000,
-			        error: function(){
-			        	console.log("error");
-			        },
-			        success: function(data){
-			        	for (var j in data.work_order_records) {
-			        		if (data.work_order_records[j].factory_id == focusFactoryId) {
-								var dict = {}
-								dict['id'] = workorderResponse[i].id;
-								dict['order_id'] = workorderResponse[i].order_id;
-								dict['customer_id'] = workorderResponse[i].customer_id;
-				        		if (userList[dict['customer_id']]) {
-				        			dict['customer_name'] = userList[dict['customer_id']];
-				        		}
+        	for (var j in workorderResponse[i].work_order_records) {
+        		if (workorderResponse[i].work_order_records[j].factory_id == focusFactoryId) {
+					var dict = {}
+					dict['id'] = workorderResponse[i].id;
+					dict['order_id'] = workorderResponse[i].order_id;
+					dict['customer_id'] = workorderResponse[i].customer_id;
+	        		if (userList[dict['customer_id']]) {
+	        			dict['customer_name'] = userList[dict['customer_id']];
+	        		}
 
-				        		dict['factory_id'] = data.work_order_records[j].factory_id;
-				        		if (factoryList[dict['factory_id']]) {
-				        			dict['factory_name'] = factoryList[dict['factory_id']];
-				        		}
+	        		dict['factory_id'] = workorderResponse[i].work_order_records[j].factory_id;
+	        		if (factoryList[dict['factory_id']]) {
+	        			dict['factory_name'] = factoryList[dict['factory_id']];
+	        		}
 
-								switch (workorderResponse[i].status) {
-									case "non-schedule":
-										dict['status'] = "未排程";
-									break;
-									case "schedule":
-										dict['status'] = "已排程";
-									break;
-									case "producing":
-										dict['status'] = "生產中";
-									break;
-									case "finish":
-										dict['status'] = "結案";
-									break;
-									default:
-									break;
-								}
+					switch (workorderResponse[i].status) {
+						case "non-schedule":
+							dict['status'] = "未排程";
+						break;
+						case "schedule":
+							dict['status'] = "已排程";
+						break;
+						case "producing":
+							dict['status'] = "生產中";
+						break;
+						case "finish":
+							dict['status'] = "結案";
+						break;
+						default:
+						break;
+					}
 
-					    		displayData.push(dict);
-					    	}
-			        	}
-			        }
-			    });
+		    		displayData.push(dict);
+		    	}
+        	}
 		}
 
 		var tableListRows = templates.renderTableList({ infos : displayData });
