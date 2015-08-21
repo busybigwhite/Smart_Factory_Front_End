@@ -113,7 +113,9 @@ function ajax(method, url, data) {
 	var isContainPics = (!!data['mold_pic']) || (!!data['product_pic']);
 
 	var processedData = new FormData();
-	_.forEach(data, function(key, value) {
+
+	// lodash forEach(collection, function(value, index|key, collection))
+	_.forEach(data, function(value, key) {
 	  processedData.append(key, value);
 	});
 
