@@ -1,6 +1,7 @@
 'use strict';
 
 var $ = window.jQuery = require('jquery');
+var _ = require('lodash');
 var header = require('../includes/header');
 var api = require('../machine/api');
 var queryParameter = require('../lib/helper/query-parameter');
@@ -28,6 +29,9 @@ var $serialNumber = $('#machine-serial-num');
 var $name = $('#machine-name');
 var $weight = $('#machine-weight');
 // TODO: 機台稼動率
+var $noticeedPersonName = $('#machine-noticed-person').find('.view-mode');
+var noticedId;
+var userList;
 
 
 var isEditMode   = false;
@@ -62,8 +66,8 @@ function getInitialData() {
 		 .fail(function(err) { console.log("GET Machine Info error: ", err); });
 
 	api.getUserList()
-		.done(initialView)
-		.fail(function(err) { console.log('noticedPersonDropdown GET user list error:', err) });
+		.done(initialNoticedName)
+		.fail(function(err) { console.log('initialNoticedName GET user list error:', err) });
 }
 
 function bindEvents() {
@@ -204,13 +208,41 @@ function initBaseInfo(data) {
 }
 
 function initResumeInfo(data) {
-	noticeedPersonDropdown.setNoticeedPerson(data['admin_id']);
+	noticedId = data['admin_id'];
+	setNoticedId(noticedId);
+	noticeedPersonDropdown.setNoticeedPerson(noticedId);
 	checkPeriodDropdown   .init(data['check_period_value'], data['check_period_unit']);
 	maintainPeriodDropdown.init(data['maintain_period_value'], data['maintain_period_unit']);
 
 	checkRecordTable.initialView(data['maintain_record_check']);
 	maintainRecordTable.initialView(data['maintain_record_maintain']);
 	errorRecordTable.initialView(data['maintain_record_maintain']);
+}
+
+function initialNoticedName(data) {
+	if (noticedId) {
+		_.forEach(data, function(value, key) {
+			if (key === noticedId) {
+				setUserName(value.name);
+				return;
+			}
+		});
+	} else {
+		userList = data;
+	}
+}
+
+function setNoticedId(id) {
+	_.forEach(userList, function(value, key) {
+		if (key === id) {
+			setUserName(value.name);
+			return;
+		}
+	});
+}
+
+function setUserName(name) {
+	$noticeedPersonName.text(name);
 }
 
 function getAllInfoData() {

@@ -50,7 +50,7 @@ function initialView(data) {
 	if (noticedId) {
 		_.forEach(data, function(value, key) {
 			if (key === noticedId) {
-				setSelectedName(value);
+				setSelectedName(value.name);
 				return;
 			}
 		});
