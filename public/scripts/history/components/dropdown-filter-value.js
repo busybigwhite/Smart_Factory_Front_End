@@ -75,7 +75,7 @@ function renderDropdown(type) {
 
 	resetBlock();
 
-	if( _.isEmpty(filterValues ){
+	if( _.isEmpty(filterValues) ){
 		getValues();
 		return;
 	}
