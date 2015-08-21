@@ -278,14 +278,16 @@ function getInfoValue() {
 		}
 	});
 	data['admin_id']  = noticeedPersonDropdown.getId();
-	data['maintain_period_value'] = maintainPeriodDropdown.getValue();
-	data['maintain_period_unit']  = maintainPeriodDropdown.getType();
-	data['mold_pic'] = moldPicUploadBlock.getImageDataUri();
-	data['product_pic'] = productPicUploadBlock.getImageDataUri();
 	data['created_at'] = $datePicker.val();
 
-	console.log('mold_pic => ', data['mold_pic']);
-	console.log('product_pic => ', data['product_pic']);
+	data['maintain_period_value'] = maintainPeriodDropdown.getValue();
+	data['maintain_period_unit']  = maintainPeriodDropdown.getType();
+
+	var moldPic = moldPicUploadBlock.getImageFile();
+	if (moldPic) data['mold_pic'] = moldPic;
+
+	var productPic = productPicUploadBlock.getImageFile();
+	if (productPic) data['product_pic'] = productPic;
 
 	return data;
 }

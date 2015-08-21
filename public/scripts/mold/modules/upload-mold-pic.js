@@ -12,12 +12,13 @@ var $imageDisplay    = $uploadFileBlock.find('.pic-img');
 
 var imageOriginalSrc;
 var imageDataUri;
+var imageFile;
 
 exports = module.exports = {
 	init: initialize,
 	clear: clear,
-	getInputValue: getInputValue,
-	getImageDataUri: getImageDataUri,
+  getImageFile: getImageFile,
+  getImageDataUri: getImageDataUri,
   setImageOriginalSrc: setImageOriginalSrc,
 };
 
@@ -37,8 +38,8 @@ function openFilesWindow() {
 
 function bindFileUploadHandler() {
   $fileInput.on('change', function(event) {
-    var targetFile = event.target.files[0];
-    readFile(targetFile);
+    imageFile = event.target.files[0];
+    readFile(imageFile);
   });
 }
 
@@ -48,11 +49,10 @@ function readFile(targetFile) {
   reader.onload = function() {
 
     var fileName = targetFile.name;
-    console.log(fileName);
     var isFileTypeOk = file.is([ 'jpg', 'jpeg', 'gif', 'png' ], fileName);
-    console.log('isFileTypeOk:', isFileTypeOk);
+
     if ( ! isFileTypeOk) {
-      // validator.emitError(new InvalidFileFormatError());
+      console.error('File Type Error! \t File Name: ' + fileName);
       return false;
     }
 
@@ -62,41 +62,14 @@ function readFile(targetFile) {
 
     image.onload = function() {
 
-      // var width = this.width;
-      // console.log(width);
-
-      // var height = this.height;
-      // console.log(height);
-
-      // var size = targetFile.size;
-      // console.log(size);
-
-      // var isWidthOk = width >= 160;
-      // var isHeightOk = height >= 160;
-      // console.log('isWidthOk:', isWidthOk);
-      // console.log('isHeightOk:', isHeightOk);
-      // if ( ! (isWidthOk || isHeightOk)) {
-      //   validator.emitError(new FileWidthHeightError());
-      //   return false;
-      // }
-
-      // var isFileSizeOk = (size / (1024 * 1024)) < 4;
-      // console.log('isFileSizeOk:', isFileSizeOk);
-      // if ( ! isFileSizeOk) {
-      //   validator.emitError(new FileSizeTooLargeError());
-      //   return false;
-      // }
-
       var rectimageOpt = {
         newLength: 150,
         canvas: true
       }
 
-      var dataUri = canvasToBase64(rectimage(image, rectimageOpt));
+      imageDataUri = canvasToBase64(rectimage(image, rectimageOpt));
 
-      imageDataUri = dataUri;
-
-      $imageDisplay.attr('src', dataUri);
+      $imageDisplay.attr('src', imageDataUri);
     };
   };
 
@@ -113,12 +86,12 @@ function clear() {
   $fileInput.val('');
 }
 
-function getInputValue() {
-	return $fileInput.val();
-}
-
 function getImageDataUri() {
 	return imageDataUri;
+}
+
+function getImageFile() {
+  return imageFile;
 }
 
 function setImageOriginalSrc(src) {
