@@ -102,7 +102,7 @@ function transferKeyS2C(key){
 		case "description":
 			return "description";
 		case "schedule_date":
-			return "forecast-time";
+			return "reserve-time";
 		case "target_num":
 			return "forecast-amount";
 		case "produce_type":
@@ -132,7 +132,7 @@ function transferKeyC2S(key){
 			return "order_date";
 		case "description":
 			return "description";
-		case "forecast-time":
+		case "reserve-time":
 			return "schedule_date";
 		case "forecast-amount":
 			return "target_num";
