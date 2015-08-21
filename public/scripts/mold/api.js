@@ -8,7 +8,7 @@ var config = require('../config/url');
 var token = require('../config/auth').getToken();
 
 var factoryId;
-var moldApiUrl  = config.APIUrl + 'mold/';
+var moldApiUrl  = config.APIUrl + 'mold';
 var moldApiPicUrl = config.APIUrl + 'pic/mold/';
 var moldPageUrl = config.moldUrl;
 var isLocal = window.location.hostname === 'localhost';
@@ -57,7 +57,7 @@ function getMoldList() {
 
 function getMoldInfo(id) {
 	var fakeData = {"id":5,"serial_num":"Vincenzo","name":"Weimann","factory_id":4,"weight":237,"type":"\u91d1\u5c6c","mold_pic":"e12eaae655640c44070b323349693563","product_pic":"870f1eea03c76da52dc2ed1bf26b6cd4","length":354,"width":683,"height":43,"admin_id":1,"manufacturer":"\u8c50\u7530","maintain_period_unit":"times","maintain_period_value":98,"lifetime":500000,"current_usage":100,"created_at":"2015-08-20 06:10:20","updated_at":"2015-08-20 06:10:20","maintain_records":[{"id":8,"mold_id":5,"type":"maintain","content":"test","created_at":"2015-08-20 06:10:20","updated_at":"2015-08-20 06:10:20"},{"id":9,"mold_id":5,"type":"maintain","content":"test","created_at":"2015-08-20 06:10:20","updated_at":"2015-08-20 06:10:20"},{"id":10,"mold_id":5,"type":"check","content":"test","created_at":"2015-08-20 06:10:20","updated_at":"2015-08-20 06:10:20"},{"id":11,"mold_id":5,"type":"error","content":"test","created_at":"2015-08-20 06:10:20","updated_at":"2015-08-20 06:10:20"},{"id":12,"mold_id":5,"type":"check","content":"test","created_at":"2015-08-20 06:10:20","updated_at":"2015-08-20 06:10:20"}]};
-	return isLocal ? mockAjax(fakeData) : getData(moldApiUrl + id);
+	return isLocal ? mockAjax(fakeData) : getData(moldApiUrl + '/' + id);
 };
 
 function getUserList() {
@@ -70,21 +70,21 @@ function createMold(data) {
 }
 
 function deleteMold(id) {
-	return deleteData(moldApiUrl + id);
+	return deleteData(moldApiUrl + '/' + id);
 }
 
 function editMoldInfo(id, data) {
-	return editData(moldApiUrl + id, data);
+	return editData(moldApiUrl + '/' + id, data);
 }
 
 function createMoldRecord(id, data) {
 	data.id = id;
-	return createData(moldApiUrl + 'maintain/', data);
+	return createData(moldApiUrl + '/maintain', data);
 }
 
 function deleteMoldRecord(id, data) {
 	data.id = id;
-	return deleteData(moldApiUrl + 'maintain/', data);
+	return deleteData(moldApiUrl + '/maintain', data);
 }
 
 

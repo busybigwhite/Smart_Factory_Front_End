@@ -10,11 +10,11 @@ var $typeView     = $checkPeriod.find('.view-mode').eq(1);
 var $selectedType = $('#machine-check-period-dropdown').find('.selected-option');
 var $typeDropdownList = $('ul[aria-labelledby="machine-check-period-dropdown"]').find('.option');
 var TYPE = {
-	times: '次',
+	time: '次',
 	days: '天',
 };
-var defaultType = 'times';
-var defaultTypeStirng = TYPE.times;
+var defaultType = 'time';
+var defaultTypeStirng = TYPE.time;
 
 
 exports.init     = initCheckPeriod;

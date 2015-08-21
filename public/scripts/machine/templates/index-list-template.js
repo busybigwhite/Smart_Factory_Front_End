@@ -9,7 +9,7 @@ exports.render = function(infos) {
   var menuTemp = _.template(
 	 `<% _.forEach(infos, function(info) {  %>
       <li class="table-item">
-          <div class="table-col"><%= info.id %></div>
+          <div class="table-col"><%= info.serial_num %></div>
           <div class="table-col"><%= info.name %></div>
           <div class="table-col"><%= info.weight %></div>`+
           `<div class="table-col">10%</div>`+ // TODO: 機台稼動率

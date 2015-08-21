@@ -19,7 +19,6 @@ exports = module.exports = {
 };
 
 function goToWorkOrderIndex() {
-	console.log("goToWorkOrderIndex");
 	window.location.href = wordorderPageUrl;
 }
 
@@ -42,22 +41,18 @@ function getWorkOrderList(id) {
 };
 
 function createWorkOrder(data) {
-	console.log("createData use post url = "+wordorderApiUrl);
 	return createData(wordorderApiUrl, data);
 }
 
 function deleteWorkOrder(id, token) {
-	console.log("delete with token as data url = "+wordorderApiUrl + id);
 	return deleteData(wordorderApiUrl + id, token);
 }
 
 function getWorkOrderInfo(id) {
-	console.log("get url = "+wordorderApiUrl + id);
 	return getData(wordorderApiUrl + id);
 };
 
 function editWorkOrderInfo(id, data) {
-	console.log("edit url = "+wordorderApiUrl + id);
 	return editData(wordorderApiUrl + id, data);//include token
 }
 
@@ -110,7 +105,9 @@ function transferKeyS2C(key){
 		case "target_num":
 			return "order-amount";
 		case "current_fail_num":
-			return "defective-amount"
+			return "defective-amount";
+		case "abnormal_num":
+			return "abnormal-amount";
 		case "produce_type":
 			return "type";
 		case "start_date":
@@ -143,7 +140,9 @@ function transferKeyC2S(key){
 		case "order-amount":
 			return "target_num";
 		case "defective-amount":
-			return "current_fail_num"
+			return "current_fail_num";
+		case "abnormal-amount":
+			return "abnormal_num";
 		case "type":
 			return "produce_type";
 		case "real-produce-date":
