@@ -103,12 +103,14 @@ function transferKeyS2C(key){
 			return "workorder-status";
 		case "order_date":
 			return "input-date";
-		case "description":
+		case "content":
 			return "description";
 		case "schedule_date":
 			return "schedule-date";
 		case "target_num":
 			return "order-amount";
+		case "current_fail_num":
+			return "defective-amount"
 		case "produce_type":
 			return "type";
 		case "start_date":
@@ -135,11 +137,13 @@ function transferKeyC2S(key){
 		case "input-date":
 			return "order_date";
 		case "description":
-			return "description";
+			return "content";
 		case "schedule-date":
 			return "schedule_date";
 		case "order-amount":
 			return "target_num";
+		case "defective-amount":
+			return "current_fail_num"
 		case "type":
 			return "produce_type";
 		case "real-produce-date":
