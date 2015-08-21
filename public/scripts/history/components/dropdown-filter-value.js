@@ -10,6 +10,7 @@ var templates = require('../templates');
 var EventEmitter = require('wolfy87-eventemitter');
 
 var selectedValue;
+var filterValues = {};
 var emitter = new EventEmitter();
 
 /* DOM */
@@ -26,7 +27,7 @@ exports.getSelectedValue = function(){
 }
 
 exports.showAndRenderDropdown = function(type) {
-	getValueThenRenderDropdown(type);
+	renderDropdown(type);
 	$valueDropdown.removeClass('hidden');
 }
 
@@ -41,7 +42,16 @@ exports.getSelectedValue = function() {
 initialize();
 
 function initialize() {
+	getValues();
 	bindEvents();
+}
+
+function getValues() {
+	$.get(config.APIUrl + 'history/filter')
+	 .done(function(response){
+	 	filterValues = response;
+	 	renderDropdown('work_order_id');
+	 });
 }
 
 function bindEvents() {
@@ -53,7 +63,10 @@ function bindSetFocusNameBlockEventOnSelector() {
 }
 
 function setFocusValueBlock(target) {
-	var displayName = target.type==='click' ? $(this).text() : target.name;
+	var displayName = target.type==='click' ? $(this).text()
+											: target['name'] === undefined ? target.id
+																		   : target.name;
+
 	selectedValue = target.type==='click' ? $(this).data('id') : target.id;
 
 	$filterValueFocusName.text(displayName).data('id', selectedValue);
@@ -61,27 +74,29 @@ function setFocusValueBlock(target) {
 	emitter.emit('valueChanged', selectedValue);
 }
 
-function getValueThenRenderDropdown(type) {
+function renderDropdown(type) {
 
-	$.ajax({
-		url: config.APIUrl + 'history/filter?type=' + type,
-		beforeSend: function(){
-			selectedValue = undefined;
-			$filterValueFocusName.empty();
-			$filterValueMenu.empty();
-		}
-	}).done(function(response){
+	resetBlock();
 
-	 	if( response.length ){
-		 	var filters = _.uniq(response);
-			var filterListRows = templates.renderFilterDropdown({ filters : filters });
+	if( _.isEmpty(filterValues) ){
+		getValues();
+		return;
+	}
 
-			$filterValueMenu.html( filterListRows );
+	var filterType = _.camelCase(type).toLowerCase().replace('id', 's');
 
-			setFocusValueBlock( filters[0] );
+	if( filterValues[filterType].length ){
+	 	var filters = _.uniq( filterValues[filterType] );
+		var filterListRows = templates.renderFilterDropdown({ filters : filters });
 
-		}else {
-			emitter.emit('valueChanged', selectedValue);
-		}
-	});
+		$filterValueMenu.html( filterListRows );
+
+		setFocusValueBlock( filters[0] );
+	}
+}
+
+function resetBlock() {
+	selectedValue = undefined;
+	$filterValueFocusName.empty();
+	$filterValueMenu.empty();
 }

@@ -9,7 +9,11 @@ exports.renderFilterDropdown = function(filters) {
   var menuTemp = _.template(
 	 `<% _.forEach(filters, function(filter) {  %>
       <li><a class="option-item" data-id=<%= filter.id %>>
+      <% if(filter['name'] !== undefined){  %>
       		<%= filter.name %>
+      <% }else {  %>
+          <%= filter.id %>
+      <% }            %>
       </a></li>
     <% });                                          %>`
 	);

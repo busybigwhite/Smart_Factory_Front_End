@@ -6,6 +6,7 @@ var header = require('../includes/header');
 var config = require('../config/url');
 var templates = require('../realtime/templates');
 var queryParameter = require('../lib/helper/query-parameter');
+var loadingSpin = require('../lib/component/loading-spin');
 
 require('fancybox')($);
 
@@ -13,6 +14,7 @@ require('fancybox')($);
 /* DOM */
 var $livePicBlock = $('#realtime-pic-block');
 var $navTitle = $('#realtime-pic-title');
+var spinner;
 
 exports = module.exports = {};
 
@@ -20,8 +22,15 @@ initialize();
 
 function initialize() {
     header.include();
+    initializeLoadingSpinner();
     bindEvents();
     getPictureListAndRenderRow();
+}
+
+function initializeLoadingSpinner() {
+    spinner = loadingSpin();
+    spinner.init( $livePicBlock[0] );
+    spinner.start();
 }
 
 function bindEvents() {
@@ -61,6 +70,9 @@ function getPictureListAndRenderRow() {
             renderPictureLabels(cameraIds);
             renderPictureRows(objects);
         });
+     })
+     .always(function(){
+        spinner.stop();
      });
 }
 
