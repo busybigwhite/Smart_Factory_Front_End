@@ -72,6 +72,8 @@ function renderDropdown(type) {
 
 	resetBlock();
 
+	_.isEmpty(filterValues) && getValues();
+
 	var filterType = _.camelCase(type).toLowerCase().replace('id', 's');
 
 	if( filterValues[filterType].length ){

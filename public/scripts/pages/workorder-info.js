@@ -33,8 +33,8 @@ var parameters = location.search.substring(1).split("&");
 var temp = parameters[0].split("=");
 var workorderID = temp[1];
 temp = parameters[1].split("=");
-
 var factoryID = temp[1];
+
 
 var today = new Date();
 var DateTimePickerOpt = {
@@ -64,16 +64,6 @@ function bindEvents() {
 	$cancelBtn.on('click', hideEditMode);
 	$deleteBtn.on('click', deleteWorkOrderInfo);
 	$workorderForm.submit(saveData);
-<<<<<<< HEAD
-	statusDropdown.emitter.on('statusChanged', doNothing);
-	typeDropdown.emitter.on('TypeChanged', doNothing);
-	factoryDropdown.emitter.on('factoryChanged', doNothing);
-}
-
-function doNothing(){
-
-=======
->>>>>>> 10bdaba418382daf4730a661abb1096fc390e596
 }
 
 function initializeDatetimePicker() {
@@ -136,14 +126,9 @@ function showInitView() {
 	$('#workorder-num').find('input').val(workorderID);
 
 	api.getWorkOrderInfo(workorderID)
-<<<<<<< HEAD
-		.done(function(data) {
-			console.log("GET workorder res: ", data);
-=======
 		.done(function(data) {
 			console.log("GET Workorder res: ", data);
 			//get init data and store it
->>>>>>> 10bdaba418382daf4730a661abb1096fc390e596
 			backupJdata = data;
 			$.each(data, fillList);
 		})
@@ -186,20 +171,12 @@ function saveData() {
 
 function saveChangedData(data) {
 	api.editWorkOrderInfo(workorderID, data)
-<<<<<<< HEAD
-		 .done(function(data) {
-		 	console.log("EDIT Machine Info res: ", data);
-		 })
-		 .fail(function(err) {
-		 	console.log("EDIT Machine Info error: ", err);
-=======
 		 .done(function(data) {
 		 	console.log("EDIT Workorder Info res: ", data);
 		 	api.goToWorkOrderIndex();
 		 })
 		 .fail(function(err) {
 		 	console.log("EDIT Workorder Info error: ", err);
->>>>>>> 10bdaba418382daf4730a661abb1096fc390e596
 		 	// if fail restore old page
 		 	$.each(backupJdata, fillList);
 		  });
@@ -209,15 +186,6 @@ function saveChangedData(data) {
 
 function deleteWorkOrderInfo() {
 	api.deleteWorkOrder(workorderID)
-<<<<<<< HEAD
-		 .done(function(data) {
-		 	console.log("DELETE Machine res: ", data);
-		 	//back to list
-		 	api.goToWorkOrderIndex();
-		})
-		 .fail(function(err) {
-		 	console.log("DELETE Machine error: ", err);
-=======
 		 .done(function(data) {
 		 	console.log("DELETE Workorder res: ", data);
 		 	//back to list
@@ -225,7 +193,6 @@ function deleteWorkOrderInfo() {
 		})
 		 .fail(function(err) {
 		 	console.log("DELETE Workorder error: ", err);
->>>>>>> 10bdaba418382daf4730a661abb1096fc390e596
 		 	// TODO ??
 		 });
 }
