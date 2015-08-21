@@ -18,7 +18,49 @@
 		}
 	}
 
+	.workorder-dropdown-toggle {
+		width: 212px;
+		font-size: @font-size;
+		text-align: right;
+
+		.factory-focus-name,
+		.dropdown-focus-name {
+			width: 85%;
+			margin-right: 5px;
+			display: inline-block;
+			text-align: left;
+		}
+	}
+
 	.dropdown-menu {
+		font-size: @font-size;
+	}
+}
+
+.long-dropdown {
+	.dropdown();
+	padding: 0;
+	margin-right: 10px;
+	display: inline-block;
+
+	.dropdown-toggle {
+		width: 212px;
+		font-size: @font-size;
+		text-align: right;
+
+		.status-focus-name,
+		.factory-focus-name,
+		.type-focus-name,
+		.dropdown-focus-name {
+			width: 85%;
+			margin-right: 5px;
+			display: inline-block;
+			text-align: left;
+		}
+	}
+
+	.dropdown-menu {
+		min-width: 212px;
 		font-size: @font-size;
 	}
 }
@@ -28,4 +70,10 @@
 .dropdown-history-filter,
 #dropdown-value-list {
 	.custom-dropdown();
+}
+
+.dropdown-workorder-status,
+.dropdown-workorder-factory,
+.dropdown-workorder-type {
+	.long-dropdown();
 }

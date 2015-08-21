@@ -4,15 +4,31 @@ var $ = window.jQuery = require('jquery');
 var header = require('../includes/header');
 var api = require('../workorder/api');
 var queryParameter = require('../lib/helper/query-parameter');
+var statusDropdown = require('../workorder/component/dropdown-status');
+var typeDropdown = require('../workorder/component/dropdown-type');
+var factoryDropdown = require('../workorder/component/dropdown-factory');
 
 require('bootstrap/js/dropdown');
+require('eonasdan-bootstrap-datetimepicker');
 
 /* DOM */
-var $editBtn   = $('#workorder-new-edit-button');//always hide
 var $cancelBtn = $('#workorder-new-cancel-button');
 var $newBtn   = $('#workorder-new-new-button');
 var $workorderForm  = $('#workorder-new-form');
 var $newOrderCollection = $workorderForm.find('.newOrder');
+var $inputDateDatePicker = $('#workorder-inputDate-date-picker');
+var $reserveDatePicker = $('#workorder-reserve-date-picker');
+var $realProduceDatePicker = $('#workorder-real-produce-date-picker');
+var $realFinishDatePicker = $('#workorder-real-finish-date-picker');
+
+var today = new Date();
+var DateTimePickerOpt = {
+	widgetPositioning: {
+        horizontal: 'auto',
+        vertical: 'bottom'
+    },
+	ignoreReadonly: true
+};
 
 initialize();
 
@@ -20,22 +36,37 @@ function initialize() {
 	header.include();
 	bindEvents();
 	initView();
+	initializeDatetimePicker();
+}
+function doNothing(){
+	
 }
 
+
 function initView(){
-	$editBtn.hide();
-	$newBtn.show();
+	$("#inputDate").val(getDateTime());
 }
 
 function bindEvents() {
 	$cancelBtn.on('click', backToList);
 	$workorderForm.submit(createData);
+	statusDropdown.emitter.on('statusChanged', doNothing);
+	typeDropdown.emitter.on('TypeChanged', doNothing);
+	factoryDropdown.emitter.on('factoryChanged', doNothing);
 }
 
 
 function backToList() {
 	// window.location="./";
 	api.goToWorkOrderIndex();
+}
+
+function initializeDatetimePicker() {
+	$inputDateDatePicker.datetimepicker(DateTimePickerOpt);
+	$inputDateDatePicker.data("DateTimePicker").defaultDate(today);
+	$reserveDatePicker.datetimepicker(DateTimePickerOpt);
+	$realProduceDatePicker.datetimepicker(DateTimePickerOpt);
+	$realFinishDatePicker.datetimepicker(DateTimePickerOpt);
 }
 
 function createData() {
@@ -69,8 +100,35 @@ function getChangedData() {
 			newData[name] = value;
 
 		} else if ($dropdownSelected) {
-			var selectedName  = $dropdownSelected.attr('name');
-			var selectedValue = $dropdownSelected.text();
+			// var selectedName  = $dropdownSelected.attr('name');
+			var selectedName = api.transferKeyC2S($(el).attr('selectname'));
+			var selectedValue;
+			switch(selectedName){
+				case "status":
+					selectedValue = getStatusName();
+					break;
+				case "factory":
+					selectedValue = getFactoryId();
+					break;
+				case "produce_type":
+					selectedValue = getTypeName();
+					break;
+				case "order_date":
+					selectedValue = $inputDateDatePicker.val();
+					break;
+				case "schedule_date":
+					selectedValue = $reserveDatePicker.val();
+					break;
+				case "start_date":
+					selectedValue = $realProduceDatePicker.val();
+					break;
+				case "finish_date":
+					selectedValue = $realFinishDatePicker.val();
+					break;
+				default:
+					selectedValue = "";
+					break;
+			}
 			newData[selectedName] = selectedValue;
 
 		} else {
@@ -79,3 +137,46 @@ function getChangedData() {
 	});
 	return newData;
 }
+
+function getStatusName() {
+	return statusDropdown.getSelectedStatus();
+}
+
+function getTypeName(){
+	return typeDropdown.getSelectedType();
+}
+
+function getFactoryId() {
+	return factoryDropdown.getSelectedFactoryId();
+}
+
+
+ function getDateTime() {
+    var now     = new Date(); 
+    var year    = now.getFullYear();
+    var month   = now.getMonth()+1; 
+    var day     = now.getDate();
+    var hour    = now.getHours();
+    var minute  = now.getMinutes();
+    var second  = now.getSeconds(); 
+    if(month.toString().length == 1) {
+        var month = '0'+month;
+    }
+    if(day.toString().length == 1) {
+        var day = '0'+day;
+    }   
+    if(hour.toString().length == 1) {
+        var hour = '0'+hour;
+    }
+    if(minute.toString().length == 1) {
+        var minute = '0'+minute;
+    }
+    if(second.toString().length == 1) {
+        var second = '0'+second;
+    }   
+    var dateTime = year+'/'+month+'/'+day+' '+hour+':'+minute+':'+second;   
+     return dateTime;
+}
+
+
+

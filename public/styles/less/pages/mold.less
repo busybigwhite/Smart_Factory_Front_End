@@ -4,10 +4,15 @@
 	.table-col {
 
 		&:nth-of-type(1),
-		&:nth-of-type(2),
+		&:nth-of-type(2) {
+			.custom-table-col(1.5);
+		}
+
 		&:nth-of-type(3),
 		&:nth-of-type(4) {
 			.custom-table-col(1.5);
+			display: flex;
+			align-items: center;
 		}
 
 		&:nth-of-type(5),
@@ -22,6 +27,35 @@
 		&:last-of-type {
 			.custom-table-col(1);
 			text-align: center;
+		}
+	}
+
+	.table-item {
+		height: 120px;
+	}
+
+	.pic-img {
+		width: 100px;
+		height: 100px;
+		margin: 10px auto;
+		background-color: lightgray;
+		color: darkgray;
+	}
+
+	.index-list-size-length,
+	.index-list-size-width,
+	.index-list-size-height {
+		.make-xs-column(3);
+		padding: 0;
+		text-align: center;
+	}
+
+	.index-list-size-length,
+	.index-list-size-width {
+		&:after {
+			content: "/";
+			position: absolute;
+			right: 0;
 		}
 	}
 }

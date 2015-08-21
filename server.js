@@ -35,9 +35,6 @@ app.get('/api/workorder/listpic', function(req, res) {
 app.get('/api/workorder', function(req, res) {
 	res.send(data.workorders);
 });
-app.get('/api/workorder', function(req, res) {
-	res.send(data.workorders);
-});
 app.get('/api/workorder/1', function(req, res) {
 	res.send(data.workorder);
 });
