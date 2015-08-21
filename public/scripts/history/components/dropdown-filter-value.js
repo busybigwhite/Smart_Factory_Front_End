@@ -10,6 +10,7 @@ var templates = require('../templates');
 var EventEmitter = require('wolfy87-eventemitter');
 
 var selectedValue;
+var filterValues = {};
 var emitter = new EventEmitter();
 
 /* DOM */
@@ -26,7 +27,7 @@ exports.getSelectedValue = function(){
 }
 
 exports.showAndRenderDropdown = function(type) {
-	getValueThenRenderDropdown(type);
+	renderDropdown(type);
 	$valueDropdown.removeClass('hidden');
 }
 
@@ -41,7 +42,13 @@ exports.getSelectedValue = function() {
 initialize();
 
 function initialize() {
+	getValues();
 	bindEvents();
+}
+
+function getValues() {
+	$.get(config.APIUrl + 'history/filter')
+	 .done(function(response){ filterValues = response });
 }
 
 function bindEvents() {
@@ -61,27 +68,26 @@ function setFocusValueBlock(target) {
 	emitter.emit('valueChanged', selectedValue);
 }
 
-function getValueThenRenderDropdown(type) {
+function renderDropdown(type) {
 
-	$.ajax({
-		url: config.APIUrl + 'history/filter?type=' + type,
-		beforeSend: function(){
-			selectedValue = undefined;
-			$filterValueFocusName.empty();
-			$filterValueMenu.empty();
-		}
-	}).done(function(response){
+	resetBlock();
 
-	 	if( response.length ){
-		 	var filters = _.uniq(response);
-			var filterListRows = templates.renderFilterDropdown({ filters : filters });
+	var filterType = _.trim(type).replace('id', '');
 
-			$filterValueMenu.html( filterListRows );
+	if( filterValues[filterType].length ){
+	 	var filters = _.uniq( filterValues[filterType] );
+		var filterListRows = templates.renderFilterDropdown({ filters : filters });
 
-			setFocusValueBlock( filters[0] );
+		$filterValueMenu.html( filterListRows );
 
-		}else {
-			emitter.emit('valueChanged', selectedValue);
-		}
-	});
+		setFocusValueBlock( filters[0] );
+	}else {
+		emitter.emit('valueChanged', selectedValue);
+	}
+}
+
+function resetBlock() {
+	selectedValue = undefined;
+	$filterValueFocusName.empty();
+	$filterValueMenu.empty();
 }
