@@ -137,13 +137,13 @@ function saveData() {
 	console.log(data);
 	if (isEditMode && !isCreateMode) {
 		saveChangedData(data.info);
-		saveNewRecord(data.newRecords);
-		saveDeleteRecord(data.deleteRecords);
+		if (_.has(data, data.newRecords)) saveNewRecord(data.newRecords);
+		if (_.has(data, data.deleteRecords)) saveDeleteRecord(data.deleteRecords);
 		console.log('Changed Data : ', data);
 
 	} else if (!isEditMode && isCreateMode) {
 		saveNewData(data.info);
-		saveNewRecord(data.newRecords);
+		if (!data.newRecords) saveNewRecord(data.newRecords);
 		console.log('New Data : ', data);
 
 	} else {
@@ -154,13 +154,17 @@ function saveData() {
 
 function saveChangedData(data) {
 	api.editMachineInfo(machineId, data)
-		 .done(function(data) { window.location.reload(); })
+		 .done(function(data) {
+		 		api.goToMachineInfo('detail', {ID: machineId});
+		 })
 		 .fail(function(err) { console.log("EDIT Machine Info error: ", err); });
 }
 
 function saveNewData(data) {
 	api.createMachine(data)
-		 .done(function(data) { window.location.reload(); })
+		 .done(function(data) {
+		 	api.goToMachineIndex();
+		 })
 		 .fail(function(err) { console.log("CREATE Machine error: ", err); });
 }
 
@@ -250,10 +254,10 @@ function getAllInfoData() {
 	data.info = getInfoValue();
 
 	var newRecords = getNewRecordList();
-	if (newRecords.length !== 0) data.newRecords = newRecords;
+	if (newRecords && newRecords.length !== 0) data.newRecords = newRecords;
 
 	var deleteRecords = getDeleteRecordList();
-	if (newRecords.length !== 0) data.deleteRecords = deleteRecords;
+	if (newRecords && newRecords.length !== 0) data.deleteRecords = deleteRecords;
 	return data;
 }
 
@@ -280,7 +284,10 @@ function getNewRecordList() {
 	var check    = addMachineIdIntoData(checkRecordTable.getNewList());
 	var maintain = addMachineIdIntoData(maintainRecordTable.getNewList());
 	var error    = addMachineIdIntoData(errorRecordTable.getNewList());
-	var data = [].cancat(check, maintain, error);
+	var data;
+	if (check.length || maintain.length || error.length) {
+		data = [].cancat(check, maintain, error);
+	}
 	return data;
 }
 
@@ -288,7 +295,10 @@ function getDeleteRecordList() {
 	var check    = addMachineIdIntoData(checkRecordTable.getDeleteList());
 	var maintain = addMachineIdIntoData(maintainRecordTable.getDeleteList());
 	var error    = addMachineIdIntoData(errorRecordTable.getDeleteList());
-	var data = [].cancat(check, maintain, error);
+	var data;
+	if (check.length || maintain.length || error.length) {
+		data = [].cancat(check, maintain, error);
+	}
 	return data;
 }
 
