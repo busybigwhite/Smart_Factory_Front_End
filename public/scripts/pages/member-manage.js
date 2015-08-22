@@ -42,6 +42,7 @@ function initialize() {
 		isEditMode = true;
 		$addBtn.hide();
 		getInitialData();
+		checkUsername();
 	}
 	bindEvents();
 	getMemberArray();
@@ -133,12 +134,16 @@ function getInitialData() {
 				$userEmail.val(res.email);
 
 				if (res.group === 'Manager') {
-					$userGroup1.prop("checked", true)
+					$userGroup1.prop("checked", true);
 				} else {
-					$userGroup2.prop("checked", true)
+					$userGroup2.prop("checked", true);
 				}
 		 })
 		 .fail(function(err) { console.log("GET Member error: ", err); });
+
+	// $userName.val('louk');
+	// $userEmail.val('louk@moremote.com');
+	// $userGroup1.prop("checked", true);
 }
 
 function getChangedData() {
