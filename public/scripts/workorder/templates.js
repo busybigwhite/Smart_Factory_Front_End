@@ -11,7 +11,7 @@ exports.renderTableList = function(infos) {
       <li class="table-item">
         <div class="table-col"><%= info.id %></div>
       	<div class="table-col"><%= info.order_id %></div>
-      	<div class="table-col"><%= info.customer_name %></div>
+      	<div class="table-col"><%= info.customer_id %></div>
         <div class="table-col"><%= info.factory_name %></div>
       	<div class="table-col"><%= info.status %></div>
       	<div class="table-col-lg">

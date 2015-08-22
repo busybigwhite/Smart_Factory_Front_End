@@ -155,7 +155,7 @@ function saveData() {
 function saveChangedData(data) {
 	api.editMachineInfo(machineId, data)
 		 .done(function(data) {
-		 		api.goToMachineInfo('detail', {ID: machineId});
+		 		api.goToMachineIndex();
 		 })
 		 .fail(function(err) { console.log("EDIT Machine Info error: ", err); });
 }

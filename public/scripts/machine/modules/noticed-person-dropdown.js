@@ -60,9 +60,7 @@ function initialView(data) {
 function renderDropdown(people) {
 	var menuTemp = _.template(
 	 `<% _.forEach(people, function(person) {  %>
-      <li><a class="option-item" data-id=<%= person.id %>>
-      	<%= person.name %>
-      </a></li>
+      <li><a class="option-item" data-id="<%= person.id %>"><%= person.name %></a></li>
     <% });                                          %>`
 	);
 
@@ -76,9 +74,10 @@ function setFocusNameBlock(target) {
 	setNoticeedPerson(selectedId, displayName)
 }
 
-function setNoticeedPerson(id) {
+function setNoticeedPerson(id, name) {
 	noticedId = id;
-	setSelectedId(id);
+	if (id) setSelectedId(id);
+	if (name) setSelectedName(name);
 }
 
 function getId() {

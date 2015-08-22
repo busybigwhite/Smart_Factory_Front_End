@@ -11,7 +11,7 @@ var $selectedType = $('#machine-check-period-dropdown').find('.selected-option')
 var $typeDropdownList = $('ul[aria-labelledby="machine-check-period-dropdown"]').find('.option');
 var TYPE = {
 	time: '次',
-	days: '天',
+	times: '天',
 };
 var defaultType = 'time';
 var defaultTypeStirng = TYPE.time;
