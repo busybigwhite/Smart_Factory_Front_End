@@ -13,7 +13,6 @@ require('bootstrap/js/dropdown');
 
 var isImageMode = false;
 var focusFactoryId = undefined;
-var userList = {};
 var factoryList = {};
 
 /* DOM */
@@ -25,27 +24,8 @@ initialize();
 
 function initialize() {
 	header.include();
-	initialUserList();
 	initialFactoryList();
 	bindEvents();
-}
-
-function initialUserList() {
-	$.ajax({
-	    url: config.APIUrl + 'user/',
-	    type: 'GET',
-	    async: false,
-	    cache: false,
-	    timeout: 30000,
-	    error: function() {
-	    	console.log("error");
-	    },
-	    success: function(data) {
-	    	for (var i in data) {
-	    		userList[data[i].id] = data[i].name;
-	    	}
-	    }
-	});
 }
 
 function initialFactoryList() {
@@ -101,10 +81,6 @@ function createWorkorderListThenRenderRows(type, searchKey) {
 					dict['id'] = workorderResponse[i].id;
 					dict['order_id'] = workorderResponse[i].order_id;
 					dict['customer_id'] = workorderResponse[i].customer_id;
-	        		if (userList[dict['customer_id']]) {
-	        			dict['customer_name'] = userList[dict['customer_id']];
-	        		}
-
 	        		dict['factory_id'] = workorderResponse[i].work_order_records[j].factory_id;
 	        		if (factoryList[dict['factory_id']]) {
 	        			dict['factory_name'] = factoryList[dict['factory_id']];
