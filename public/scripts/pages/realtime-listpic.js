@@ -78,6 +78,9 @@ function getPictureListAndRenderRow() {
         var cameraGroup = _.groupBy(group, function(n){ return n.camera_id });
 
         _.forEach(cameraGroup, function(objects, cameraIds) {
+
+            if(cameraIds === "undefined") return;
+
             renderPictureLabels(cameraIds);
             renderPictureRows(objects);
         });

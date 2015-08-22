@@ -61,7 +61,7 @@ exports.renderPicCameraLabel = function(cameras) {
   var labelTemp = _.template(
    `<% _.forEach(cameras, function(camera) {  %>
       <div class="realtime-pic-item-block">
-        <div class="realtime-pic-cam-title"><%= camera %></div>
+        <div class="realtime-pic-cam-title">Camera：<%= camera %></div>
       </div>
     <% });                                          %>`
   );
@@ -75,7 +75,7 @@ exports.renderPicList = function(pictures) {
    `<% _.forEach(pictures, function(picture, key) {  %>
       <div class="realtime-pic-item">
         <a class="thumbnail" title= <%= picture.current_time %> >
-          <img src= ../api/pic/ipc/<%= picture.ipc_id %>/<%= picture.work_order_id %>/<%= picture.camera_id %>/<%= picture.type %>/<%= picture.url %> >
+          <img src= ../api/pic/ipc/<%= picture.ipc_id %>/<%= picture.work_order_id %>/<%= picture.camera_id %>/<%= picture.type %>/<%= picture.url %> onerror="this.parentElement.style.display='none'">
         </a>
         <div class="realtime-pic-label">
           <span><%= picture.current_time %></span>

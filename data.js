@@ -88,7 +88,7 @@ var liveinfos = [
       }
 ]
 
-var listpics = {
+var listpics = [{
         "id": 663,
         "work_order_id": 2,
         "factory_id": 1,
@@ -100,7 +100,8 @@ var listpics = {
         "url": "current_img",
         "created_at": "2015-08-21 10:54:56",
         "updated_at": "2015-08-21 10:54:56"
-    }
+    },
+    {}]
 
 var workorderLists = [
     {'id': 'Work01','name': 'workorder1001'},
