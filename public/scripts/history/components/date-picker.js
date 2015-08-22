@@ -99,7 +99,7 @@ function resetEndDateLimit() {
 
 function convertToDateString(date) {
 	var dateObj = new Date(date);
-	var dateString = dateObj.getFullYear() + "/" + (dateObj.getMonth() + 1) + "/" + dateObj.getDate();
+	var dateString = dateObj.getFullYear() + "-" + (dateObj.getMonth() + 1) + "-" + dateObj.getDate();
 
 	return dateString;
 }
