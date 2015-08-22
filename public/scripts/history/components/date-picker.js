@@ -80,11 +80,26 @@ function bindSearchListEventOnButton() {
 }
 
 function searchPeriodList() {
+	var newEndDateObj = resetEndDateLimit();
+	var newEndDateString = convertToDateString( newEndDateObj );
 
 	searchPeriod = {
 		'start_date': $startDatePicker.val(),
-		'end_date': $endDatePicker.val()
+		'end_date': newEndDateString
 	}
 
 	emitter.emit('periodSearch', searchPeriod);
+}
+
+function resetEndDateLimit() {
+	var date = new Date( $endDatePicker.val() );
+
+	return date.setDate(date.getDate() + 1);
+}
+
+function convertToDateString(date) {
+	var dateObj = new Date(date);
+	var dateString = dateObj.getFullYear() + "/" + (dateObj.getMonth() + 1) + "/" + dateObj.getDate();
+
+	return dateString;
 }
