@@ -9,18 +9,18 @@ exports.renderTableList = function(infos) {
   var menuTemp = _.template(
 	 `<% _.forEach(infos, function(info) {  %>
       <li class="table-item">
-        <div class="table-col"><%= info.id %></div>
+        <div class="table-col"><%= info.serial_number %></div>
       	<div class="table-col">
 
     <% if(info.work_order_records.length){ %>
-            <%= info.work_order_records[0].machine_id %>
+            <%= info.work_order_records[0].machine_serial_num %>
     <% }                                   %>
 
         </div>
       	<div class="table-col">
 
     <% if(info.work_order_records.length){ %>
-            <%= info.work_order_records[0].mold_id %>
+            <%= info.work_order_records[0].mold_serial_num %>
     <% }                                   %>
 
         </div>
@@ -67,15 +67,15 @@ exports.renderImageList = function(infos) {
           </ul>
 
           <ul class="realtime-img-value">
-            <li><%= info.id %></li>
+            <li><%= info.serial_number %></li>
 
     <% if(info.work_order_records.length){ %>
-            <li><%= info.work_order_records[0].machine_id %></li>
+            <li><%= info.work_order_records[0].machine_serial_num %></li>
     <% }                                   %>
 
 
     <% if(info.work_order_records.length){ %>
-            <li><%= info.work_order_records[0].mold_id %></li>
+            <li><%= info.work_order_records[0].mold_serial_num %></li>
     <% }                                   %>
 
             <li><%= info.customer_id %></li>

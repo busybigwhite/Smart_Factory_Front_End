@@ -76,14 +76,16 @@ function bindLinkToPicturesPageOnButton() {
 function setFocusFactoryIdThenRenderRows(factoryId) {
 	focusFactoryId = factoryId;
 
-	createRealtimeListThenRenderRows();
+	getRealtimeListThenRenderRows();
 }
 
-function createRealtimeListThenRenderRows(type, searchKey) {
+function getRealtimeListThenRenderRows(filter, searchKey) {
 
 	spinner.start();
 
-	$.get(config.APIUrl + 'workorder/list/?factory_id=' + focusFactoryId + '&type=' + type + '&search_key=' + searchKey)
+	var queryURL = createQueryURL(filter, searchKey);
+
+	$.get(config.APIUrl + 'workorder/list?' + queryURL)
 	 .done(function(response){
 		var tableListRows = templates.renderTableList({ infos : response });
 		var imageListRows = templates.renderImageList({ infos : response });
@@ -94,6 +96,15 @@ function createRealtimeListThenRenderRows(type, searchKey) {
 	 .always(function(){
 	 	spinner.stop();
 	 });
+}
+
+function createQueryURL(filter, searchKey) {
+	var data = {};
+
+	data['factory_id'] = focusFactoryId;
+	data[filter] = searchKey;
+
+	return queryParameter.build(data);
 }
 
 function switchViewMode(){
@@ -122,7 +133,7 @@ function searchByFilter(){
 	var type = $filterFocus.data('type');
 	var searchKey = $searchInput.val();
 
-	createRealtimeListThenRenderRows(type, searchKey)
+	getRealtimeListThenRenderRows(type, searchKey)
 }
 
 function redirectToPicPage() {
