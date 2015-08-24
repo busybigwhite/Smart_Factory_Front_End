@@ -1210,7 +1210,7 @@ var filters = {
   ],
   "customers": [{
       "id": 4,
-      "name": "customer1"
+      "name": "customer1234456778990065654"
     }
   ]
 }

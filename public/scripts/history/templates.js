@@ -10,9 +10,9 @@ exports.renderFilterDropdown = function(filters) {
 	 `<% _.forEach(filters, function(filter) {  %>
       <li><a class="option-item" data-id=<%= filter.id %>>
       <% if(filter['name'] !== undefined){  %>
-      		<%= filter.name %>
+        <%= _.trunc( filter.name, 18) %>
       <% }else {  %>
-          <%= filter.id %>
+        <%= _.trunc( filter.id, 18) %>
       <% }            %>
       </a></li>
     <% });                                          %>`

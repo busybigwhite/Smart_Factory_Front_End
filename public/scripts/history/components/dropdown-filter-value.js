@@ -66,10 +66,11 @@ function setFocusValueBlock(target) {
 	var displayName = target.type==='click' ? $(this).text()
 											: target['name'] === undefined ? target.id
 																		   : target.name;
+	var shortName = _.trunc( _.trim(displayName), 18);
 
 	selectedValue = target.type==='click' ? $(this).data('id') : target.id;
 
-	$filterValueFocusName.text(displayName).data('id', selectedValue);
+	$filterValueFocusName.text(shortName).data('id', selectedValue);
 
 	emitter.emit('valueChanged', selectedValue);
 }
