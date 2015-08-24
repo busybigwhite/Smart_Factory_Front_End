@@ -38,6 +38,10 @@ var isEditMode   = false;
 var isCreateMode = false;
 var machineId;
 var originalData;
+var hasSaveChangedData  = false;
+var hasSaveNewRecord    = false;
+var hasSaveDeleteRecord = false;
+var hasSaveNewData      = false;
 
 
 initialize();
@@ -148,41 +152,74 @@ function saveData() {
 }
 
 function saveChangedData() {
+	hasSaveChangedData = false;
 	var data = getInfoValue();
 	api.editMachineInfo(machineId, data)
 		 .done(function(data) {
-				api.goToMachineIndex();
+				hasSaveChangedData = true;
+				ifAllSavedThenGotoIndexPage();
 		 })
 		 .fail(function(err) { console.log("EDIT Machine Info error: ", err); });
 }
 
 function saveNewData() {
+	hasSaveNewData = false;
 	var data = getInfoValue();
 	api.createMachine(data)
 		 .done(function(data) {
-				api.goToMachineIndex();
+				hasSaveNewData = true;
+				ifAllSavedThenGotoIndexPage();
 		 })
 		 .fail(function(err) { console.log("CREATE Machine error: ", err); });
 }
 
 function saveNewRecord() {
+	hasSaveNewRecord = false;
 	var newRecords = getNewRecordList();
 	if (newRecords && newRecords.length !== 0) {
 		api.createMachineRecord(machineId, newRecords)
-			 .done(function(data) { console.log("CREATE Machine Record res: ", data); })
+			 .done(function(data) {
+					hasSaveNewRecord = true;
+					ifAllSavedThenGotoIndexPage();
+				})
 			 .fail(function(err) { console.log("CREATE Machine Record error: ", err); });
+	} else {
+		hasSaveNewRecord = true;
+		ifAllSavedThenGotoIndexPage();
 	}
 }
 
 function saveDeleteRecord() {
+	hasSaveDeleteRecord = false;
 	var deleteRecords = getDeleteRecordList();
 	if (deleteRecords && deleteRecords.length !== 0) {
 		api.deleteMachineRecord(machineId, deleteRecords)
-			 .done(function(data) { console.log("CREATE Machine Record res: ", data); })
+			 .done(function(data) {
+					hasSaveDeleteRecord = true;
+					ifAllSavedThenGotoIndexPage();
+			 })
 			 .fail(function(err) { console.log("CREATE Machine Record error: ", err); });
+	} else {
+		hasSaveDeleteRecord = true;
+		ifAllSavedThenGotoIndexPage();
 	}
 }
 
+function ifAllSavedThenGotoIndexPage() {
+	if ( getAllSavedCondition() ) api.goToMachineIndex();
+}
+
+function getAllSavedCondition() {
+	return isCreateMode ? getCreateModeCondition() : getEditModeCondition() ;
+}
+
+function getCreateModeCondition() {
+	return hasSaveNewData && hasSaveNewRecord;
+}
+
+function getEditModeCondition() {
+	return hasSaveChangedData && hasSaveNewRecord && hasSaveDeleteRecord;
+}
 
 function deleteMachine() {
 	api.deleteMachine(machineId)
