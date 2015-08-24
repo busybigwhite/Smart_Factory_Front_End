@@ -65,7 +65,7 @@ function createFactoryListThenRenderRows() {
 
 		$typeList.empty().html( TypeListRows );
 
-		// setFocusNameBlock(typeListContent[0]);
+		setFocusNameBlock(typeListContent[0]);
 }
 
 function renderFactoryDropdown(allType) {
