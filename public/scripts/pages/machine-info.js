@@ -234,7 +234,7 @@ function initResumeInfo(data) {
 
 	checkRecordTable.initialView(data['maintain_record_check']);
 	maintainRecordTable.initialView(data['maintain_record_maintain']);
-	errorRecordTable.initialView(data['maintain_record_maintain']);
+	errorRecordTable.initialView(data['maintain_record_error']);
 }
 
 function initAvailabilityRate(val) {
