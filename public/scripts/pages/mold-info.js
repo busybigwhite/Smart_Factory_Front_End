@@ -29,6 +29,7 @@ var $serialNumber  = $('#mold-serial-num');
 var $name          = $('#mold-name');
 var $createdAt     = $('#mold-created-at');
 var $weight        = $('#mold-weight');
+var $moldType      = $('#mold-type');
 var $manufacturer  = $('#mold-manufacturer');
 var $lifetime      = $('#mold-lifetime');
 var $currentUsage  = $('#mold-current-usage');
@@ -184,6 +185,7 @@ function saveData() {
 	} else {
 		console.log('mold info page has error: Undefined Mode');
 	}
+	return false;
 }
 
 function saveChangedData() {
@@ -268,6 +270,9 @@ function initBaseInfo(data) {
 
 	$weight.find('.view-mode').text(data['weight']);
 	$weight.find('.edit-mode').val(data['weight']);
+
+	$moldType.find('.view-mode').text(data['type']);
+	$moldType.find('.edit-mode').val(data['type']);
 }
 
 function initResumeInfo(data) {
