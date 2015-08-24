@@ -26,7 +26,7 @@ exports.renderTableList = function(infos) {
         </div>
       	<div class="table-col"><%= info.customer_id %></div>
       	<div class="table-col-sm"><%= info.target_num %></div>
-      	<div class="table-col"><%= info.start_date %></div>
+      	<div class="table-col text-right"><%= info.start_date %></div>
       	<div class="table-col-sm"><%= info.current_num %>/<%= info.current_fail_num %></div>
       	<div class="table-col-sm"><%= info.abnormal_num %></div>
       	<div class="table-col-lg">

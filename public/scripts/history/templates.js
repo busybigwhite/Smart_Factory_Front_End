@@ -26,9 +26,9 @@ exports.renderTableList = function(infos) {
   var listTemp = _.template(
 	 `<% _.forEach(infos, function(info) {  %>
       <li class="table-item">
-      	<div class="table-col"><%= info.work_order_id %></div>
-        <div class="table-col"><%= info.machine_id %></div>
-        <div class="table-col"><%= info.mold_id %></div>
+      	<div class="table-col"><%= info.work_order.serial_num %></div>
+        <div class="table-col"><%= info.machine_serial_num %></div>
+        <div class="table-col"><%= info.mold_serial_num %></div>
         <div class="table-col"><%= info.customer_id %></div>
         <div class="table-col"><%= info.work_st %></div>
         <div class="table-col"><%= info.work_et %></div>
