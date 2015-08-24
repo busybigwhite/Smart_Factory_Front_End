@@ -62,7 +62,7 @@ function initialize() {
 function getInitialData() {
 	if (!machineId) return;
 	$.when( api.getMachineInfo(machineId), api.getUserList(), api.getAvailabilityRate(machineId))
-	 .done(function(result1, result2) {
+	 .done(function(result1, result2, result3) {
 	 		initialView(result1[0]);
 	 		initialNoticedName(result2[0]);
 	 		initAvailabilityRate(result3[0])
