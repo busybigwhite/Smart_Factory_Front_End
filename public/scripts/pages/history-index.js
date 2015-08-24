@@ -1,6 +1,6 @@
 'use strict';
 var $ = window.jQuery = require('jquery');
-// var moment = window.moment = require('moment');
+var _ = require('lodash');
 var header = require('../includes/header');
 var userId = require('../config/auth');
 var config = require('../config/url');
