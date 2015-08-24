@@ -244,7 +244,7 @@ function initAvailabilityRate(val) {
 function initialNoticedName(data) {
 	if (noticedId) {
 		_.forEach(data, function(value, key) {
-			if (key === noticedId) {
+			if (value.id === noticedId) {
 				setUserName(value.name);
 				return;
 			}
