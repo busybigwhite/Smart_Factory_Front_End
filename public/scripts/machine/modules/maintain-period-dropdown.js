@@ -20,11 +20,16 @@ var defaultTypeStirng = TYPE.time;
 exports.init     = initMaintainPeriod;
 exports.getValue = getValue;
 exports.getType  = getType;
-exports.setDefaultType  = setDefaultType;
+exports.setDefault  = setDefault;
 
 function initMaintainPeriod(val, type) {
 	console.log('maintain initialView:', val, type);
 	initialView(val, type);
+	bindEvents();
+}
+
+function setDefault() {
+	setDefaultType();
 	bindEvents();
 }
 
