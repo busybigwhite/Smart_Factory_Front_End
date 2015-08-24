@@ -127,7 +127,7 @@ function getChangedData() {
 					selectedValue = "";
 					break;
 			}
-			if(selectedValue != "disable"){
+			if(selectedValue != "disable" && selectedValue!=""){
 				newData[selectedName] = selectedValue;
 			}
 			

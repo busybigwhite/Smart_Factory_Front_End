@@ -62,6 +62,11 @@ function getUserList() {
 	return isLocal ? mockAjax(fakeData) : getData(config.APIUrl + 'user/list');
 }
 
+function getAvailabilityRate(id) {
+	var fakeData = 100;
+	return isLocal ? mockAjax(fakeData) : getData(machineApiUrl + '/availability_rate/' + id);
+}
+
 function createMachine(data) {
 	return createData(machineApiUrl, data);
 }
@@ -80,8 +85,6 @@ function createMachineRecord(id, array) {
 	});
 
 	return $.when(pArray);
-
-	// return createData(machineApiUrl + id + '/maintain', data);
 }
 
 function deleteMachineRecord(id, array) {
@@ -91,8 +94,6 @@ function deleteMachineRecord(id, array) {
 	});
 
 	return $.when(pArray);
-
-	// return deleteData(machineApiUrl + id + '/maintain', data);
 }
 
 

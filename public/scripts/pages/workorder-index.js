@@ -59,6 +59,7 @@ function createWorkorderListThenRenderRows(type, searchKey) {
         		// if (workorderResponse[i].work_order_records[j].factory_id == focusFactoryId) {
 					var dict = {}
 					dict['id'] = workorderResponse[i].id;
+					dict['serial_num'] = workorderResponse[i].serial_num;
 					dict['order_id'] = workorderResponse[i].order_id;
 					dict['customer_name'] = workorderResponse[i].customer_name;
 	        		// dict['factory_id'] = workorderResponse[i].work_order_records[j].factory_id;
