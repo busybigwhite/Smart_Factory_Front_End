@@ -234,7 +234,7 @@ function initResumeInfo(data) {
 
 	checkRecordTable.initialView(data['maintain_record_check']);
 	maintainRecordTable.initialView(data['maintain_record_maintain']);
-	errorRecordTable.initialView(data['maintain_record_maintain']);
+	errorRecordTable.initialView(data['maintain_record_error']);
 }
 
 function initAvailabilityRate(val) {
@@ -256,7 +256,7 @@ function initialNoticedName(data) {
 
 function setNoticedId(id) {
 	_.forEach(userList, function(value, key) {
-		if (key === id) {
+		if (value.id === id) {
 			setUserName(value.name);
 			return;
 		}
