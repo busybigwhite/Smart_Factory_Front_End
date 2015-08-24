@@ -286,7 +286,7 @@ function getNewRecordList() {
 	var error    = addMachineIdIntoData(errorRecordTable.getNewList());
 	var data;
 	if (check.length || maintain.length || error.length) {
-		data = [].cancat(check, maintain, error);
+		data = [].concat(check, maintain, error);
 	}
 	return data;
 }
@@ -297,7 +297,7 @@ function getDeleteRecordList() {
 	var error    = addMachineIdIntoData(errorRecordTable.getDeleteList());
 	var data;
 	if (check.length || maintain.length || error.length) {
-		data = [].cancat(check, maintain, error);
+		data = [].concat(check, maintain, error);
 	}
 	return data;
 }
