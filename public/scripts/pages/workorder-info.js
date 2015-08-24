@@ -261,7 +261,7 @@ function getChangedData() {
 					selectedValue = "";
 					break;
 			}
-			if(typeof selectedName!='undefined' && selectedValue!="disable")
+			if(typeof selectedName!='undefined' && selectedValue!="disable" &&selectedValue!="")
 				newData[selectedName] = selectedValue;
 
 		} else {
