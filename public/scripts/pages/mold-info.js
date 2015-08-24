@@ -148,7 +148,7 @@ function showCreateMode() {
 	$viewModeCollection.addClass('creating');
 	$editModeCollection.addClass('creating');
 	$moldPicsBlock.addClass('creating');
-	maintainRecordTable.setEditMode(true);
+	maintainRecordTable.setEditMode(false);
 	maintainPeriodDropdown.setDefault();
 	noticeedPersonDropdown.setDefault();
 }
@@ -179,7 +179,7 @@ function saveData() {
 				api.goToMoldIndex();
 			})
 		 .fail(function(jqXHR, textStatus, errorThrown) {
-		 		console.log('machine info page save data error: ', jqXHR, textStatus, errorThrown );
+		 		console.log('mold info page save data error: ', jqXHR, textStatus, errorThrown );
 		 });
 
 	} else {
@@ -323,10 +323,11 @@ function setUserName(name) {
 
 
 function initPics(data) {
-	// ToFix:
-	var fakeSrc = 'http://placehold.it/150x150';
-	moldPicUploadBlock.setImageOriginalSrc(fakeSrc);
-	productPicUploadBlock.setImageOriginalSrc(fakeSrc);
+	var picApiUrl  = api.getMoldPicApiUrl();
+	var picMold    = data['mold_pic']    ? picApiUrl + data['mold_pic'] : '' ;
+	var picProduct = data['product_pic'] ? picApiUrl + data['product_pic'] : '' ;
+	moldPicUploadBlock.setImageOriginalSrc(picMold);
+	productPicUploadBlock.setImageOriginalSrc(picProduct);
 }
 
 function getInfoValue() {
