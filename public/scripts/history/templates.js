@@ -9,10 +9,10 @@ exports.renderFilterDropdown = function(filters) {
   var menuTemp = _.template(
 	 `<% _.forEach(filters, function(filter) {  %>
       <li><a class="option-item" data-id=<%= filter.id %>>
-      <% if(filter['name'] !== undefined){  %>
-        <%= _.trunc( filter.name, 18) %>
+      <% if(filter['serial_num'] !== undefined){  %>
+        <%= _.trunc( filter.serial_num, 18) %>
       <% }else {  %>
-        <%= _.trunc( filter.id, 18) %>
+        <%= _.trunc( filter.name, 18) %>
       <% }            %>
       </a></li>
     <% });                                          %>`
