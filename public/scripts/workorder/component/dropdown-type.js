@@ -16,7 +16,7 @@ var emitter = new EventEmitter();
 var $typeFocusName = $('.type-focus-name');
 var $typeList = $('.type-list');
 
-var typeListContent = [{'key': '','value': ''},
+var typeListContent = [
 				{'key': '塑膠射出','value': '塑膠射出'},
     		 	{'key': '印刷','value': '印刷'},
     		 	{'key': '成型品','value': '成型品'}];
@@ -65,7 +65,7 @@ function createFactoryListThenRenderRows() {
 
 		$typeList.empty().html( TypeListRows );
 
-		setFocusNameBlock(typeListContent[0]);
+		// setFocusNameBlock(typeListContent[0]);
 }
 
 function renderFactoryDropdown(allType) {

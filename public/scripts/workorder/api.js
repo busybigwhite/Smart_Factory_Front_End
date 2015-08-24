@@ -49,7 +49,7 @@ function deleteWorkOrder(id, token) {
 }
 
 function getWorkOrderInfo(id) {
-	return getData(wordorderApiUrl + id);
+	return getData(wordorderApiUrl+'info/' + id);
 };
 
 function editWorkOrderInfo(id, data) {

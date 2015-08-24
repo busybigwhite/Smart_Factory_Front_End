@@ -22,8 +22,8 @@
 			<li id="workorder-num">
 				<span class="info-name">工單編號</span>
 				<span class="info-value">
-					<!-- <input class="newOrder" type="text" name="workorder-num" value="" pattern="[A-Za-z0-9]{1,30}" title="輸入1~30個英數字"> -->
-					<input class="edit-mode" type="text" name="workorder-num" value="" readonly>
+					<input class="newOrder" type="text" name="workorder-num" value="" pattern="[A-Za-z0-9]{1,30}" title="輸入1~30個英數字">
+					<!-- <input class="newOrder" type="text" name="workorder-num" value="" readonly disabled> -->
 				</span>
 			</li>
 			<li id="order-num">
@@ -74,7 +74,7 @@
 				<span class="info-name">訂單輸入日期</span>
 				<span class="info-value" style="position:relative">
 					<!-- <input id="inputDate" class="newOrder" type="text" name="input-date" value=""> -->
-					<input class="selected-option newOrder" type="text" id='workorder-inputDate-date-picker' selectname="input-date" data-date-format="YYYY/MM/DD HH:mm:ss" readonly/>
+					<input class="selected-option newOrder" type="text" id='workorder-inputDate-date-picker' selectname="input-date" data-date-format="YYYY/MM/DD HH:mm:ss" />
 	                <span class="workerorder-date-picker-btn fa fa-calendar"></span>
 				</span>
 			</li>
@@ -114,33 +114,33 @@
 				<span class="info-name">實際開工日期</span>
 				<span class="info-value" style="position:relative">
 					<!-- <input class="newOrder" type="text" name="real-produce-date" value=""> -->
-					<input class="selected-option newOrder" type="text" id='workorder-real-produce-date-picker' selectname="real-produce-date" data-date-format="YYYY/MM/DD HH:mm:ss" readonly/>
+					<input class="selected-option newOrder" type="text" id='workorder-real-produce-date-picker' selectname="real-produce-date" data-date-format="YYYY/MM/DD HH:mm:ss" readonly disabled/>
 	                <span class="workerorder-date-picker-btn fa fa-calendar"></span>
 				</span>
 			</li>
 			<li id="real-amount">
 				<span class="info-name">目前完成次數</span>
 				<span class="info-value">
-					<input class="newOrder" type="text" name="real-amount" value="" pattern="[0-9]{1,30}" title="輸入數字">
+					<input class="newOrder" type="text" name="real-amount" value="" pattern="[0-9]{1,30}" title="輸入數字" readonly disabled/>
 				</span>
 			</li>
 			<li id="defective-amount">
 				<span class="info-name">目前異常次數</span>
 				<span class="info-value">
-					<input class="newOrder" type="text" name="defective-amount" value="" pattern="[0-9]{1,30}" title="輸入數字">
+					<input class="newOrder" type="text" name="defective-amount" value="" pattern="[0-9]{1,30}" title="輸入數字" readonly disabled/>
 				</span>
 			</li>
 			<li id="abnormal-amount">
 				<span class="info-name">異常品數量</span>
 				<span class="info-value">
-					<input class="newOrder" type="text" name="abnormal-amount" value="" pattern="[0-9]{1,30}" title="輸入數字">
+					<input class="newOrder" type="text" name="abnormal-amount" value="" pattern="[0-9]{1,30}" title="輸入數字" readonly disabled/>
 				</span>
 			</li>
 			<li id="real-finish">
 				<span class="info-name">實際完成日期</span>
 				<span class="info-value" style="position:relative">
 					<!-- <input class="newOrder" type="text" name="real-finish" value=""> -->
-					<input class="selected-option newOrder" type="text" id='workorder-real-finish-date-picker' selectname="real-finish" data-date-format="YYYY/MM/DD HH:mm:ss" readonly/>
+					<input class="selected-option newOrder" type="text" id='workorder-real-finish-date-picker' selectname="real-finish" data-date-format="YYYY/MM/DD HH:mm:ss" readonly disabled/>
 	                <span class="workerorder-date-picker-btn fa fa-calendar"></span>
 				</span>
 			</li>
