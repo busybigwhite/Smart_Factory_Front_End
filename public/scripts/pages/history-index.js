@@ -125,7 +125,7 @@ function createQueryURL(searchPeriod) {
 	return queryParameter.build(data);
 }
 
-function caculateAvailability(info) {
+function caculateAvailability(infos) {
 	var defer = $.Deferred();
 
 	$.get(config.APIUrl + 'machine/availability_rate/' + info[0].machine.id)
