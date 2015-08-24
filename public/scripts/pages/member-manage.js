@@ -42,7 +42,6 @@ function initialize() {
 		isEditMode = true;
 		$addBtn.hide();
 		getInitialData();
-		checkUsername();
 	}
 	bindEvents();
 	getMemberArray();
@@ -122,6 +121,8 @@ function getMemberArray(){
  // 	response.forEach(function (element){
 	// 	memberList.push(element.name);
 	// });
+
+	checkUsername.call(usernameInput);
 }
 
 function getInitialData() {
@@ -140,6 +141,8 @@ function getInitialData() {
 				}
 		 })
 		 .fail(function(err) { console.log("GET Member error: ", err); });
+
+	// origName = 'louk';
 
 	// $userName.val('louk');
 	// $userEmail.val('louk@moremote.com');

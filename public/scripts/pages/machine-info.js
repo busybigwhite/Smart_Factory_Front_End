@@ -38,10 +38,6 @@ var isEditMode   = false;
 var isCreateMode = false;
 var machineId;
 var originalData;
-var hasSaveChangedData  = false;
-var hasSaveNewRecord    = false;
-var hasSaveDeleteRecord = false;
-var hasSaveNewData      = false;
 
 
 initialize();
@@ -65,13 +61,14 @@ function initialize() {
 
 function getInitialData() {
 	if (!machineId) return;
-	api.getMachineInfo(machineId)
-		 .done(initialView)
-		 .fail(function(err) { console.log("GET Machine Info error: ", err); });
-
-	api.getUserList()
-		.done(initialNoticedName)
-		.fail(function(err) { console.log('initialNoticedName GET user list error:', err) });
+	$.when( api.getMachineInfo(machineId), api.getUserList() )
+	 .done(function(result1, result2) {
+	 		initialView(result1[0]);
+	 		initialNoticedName(result2[0]);
+	 })
+	 .fail(function(jqXHR, textStatus, errorThrown) {
+	 		console.log('machine info page get data error: ', jqXHR, textStatus, errorThrown );
+	 });
 }
 
 function bindEvents() {
@@ -138,13 +135,24 @@ function preventSubmitOnInputEnter(e) {
 
 function saveData() {
 	if (isEditMode && !isCreateMode) {
-		saveChangedData();
-		saveNewRecord();
-		saveDeleteRecord();
+
+		$.when( saveChangedData(), saveNewRecord(), saveDeleteRecord() )
+		 .done(function(result1, result2, result3) {
+				api.goToMachineIndex();
+			})
+		 .fail(function(jqXHR, textStatus, errorThrown) {
+		 		console.log('machine info page save data error: ', jqXHR, textStatus, errorThrown );
+		 });
 
 	} else if (!isEditMode && isCreateMode) {
-		saveNewData();
-		saveNewRecord();
+
+		$.when( saveNewData(), saveNewRecord() )
+		 .done(function(result1, result2) {
+				api.goToMachineIndex();
+			})
+		 .fail(function(jqXHR, textStatus, errorThrown) {
+		 		console.log('machine info page save data error: ', jqXHR, textStatus, errorThrown );
+		 });
 
 	} else {
 		console.log('machine info page has error: Undefined Mode');
@@ -152,73 +160,37 @@ function saveData() {
 }
 
 function saveChangedData() {
-	hasSaveChangedData = false;
 	var data = getInfoValue();
-	api.editMachineInfo(machineId, data)
-		 .done(function(data) {
-				hasSaveChangedData = true;
-				ifAllSavedThenGotoIndexPage();
-		 })
-		 .fail(function(err) { console.log("EDIT Machine Info error: ", err); });
+	return api.editMachineInfo(machineId, data);
 }
 
 function saveNewData() {
-	hasSaveNewData = false;
 	var data = getInfoValue();
-	api.createMachine(data)
-		 .done(function(data) {
-				hasSaveNewData = true;
-				ifAllSavedThenGotoIndexPage();
-		 })
-		 .fail(function(err) { console.log("CREATE Machine error: ", err); });
+	return api.createMachine(data);
 }
 
 function saveNewRecord() {
-	hasSaveNewRecord = false;
 	var newRecords = getNewRecordList();
 	if (newRecords && newRecords.length !== 0) {
-		api.createMachineRecord(machineId, newRecords)
-			 .done(function(data) {
-					hasSaveNewRecord = true;
-					ifAllSavedThenGotoIndexPage();
-				})
-			 .fail(function(err) { console.log("CREATE Machine Record error: ", err); });
+		return api.createMachineRecord(machineId, newRecords);
+
 	} else {
-		hasSaveNewRecord = true;
-		ifAllSavedThenGotoIndexPage();
+		var deferred = $.Deferred();
+		deferred.resolve();
+		return deferred.promise();
 	}
 }
 
 function saveDeleteRecord() {
-	hasSaveDeleteRecord = false;
 	var deleteRecords = getDeleteRecordList();
 	if (deleteRecords && deleteRecords.length !== 0) {
-		api.deleteMachineRecord(machineId, deleteRecords)
-			 .done(function(data) {
-					hasSaveDeleteRecord = true;
-					ifAllSavedThenGotoIndexPage();
-			 })
-			 .fail(function(err) { console.log("CREATE Machine Record error: ", err); });
+		return api.deleteMachineRecord(machineId, deleteRecords);
+
 	} else {
-		hasSaveDeleteRecord = true;
-		ifAllSavedThenGotoIndexPage();
+		var deferred = $.Deferred();
+		deferred.resolve();
+		return deferred.promise();
 	}
-}
-
-function ifAllSavedThenGotoIndexPage() {
-	if ( getAllSavedCondition() ) api.goToMachineIndex();
-}
-
-function getAllSavedCondition() {
-	return isCreateMode ? getCreateModeCondition() : getEditModeCondition() ;
-}
-
-function getCreateModeCondition() {
-	return hasSaveNewData && hasSaveNewRecord;
-}
-
-function getEditModeCondition() {
-	return hasSaveChangedData && hasSaveNewRecord && hasSaveDeleteRecord;
 }
 
 function deleteMachine() {

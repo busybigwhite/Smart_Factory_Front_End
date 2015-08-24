@@ -74,14 +74,25 @@ function editMachineInfo(id, data) {
 	return editData(machineApiUrl + '/'  + id, data);
 }
 
-function createMachineRecord(id, data) {
-	data.id = id;
-	return createData(machineApiUrl + '/maintain', data);
+function createMachineRecord(id, array) {
+	var pArray = array.map(function(obj) {
+		return createData(machineApiUrl + id + '/maintain', obj);
+	});
+
+	return $.when(pArray);
+
+	// return createData(machineApiUrl + id + '/maintain', data);
 }
 
-function deleteMachineRecord(id, data) {
-	data.id = id;
-	return deleteData(machineApiUrl + '/maintain', data);
+function deleteMachineRecord(id, array) {
+
+	var pArray = array.map(function(obj) {
+		return deleteData(machineApiUrl + id + '/maintain', obj);
+	});
+
+	return $.when(pArray);
+
+	// return deleteData(machineApiUrl + id + '/maintain', data);
 }
 
 
