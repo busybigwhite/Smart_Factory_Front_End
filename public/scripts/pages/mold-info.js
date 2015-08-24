@@ -1,6 +1,7 @@
 'use strict';
 
 var $ = window.jQuery = require('jquery');
+var _ = require('lodash');
 var header = require('../includes/header');
 var api = require('../mold/api');
 var queryParameter = require('../lib/helper/query-parameter');
@@ -31,6 +32,10 @@ var $weight        = $('#mold-weight');
 var $manufacturer  = $('#mold-manufacturer');
 var $lifetime      = $('#mold-lifetime');
 var $currentUsage  = $('#mold-current-usage');
+
+var $noticeedPersonName = $('#mold-noticed-person').find('.view-mode');
+var noticedId;
+var userList;
 
 var $length = $('#mold-size').find('.length');
 var $width  = $('#mold-size').find('.width');
@@ -83,6 +88,10 @@ function getInitialData() {
 	api.getMoldInfo(moldId)
 		 .done(initialView)
 		 .fail(function(err) { console.log("GET Mold Info error: ", err); });
+
+	api.getUserList()
+		 .done(initialNoticedName)
+		 .fail(function(err) { console.log('initialNoticedName GET user list error:', err) });
 }
 
 function bindEvents() {
@@ -162,18 +171,22 @@ function saveData() {
 	} else {
 		console.log('mold info page has error: Undefined Mode');
 	}
-	return false;
+	// return false;
 }
 
 function saveChangedData(data) {
 	api.editMoldInfo(moldId, data)
-		 .done(function(data) { console.log("EDIT Mold Info res: ", data); })
+		 .done(function(data) {
+				api.goToMoldIndex();
+			})
 		 .fail(function(err) { console.log("EDIT Mold Info error: ", err); });
 }
 
 function saveNewData(data) {
 	api.createMold(data)
-		 .done(function(data) { console.log("CREATE Mold res: ", data); })
+		 .done(function(data) {
+				api.goToMoldIndex();
+			})
 		 .fail(function(err) { console.log("CREATE Mold error: ", err); });
 }
 
@@ -192,7 +205,9 @@ function saveDeleteRecord(data) {
 
 function deleteMold() {
 	api.deleteMold(moldId)
-		 .done(function(data) { console.log("DELETE Mold res: ", data); })
+		 .done(function(data) {
+				api.goToMoldIndex();
+			})
 		 .fail(function(err) { console.log("DELETE Mold error: ", err); });
 }
 
@@ -238,8 +253,10 @@ function initBaseInfo(data) {
 }
 
 function initResumeInfo(data) {
-	// ToFix: admin_name
-	noticeedPersonDropdown.setNoticeedPerson(data['admin_id'], 'default name');
+	noticedId = data['admin_id'];
+	setNoticedId(noticedId);
+	noticeedPersonDropdown.setNoticeedPerson(noticedId);
+
 	maintainPeriodDropdown.init(data['maintain_period_value'], data['maintain_period_unit']);
 
 	console.log("data['maintain_records'] : ", data['maintain_records']);
@@ -254,6 +271,33 @@ function initResumeInfo(data) {
 	$currentUsage.find('.view-mode').text(data['current_usage']);
 	$currentUsage.find('.edit-mode').text(data['current_usage']);
 }
+
+function initialNoticedName(data) {
+	if (noticedId) {
+		_.forEach(data, function(value, key) {
+			if (key === noticedId) {
+				setUserName(value.name);
+				return;
+			}
+		});
+	} else {
+		userList = data;
+	}
+}
+
+function setNoticedId(id) {
+	_.forEach(userList, function(value, key) {
+		if (key === id) {
+			setUserName(value.name);
+			return;
+		}
+	});
+}
+
+function setUserName(name) {
+	$noticeedPersonName.text(name);
+}
+
 
 function initPics(data) {
 	// ToFix:
@@ -297,14 +341,20 @@ function getInfoValue() {
 }
 
 function getNewRecordList() {
-	var data = {};
-	data.maintain = addMoldIdIntoData(maintainRecordTable.getNewList());
+	var maintain = addMoldIdIntoData(maintainRecordTable.getNewList());
+	var data;
+	if (maintain.length) {
+		data = [].concat(maintain);
+	}
 	return data;
 }
 
 function getDeleteRecordList() {
-	var data = {};
-	data.maintain = addMoldIdIntoData(maintainRecordTable.getDeleteList());
+	var maintain = addMoldIdIntoData(maintainRecordTable.getDeleteList());
+	var data;
+	if (maintain.length) {
+		data = [].concat(maintain);
+	}
 	return data;
 }
 
