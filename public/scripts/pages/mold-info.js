@@ -1,6 +1,7 @@
 'use strict';
 
 var $ = window.jQuery = require('jquery');
+var _ = require('lodash');
 var header = require('../includes/header');
 var api = require('../mold/api');
 var queryParameter = require('../lib/helper/query-parameter');
@@ -31,6 +32,10 @@ var $weight        = $('#mold-weight');
 var $manufacturer  = $('#mold-manufacturer');
 var $lifetime      = $('#mold-lifetime');
 var $currentUsage  = $('#mold-current-usage');
+
+var $noticeedPersonName = $('#mold-noticed-person').find('.view-mode');
+var noticedId;
+var userList;
 
 var $length = $('#mold-size').find('.length');
 var $width  = $('#mold-size').find('.width');
@@ -83,6 +88,10 @@ function getInitialData() {
 	api.getMoldInfo(moldId)
 		 .done(initialView)
 		 .fail(function(err) { console.log("GET Mold Info error: ", err); });
+
+	api.getUserList()
+		 .done(initialNoticedName)
+		 .fail(function(err) { console.log('initialNoticedName GET user list error:', err) });
 }
 
 function bindEvents() {
@@ -146,53 +155,63 @@ function preventSubmitOnInputEnter(e) {
 }
 
 function saveData() {
-	var data = getAllInfoData();
-	console.log(data);
 	if (isEditMode && !isCreateMode) {
-		saveChangedData(data.info);
-		saveNewRecord(data.newRecords);
-		saveDeleteRecord(data.deleteRecords);
-		console.log('Changed Data : ', data);
+		saveChangedData();
+		saveNewRecord();
+		saveDeleteRecord();
 
 	} else if (!isEditMode && isCreateMode) {
-		saveNewData(data.info);
-		saveNewRecord(data.newRecords);
-		console.log('New Data : ', data);
+		saveNewData();
+		saveNewRecord();
 
 	} else {
 		console.log('mold info page has error: Undefined Mode');
 	}
-	return false;
+	// return false;
 }
 
-function saveChangedData(data) {
+function saveChangedData() {
+	var data = getInfoValue();
 	api.editMoldInfo(moldId, data)
-		 .done(function(data) { console.log("EDIT Mold Info res: ", data); })
+		 .done(function(data) {
+				api.goToMoldIndex();
+			})
 		 .fail(function(err) { console.log("EDIT Mold Info error: ", err); });
 }
 
-function saveNewData(data) {
+function saveNewData() {
+	var data = getInfoValue();
 	api.createMold(data)
-		 .done(function(data) { console.log("CREATE Mold res: ", data); })
+		 .done(function(data) {
+				api.goToMoldIndex();
+			})
 		 .fail(function(err) { console.log("CREATE Mold error: ", err); });
 }
 
-function saveNewRecord(data) {
-	api.createMoldRecord(moldId, data)
-		 .done(function(data) { console.log("CREATE Mold Record res: ", data); })
-		 .fail(function(err) { console.log("CREATE Mold Record error: ", err); });
+function saveNewRecord() {
+	var newRecords = getNewRecordList();
+	if (newRecords && newRecords.length !== 0) {
+		api.createMoldRecord(moldId, newRecords)
+			 .done(function(data) { console.log("CREATE Mold Record res: ", data); })
+			 .fail(function(err) { console.log("CREATE Mold Record error: ", err); });
+	}
 }
 
-function saveDeleteRecord(data) {
-	api.deleteMoldRecord(moldId, data)
-		 .done(function(data) { console.log("CREATE Mold Record res: ", data); })
-		 .fail(function(err) { console.log("CREATE Mold Record error: ", err); });
+function saveDeleteRecord() {
+	var deleteRecords = getDeleteRecordList();
+	if (deleteRecords && deleteRecords.length !== 0) {
+		api.deleteMoldRecord(moldId, deleteRecords)
+			 .done(function(data) { console.log("CREATE Mold Record res: ", data); })
+			 .fail(function(err) { console.log("CREATE Mold Record error: ", err); });
+	}
 }
 
 
 function deleteMold() {
 	api.deleteMold(moldId)
-		 .done(function(data) { console.log("DELETE Mold res: ", data); })
+		 .done(function(data) {
+				api.goToMoldIndex();
+			})
 		 .fail(function(err) { console.log("DELETE Mold error: ", err); });
 }
 
@@ -238,8 +257,10 @@ function initBaseInfo(data) {
 }
 
 function initResumeInfo(data) {
-	// ToFix: admin_name
-	noticeedPersonDropdown.setNoticeedPerson(data['admin_id'], 'default name');
+	noticedId = data['admin_id'];
+	setNoticedId(noticedId);
+	noticeedPersonDropdown.setNoticeedPerson(noticedId);
+
 	maintainPeriodDropdown.init(data['maintain_period_value'], data['maintain_period_unit']);
 
 	console.log("data['maintain_records'] : ", data['maintain_records']);
@@ -255,19 +276,38 @@ function initResumeInfo(data) {
 	$currentUsage.find('.edit-mode').text(data['current_usage']);
 }
 
+function initialNoticedName(data) {
+	if (noticedId) {
+		_.forEach(data, function(value, key) {
+			if (key === noticedId) {
+				setUserName(value.name);
+				return;
+			}
+		});
+	} else {
+		userList = data;
+	}
+}
+
+function setNoticedId(id) {
+	_.forEach(userList, function(value, key) {
+		if (key === id) {
+			setUserName(value.name);
+			return;
+		}
+	});
+}
+
+function setUserName(name) {
+	$noticeedPersonName.text(name);
+}
+
+
 function initPics(data) {
 	// ToFix:
 	var fakeSrc = 'http://placehold.it/150x150';
 	moldPicUploadBlock.setImageOriginalSrc(fakeSrc);
 	productPicUploadBlock.setImageOriginalSrc(fakeSrc);
-}
-
-function getAllInfoData() {
-	var data = {};
-	data.info = getInfoValue();
-	data.newRecords = getNewRecordList();
-	data.deleteRecords = getDeleteRecordList();
-	return data;
 }
 
 function getInfoValue() {
@@ -297,14 +337,20 @@ function getInfoValue() {
 }
 
 function getNewRecordList() {
-	var data = {};
-	data.maintain = addMoldIdIntoData(maintainRecordTable.getNewList());
+	var maintain = addMoldIdIntoData(maintainRecordTable.getNewList());
+	var data;
+	if (maintain.length) {
+		data = [].concat(maintain);
+	}
 	return data;
 }
 
 function getDeleteRecordList() {
-	var data = {};
-	data.maintain = addMoldIdIntoData(maintainRecordTable.getDeleteList());
+	var maintain = addMoldIdIntoData(maintainRecordTable.getDeleteList());
+	var data;
+	if (maintain.length) {
+		data = [].concat(maintain);
+	}
 	return data;
 }
 

@@ -71,17 +71,18 @@ function setFocusFactoryIdThenRenderRows(factoryId) {
 }
 
 function createWorkorderListThenRenderRows(type, searchKey) {
-	$.get(config.APIUrl + 'workorder/', function(workorderResponse) {
+	$.get(config.APIUrl + 'workorder/', {'factory_id': focusFactoryId}, function(workorderResponse) {
 		var displayData = []
 
 		for (var i in workorderResponse) {
-        	for (var j in workorderResponse[i].work_order_records) {
-        		if (workorderResponse[i].work_order_records[j].factory_id == focusFactoryId) {
+        	// for (var j in workorderResponse[i].work_order_records) {
+        		// if (workorderResponse[i].work_order_records[j].factory_id == focusFactoryId) {
 					var dict = {}
 					dict['id'] = workorderResponse[i].id;
 					dict['order_id'] = workorderResponse[i].order_id;
 					dict['customer_id'] = workorderResponse[i].customer_id;
-	        		dict['factory_id'] = workorderResponse[i].work_order_records[j].factory_id;
+	        		// dict['factory_id'] = workorderResponse[i].work_order_records[j].factory_id;
+	        		dict['factory_id'] = focusFactoryId;
 	        		if (factoryList[dict['factory_id']]) {
 	        			dict['factory_name'] = factoryList[dict['factory_id']];
 	        		}
@@ -102,10 +103,10 @@ function createWorkorderListThenRenderRows(type, searchKey) {
 						default:
 						break;
 					}
-
+					
 		    		displayData.push(dict);
-		    	}
-        	}
+		    	// }
+        	// }
 		}
 
 		var tableListRows = templates.renderTableList({ infos : displayData });
