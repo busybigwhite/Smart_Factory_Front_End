@@ -91,8 +91,17 @@ function searchHistoryThenRenderRows(searchPeriod) {
 
 		var type = selectedFilter.split('_')[0];
 
-		createTableList(response, type);
-		displayImageBlock(response, type);
+		if(type === 'machine'){
+			$.when( caculateAvailability(response[0]) )
+			 .then(function(){
+			 	createTableList(response, type);
+				displayImageBlock(response, type);
+			 });
+
+		}else {
+			createTableList(response, type);
+			displayImageBlock(response, type);
+		}
 	})
 	 .fail(function(err){ console.log('history list error:', err) })
 	 .always(function(){ spinner.stop() });
@@ -114,6 +123,22 @@ function createQueryURL(searchPeriod) {
 	}
 
 	return queryParameter.build(data);
+}
+
+function caculateAvailability(info) {
+	var defer = $.Deferred();
+
+	$.get(config.APIUrl + 'machine/availability_rate/' + info.machine.id)
+	 .done(function(res){
+	 	info['availability'] = res.availability_rate;
+	 	defer.resolve();
+	 })
+	 .fail(function(err){
+	 	console.log('get availability rate fail:' + err);
+	 	defer.reject();
+	 })
+
+	return defer.promise();
 }
 
 function createTableList(infos, type) {

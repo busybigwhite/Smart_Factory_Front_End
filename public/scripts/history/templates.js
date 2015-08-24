@@ -24,7 +24,7 @@ exports.renderFilterDropdown = function(filters) {
 exports.renderTableList = function(infos) {
 
   var listTemp = _.template(
-	 `<% _.forEach(infos, function(info) {  %>
+	 `<% _.forEach(infos, function(info, index) {    %>
       <li class="table-item">
       	<div class="table-col"><%= info.work_order.serial_num %></div>
         <div class="table-col"><%= info.machine_serial_num %></div>
@@ -34,7 +34,11 @@ exports.renderTableList = function(infos) {
         <div class="table-col"><%= info.work_et %></div>
         <div class="table-col-sm"><%= info.sample_num %></div>
         <div class="table-col-sm"><%= info.error_num %></div>
-        <div class="table-col-sm">25%</div>
+    <% if(index === 0){                           %>
+        <div class="table-col-sm"><%= info.availability %></div>
+    <% }else {                                    %>
+        <div class="table-col-sm"></div>
+    <% }                                          %>
 		  </li>
     <% });                                          %>`
 	);
