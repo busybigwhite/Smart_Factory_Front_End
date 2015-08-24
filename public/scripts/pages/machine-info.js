@@ -117,9 +117,9 @@ function showCreateMode() {
 	$backBtn  .show();
 	$viewModeCollection.addClass('creating');
 	$editModeCollection.addClass('creating');
-	checkRecordTable.setEditMode(true);
-	maintainRecordTable.setEditMode(true);
-	errorRecordTable.setEditMode(true);
+	checkRecordTable.setEditMode(false);
+	maintainRecordTable.setEditMode(false);
+	errorRecordTable.setEditMode(false);
 	checkPeriodDropdown.setDefault();
 	maintainPeriodDropdown.setDefault();
 	noticeedPersonDropdown.setDefault();
