@@ -69,6 +69,8 @@ function getInitialData() {
 	 .fail(function(jqXHR, textStatus, errorThrown) {
 	 		console.log('machine info page get data error: ', jqXHR, textStatus, errorThrown );
 	 });
+
+	 return false;
 }
 
 function bindEvents() {
