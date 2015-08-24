@@ -256,7 +256,7 @@ function initialNoticedName(data) {
 
 function setNoticedId(id) {
 	_.forEach(userList, function(value, key) {
-		if (key === id) {
+		if (value.id === id) {
 			setUserName(value.name);
 			return;
 		}
