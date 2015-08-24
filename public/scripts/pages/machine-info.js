@@ -120,8 +120,8 @@ function showCreateMode() {
 	checkRecordTable.setEditMode(true);
 	maintainRecordTable.setEditMode(true);
 	errorRecordTable.setEditMode(true);
-	checkPeriodDropdown.setDefaultType();
-	maintainPeriodDropdown.setDefaultType();
+	checkPeriodDropdown.setDefault();
+	maintainPeriodDropdown.setDefault();
 	noticeedPersonDropdown.setDefault();
 }
 
