@@ -155,7 +155,7 @@ function saveData() {
 function saveChangedData(data) {
 	api.editMachineInfo(machineId, data)
 		 .done(function(data) {
-		 		api.goToMachineIndex();
+				api.goToMachineIndex();
 		 })
 		 .fail(function(err) { console.log("EDIT Machine Info error: ", err); });
 }
@@ -163,7 +163,7 @@ function saveChangedData(data) {
 function saveNewData(data) {
 	api.createMachine(data)
 		 .done(function(data) {
-		 	api.goToMachineIndex();
+				api.goToMachineIndex();
 		 })
 		 .fail(function(err) { console.log("CREATE Machine error: ", err); });
 }
@@ -183,7 +183,9 @@ function saveDeleteRecord(data) {
 
 function deleteMachine() {
 	api.deleteMachine(machineId)
-		 .done(function(data) { api.goToMachineIndex(); })
+		 .done(function(data) {
+				api.goToMachineIndex();
+			})
 		 .fail(function(err) { console.log("DELETE Machine error: ", err); });
 }
 
