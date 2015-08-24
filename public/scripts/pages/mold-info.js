@@ -323,10 +323,11 @@ function setUserName(name) {
 
 
 function initPics(data) {
-	// ToFix:
-	var fakeSrc = 'http://placehold.it/150x150';
-	moldPicUploadBlock.setImageOriginalSrc(fakeSrc);
-	productPicUploadBlock.setImageOriginalSrc(fakeSrc);
+	var picApiUrl  = api.getMoldPicApiUrl();
+	var picMold    = data['mold_pic']    ? picApiUrl + data['mold_pic'] : '' ;
+	var picProduct = data['product_pic'] ? picApiUrl + data['product_pic'] : '' ;
+	moldPicUploadBlock.setImageOriginalSrc(picMold);
+	productPicUploadBlock.setImageOriginalSrc(picProduct);
 }
 
 function getInfoValue() {
