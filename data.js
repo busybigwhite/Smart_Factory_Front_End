@@ -5,7 +5,7 @@ var factories = [{'id': '1','name': '中山廠'},
 var liveinfos = [
   {
     "id": 8,
-    "serial_number": "W52",
+    "serial_num": "W52",
     "customer_id": 1,
     "customer_name": "Teresa",
     "order_id": "S26",
@@ -26,7 +26,7 @@ var liveinfos = [
     "work_order_records": []
   },{
     "id": 1,
-    "serial_number": "W57",
+    "serial_num": "W57",
     "customer_id": 1,
     "customer_name": "Teresa",
     "order_id": "S100",
@@ -152,7 +152,7 @@ var liveinfos = [
   },
   {
     "id": 2,
-    "serial_number": "W61",
+    "serial_num": "W61",
     "customer_id": 1,
     "customer_name": "Teresa",
     "order_id": "S58",
@@ -174,7 +174,7 @@ var liveinfos = [
   },
   {
     "id": 3,
-    "serial_number": "W48",
+    "serial_num": "W48",
     "customer_id": 1,
     "customer_name": "Teresa",
     "order_id": "S31",
@@ -301,7 +301,7 @@ var liveinfos = [
   },
   {
     "id": 4,
-    "serial_number": "W41",
+    "serial_num": "W41",
     "customer_id": 1,
     "customer_name": "Teresa",
     "order_id": "S63",
@@ -376,7 +376,7 @@ var liveinfos = [
   },
   {
     "id": 5,
-    "serial_number": "W76",
+    "serial_num": "W76",
     "customer_id": 1,
     "customer_name": "Teresa",
     "order_id": "S57",
@@ -555,7 +555,7 @@ var liveinfos = [
   },
   {
     "id": 7,
-    "serial_number": "W14",
+    "serial_num": "W14",
     "customer_id": 1,
     "customer_name": "Teresa",
     "order_id": "S27",
