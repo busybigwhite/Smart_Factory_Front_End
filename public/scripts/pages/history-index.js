@@ -128,7 +128,7 @@ function createQueryURL(searchPeriod) {
 function caculateAvailability(infos) {
 	var defer = $.Deferred();
 
-	$.get(config.APIUrl + 'machine/availability_rate/' + info[0].machine.id)
+	$.get(config.APIUrl + 'machine/availability_rate/' + infos[0].machine.id)
 	 .done(function(res){
 
 	 	_.forEach(infos, function(info) {
