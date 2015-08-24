@@ -17,6 +17,7 @@ exports = module.exports = {
 	goToMachineInfo: goToMachineInfo,
 	getMachineList: getMachineList,
 	getMachineInfo: getMachineInfo,
+	getAvailabilityRate: getAvailabilityRate,
 	getUserList: getUserList,
 	createMachine: createMachine,
 	deleteMachine: deleteMachine,
