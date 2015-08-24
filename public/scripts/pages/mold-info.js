@@ -149,7 +149,7 @@ function showCreateMode() {
 	$editModeCollection.addClass('creating');
 	$moldPicsBlock.addClass('creating');
 	maintainRecordTable.setEditMode(true);
-	maintainPeriodDropdown.setDefaultType();
+	maintainPeriodDropdown.setDefault();
 	noticeedPersonDropdown.setDefault();
 }
 
