@@ -76,7 +76,7 @@ function editMachineInfo(id, data) {
 
 function createMachineRecord(id, array) {
 	var pArray = array.map(function(obj) {
-		return createData(machineApiUrl + id + '/maintain', obj);
+		return createData(machineApiUrl + '/' + id + '/maintain', obj);
 	});
 
 	return $.when(pArray);
@@ -87,7 +87,7 @@ function createMachineRecord(id, array) {
 function deleteMachineRecord(id, array) {
 
 	var pArray = array.map(function(obj) {
-		return deleteData(machineApiUrl + id + '/maintain', obj);
+		return deleteData(machineApiUrl + '/' + id + '/maintain', obj);
 	});
 
 	return $.when(pArray);
