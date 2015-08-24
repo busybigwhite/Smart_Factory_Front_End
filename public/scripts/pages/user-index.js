@@ -87,6 +87,9 @@ function getInitialData() {
 function getChangedData() {
 	var data = {};
 
+	data.name = $userName.text();
+	data.group = $userGroup.text();
+
 	data.password = $userPassword.val();
 	data.password_confirmation = $userPasswordConfirm.val();
 	data.email = $userEmail.val();
