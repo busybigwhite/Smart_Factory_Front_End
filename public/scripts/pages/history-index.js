@@ -92,7 +92,7 @@ function searchHistoryThenRenderRows(searchPeriod) {
 		var type = selectedFilter.split('_')[0];
 
 		if(type === 'machine'){
-			$.when( caculateAvailability(response[0]) )
+			$.when( caculateAvailability(response) )
 			 .then(function(){
 			 	createTableList(response, type);
 				displayImageBlock(response, type);
@@ -128,15 +128,16 @@ function createQueryURL(searchPeriod) {
 function caculateAvailability(info) {
 	var defer = $.Deferred();
 
-	$.get(config.APIUrl + 'machine/availability_rate/' + info.machine.id)
+	$.get(config.APIUrl + 'machine/availability_rate/' + info[0].machine.id)
 	 .done(function(res){
-	 	info['availability'] = res.availability_rate;
+
+	 	_.forEach(infos, function(info) {
+	 		info['availability'] = res.availability_rate;
+	 	})
+
 	 	defer.resolve();
 	 })
-	 .fail(function(err){
-	 	console.log('get availability rate fail:' + err);
-	 	defer.reject();
-	 })
+	 .fail(function(err){ defer.reject() })
 
 	return defer.promise();
 }

@@ -34,8 +34,8 @@ exports.renderTableList = function(infos) {
         <div class="table-col"><%= info.work_et %></div>
         <div class="table-col-sm"><%= info.sample_num %></div>
         <div class="table-col-sm"><%= info.error_num %></div>
-    <% if(infos[0][availability] !== undefined){                           %>
-        <div class="table-col-sm"><%= infos[0].availability %></div>
+    <% if(info[availability] !== undefined){                           %>
+        <div class="table-col-sm"><%= info.availability %></div>
     <% }else {                                    %>
         <div class="table-col-sm"></div>
     <% }                                          %>
