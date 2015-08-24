@@ -9,7 +9,7 @@ exports.renderTableList = function(infos) {
   var menuTemp = _.template(
 	 `<% _.forEach(infos, function(info) {  %>
       <li class="table-item">
-        <div class="table-col"><%= info.serial_number %></div>
+        <div class="table-col"><%= info.serial_num %></div>
       	<div class="table-col">
 
     <% if(info.work_order_records.length){ %>
@@ -67,7 +67,7 @@ exports.renderImageList = function(infos) {
           </ul>
 
           <ul class="realtime-img-value">
-            <li><%= info.serial_number %></li>
+            <li><%= info.serial_num %></li>
 
     <% if(info.work_order_records.length){ %>
             <li><%= info.work_order_records[0].machine_serial_num %></li>
