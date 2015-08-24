@@ -51,7 +51,7 @@ function setFocusFactoryIdThenRenderRows(factoryId) {
 }
 
 function createWorkorderListThenRenderRows(type, searchKey) {
-	$.get(config.APIUrl + 'workorder/', {'factory_id': focusFactoryId}, function(workorderResponse) {
+	$.get(config.APIUrl + 'workorder/list/', {'factory_id': focusFactoryId}, function(workorderResponse) {
 		var displayData = []
 
 		for (var i in workorderResponse) {
