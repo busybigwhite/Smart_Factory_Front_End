@@ -133,57 +133,62 @@ function preventSubmitOnInputEnter(e) {
 }
 
 function saveData() {
-	var data = getAllInfoData();
-	console.log(data);
 	if (isEditMode && !isCreateMode) {
-		saveChangedData(data.info);
-		if (_.has(data, data.newRecords)) saveNewRecord(data.newRecords);
-		if (_.has(data, data.deleteRecords)) saveDeleteRecord(data.deleteRecords);
-		console.log('Changed Data : ', data);
+		saveChangedData();
+		saveNewRecord();
+		saveDeleteRecord();
 
 	} else if (!isEditMode && isCreateMode) {
-		saveNewData(data.info);
-		if (_.has(data, data.newRecords)) saveNewRecord(data.newRecords);
-		console.log('New Data : ', data);
+		saveNewData();
+		saveNewRecord();
 
 	} else {
 		console.log('machine info page has error: Undefined Mode');
 	}
-	// return false;
 }
 
-function saveChangedData(data) {
+function saveChangedData() {
+	var data = getInfoValue();
 	api.editMachineInfo(machineId, data)
 		 .done(function(data) {
-		 		api.goToMachineIndex();
+				api.goToMachineIndex();
 		 })
 		 .fail(function(err) { console.log("EDIT Machine Info error: ", err); });
 }
 
-function saveNewData(data) {
+function saveNewData() {
+	var data = getInfoValue();
 	api.createMachine(data)
 		 .done(function(data) {
-		 	api.goToMachineIndex();
+				api.goToMachineIndex();
 		 })
 		 .fail(function(err) { console.log("CREATE Machine error: ", err); });
 }
 
-function saveNewRecord(data) {
-	api.createMachineRecord(machineId, data)
-		 .done(function(data) { console.log("CREATE Machine Record res: ", data); })
-		 .fail(function(err) { console.log("CREATE Machine Record error: ", err); });
+function saveNewRecord() {
+	var newRecords = getNewRecordList();
+	if (newRecords && newRecords.length !== 0) {
+		api.createMachineRecord(machineId, newRecords)
+			 .done(function(data) { console.log("CREATE Machine Record res: ", data); })
+			 .fail(function(err) { console.log("CREATE Machine Record error: ", err); });
+	}
 }
 
-function saveDeleteRecord(data) {
-	api.deleteMachineRecord(machineId, data)
-		 .done(function(data) { console.log("CREATE Machine Record res: ", data); })
-		 .fail(function(err) { console.log("CREATE Machine Record error: ", err); });
+function saveDeleteRecord() {
+	var deleteRecords = getDeleteRecordList();
+	if (deleteRecords && deleteRecords.length !== 0) {
+		api.deleteMachineRecord(machineId, deleteRecords)
+			 .done(function(data) { console.log("CREATE Machine Record res: ", data); })
+			 .fail(function(err) { console.log("CREATE Machine Record error: ", err); });
+	}
 }
 
 
 function deleteMachine() {
 	api.deleteMachine(machineId)
-		 .done(function(data) { api.goToMachineIndex(); })
+		 .done(function(data) {
+				api.goToMachineIndex();
+			})
 		 .fail(function(err) { console.log("DELETE Machine error: ", err); });
 }
 
@@ -247,18 +252,6 @@ function setNoticedId(id) {
 
 function setUserName(name) {
 	$noticeedPersonName.text(name);
-}
-
-function getAllInfoData() {
-	var data = {};
-	data.info = getInfoValue();
-
-	var newRecords = getNewRecordList();
-	if (newRecords && newRecords.length !== 0) data.newRecords = newRecords;
-
-	var deleteRecords = getDeleteRecordList();
-	if (newRecords && newRecords.length !== 0) data.deleteRecords = deleteRecords;
-	return data;
 }
 
 function getInfoValue() {

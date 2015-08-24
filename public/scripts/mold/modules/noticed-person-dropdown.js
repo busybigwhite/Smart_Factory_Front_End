@@ -10,6 +10,7 @@ var $noticedPersonBlock = $('#mold-noticed-person');
 var $noticedPersonDropdown = $('#mold-notice-dropdown');
 var $selectedOption = $('#mold-notice-dropdown-btn').find('.selected-option');
 
+var noticedId;
 var peopleList;
 var firstPerson;
 var isNeedDefault = false;
@@ -45,6 +46,15 @@ function initialView(data) {
 	if (isNeedDefault) {
 		setFocusNameBlock(firstPerson);
 	}
+
+	if (noticedId) {
+		_.forEach(data, function(value, key) {
+			if (key === noticedId) {
+				setSelectedName(value.name);
+				return;
+			}
+		});
+	}
 }
 
 function renderDropdown(people) {
@@ -67,8 +77,9 @@ function setFocusNameBlock(target) {
 }
 
 function setNoticeedPerson(id, name) {
-	setSelectedId(id);
-	setSelectedName(name);
+	noticedId = id;
+	if (id) setSelectedId(id);
+	if (name) setSelectedName(name);
 }
 
 function getId() {
@@ -90,5 +101,5 @@ function setSelectedId(id) {
 
 function setSelectedName(name) {
 	$selectedOption.text(name);
-	$noticedPersonBlock.find('.view-mode').text(name);
+	// $noticedPersonBlock.find('.view-mode').text(name);
 }

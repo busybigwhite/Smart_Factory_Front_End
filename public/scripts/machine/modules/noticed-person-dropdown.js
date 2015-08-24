@@ -99,5 +99,5 @@ function setSelectedId(id) {
 
 function setSelectedName(name) {
 	$selectedOption.text(name);
-	$noticedPersonBlock.find('.view-mode').text(name);
+	// $noticedPersonBlock.find('.view-mode').text(name);
 }
