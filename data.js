@@ -2204,12 +2204,12 @@ var heatmapUrl = [
 // };
 
 var workorderInfo = {
-  'id': '3',
+  'serial_num': '3',
   'customer_id': '1',
   'order_id': 'S57',
   'target_num': '100',
   'order_date': '2015-08-19 02:59:38',
-  'status': 'non-schedule',
+  'status': 'finish',
   'schedule_date': '2015-08-19 02:59:38',
   'start_date': '2015-08-19 02:59:38',
   'finish_date': '2015-08-19 02:59:38',

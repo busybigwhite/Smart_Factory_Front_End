@@ -17,7 +17,7 @@ var $statusList = $('.status-list');
 
 var Namedic = {};
 
-var statusListContent = [{'key': '','displayName': ''},
+var statusListContent = [
 				{'key': 'non-schedule','displayName': '未排程'},
     		 	{'key': 'schedule','displayName': '已排程'},
     		 	{'key': 'producing','displayName': '生產中'},
@@ -74,9 +74,7 @@ function setFocusNameBlock(target) {
 
 function createFactoryListThenRenderRows() {
 		var statusListRows = renderFactoryDropdown({ allstatus : statusListContent });
-
 		$statusList.empty().html( statusListRows );
-
 		setFocusNameBlock(statusListContent[0]);
 }
 
