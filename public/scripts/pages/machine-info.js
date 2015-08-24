@@ -63,8 +63,8 @@ function getInitialData() {
 	if (!machineId) return;
 	$.when( api.getMachineInfo(machineId), api.getUserList() )
 	 .done(function(result1, result2) {
-	 		initialView(result1);
-	 		initialNoticedName(result2);
+	 		initialView(result1[0]);
+	 		initialNoticedName(result2[0]);
 	 })
 	 .fail(function(jqXHR, textStatus, errorThrown) {
 	 		console.log('machine info page get data error: ', jqXHR, textStatus, errorThrown );
@@ -147,7 +147,7 @@ function saveData() {
 	} else if (!isEditMode && isCreateMode) {
 
 		$.when( saveNewData(), saveNewRecord() )
-		 .done(function(result1, result2, result3) {
+		 .done(function(result1, result2) {
 				api.goToMachineIndex();
 			})
 		 .fail(function(jqXHR, textStatus, errorThrown) {
