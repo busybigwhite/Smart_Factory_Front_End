@@ -65,7 +65,7 @@ function getInitialData() {
 	 .done(function(result1, result2, result3) {
 	 		initialView(result1[0]);
 	 		initialNoticedName(result2[0]);
-	 		initAvailabilityRate(result3[0])
+	 		initAvailabilityRate(result3[0].availability_rate)
 	 })
 	 .fail(function(jqXHR, textStatus, errorThrown) {
 	 		console.log('machine info page get data error: ', jqXHR, textStatus, errorThrown );
