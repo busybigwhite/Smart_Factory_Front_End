@@ -20,11 +20,16 @@ var defaultTypeStirng = TYPE.time;
 exports.init     = initCheckPeriod;
 exports.getValue = getValue;
 exports.getType  = getType;
-exports.setDefaultType  = setDefaultType;
+exports.setDefault  = setDefault;
 
 function initCheckPeriod(val, type) {
 	console.log('check initialView:', val, type);
 	initialView(val, type);
+	bindEvents();
+}
+
+function setDefault() {
+	setDefaultType();
 	bindEvents();
 }
 

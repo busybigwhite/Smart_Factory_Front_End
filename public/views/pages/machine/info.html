@@ -9,7 +9,7 @@
 
 <div id="header"></div>
 
-<form class="detail-page-container" id="machine-detail-page">
+<form class="detail-page-container" id="machine-detail-page" method="post">
 	<div class="base-action-panel">
 		<button type="button" class="info-delete-button" id="machine-delete-button">刪除</button>
 		<button type="button" class="info-edit-button" id="machine-edit-button">編輯</button>
@@ -23,14 +23,14 @@
 				<span class="info-name">射出機台編號</span>
 				<span class="info-value">
 					<p class="view-mode"></p>
-					<input class="edit-mode" type="text" name="serial_num" value="" pattern="[A-Za-z0-9\-]{1,200}" title="輸入1~200個英數字" required>
+					<input class="edit-mode" type="text" name="serial_num" value="" pattern="[A-Za-z0-9\-\_\u4e00-\u9fa5]{1,200}" title="輸入1~200個中英數字(不含空白)" required>
 				</span>
 			</li>
 			<li id="machine-name">
 				<span class="info-name">機種名稱</span>
 				<span class="info-value">
 					<p class="view-mode"></p>
-					<input class="edit-mode" type="text" name="name" value="" required>
+					<input class="edit-mode" type="text" name="name" value=""  pattern="[A-Za-z0-9\-\_\s\u4e00-\u9fa5]{1,30}" title="輸入1~30個中英數字(可含空白)" required>
 				</span>
 			</li>
 			<li id="machine-weight">
@@ -43,8 +43,9 @@
 			<li>
 				<span class="info-name">機台稼動率</span>
 				<span class="info-value">
-					<span id="todo"></span><!-- TODO: add id -->
-					<span class="creating-default-value">0</span>
+					<span id="machine-availability-rate">
+						<span class="creating-default-value">0</span>
+					</span>
 					<span>%</span>
 				</span>
 			</li>

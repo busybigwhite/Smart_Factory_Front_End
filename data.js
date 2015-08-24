@@ -5,8 +5,9 @@ var factories = [{'id': '1','name': '中山廠'},
 var liveinfos = [
   {
     "id": 8,
-    "serial_number": "W52",
+    "serial_num": "W52",
     "customer_id": 1,
+    "customer_name": "Teresa",
     "order_id": "S26",
     "factory_id": 2,
     "target_num": 100,
@@ -25,8 +26,9 @@ var liveinfos = [
     "work_order_records": []
   },{
     "id": 1,
-    "serial_number": "W57",
+    "serial_num": "W57",
     "customer_id": 1,
+    "customer_name": "Teresa",
     "order_id": "S100",
     "factory_id": 3,
     "target_num": 100,
@@ -150,8 +152,9 @@ var liveinfos = [
   },
   {
     "id": 2,
-    "serial_number": "W61",
+    "serial_num": "W61",
     "customer_id": 1,
+    "customer_name": "Teresa",
     "order_id": "S58",
     "factory_id": 2,
     "target_num": 100,
@@ -171,8 +174,9 @@ var liveinfos = [
   },
   {
     "id": 3,
-    "serial_number": "W48",
+    "serial_num": "W48",
     "customer_id": 1,
+    "customer_name": "Teresa",
     "order_id": "S31",
     "factory_id": 2,
     "target_num": 100,
@@ -297,8 +301,9 @@ var liveinfos = [
   },
   {
     "id": 4,
-    "serial_number": "W41",
+    "serial_num": "W41",
     "customer_id": 1,
+    "customer_name": "Teresa",
     "order_id": "S63",
     "factory_id": 3,
     "target_num": 100,
@@ -371,8 +376,9 @@ var liveinfos = [
   },
   {
     "id": 5,
-    "serial_number": "W76",
+    "serial_num": "W76",
     "customer_id": 1,
+    "customer_name": "Teresa",
     "order_id": "S57",
     "factory_id": 3,
     "target_num": 100,
@@ -549,8 +555,9 @@ var liveinfos = [
   },
   {
     "id": 7,
-    "serial_number": "W14",
+    "serial_num": "W14",
     "customer_id": 1,
+    "customer_name": "Teresa",
     "order_id": "S27",
     "factory_id": 1,
     "target_num": 100,
@@ -1143,74 +1150,61 @@ var workorder = {
 }
 
 var filters = {
-  "workorders": [{
-      "id": 2,
-      "order_id": "S65"
-    },{
+  "workorders": [
+    {
+      "id": 4,
+      "order_id": "FrontEnd01",
+      "serial_num": "511-14110360"
+    },
+    {
       "id": 5,
-      "order_id": "S71"
-    },{
+      "order_id": "Cloud01",
+      "serial_num": "511-14110361"
+    },
+    {
+      "id": 3,
+      "order_id": "Amean\u66b4\u8d70\u4e2d",
+      "serial_num": "511-14110359"
+    },
+    {
+      "id": 18,
+      "order_id": "345",
+      "serial_num": "151"
+    },
+    {
+      "id": 2,
+      "order_id": "Teresa\u9003\u8d70\u4e2d",
+      "serial_num": "511-14110358"
+    }
+  ],
+  "machines": [
+    {
+      "id": 2,
+      "serial_num": "F40090090",
+      "name": " \u53f0\u4e2d\u7cbe\u6a5f500"
+    },
+    {
       "id": 1,
-      "order_id": "S100"
-    },{
+      "serial_num": "F-40090089",
+      "name": "\u53f0\u4e2d550T\u6210\u578b\u6a5f"
+    },
+    {
       "id": 3,
-      "order_id": "S18"
-    },{
-      "id": 4,
-      "order_id": "S38"
+      "serial_num": "F-40090095",
+      "name": "toyo250"
     }
   ],
-  "machines": [{
-      "id": 2,
-      "serial_num": "Henderson",
-      "name": "O'Kon"
-    },{
-      "id": 3,
-      "serial_num": "Everette",
-      "name": "Goodwin"
-    },{
-      "id": 4,
-      "serial_num": "Kiel",
-      "name": "Brown"
-    },{
-      "id": 5,
-      "serial_num": "Dion",
-      "name": "Nicolas"
-    },{
-      "id": 6,
-      "serial_num": "Cruz",
-      "name": "Herman"
-    },{
-      "id": 7,
-      "serial_num": "Olin",
-      "name": "McCullough"
-    }
-  ],
-  "molds": [{
+  "molds": [
+    {
       "id": 1,
-      "serial_num": "Earlene",
-      "name": "Cartwright"
-    },{
-      "id": 2,
-      "serial_num": "Raheem",
-      "name": "Jacobi"
-    },{
-      "id": 3,
-      "serial_num": "Samantha",
-      "name": "Jenkins"
-    },{
-      "id": 4,
-      "serial_num": "Joaquin",
-      "name": "Medhurst"
-    },{
-      "id": 5,
-      "serial_num": "Melody",
-      "name": "Rowe"
+      "serial_num": "07-11776-000",
+      "name": "Left_Cover&right_Cover"
     }
   ],
-  "customers": [{
-      "id": 4,
-      "name": "customer1234456778990065654"
+  "customers": [
+    {
+      "id": 8,
+      "name": "wtfwtf"
     }
   ]
 }

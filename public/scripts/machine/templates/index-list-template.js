@@ -11,10 +11,9 @@ exports.render = function(infos) {
       <li class="table-item">
           <div class="table-col"><%= info.serial_num %></div>
           <div class="table-col"><%= info.name %></div>
-          <div class="table-col"><%= info.weight %></div>`+
-          `<div class="table-col">10%</div>`+ // TODO: 機台稼動率
-          // <div class="table-col"><%= info.todo %>%</div>
-          `<div class="table-col">
+          <div class="table-col"><%= info.weight %></div>
+          <div class="table-col"><%= info.availability_rate %>%</div>
+          <div class="table-col">
               <button class="detail-info-button" data-id="<%= info.id %>">詳細資訊</button>
           </div>
       </li>

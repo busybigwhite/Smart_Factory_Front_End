@@ -29,6 +29,7 @@ var $serialNumber  = $('#mold-serial-num');
 var $name          = $('#mold-name');
 var $createdAt     = $('#mold-created-at');
 var $weight        = $('#mold-weight');
+var $moldType      = $('#mold-type');
 var $manufacturer  = $('#mold-manufacturer');
 var $lifetime      = $('#mold-lifetime');
 var $currentUsage  = $('#mold-current-usage');
@@ -89,13 +90,15 @@ function getInitialData() {
 		initializeDatetimePicker();
 		return;
 	}
-	api.getMoldInfo(moldId)
-		 .done(initialView)
-		 .fail(function(err) { console.log("GET Mold Info error: ", err); });
 
-	api.getUserList()
-		 .done(initialNoticedName)
-		 .fail(function(err) { console.log('initialNoticedName GET user list error:', err) });
+	$.when( api.getMoldInfo(moldId), api.getUserList())
+	 .done(function(result1, result2) {
+	 		initialView(result1[0]);
+	 		initialNoticedName(result2[0]);
+	 })
+	 .fail(function(jqXHR, textStatus, errorThrown) {
+	 		console.log('machine info page get data error: ', jqXHR, textStatus, errorThrown );
+	 });
 }
 
 function bindEvents() {
@@ -145,8 +148,8 @@ function showCreateMode() {
 	$viewModeCollection.addClass('creating');
 	$editModeCollection.addClass('creating');
 	$moldPicsBlock.addClass('creating');
-	maintainRecordTable.setEditMode(true);
-	maintainPeriodDropdown.setDefaultType();
+	maintainRecordTable.setEditMode(false);
+	maintainPeriodDropdown.setDefault();
 	noticeedPersonDropdown.setDefault();
 }
 
@@ -160,87 +163,64 @@ function preventSubmitOnInputEnter(e) {
 
 function saveData() {
 	if (isEditMode && !isCreateMode) {
-		saveChangedData();
-		saveNewRecord();
-		saveDeleteRecord();
+
+		$.when( saveChangedData(), saveNewRecord(), saveDeleteRecord() )
+		 .done(function(result1, result2, result3) {
+				api.goToMoldIndex();
+			})
+		 .fail(function(jqXHR, textStatus, errorThrown) {
+		 		console.log('mold info page save data error: ', jqXHR, textStatus, errorThrown );
+		 });
 
 	} else if (!isEditMode && isCreateMode) {
-		saveNewData();
-		saveNewRecord();
+
+		$.when( saveNewData(), saveNewRecord() )
+		 .done(function(result1, result2) {
+				api.goToMoldIndex();
+			})
+		 .fail(function(jqXHR, textStatus, errorThrown) {
+		 		console.log('mold info page save data error: ', jqXHR, textStatus, errorThrown );
+		 });
 
 	} else {
 		console.log('mold info page has error: Undefined Mode');
 	}
+	return false;
 }
 
 function saveChangedData() {
-	hasSaveChangedData = false;
 	var data = getInfoValue();
-	api.editMoldInfo(moldId, data)
-		 .done(function(data) {
-				hasSaveChangedData = true;
-				ifAllSavedThenGotoIndexPage();
-			})
-		 .fail(function(err) { console.log("EDIT Mold Info error: ", err); });
+	return api.editMoldInfo(moldId, data);
 }
 
 function saveNewData() {
-	hasSaveNewData = false;
 	var data = getInfoValue();
-	api.createMold(data)
-		 .done(function(data) {
-				hasSaveNewData = true;
-				ifAllSavedThenGotoIndexPage();
-			})
-		 .fail(function(err) { console.log("CREATE Mold error: ", err); });
+	return api.createMold(data);
 }
 
 function saveNewRecord() {
-	hasSaveNewRecord = false;
+
 	var newRecords = getNewRecordList();
 	if (newRecords && newRecords.length !== 0) {
-		api.createMoldRecord(moldId, newRecords)
-			 .done(function(data) {
-					hasSaveNewRecord = true;
-					ifAllSavedThenGotoIndexPage();
-				})
-			 .fail(function(err) { console.log("CREATE Mold Record error: ", err); });
+		return api.createMoldRecord(moldId, newRecords);
+
 	} else {
-		hasSaveNewRecord = true;
-		ifAllSavedThenGotoIndexPage();
+		var deferred = $.Deferred();
+		deferred.resolve();
+		return deferred.promise();
 	}
 }
 
 function saveDeleteRecord() {
-	hasSaveDeleteRecord = false;
 	var deleteRecords = getDeleteRecordList();
 	if (deleteRecords && deleteRecords.length !== 0) {
-		api.deleteMoldRecord(moldId, deleteRecords)
-			 .done(function(data) {
-					hasSaveDeleteRecord = true;
-					ifAllSavedThenGotoIndexPage();
-				})
-			 .fail(function(err) { console.log("CREATE Mold Record error: ", err); });
+		return api.deleteMoldRecord(machineId, deleteRecords);
+
 	} else {
-		hasSaveDeleteRecord = true;
-		ifAllSavedThenGotoIndexPage();
+		var deferred = $.Deferred();
+		deferred.resolve();
+		return deferred.promise();
 	}
-}
-
-function ifAllSavedThenGotoIndexPage() {
-	if ( getAllSavedCondition() ) api.goToMoldIndex();
-}
-
-function getAllSavedCondition() {
-	return isCreateMode ? getCreateModeCondition() : getEditModeCondition() ;
-}
-
-function getCreateModeCondition() {
-	return hasSaveNewData && hasSaveNewRecord;
-}
-
-function getEditModeCondition() {
-	return hasSaveChangedData && hasSaveNewRecord && hasSaveDeleteRecord;
 }
 
 function deleteMold() {
@@ -290,6 +270,9 @@ function initBaseInfo(data) {
 
 	$weight.find('.view-mode').text(data['weight']);
 	$weight.find('.edit-mode').val(data['weight']);
+
+	$moldType.find('.view-mode').text(data['type']);
+	$moldType.find('.edit-mode').val(data['type']);
 }
 
 function initResumeInfo(data) {
@@ -340,10 +323,11 @@ function setUserName(name) {
 
 
 function initPics(data) {
-	// ToFix:
-	var fakeSrc = 'http://placehold.it/150x150';
-	moldPicUploadBlock.setImageOriginalSrc(fakeSrc);
-	productPicUploadBlock.setImageOriginalSrc(fakeSrc);
+	var picApiUrl  = api.getMoldPicApiUrl();
+	var picMold    = data['mold_pic']    ? picApiUrl + data['mold_pic'] : '' ;
+	var picProduct = data['product_pic'] ? picApiUrl + data['product_pic'] : '' ;
+	moldPicUploadBlock.setImageOriginalSrc(picMold);
+	productPicUploadBlock.setImageOriginalSrc(picProduct);
 }
 
 function getInfoValue() {

@@ -29,11 +29,21 @@
                 &.machine {
                     .header-focus();
                 }
+
+                &.Customer,
+                &.Employee {
+                    display: none;
+                }
             }
 
             &:nth-child(3) {
                 &.mold {
                     .header-focus();
+                }
+
+                &.Customer,
+                &.Employee {
+                    display: none;
                 }
             }
 
@@ -41,11 +51,21 @@
                 &.workorder {
                     .header-focus();
                 }
+
+                &.Customer,
+                &.Employee {
+                    display: none;
+                }
             }
 
             &:nth-child(5) {
                 &.unusual {
                     .header-focus();
+                }
+
+                &.Customer,
+                &.Employee {
+                    display: none;
                 }
             }
 
@@ -53,11 +73,23 @@
                 &.member {
                     .header-focus();
                 }
+
+                &.Manager,
+                &.Customer,
+                &.Employee {
+                    display: none;
+                }
             }
 
             &:last-child {
                 &.history {
                     .header-focus();
+                }
+
+                &.Manager,
+                &.Customer,
+                &.Employee {
+                    display: none;
                 }
             }
         }

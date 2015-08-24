@@ -75,7 +75,7 @@ function getPictureListAndRenderRow() {
     var type = queryParameter.get('type');
     var title = queryParameter.get('title');
 
-    $.post(config.APIUrl + 'workorder/listpic/?work_order_id=' + workorderId + '&type=' + type,
+    $.post(config.APIUrl + 'workorder/listpic?work_order_id=' + workorderId + '&type=' + type,
         { _token: token })
 
      .done(function(res){

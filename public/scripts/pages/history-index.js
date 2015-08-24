@@ -1,6 +1,6 @@
 'use strict';
 var $ = window.jQuery = require('jquery');
-// var moment = window.moment = require('moment');
+var _ = require('lodash');
 var header = require('../includes/header');
 var userId = require('../config/auth');
 var config = require('../config/url');
@@ -91,8 +91,17 @@ function searchHistoryThenRenderRows(searchPeriod) {
 
 		var type = selectedFilter.split('_')[0];
 
-		createTableList(response, type);
-		displayImageBlock(response, type);
+		if(type === 'machine'){
+			$.when( caculateAvailability(response) )
+			 .then(function(){
+			 	createTableList(response, type);
+				displayImageBlock(response, type);
+			 });
+
+		}else {
+			createTableList(response, type);
+			displayImageBlock(response, type);
+		}
 	})
 	 .fail(function(err){ console.log('history list error:', err) })
 	 .always(function(){ spinner.stop() });
@@ -114,6 +123,23 @@ function createQueryURL(searchPeriod) {
 	}
 
 	return queryParameter.build(data);
+}
+
+function caculateAvailability(infos) {
+	var defer = $.Deferred();
+
+	$.get(config.APIUrl + 'machine/availability_rate/' + infos[0].machine.id)
+	 .done(function(res){
+
+	 	_.forEach(infos, function(info) {
+	 		info['availability'] = res.availability_rate;
+	 	})
+
+	 	defer.resolve();
+	 })
+	 .fail(function(err){ defer.reject() })
+
+	return defer.promise();
 }
 
 function createTableList(infos, type) {

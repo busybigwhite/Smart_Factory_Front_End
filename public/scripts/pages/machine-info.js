@@ -28,7 +28,7 @@ var $editModeCollection = $machineDetailPage.find('.edit-mode');
 var $serialNumber = $('#machine-serial-num');
 var $name = $('#machine-name');
 var $weight = $('#machine-weight');
-// TODO: 機台稼動率
+var $availabilityRate = $('#machine-availability-rate');
 var $noticeedPersonName = $('#machine-noticed-person').find('.view-mode');
 var noticedId;
 var userList;
@@ -61,10 +61,11 @@ function initialize() {
 
 function getInitialData() {
 	if (!machineId) return;
-	$.when( api.getMachineInfo(machineId), api.getUserList() )
-	 .done(function(result1, result2) {
+	$.when( api.getMachineInfo(machineId), api.getUserList(), api.getAvailabilityRate(machineId))
+	 .done(function(result1, result2, result3) {
 	 		initialView(result1[0]);
 	 		initialNoticedName(result2[0]);
+	 		initAvailabilityRate(result3[0].availability_rate)
 	 })
 	 .fail(function(jqXHR, textStatus, errorThrown) {
 	 		console.log('machine info page get data error: ', jqXHR, textStatus, errorThrown );
@@ -117,11 +118,11 @@ function showCreateMode() {
 	$backBtn  .show();
 	$viewModeCollection.addClass('creating');
 	$editModeCollection.addClass('creating');
-	checkRecordTable.setEditMode(true);
-	maintainRecordTable.setEditMode(true);
-	errorRecordTable.setEditMode(true);
-	checkPeriodDropdown.setDefaultType();
-	maintainPeriodDropdown.setDefaultType();
+	checkRecordTable.setEditMode(false);
+	maintainRecordTable.setEditMode(false);
+	errorRecordTable.setEditMode(false);
+	checkPeriodDropdown.setDefault();
+	maintainPeriodDropdown.setDefault();
 	noticeedPersonDropdown.setDefault();
 }
 
@@ -157,6 +158,7 @@ function saveData() {
 	} else {
 		console.log('machine info page has error: Undefined Mode');
 	}
+	return false;
 }
 
 function saveChangedData() {
@@ -221,8 +223,6 @@ function initBaseInfo(data) {
 
 	$weight.find('.view-mode').text(data['weight']);
 	$weight.find('.edit-mode').val(data['weight']);
-
-	// TODO: 機台稼動率
 }
 
 function initResumeInfo(data) {
@@ -237,10 +237,14 @@ function initResumeInfo(data) {
 	errorRecordTable.initialView(data['maintain_record_maintain']);
 }
 
+function initAvailabilityRate(val) {
+	$availabilityRate.text(val);
+}
+
 function initialNoticedName(data) {
 	if (noticedId) {
 		_.forEach(data, function(value, key) {
-			if (key === noticedId) {
+			if (value.id === noticedId) {
 				setUserName(value.name);
 				return;
 			}
