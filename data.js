@@ -1152,18 +1152,23 @@ var workorder = {
 var filters = {
   "workorders": [{
       "id": 2,
+      "serial_num": "W52",
       "order_id": "S65"
     },{
       "id": 5,
+      "serial_num": "W52",
       "order_id": "S71"
     },{
       "id": 1,
+      "serial_num": "W52",
       "order_id": "S100"
     },{
       "id": 3,
+      "serial_num": "W52",
       "order_id": "S18"
     },{
       "id": 4,
+      "serial_num": "W52",
       "order_id": "S38"
     }
   ],
