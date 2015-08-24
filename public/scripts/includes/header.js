@@ -8,6 +8,8 @@ var redirect = require('../lib/helper/redirect');
 /* DOM */
 var $logoutBtn;
 
+var authority;
+
 exports = module.exports = {};
 
 exports.include = function(){
@@ -20,6 +22,7 @@ function initialize() {
 	$logoutBtn = $('#logout-btn');
 
 	bindEvents();
+	displayByAuthority();
 	resetHrefLink();
 	getPathAndFocusOnNavItem();
     getUserName();
@@ -42,18 +45,23 @@ function logout() {
 	 .fail(function(err) { console.log("LOGOUT error: ", err); });
 }
 
+function displayByAuthority() {
+	authority = Auth.getAuthority();
+
+	$('.navbar-item').addClass(authority);
+}
+
 function resetHrefLink() {
 	$('.navbar-item').each(function(){
 		var path = $(this).children('a').attr('href').split('/')[1];
 		$(this).children('a').attr('href', config.baseUrl + '/' + path);
 	});
-	console.log('replace herf link done');
 }
 
 function getPathAndFocusOnNavItem() {
 	var page = window.location.pathname.split('/')[1];
 
-	$('.navbar-item').attr('class', 'navbar-item ' + page);
+	$('.navbar-item').attr('class', 'navbar-item ' + authority + ' ' + page);
 }
 
 function getUserName() {
