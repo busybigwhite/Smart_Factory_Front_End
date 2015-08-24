@@ -9,7 +9,7 @@
 
 <div id="header"></div>
 
-<form class="detail-page-container" id="mold-detail-page">
+<form class="detail-page-container" id="mold-detail-page" method="post">
 	<div class="base-action-panel">
 		<button type="button" class="info-delete-button" id="mold-delete-button">刪除</button>
 		<button type="button" class="info-edit-button" id="mold-edit-button">編輯</button>
@@ -59,6 +59,13 @@
 				<span class="info-value">
 					<p class="view-mode"></p>
 					<input class="edit-mode" type="text" name="weight" value="" pattern="[0-9]{1,10}" title="輸入數字" required> (kg)
+				</span>
+			</li>
+			<li id="mold-type">
+				<span class="info-name">模具類型</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="name" value="" pattern="[A-Za-z0-9\-\_\s]{1,200}" title="輸入1~200個英數字" required>
 				</span>
 			</li>
 		</ul>
