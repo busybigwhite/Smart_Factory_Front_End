@@ -10,9 +10,7 @@ var factoryDropdown = require('../lib/component/dropdown-factory');
 var loadingSpin = require('../lib/component/loading-spin');
 var templates = require('../realtime/templates');
 
-// require('bootstrap/js/dropdown');
-
-var isImageMode = false;
+var isImageMode;
 var focusFactoryId = undefined;
 var spinner;
 
@@ -35,8 +33,8 @@ function initialize() {
 	header.include();
 	initializeLoadingSpinner();
 	bindEvents();
+	setViewMode();
 
-	$tableModeSwitcher.trigger('click');
 	$filterItem.eq(0).trigger('click');
 }
 
@@ -72,7 +70,7 @@ function bindSearchByFilterOnButton() {
 
 function bindLinkToPicturesPageOnButton() {
 	$tableListBlock.on('click', '.realtime-showpic-btn', redirectToPicPage);
-	// $imageListBlock.on('click', '.realtime-showpic-btn', redirectToPicPage);
+	$imageListBlock.on('click', '.realtime-showpic-btn', redirectToPicPage);
 }
 
 function setFocusFactoryIdThenRenderRows(factoryId) {
@@ -88,10 +86,10 @@ function createRealtimeListThenRenderRows(type, searchKey) {
 	$.get(config.APIUrl + 'workorder/list/?factory_id=' + focusFactoryId + '&type=' + type + '&search_key=' + searchKey)
 	 .done(function(response){
 		var tableListRows = templates.renderTableList({ infos : response });
-		// var imageListRows = templates.renderImageList({ infos : response });
+		var imageListRows = templates.renderImageList({ infos : response });
 
 		$tableBody.empty().append( tableListRows );
-		// $imageListBlock.empty().html( imageListRows );
+		$imageListBlock.empty().html( imageListRows );
 	 })
 	 .always(function(){
 	 	spinner.stop();
@@ -131,6 +129,12 @@ function redirectToPicPage() {
 	var title = $(this).data('info');
 	var type = $(this).data('type');
 	var work_order_id = _.isString(title) ? title.split('/')[0] : title;
+	var image_view = isImageMode;
 
-	redirect('realtimePic', {work_order_id, type, title});
+	redirect('realtimePic', { work_order_id, type, title, image_view });
+}
+
+function setViewMode() {
+	queryParameter.get('image_view') === "1" ? $imageModeSwitcher.trigger('click')
+											 : $tableModeSwitcher.trigger('click');
 }

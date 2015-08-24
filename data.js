@@ -103,13 +103,6 @@ var listpics = [{
     },
     {}]
 
-var workorderLists = [
-    {'id': 'Work01','name': 'workorder1001'},
-    {'id': 'Work02','name': 'workorder1002'},
-    {'id': 'Work03','name': 'workorder1003'}
-]
-
-
 var users = [
     {
         "id": 1,
@@ -340,8 +333,6 @@ var workorders = [
     }
 ]
 
-
-
 var workorder = {
     "id": 4,
     "customer_id": 1,
@@ -408,18 +399,78 @@ var workorder = {
     ]
 }
 
-var machineLists = [
-    {'id': 'M001','name': 'machine001'},
-    {'id': 'M002','name': 'machine002'},
-    {'id': 'M003','name': 'machine003'}
-]
-
-var moldLists = [
-    {'id': 'Mold001','name': 'mold00001'},
-    {'id': 'Mold002','name': 'mold00002'},
-    {'id': 'Mold003','name': 'mold00003'}
-]
-
+var filters = {
+  "workorders": [{
+      "id": 2,
+      "order_id": "S65"
+    },{
+      "id": 5,
+      "order_id": "S71"
+    },{
+      "id": 1,
+      "order_id": "S100"
+    },{
+      "id": 3,
+      "order_id": "S18"
+    },{
+      "id": 4,
+      "order_id": "S38"
+    }
+  ],
+  "machines": [{
+      "id": 2,
+      "serial_num": "Henderson",
+      "name": "O'Kon"
+    },{
+      "id": 3,
+      "serial_num": "Everette",
+      "name": "Goodwin"
+    },{
+      "id": 4,
+      "serial_num": "Kiel",
+      "name": "Brown"
+    },{
+      "id": 5,
+      "serial_num": "Dion",
+      "name": "Nicolas"
+    },{
+      "id": 6,
+      "serial_num": "Cruz",
+      "name": "Herman"
+    },{
+      "id": 7,
+      "serial_num": "Olin",
+      "name": "McCullough"
+    }
+  ],
+  "molds": [{
+      "id": 1,
+      "serial_num": "Earlene",
+      "name": "Cartwright"
+    },{
+      "id": 2,
+      "serial_num": "Raheem",
+      "name": "Jacobi"
+    },{
+      "id": 3,
+      "serial_num": "Samantha",
+      "name": "Jenkins"
+    },{
+      "id": 4,
+      "serial_num": "Joaquin",
+      "name": "Medhurst"
+    },{
+      "id": 5,
+      "serial_num": "Melody",
+      "name": "Rowe"
+    }
+  ],
+  "customers": [{
+      "id": 4,
+      "name": "customer1"
+    }
+  ]
+}
 
 var historyInfos = [
       {
@@ -496,6 +547,11 @@ var historyInfos = [
       }
 ]
 
+var heatmapUrl = [
+    '../../../images/sample/heatmap.jpg',
+    '../../../images/sample/sample.jpg'
+]
+
 // var workorderInfo = {
 //     'workorder_id':'W001','order_id':'ORDER001','customer_name':'Moremote','factories':'台中梧棲',
 //     'workorder_status':'finish'
@@ -526,11 +582,9 @@ module.exports = {
       factories: factories,
       liveinfos: liveinfos,
       listpics: listpics,
-      workorderLists: workorderLists,
-      machineLists: machineLists,
-      moldLists: moldLists,
-
+      filters: filters,
       historyInfos: historyInfos,
+      heatmapUrl: heatmapUrl,
       workorderInfo: workorderInfo,
       users: users,
       workorders: workorders,

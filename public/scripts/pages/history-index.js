@@ -140,7 +140,7 @@ function displayImageBlock(infos, type) {
 
 function getHeatmap(id) {
 
-	$.get(config.APIUrl + 'pic/heatmap/list/?' + 'mold_id=' + id)
+	$.get(config.APIUrl + 'pic/heatmap/list?' + 'mold_id=' + id)
 	 .done(function(response){
 	 	var heatmap = templates.renderHeatmap({ heatmapUrls: response });
 
