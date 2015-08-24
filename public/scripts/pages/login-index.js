@@ -42,6 +42,9 @@ function userLogin(e){
 		 .done(function(res){
 			Auth.set($userName.val(), $csrfToken.val());
 			redirect('realtime');
+		 })
+		 .fail(function(res){
+		 	res.status === 404 && alert('請確認帳號/密碼輸入是否正確');
 		 });
 	}
 };

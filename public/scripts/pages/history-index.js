@@ -86,12 +86,13 @@ function searchHistoryThenRenderRows(searchPeriod) {
 
 	$.get(config.APIUrl + 'history/list?' + queryURL)
 	 .done(function(response){
-	 	var infos = response || [];
+
+	 	if(response.length === 0) return;
+
 		var type = selectedFilter.split('_')[0];
 
-		createTableList(infos, type);
-		displayImageBlock(infos, type);
-
+		createTableList(response, type);
+		displayImageBlock(response, type);
 	})
 	 .fail(function(err){ console.log('history list error:', err) })
 	 .always(function(){ spinner.stop() });
@@ -140,7 +141,7 @@ function displayImageBlock(infos, type) {
 
 function getHeatmap(id) {
 
-	$.get(config.APIUrl + 'pic/heatmap/list/?' + 'mold_id=' + id)
+	$.get(config.APIUrl + 'pic/heatmap/list?' + 'mold_id=' + id)
 	 .done(function(response){
 	 	var heatmap = templates.renderHeatmap({ heatmapUrls: response });
 

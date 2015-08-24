@@ -35,7 +35,11 @@ var temp = parameters[0].split("=");
 var workorderID = temp[1];
 temp = parameters[1].split("=");
 var factoryID = temp[1];
+
 var token = auth.getToken();
+
+// var workorderID = "";
+// var factoryID = "F002";
 
 
 var today = new Date();
@@ -173,8 +177,9 @@ function saveData() {
 
 function saveChangedData(data) {
 	api.editWorkOrderInfo(workorderID, data)
+
 		 .done(function(data) {
-		 	console.log("EDIT Workorder Info res: ", data);
+		 	console.log("EDIT Workorder Info done: ", data);
 		 	api.goToWorkOrderIndex();
 		 })
 		 .fail(function(err) {
@@ -260,14 +265,29 @@ function getChangedData() {
 	return newData;
 }
 
+
 function getStatusName() {
-	return statusDropdown.getSelectedStatus();
+	var cur_status = statusDropdown.getSelectedStatus();
+	if(typeof cur_status!='undefined')
+		return cur_status;
+	else
+		return "";
 }
 
 function getTypeName(){
-	return typeDropdown.getSelectedType();
+	var cur_type = typeDropdown.getSelectedType();
+	if(typeof cur_type!='undefined')
+		return cur_type;
+	else
+		return "";
 }
 
 function getFactoryId() {
-	return factoryDropdown.getSelectedFactoryId();
+
+	var cur_factoryid = factoryDropdown.getSelectedFactoryId();
+
+	if(typeof cur_factoryid!='undefined')
+		return cur_factoryid;
+	else
+		return "";
 }

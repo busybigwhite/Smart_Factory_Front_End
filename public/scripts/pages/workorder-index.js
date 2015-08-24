@@ -13,7 +13,6 @@ require('bootstrap/js/dropdown');
 
 var isImageMode = false;
 var focusFactoryId = undefined;
-var factoryList = {};
 
 /* DOM */
 var $tableBody = $('.workorder-table-body');
@@ -24,26 +23,7 @@ initialize();
 
 function initialize() {
 	header.include();
-	initialFactoryList();
 	bindEvents();
-}
-
-function initialFactoryList() {
-	$.ajax({
-	    url: config.APIUrl + 'factory/list/',
-	    type: 'GET',
-	    async: false,
-	    cache: false,
-	    timeout: 30000,
-	    error: function() {
-	    	console.log("error");
-	    },
-	    success: function(data) {
-	    	for (var i in data) {
-	    		factoryList[data[i].id] = data[i].name;
-	    	}
-	    }
-	});
 }
 
 function bindEvents() {
@@ -71,7 +51,7 @@ function setFocusFactoryIdThenRenderRows(factoryId) {
 }
 
 function createWorkorderListThenRenderRows(type, searchKey) {
-	$.get(config.APIUrl + 'workorder/', {'factory_id': focusFactoryId}, function(workorderResponse) {
+	$.get(config.APIUrl + 'workorder/list/', {'factory_id': focusFactoryId}, function(workorderResponse) {
 		var displayData = []
 
 		for (var i in workorderResponse) {
@@ -83,9 +63,6 @@ function createWorkorderListThenRenderRows(type, searchKey) {
 					dict['customer_id'] = workorderResponse[i].customer_id;
 	        		// dict['factory_id'] = workorderResponse[i].work_order_records[j].factory_id;
 	        		dict['factory_id'] = focusFactoryId;
-	        		if (factoryList[dict['factory_id']]) {
-	        			dict['factory_name'] = factoryList[dict['factory_id']];
-	        		}
 
 					switch (workorderResponse[i].status) {
 						case "non-schedule":
@@ -103,7 +80,7 @@ function createWorkorderListThenRenderRows(type, searchKey) {
 						default:
 						break;
 					}
-					
+
 		    		displayData.push(dict);
 		    	// }
         	// }

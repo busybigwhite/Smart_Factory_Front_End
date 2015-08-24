@@ -7,6 +7,7 @@ var header = require('../includes/header');
 var config = require('../config/url');
 var templates = require('../realtime/templates');
 var queryParameter = require('../lib/helper/query-parameter');
+var redirect = require('../lib/helper/redirect');
 var loadingSpin = require('../lib/component/loading-spin');
 
 require('fancybox')($);
@@ -36,11 +37,22 @@ function initializeLoadingSpinner() {
 }
 
 function bindEvents() {
+    bindBackToListOnButton();
     bindFancyBoxEventOnPictures();
+}
+
+function bindBackToListOnButton() {
+    $livePicBlock.on('click', '.realtime-back-btn', backToList);
 }
 
 function bindFancyBoxEventOnPictures() {
     $livePicBlock.on('click', '.thumbnail', openFancyBoxManually)
+}
+
+function backToList() {
+    var image_view = queryParameter.get('image_view');
+
+    redirect('realtime', { image_view });
 }
 
 function openFancyBoxManually() {
