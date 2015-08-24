@@ -52,7 +52,7 @@ function userLogin(e){
 function setAuthority() {
 	$.get(config.APIUrl + 'me')
 	 .done(function(res){
-	 	Auth.set('authority', res.group);
+	 	Auth.setAuthority(res.group);
 	 	redirect('realtime');
 	 })
 }
