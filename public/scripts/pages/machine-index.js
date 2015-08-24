@@ -55,8 +55,8 @@ function getAvailabilityRateAddIntoArray(data) {
 
 	$.when(getAvailabilityRateArray(idArray))
 	 .done(function(result) {
-	 		for (var i = 0 ; i < result[0].length; i++) {
-	 			machineList[i].availability_rate = result[0][i].availability_rate;
+	 		for (var i = 0 ; i < result.length; i++) {
+	 			machineList[i].availability_rate = result[i].availability_rate;
 	 		}
 	 		initialView(machineList);
 	 })
