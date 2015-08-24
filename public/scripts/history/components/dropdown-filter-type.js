@@ -3,6 +3,7 @@
 var $ = window.jQuery = require('jquery');
 require('bootstrap/js/dropdown');
 
+var _ = require('lodash');
 var userId = require('../../config/auth');
 var config = require('../../config/url');
 var EventEmitter = require('wolfy87-eventemitter');

@@ -22,20 +22,20 @@
 			<li id="workorder-num">
 				<span class="info-name">工單編號</span>
 				<span class="info-value">
-					<input class="newOrder" type="text" name="workorder-num" value="" pattern="[A-Za-z0-9]{1,30}" title="輸入1~30個英數字">
+					<input class="newOrder" type="text" name="workorder-num" value="" pattern="[A-Za-z0-9]{1,}" title="輸入至少1個英數字" required>
 					<!-- <input class="newOrder" type="text" name="workorder-num" value="" readonly disabled> -->
 				</span>
 			</li>
 			<li id="order-num">
 				<span class="info-name">訂單編號</span>
 				<span class="info-value">
-					<input class="newOrder" type="text" name="order-num" value="" pattern="[A-Za-z0-9]{1,30}" title="輸入1~30個英數字">
+					<input class="newOrder" type="text" name="order-num" value="" pattern="[A-Za-z0-9]{1,}" title="輸入至少1個英數字" required>
 				</span>
 			</li>
 			<li id="customer-name">
-				<span class="info-name">客戶編號</span>
+				<span class="info-name">客戶名稱</span>
 				<span class="info-value">
-					<input class="newOrder" type="text" name="customer-name" value="">
+					<input class="newOrder" type="text" name="customer-name" value="" pattern="{1,}" required>
 				</span>
 			</li>
 			<li id="factory">
@@ -81,7 +81,7 @@
 			<li id="description">
 				<span class="info-name">說明</span>
 				<span class="info-value">
-					<input class="newOrder" type="text" name="description" value="" >
+					<input class="newOrder" type="text" name="description" value="" pattern="{1,}" required>
 				</span>
 			</li>
 			<li id="schedule-date">
@@ -94,7 +94,7 @@
 			<li id="order-amount">
 				<span class="info-name">目標生產數量</span>
 				<span class="info-value">
-					<input class="newOrder" type="text" name="order-amount" value="" pattern="[0-9]{1,30}" title="輸入數字">
+					<input class="newOrder" type="text" name="order-amount" value="" pattern="[0-9]{1,}" title="輸入數字" required>
 				</span>
 			</li>
 			<li id="type">
@@ -102,7 +102,7 @@
 				<span class="info-value">
 					<!-- <input class="newOrder" type="text" name="type" value=""> -->
 					<div class="dropdown-workorder-type">
-						<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" >
 							<span class="type-focus-name selected-option newOrder" selectname="type"></span>
 							<span class="caret"></span>
 						</button>
