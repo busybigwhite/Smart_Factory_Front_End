@@ -64,12 +64,14 @@ function bindSetFocusNameBlockEventOnSelector() {
 
 function setFocusValueBlock(target) {
 	var displayName = target.type==='click' ? $(this).text()
-											: target['name'] === undefined ? target.id
-																		   : target.name;
+											: target['serial_num'] !== undefined
+												? target.serial_num : target.name;
+
+	var shortName = _.trunc( _.trim(displayName), 18);
 
 	selectedValue = target.type==='click' ? $(this).data('id') : target.id;
 
-	$filterValueFocusName.text(displayName).data('id', selectedValue);
+	$filterValueFocusName.text(shortName).data('id', selectedValue);
 
 	emitter.emit('valueChanged', selectedValue);
 }
@@ -83,7 +85,7 @@ function renderDropdown(type) {
 		return;
 	}
 
-	var filterType = _.camelCase(type).toLowerCase().replace('id', 's');
+	var filterType = type.replace(/_/g, '').replace('id', 's').replace('name', 's');
 
 	if( filterValues[filterType].length ){
 	 	var filters = _.uniq( filterValues[filterType] );

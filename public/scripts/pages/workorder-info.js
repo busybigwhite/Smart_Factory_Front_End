@@ -35,7 +35,11 @@ var temp = parameters[0].split("=");
 var workorderID = temp[1];
 temp = parameters[1].split("=");
 var factoryID = temp[1];
+
 var token = auth.getToken();
+
+// var workorderID = "";
+// var factoryID = "F002";
 
 
 var today = new Date();
@@ -55,7 +59,6 @@ initialize();
 
 function initialize() {
 	header.include();
-	getFactoryList();
 	showInitView();
 	bindEvents();
 	initializeDatetimePicker();
@@ -129,10 +132,12 @@ function showInitView() {
 
 	api.getWorkOrderInfo(workorderID)
 		.done(function(data) {
-			console.log("GET Workorder res: ", data);
-			//get init data and store it
-			backupJdata = data;
-			$.each(data, fillList);
+			if (data.length > 0) {
+				console.log("GET Workorder res: ", data[0]);
+				//get init data and store it
+				backupJdata = data[0];
+				$.each(data[0], fillList);
+			}
 		})
 		 .fail(function(err) {
 		 	console.log("GET Workorder error: ", err);
@@ -146,6 +151,10 @@ function showInitView() {
 
 function fillList(key, value){
 	switch(key){
+		case "factory_id":
+			factoryID = value;
+			getFactoryList();
+			break;
 		case "status":
 			statusDropdown.setDropdownbyValue(key,value);
 			$('#'+api.transferKeyS2C(key)).find('p').text(statusDropdown.getDisplayName(value));
@@ -173,8 +182,9 @@ function saveData() {
 
 function saveChangedData(data) {
 	api.editWorkOrderInfo(workorderID, data)
+
 		 .done(function(data) {
-		 	console.log("EDIT Workorder Info res: ", data);
+		 	console.log("EDIT Workorder Info done: ", data);
 		 	api.goToWorkOrderIndex();
 		 })
 		 .fail(function(err) {
@@ -187,8 +197,9 @@ function saveChangedData(data) {
 
 
 function deleteWorkOrderInfo() {
-
-	api.deleteWorkOrder(workorderID,token)
+	var data={};
+	data._token = token;
+	api.deleteWorkOrder(workorderID,data)
 		 .done(function(data) {
 		 	console.log("DELETE Workorder res: ", data);
 		 	//back to list
@@ -210,8 +221,14 @@ function getChangedData() {
 
 		if (name) {
 			name = api.transferKeyC2S(name);
-			value = value ? value : '';
-			newData[name] = value;
+			if(name=="current_num"||name=="current_fail_num"||name=="abnormal_num"){
+				value = "disable";
+			}else{
+				value = value ? value : '';
+			}
+			if(value !="disable"){
+				newData[name] = value;
+			}
 
 		} else if ($dropdownSelected) {
 			var selectedName;
@@ -226,7 +243,7 @@ function getChangedData() {
 				case "status":
 					selectedValue = getStatusName();
 					break;
-				case "factory":
+				case "factory_id":
 					selectedValue = getFactoryId();
 					break;
 				case "produce_type":
@@ -239,16 +256,18 @@ function getChangedData() {
 					selectedValue = $reserveDatePicker.val();
 					break;
 				case "start_date":
-					selectedValue = $realProduceDatePicker.val();
+					// selectedValue = $realProduceDatePicker.val();
+					selectedValue = "disable";
 					break;
 				case "finish_date":
-					selectedValue = $realFinishDatePicker.val();
+					// selectedValue = $realFinishDatePicker.val();
+					selectedValue = "disable";
 					break;
 				default:
 					selectedValue = "";
 					break;
 			}
-			if(typeof selectedName!='undefined')
+			if(typeof selectedName!='undefined' && selectedValue!="disable" &&selectedValue!="")
 				newData[selectedName] = selectedValue;
 
 		} else {
@@ -259,14 +278,29 @@ function getChangedData() {
 	return newData;
 }
 
+
 function getStatusName() {
-	return statusDropdown.getSelectedStatus();
+	var cur_status = statusDropdown.getSelectedStatus();
+	if(typeof cur_status!='undefined')
+		return cur_status;
+	else
+		return "";
 }
 
 function getTypeName(){
-	return typeDropdown.getSelectedType();
+	var cur_type = typeDropdown.getSelectedType();
+	if(typeof cur_type!='undefined')
+		return cur_type;
+	else
+		return "";
 }
 
 function getFactoryId() {
-	return factoryDropdown.getSelectedFactoryId();
+
+	var cur_factoryid = factoryDropdown.getSelectedFactoryId();
+	console.log("getFactoryId = "+cur_factoryid);
+	if(typeof cur_factoryid!='undefined')
+		return cur_factoryid;
+	else
+		return "";
 }

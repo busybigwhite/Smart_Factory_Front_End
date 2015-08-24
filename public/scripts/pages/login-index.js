@@ -41,10 +41,21 @@ function userLogin(e){
 		$.post(config.APIUrl + 'auth/login?name=' + $userName.val() + '&password=' + $userPassword.val() + '&_token=' + $csrfToken.val())
 		 .done(function(res){
 			Auth.set($userName.val(), $csrfToken.val());
-			redirect('realtime');
+			setAuthority();
+		 })
+		 .fail(function(res){
+		 	res.status === 404 && alert('請確認帳號/密碼輸入是否正確');
 		 });
 	}
 };
+
+function setAuthority() {
+	$.get(config.APIUrl + 'me')
+	 .done(function(res){
+	 	Auth.setAuthority(res.group);
+	 	redirect('realtime');
+	 })
+}
 
 function validateForm(){
 	return true;

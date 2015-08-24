@@ -22,20 +22,20 @@
 			<li id="workorder-num">
 				<span class="info-name">工單編號</span>
 				<span class="info-value">
-					<!-- <input class="newOrder" type="text" name="workorder-num" value="" pattern="[A-Za-z0-9]{1,30}" title="輸入1~30個英數字"> -->
-					<input class="edit-mode" type="text" name="workorder-num" value="" readonly>
+					<input class="newOrder" type="text" name="workorder-num" value="" pattern="[A-Za-z0-9_-]{1,}" title="輸入至少1個英數字" required>
+					<!-- <input class="newOrder" type="text" name="workorder-num" value="" readonly disabled> -->
 				</span>
 			</li>
 			<li id="order-num">
 				<span class="info-name">訂單編號</span>
 				<span class="info-value">
-					<input class="newOrder" type="text" name="order-num" value="" pattern="[A-Za-z0-9]{1,30}" title="輸入1~30個英數字">
+					<input class="newOrder" type="text" name="order-num" value="" pattern="[A-Za-z0-9_-]{1,}" title="輸入至少1個英數字" required>
 				</span>
 			</li>
 			<li id="customer-name">
 				<span class="info-name">客戶名稱</span>
 				<span class="info-value">
-					<input class="newOrder" type="text" name="customer-name" value="">
+					<input class="newOrder" type="text" name="customer-name" value="" pattern="{1,}" required>
 				</span>
 			</li>
 			<li id="factory">
@@ -71,38 +71,38 @@
 		<h3 class="resume-header">詳細資訊</h3>
 		<ul>
 			<li id="input-date">
-				<span class="info-name">輸入日期</span>
+				<span class="info-name">訂單輸入日期</span>
 				<span class="info-value" style="position:relative">
 					<!-- <input id="inputDate" class="newOrder" type="text" name="input-date" value=""> -->
-					<input class="selected-option newOrder" type="text" id='workorder-inputDate-date-picker' selectname="input-date" data-date-format="YYYY/MM/DD HH:mm:ss" readonly/>
+					<input class="selected-option newOrder" type="text" id='workorder-inputDate-date-picker' selectname="input-date" data-date-format="YYYY/MM/DD HH:mm:ss" />
 	                <span class="workerorder-date-picker-btn fa fa-calendar"></span>
 				</span>
 			</li>
 			<li id="description">
 				<span class="info-name">說明</span>
 				<span class="info-value">
-					<input class="newOrder" type="text" name="description" value="" >
+					<input class="newOrder" type="text" name="description" value="" pattern="{1,}" required>
 				</span>
 			</li>
 			<li id="schedule-date">
-				<span class="info-name">預定生產時程</span>
+				<span class="info-name">預定排程日期</span>
 				<span class="info-value" style="position:relative">
 					<input class="selected-option newOrder" type="text" id='workorder-reserve-date-picker' selectname="schedule-date" data-date-format="YYYY/MM/DD HH:mm:ss" readonly/>
 	                <span class="workerorder-date-picker-btn fa fa-calendar"></span>
 				</span>
 			</li>
 			<li id="order-amount">
-				<span class="info-name">預定生產數量</span>
+				<span class="info-name">目標生產數量</span>
 				<span class="info-value">
-					<input class="newOrder" type="text" name="order-amount" value="" pattern="[0-9]{1,30}" title="輸入數字">
+					<input class="newOrder" type="text" name="order-amount" value="" pattern="[0-9]{1,}" title="輸入數字" required>
 				</span>
 			</li>
 			<li id="type">
-				<span class="info-name">類別</span>
+				<span class="info-name">生產類型</span>
 				<span class="info-value">
 					<!-- <input class="newOrder" type="text" name="type" value=""> -->
 					<div class="dropdown-workorder-type">
-						<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" >
 							<span class="type-focus-name selected-option newOrder" selectname="type"></span>
 							<span class="caret"></span>
 						</button>
@@ -111,36 +111,36 @@
 				</span>
 			</li>
 			<li id="real-produce-date">
-				<span class="info-name">實際開始生產日期</span>
+				<span class="info-name">實際開工日期</span>
 				<span class="info-value" style="position:relative">
 					<!-- <input class="newOrder" type="text" name="real-produce-date" value=""> -->
-					<input class="selected-option newOrder" type="text" id='workorder-real-produce-date-picker' selectname="real-produce-date" data-date-format="YYYY/MM/DD HH:mm:ss" readonly/>
+					<input class="selected-option newOrder" type="text" id='workorder-real-produce-date-picker' selectname="real-produce-date" data-date-format="YYYY/MM/DD HH:mm:ss" readonly disabled/>
 	                <span class="workerorder-date-picker-btn fa fa-calendar"></span>
 				</span>
 			</li>
 			<li id="real-amount">
-				<span class="info-name">實際完成數量</span>
+				<span class="info-name">目前完成次數</span>
 				<span class="info-value">
-					<input class="newOrder" type="text" name="real-amount" value="" pattern="[0-9]{1,30}" title="輸入數字">
+					<input class="newOrder" type="text" name="real-amount" value="" pattern="[0-9]{1,30}" title="輸入數字" readonly disabled/>
 				</span>
 			</li>
 			<li id="defective-amount">
-				<span class="info-name">不良品數量</span>
+				<span class="info-name">目前異常次數</span>
 				<span class="info-value">
-					<input class="newOrder" type="text" name="defective-amount" value="" pattern="[0-9]{1,30}" title="輸入數字">
+					<input class="newOrder" type="text" name="defective-amount" value="" pattern="[0-9]{1,30}" title="輸入數字" readonly disabled/>
 				</span>
 			</li>
 			<li id="abnormal-amount">
-				<span class="info-name">異常數量</span>
+				<span class="info-name">異常品數量</span>
 				<span class="info-value">
-					<input class="newOrder" type="text" name="abnormal-amount" value="" pattern="[0-9]{1,30}" title="輸入數字">
+					<input class="newOrder" type="text" name="abnormal-amount" value="" pattern="[0-9]{1,30}" title="輸入數字" readonly disabled/>
 				</span>
 			</li>
 			<li id="real-finish">
-				<span class="info-name">實際結案日期</span>
+				<span class="info-name">實際完成日期</span>
 				<span class="info-value" style="position:relative">
 					<!-- <input class="newOrder" type="text" name="real-finish" value=""> -->
-					<input class="selected-option newOrder" type="text" id='workorder-real-finish-date-picker' selectname="real-finish" data-date-format="YYYY/MM/DD HH:mm:ss" readonly/>
+					<input class="selected-option newOrder" type="text" id='workorder-real-finish-date-picker' selectname="real-finish" data-date-format="YYYY/MM/DD HH:mm:ss" readonly disabled/>
 	                <span class="workerorder-date-picker-btn fa fa-calendar"></span>
 				</span>
 			</li>

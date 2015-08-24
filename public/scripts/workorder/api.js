@@ -49,7 +49,7 @@ function deleteWorkOrder(id, token) {
 }
 
 function getWorkOrderInfo(id) {
-	return getData(wordorderApiUrl + id);
+	return getData(wordorderApiUrl + 'list?work_order_id=' + id);
 };
 
 function editWorkOrderInfo(id, data) {
@@ -90,9 +90,9 @@ function transferKeyS2C(key){
 			return "workorder-num";
 		case "order_id":
 			return "order-num";
-		case "customer_id":
+		case "customer_name":
 			return "customer-name";
-		case "factory":
+		case "factory_id":
 			return "factory";
 		case "status":
 			return "workorder-status";
@@ -126,9 +126,9 @@ function transferKeyC2S(key){
 		case "order-num":
 			return "order_id";
 		case "customer-name":
-			return "customer_id";
+			return "customer_name";
 		case "factory":
-			return "factory";
+			return "factory_id";
 		case "workorder-status":
 			return "status";
 		case "input-date":

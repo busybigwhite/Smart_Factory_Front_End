@@ -70,11 +70,11 @@ function createData() {
 function saveNewData(data) {
 	api.createWorkOrder(data)
 		 .done(function(data) { 
-		 	console.log("CREATE Machine res: ", data); 
+		 	console.log("CREATE workorder done: ", data); 
 		 	api.goToWorkOrderIndex();
 		 })
 		 .fail(function(err) { 
-		 	console.log("CREATE Machine error: ", err); 
+		 	console.log("CREATE workorder error: ", err); 
 		 	//TODO ??
 		 });
 }
@@ -87,9 +87,14 @@ function getChangedData() {
 		var $dropdownSelected = $(el).find('.selected-option');
 		if (name) {
 			name = api.transferKeyC2S(name);
-			value = value ? value : '';
-			newData[name] = value;
-
+			if(name=="current_num"||name=="current_fail_num"||name=="abnormal_num"){
+				value = "disable";
+			}else{
+				value = value ? value : '';
+			}
+			if(value !="disable"){
+				newData[name] = value;
+			}
 		} else if ($dropdownSelected) {
 			// var selectedName  = $dropdownSelected.attr('name');
 			var selectedName = api.transferKeyC2S($(el).attr('selectname'));
@@ -98,7 +103,7 @@ function getChangedData() {
 				case "status":
 					selectedValue = getStatusName();
 					break;
-				case "factory":
+				case "factory_id":
 					selectedValue = getFactoryId();
 					break;
 				case "produce_type":
@@ -111,16 +116,21 @@ function getChangedData() {
 					selectedValue = $reserveDatePicker.val();
 					break;
 				case "start_date":
-					selectedValue = $realProduceDatePicker.val();
+					// selectedValue = $realProduceDatePicker.val();
+					selectedValue = "disable";
 					break;
 				case "finish_date":
-					selectedValue = $realFinishDatePicker.val();
+					// selectedValue = $realFinishDatePicker.val();
+					selectedValue = "disable";
 					break;
 				default:
 					selectedValue = "";
 					break;
 			}
-			newData[selectedName] = selectedValue;
+			if(selectedValue != "disable" && selectedValue!=""){
+				newData[selectedName] = selectedValue;
+			}
+			
 
 		} else {
 			console.log('getChangedData error: missing some value');
@@ -131,15 +141,29 @@ function getChangedData() {
 }
 
 function getStatusName() {
-	return statusDropdown.getSelectedStatus();
+	var cur_status = statusDropdown.getSelectedStatus();
+	if(typeof cur_status!='undefined')
+		return cur_status;
+	else
+		return "";
 }
 
 function getTypeName(){
-	return typeDropdown.getSelectedType();
+	var cur_type = typeDropdown.getSelectedType();
+	if(typeof cur_type!='undefined')
+		return cur_type;
+	else
+		return "";
 }
 
 function getFactoryId() {
-	return factoryDropdown.getSelectedFactoryId();
+
+	var cur_factoryid = factoryDropdown.getSelectedFactoryId();
+
+	if(typeof cur_factoryid!='undefined')
+		return cur_factoryid;
+	else
+		return "";
 }
 
 
