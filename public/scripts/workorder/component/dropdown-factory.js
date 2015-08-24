@@ -63,8 +63,7 @@ function createFactoryListThenRenderRows() {
 	 .done(function(response){
 		var factoryListRows = renderFactoryDropdown({ factories : response });
 		$factoryList.empty().html( factoryListRows );
-		selectedFactoryId = "";//set default value null
-		// setFocusNameBlock(response[0]);
+		setFocusNameBlock(response[0]);
 	 });
 }
 
