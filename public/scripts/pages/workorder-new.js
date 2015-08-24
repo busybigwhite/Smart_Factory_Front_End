@@ -103,7 +103,7 @@ function getChangedData() {
 				case "status":
 					selectedValue = getStatusName();
 					break;
-				case "factory":
+				case "factory_id":
 					selectedValue = getFactoryId();
 					break;
 				case "produce_type":

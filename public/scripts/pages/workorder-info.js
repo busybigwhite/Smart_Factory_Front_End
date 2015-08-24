@@ -216,8 +216,14 @@ function getChangedData() {
 
 		if (name) {
 			name = api.transferKeyC2S(name);
-			value = value ? value : '';
-			newData[name] = value;
+			if(name=="current_num"||name=="current_fail_num"||name=="abnormal_num"){
+				value = "disable";
+			}else{
+				value = value ? value : '';
+			}
+			if(value !="disable"){
+				newData[name] = value;
+			}
 
 		} else if ($dropdownSelected) {
 			var selectedName;
@@ -232,7 +238,7 @@ function getChangedData() {
 				case "status":
 					selectedValue = getStatusName();
 					break;
-				case "factory":
+				case "factory_id":
 					selectedValue = getFactoryId();
 					break;
 				case "produce_type":
@@ -245,16 +251,18 @@ function getChangedData() {
 					selectedValue = $reserveDatePicker.val();
 					break;
 				case "start_date":
-					selectedValue = $realProduceDatePicker.val();
+					// selectedValue = $realProduceDatePicker.val();
+					selectedValue = "disable";
 					break;
 				case "finish_date":
-					selectedValue = $realFinishDatePicker.val();
+					// selectedValue = $realFinishDatePicker.val();
+					selectedValue = "disable";
 					break;
 				default:
 					selectedValue = "";
 					break;
 			}
-			if(typeof selectedName!='undefined')
+			if(typeof selectedName!='undefined' && selectedValue!="disable")
 				newData[selectedName] = selectedValue;
 
 		} else {
@@ -285,7 +293,7 @@ function getTypeName(){
 function getFactoryId() {
 
 	var cur_factoryid = factoryDropdown.getSelectedFactoryId();
-
+	console.log("getFactoryId = "+cur_factoryid);
 	if(typeof cur_factoryid!='undefined')
 		return cur_factoryid;
 	else
