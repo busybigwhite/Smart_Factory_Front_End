@@ -24,7 +24,7 @@ exports.renderTableList = function(infos) {
     <% }                                   %>
 
         </div>
-      	<div class="table-col"><%= info.customer_id %></div>
+      	<div class="table-col"><%= info.customer_name %></div>
       	<div class="table-col-sm"><%= info.target_num %></div>
       	<div class="table-col text-right"><%= info.start_date %></div>
       	<div class="table-col-sm"><%= info.current_num %>/<%= info.current_fail_num %></div>
@@ -78,7 +78,7 @@ exports.renderImageList = function(infos) {
             <li><%= info.work_order_records[0].mold_serial_num %></li>
     <% }                                   %>
 
-            <li><%= info.customer_id %></li>
+            <li><%= info.customer_name %></li>
             <li><%= info.target_num %></li>
             <li><%= info.start_date %></li>
             <li><%= info.current_num %>/<%= info.current_fail_num %></li>

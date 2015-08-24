@@ -83,7 +83,7 @@ function renderDropdown(type) {
 		return;
 	}
 
-	var filterType = _.camelCase(type).toLowerCase().replace('id', 's');
+	var filterType = type.replace(/_/g, '').replace('id', 's').replace('name', 's');
 
 	if( filterValues[filterType].length ){
 	 	var filters = _.uniq( filterValues[filterType] );
