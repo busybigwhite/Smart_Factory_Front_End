@@ -59,6 +59,10 @@ var isEditMode   = false;
 var isCreateMode = false;
 var moldId;
 var originalData;
+var hasSaveChangedData  = false;
+var hasSaveNewRecord    = false;
+var hasSaveDeleteRecord = false;
+var hasSaveNewData      = false;
 
 
 initialize();
@@ -167,45 +171,77 @@ function saveData() {
 	} else {
 		console.log('mold info page has error: Undefined Mode');
 	}
-	// return false;
 }
 
 function saveChangedData() {
+	hasSaveChangedData = false;
 	var data = getInfoValue();
 	api.editMoldInfo(moldId, data)
 		 .done(function(data) {
-				api.goToMoldIndex();
+				hasSaveChangedData = true;
+				ifAllSavedThenGotoIndexPage();
 			})
 		 .fail(function(err) { console.log("EDIT Mold Info error: ", err); });
 }
 
 function saveNewData() {
+	hasSaveNewData = false;
 	var data = getInfoValue();
 	api.createMold(data)
 		 .done(function(data) {
-				api.goToMoldIndex();
+				hasSaveNewData = true;
+				ifAllSavedThenGotoIndexPage();
 			})
 		 .fail(function(err) { console.log("CREATE Mold error: ", err); });
 }
 
 function saveNewRecord() {
+	hasSaveNewRecord = false;
 	var newRecords = getNewRecordList();
 	if (newRecords && newRecords.length !== 0) {
 		api.createMoldRecord(moldId, newRecords)
-			 .done(function(data) { console.log("CREATE Mold Record res: ", data); })
+			 .done(function(data) {
+					hasSaveNewRecord = true;
+					ifAllSavedThenGotoIndexPage();
+				})
 			 .fail(function(err) { console.log("CREATE Mold Record error: ", err); });
+	} else {
+		hasSaveNewRecord = true;
+		ifAllSavedThenGotoIndexPage();
 	}
 }
 
 function saveDeleteRecord() {
+	hasSaveDeleteRecord = false;
 	var deleteRecords = getDeleteRecordList();
 	if (deleteRecords && deleteRecords.length !== 0) {
 		api.deleteMoldRecord(moldId, deleteRecords)
-			 .done(function(data) { console.log("CREATE Mold Record res: ", data); })
+			 .done(function(data) {
+					hasSaveDeleteRecord = true;
+					ifAllSavedThenGotoIndexPage();
+				})
 			 .fail(function(err) { console.log("CREATE Mold Record error: ", err); });
+	} else {
+		hasSaveDeleteRecord = true;
+		ifAllSavedThenGotoIndexPage();
 	}
 }
 
+function ifAllSavedThenGotoIndexPage() {
+	if ( getAllSavedCondition() ) api.goToMoldIndex();
+}
+
+function getAllSavedCondition() {
+	return isCreateMode ? getCreateModeCondition() : getEditModeCondition() ;
+}
+
+function getCreateModeCondition() {
+	return hasSaveNewData && hasSaveNewRecord;
+}
+
+function getEditModeCondition() {
+	return hasSaveChangedData && hasSaveNewRecord && hasSaveDeleteRecord;
+}
 
 function deleteMold() {
 	api.deleteMold(moldId)
