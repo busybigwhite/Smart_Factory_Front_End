@@ -148,7 +148,7 @@ function showCreateMode() {
 	$viewModeCollection.addClass('creating');
 	$editModeCollection.addClass('creating');
 	$moldPicsBlock.addClass('creating');
-	maintainRecordTable.setEditMode(true);
+	maintainRecordTable.setEditMode(false);
 	maintainPeriodDropdown.setDefault();
 	noticeedPersonDropdown.setDefault();
 }
@@ -179,7 +179,7 @@ function saveData() {
 				api.goToMoldIndex();
 			})
 		 .fail(function(jqXHR, textStatus, errorThrown) {
-		 		console.log('machine info page save data error: ', jqXHR, textStatus, errorThrown );
+		 		console.log('mold info page save data error: ', jqXHR, textStatus, errorThrown );
 		 });
 
 	} else {

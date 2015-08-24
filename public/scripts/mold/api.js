@@ -77,14 +77,20 @@ function editMoldInfo(id, data) {
 	return editData(moldApiUrl + '/' + id, data);
 }
 
-function createMoldRecord(id, data) {
-	data.id = id;
-	return createData(moldApiUrl + '/maintain', data);
+function createMoldRecord(id, array) {
+	var pArray = array.map(function(obj) {
+		return createData(moldApiUrl + '/' + id + '/maintain', obj);
+	});
+
+	return $.when(pArray);
 }
 
-function deleteMoldRecord(id, data) {
-	data.id = id;
-	return deleteData(moldApiUrl + '/maintain', data);
+function deleteMoldRecord(id, array) {
+	var pArray = array.map(function(obj) {
+		return deleteData(moldApiUrl + '/' + id + '/maintain', obj);
+	});
+
+	return $.when(pArray);
 }
 
 
