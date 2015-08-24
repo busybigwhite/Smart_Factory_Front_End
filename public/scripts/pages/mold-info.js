@@ -155,18 +155,14 @@ function preventSubmitOnInputEnter(e) {
 }
 
 function saveData() {
-	var data = getAllInfoData();
-	console.log(data);
 	if (isEditMode && !isCreateMode) {
-		saveChangedData(data.info);
-		saveNewRecord(data.newRecords);
-		saveDeleteRecord(data.deleteRecords);
-		console.log('Changed Data : ', data);
+		saveChangedData();
+		saveNewRecord();
+		saveDeleteRecord();
 
 	} else if (!isEditMode && isCreateMode) {
-		saveNewData(data.info);
-		saveNewRecord(data.newRecords);
-		console.log('New Data : ', data);
+		saveNewData();
+		saveNewRecord();
 
 	} else {
 		console.log('mold info page has error: Undefined Mode');
@@ -174,7 +170,8 @@ function saveData() {
 	// return false;
 }
 
-function saveChangedData(data) {
+function saveChangedData() {
+	var data = getInfoValue();
 	api.editMoldInfo(moldId, data)
 		 .done(function(data) {
 				api.goToMoldIndex();
@@ -182,7 +179,8 @@ function saveChangedData(data) {
 		 .fail(function(err) { console.log("EDIT Mold Info error: ", err); });
 }
 
-function saveNewData(data) {
+function saveNewData() {
+	var data = getInfoValue();
 	api.createMold(data)
 		 .done(function(data) {
 				api.goToMoldIndex();
@@ -190,16 +188,22 @@ function saveNewData(data) {
 		 .fail(function(err) { console.log("CREATE Mold error: ", err); });
 }
 
-function saveNewRecord(data) {
-	api.createMoldRecord(moldId, data)
-		 .done(function(data) { console.log("CREATE Mold Record res: ", data); })
-		 .fail(function(err) { console.log("CREATE Mold Record error: ", err); });
+function saveNewRecord() {
+	var newRecords = getNewRecordList();
+	if (newRecords && newRecords.length !== 0) {
+		api.createMoldRecord(moldId, newRecords)
+			 .done(function(data) { console.log("CREATE Mold Record res: ", data); })
+			 .fail(function(err) { console.log("CREATE Mold Record error: ", err); });
+	}
 }
 
-function saveDeleteRecord(data) {
-	api.deleteMoldRecord(moldId, data)
-		 .done(function(data) { console.log("CREATE Mold Record res: ", data); })
-		 .fail(function(err) { console.log("CREATE Mold Record error: ", err); });
+function saveDeleteRecord() {
+	var deleteRecords = getDeleteRecordList();
+	if (deleteRecords && deleteRecords.length !== 0) {
+		api.deleteMoldRecord(moldId, deleteRecords)
+			 .done(function(data) { console.log("CREATE Mold Record res: ", data); })
+			 .fail(function(err) { console.log("CREATE Mold Record error: ", err); });
+	}
 }
 
 
@@ -304,14 +308,6 @@ function initPics(data) {
 	var fakeSrc = 'http://placehold.it/150x150';
 	moldPicUploadBlock.setImageOriginalSrc(fakeSrc);
 	productPicUploadBlock.setImageOriginalSrc(fakeSrc);
-}
-
-function getAllInfoData() {
-	var data = {};
-	data.info = getInfoValue();
-	data.newRecords = getNewRecordList();
-	data.deleteRecords = getDeleteRecordList();
-	return data;
 }
 
 function getInfoValue() {
