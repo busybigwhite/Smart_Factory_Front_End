@@ -60,7 +60,7 @@ function createWorkorderListThenRenderRows(type, searchKey) {
 					var dict = {}
 					dict['id'] = workorderResponse[i].id;
 					dict['order_id'] = workorderResponse[i].order_id;
-					dict['customer_id'] = workorderResponse[i].customer_id;
+					dict['customer_name'] = workorderResponse[i].customer_name;
 	        		// dict['factory_id'] = workorderResponse[i].work_order_records[j].factory_id;
 	        		dict['factory_id'] = focusFactoryId;
 
