@@ -90,7 +90,7 @@ function transferKeyS2C(key){
 			return "workorder-num";
 		case "order_id":
 			return "order-num";
-		case "customer_id":
+		case "customer_name":
 			return "customer-name";
 		case "factory":
 			return "factory";
@@ -126,7 +126,7 @@ function transferKeyC2S(key){
 		case "order-num":
 			return "order_id";
 		case "customer-name":
-			return "customer_id";
+			return "customer_name";
 		case "factory":
 			return "factory";
 		case "workorder-status":
