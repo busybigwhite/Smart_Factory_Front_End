@@ -59,7 +59,6 @@ initialize();
 
 function initialize() {
 	header.include();
-	getFactoryList();
 	showInitView();
 	bindEvents();
 	initializeDatetimePicker();
@@ -150,6 +149,10 @@ function showInitView() {
 
 function fillList(key, value){
 	switch(key){
+		case "factory_id":
+			factoryID = value;
+			getFactoryList();
+			break;
 		case "status":
 			statusDropdown.setDropdownbyValue(key,value);
 			$('#'+api.transferKeyS2C(key)).find('p').text(statusDropdown.getDisplayName(value));
