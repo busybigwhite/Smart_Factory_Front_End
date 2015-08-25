@@ -32,13 +32,13 @@ exports.renderTableList = function(infos) {
       	<div class="table-col-lg">
 
     <% if(info.work_order_records.length){ %>
-        		<input class="realtime-showpic-btn" value="即時" type="button" data-type="current" data-info=<%= info.id %>/<%= info.work_order_records[0].machine_id %>/<%= info.work_order_records[0].mold_id %> />
-          	<input class="realtime-showpic-btn" value="安全" type="button" data-type="normal" data-info=<%= info.id %>/<%= info.work_order_records[0].machine_id %>/<%= info.work_order_records[0].mold_id %> />
-          	<input class="realtime-showpic-btn" value="異常" type="button" data-type="error" data-info=<%= info.id %>/<%= info.work_order_records[0].machine_id %>/<%= info.work_order_records[0].mold_id %> />
+        		<input class="realtime-showpic-btn" value="即時" type="button" data-type="current" data-workid=<%= info.id %> data-info=<%= info.serial_num %>/<%= info.work_order_records[0].machine_serial_num %>/<%= info.work_order_records[0].mold_serial_num %> />
+          	<input class="realtime-showpic-btn" value="安全" type="button" data-type="normal" data-workid=<%= info.id %> data-info=<%= info.serial_num %>/<%= info.work_order_records[0].machine_serial_num %>/<%= info.work_order_records[0].mold_serial_num %> />
+          	<input class="realtime-showpic-btn" value="異常" type="button" data-type="error" data-workid=<%= info.id %> data-info=<%= info.serial_num %>/<%= info.work_order_records[0].machine_serial_num %>/<%= info.work_order_records[0].mold_serial_num %> />
     <% }else {                              %>
-              <input class="realtime-showpic-btn" value="即時" type="button" data-type="current" data-info=<%= info.id %> />
-              <input class="realtime-showpic-btn" value="安全" type="button" data-type="normal" data-info=<%= info.id %> />
-              <input class="realtime-showpic-btn" value="異常" type="button" data-type="error" data-info=<%= info.id %> />
+            <input class="realtime-showpic-btn" value="即時" type="button" data-type="current" data-workid=<%= info.id %> data-info=<%= info.serial_num %> />
+            <input class="realtime-showpic-btn" value="安全" type="button" data-type="normal" data-workid=<%= info.id %> data-info=<%= info.serial_num %> />
+            <input class="realtime-showpic-btn" value="異常" type="button" data-type="error" data-workid=<%= info.id %> data-info=<%= info.serial_num %> />
     <% }                                    %>
 
       	</div>
@@ -86,13 +86,13 @@ exports.renderImageList = function(infos) {
           </ul>
           <div class="realtime-img-button-group">
     <% if(info.work_order_records.length){ %>
-            <input class="realtime-showpic-btn img-mode" value="即時圖樣" type="button" data-type="current" data-info=<%= info.id %>/<%= info.work_order_records[0].machine_id %>/<%= info.work_order_records[0].mold_id %> />
-            <input class="realtime-showpic-btn img-mode" value="安全樣本" type="button" data-type="normal" data-info=<%= info.id %>/<%= info.work_order_records[0].machine_id %>/<%= info.work_order_records[0].mold_id %> />
-            <input class="realtime-showpic-btn img-mode" value="異常圖樣" type="button" data-type="error" data-info=<%= info.id %>/<%= info.work_order_records[0].machine_id %>/<%= info.work_order_records[0].mold_id %> />
+            <input class="realtime-showpic-btn img-mode" value="即時圖樣" type="button" data-type="current" data-workid=<%= info.id %> data-info=<%= info.serial_num %>/<%= info.work_order_records[0].machine_serial_num %>/<%= info.work_order_records[0].mold_serial_num %> />
+            <input class="realtime-showpic-btn img-mode" value="安全樣本" type="button" data-type="normal" data-workid=<%= info.id %> data-info=<%= info.serial_num %>/<%= info.work_order_records[0].machine_serial_num %>/<%= info.work_order_records[0].mold_serial_num %> />
+            <input class="realtime-showpic-btn img-mode" value="異常圖樣" type="button" data-type="error" data-workid=<%= info.id %> data-info=<%= info.serial_num %>/<%= info.work_order_records[0].machine_serial_num %>/<%= info.work_order_records[0].mold_serial_num %> />
     <% }else {                              %>
-            <input class="realtime-showpic-btn img-mode" value="即時圖樣" type="button" data-type="current" data-info=<%= info.id %> />
-            <input class="realtime-showpic-btn img-mode" value="安全樣本" type="button" data-type="normal" data-info=<%= info.id %> />
-            <input class="realtime-showpic-btn img-mode" value="異常圖樣" type="button" data-type="error" data-info=<%= info.id %> />
+            <input class="realtime-showpic-btn img-mode" value="即時圖樣" type="button" data-type="current" data-workid=<%= info.id %> data-info=<%= info.serial_num %> />
+            <input class="realtime-showpic-btn img-mode" value="安全樣本" type="button" data-type="normal" data-workid=<%= info.id %> data-info=<%= info.serial_num %> />
+            <input class="realtime-showpic-btn img-mode" value="異常圖樣" type="button" data-type="error" data-workid=<%= info.id %> data-info=<%= info.serial_num %> />
     <% }                                    %>
           </div>
         </div>

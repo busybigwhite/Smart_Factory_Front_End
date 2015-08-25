@@ -50,7 +50,10 @@ exports.renderHeatmap = function(heatmapUrls) {
 
   var imgTemp = _.template(
    `<% _.forEach(heatmapUrls, function(heatmapUrl) {  %>
-      <img src=api/pic/<%= heatmapUrl %>>
+      <div class="history-heatmap-block">
+        <img src=api/pic/<%= heatmapUrl %>>
+        <span class="history-heatmap-label">工單編號：</span>
+      </div>
     <% });                                            %>`
   );
 

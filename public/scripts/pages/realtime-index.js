@@ -139,7 +139,7 @@ function searchByFilter(){
 function redirectToPicPage() {
 	var title = $(this).data('info');
 	var type = $(this).data('type');
-	var work_order_id = _.isString(title) ? title.split('/')[0] : title;
+	var work_order_id = $(this).data('workid');
 	var image_view = isImageMode;
 
 	redirect('realtimePic', { work_order_id, type, title, image_view });

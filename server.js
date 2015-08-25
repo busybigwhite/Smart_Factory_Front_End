@@ -59,7 +59,7 @@ app.get('/api/history/filter', function(req, res) {
 app.get('/api/history/list', function(req, res) {
 	res.send(data.historyInfos);
 });
-app.get('/api/pic/heatmap/list', function(req, res) {
+app.get('/api/pic/heatmap/list/1', function(req, res) {
 	res.send(data.heatmapUrl);
 });
 
