@@ -24,7 +24,7 @@ function getInitialData() {
 	console.log('FactoryId : ' + ID);
 	api.setFactoryId(ID);
 	api.getMachineList()
-		 .done(initialView)
+		 .done(getAvailabilityRateAddIntoArray)
 		 .fail(function(err) { console.log("GET Machine List error: ", err); });
 }
 
@@ -47,20 +47,22 @@ function getFactoryId() {
 	return factoryDropdown.getSelectedFactoryId();
 }
 
-function initialView(data) {
+function getAvailabilityRateAddIntoArray(data) {
 	var machineList = data;
-
-	clearTableList();
-	for (var i = 0 ; i < machineList.length; i++) {
-		getNextAvailabilityRateThenRenderList(machineList[i]);
-	}
-}
-
-function getNextAvailabilityRateThenRenderList(list) {
-	api.getAvailabilityRate(list.id).done(function(result) {
-		list.availability_rate = result.availability_rate;
-		renderView(list);
+	var idArray = machineList.map(function(obj) {
+		return obj.id;
 	});
+
+	$.when(getAvailabilityRateArray(idArray))
+	 .done(function(result) {
+	 		for (var i = 0 ; i < result.length; i++) {
+	 			machineList[i].availability_rate = result[i].availability_rate;
+	 		}
+	 		initialView(machineList);
+	 })
+	 .fail(function(jqXHR, textStatus, errorThrown) {
+	 		console.log('machine index page get Availability Rate error: ', jqXHR, textStatus, errorThrown );
+	 });
 }
 
 function getAvailabilityRateArray(idArray) {
@@ -70,11 +72,7 @@ function getAvailabilityRateArray(idArray) {
 	return aArray;
 }
 
-function clearTableList() {
-	$machineTableBody.empty();
-}
-
-function renderView(array) {
+function initialView(array) {
 	var tableListRows = template.render({ infos : array});
-	$machineTableBody.append( tableListRows );
+	$machineTableBody.empty().append( tableListRows );
 }
