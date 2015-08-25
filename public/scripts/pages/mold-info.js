@@ -214,7 +214,7 @@ function saveNewRecord() {
 function saveDeleteRecord() {
 	var deleteRecords = getDeleteRecordList();
 	if (deleteRecords && deleteRecords.length !== 0) {
-		return api.deleteMoldRecord(machineId, deleteRecords);
+		return api.deleteMoldRecord(moldId, deleteRecords);
 
 	} else {
 		var deferred = $.Deferred();

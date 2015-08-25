@@ -91,7 +91,7 @@ function createMachineRecord(id, array) {
 function deleteMachineRecord(id, array) {
 
 	var pArray = array.map(function(obj) {
-		return deleteData(machineApiUrl + '/' + id + '/maintain', obj);
+		return deleteData(machineApiUrl + '/' + id + '/maintain/' + obj.id, obj);
 	});
 
 	return $.when(pArray);
