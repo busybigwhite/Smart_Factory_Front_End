@@ -29,6 +29,7 @@ var $serialNumber  = $('#mold-serial-num');
 var $name          = $('#mold-name');
 var $createdAt     = $('#mold-created-at');
 var $weight        = $('#mold-weight');
+var $moldType      = $('#mold-type');
 var $manufacturer  = $('#mold-manufacturer');
 var $lifetime      = $('#mold-lifetime');
 var $currentUsage  = $('#mold-current-usage');
@@ -147,8 +148,8 @@ function showCreateMode() {
 	$viewModeCollection.addClass('creating');
 	$editModeCollection.addClass('creating');
 	$moldPicsBlock.addClass('creating');
-	maintainRecordTable.setEditMode(true);
-	maintainPeriodDropdown.setDefaultType();
+	maintainRecordTable.setEditMode(false);
+	maintainPeriodDropdown.setDefault();
 	noticeedPersonDropdown.setDefault();
 }
 
@@ -178,12 +179,13 @@ function saveData() {
 				api.goToMoldIndex();
 			})
 		 .fail(function(jqXHR, textStatus, errorThrown) {
-		 		console.log('machine info page save data error: ', jqXHR, textStatus, errorThrown );
+		 		console.log('mold info page save data error: ', jqXHR, textStatus, errorThrown );
 		 });
 
 	} else {
 		console.log('mold info page has error: Undefined Mode');
 	}
+	return false;
 }
 
 function saveChangedData() {
@@ -268,6 +270,9 @@ function initBaseInfo(data) {
 
 	$weight.find('.view-mode').text(data['weight']);
 	$weight.find('.edit-mode').val(data['weight']);
+
+	$moldType.find('.view-mode').text(data['type']);
+	$moldType.find('.edit-mode').val(data['type']);
 }
 
 function initResumeInfo(data) {
@@ -293,7 +298,7 @@ function initResumeInfo(data) {
 function initialNoticedName(data) {
 	if (noticedId) {
 		_.forEach(data, function(value, key) {
-			if (key === noticedId) {
+			if (value.id === noticedId) {
 				setUserName(value.name);
 				return;
 			}
@@ -305,7 +310,7 @@ function initialNoticedName(data) {
 
 function setNoticedId(id) {
 	_.forEach(userList, function(value, key) {
-		if (key === id) {
+		if (value.id === id) {
 			setUserName(value.name);
 			return;
 		}
@@ -318,10 +323,11 @@ function setUserName(name) {
 
 
 function initPics(data) {
-	// ToFix:
-	var fakeSrc = 'http://placehold.it/150x150';
-	moldPicUploadBlock.setImageOriginalSrc(fakeSrc);
-	productPicUploadBlock.setImageOriginalSrc(fakeSrc);
+	var picApiUrl  = api.getMoldPicApiUrl();
+	var picMold    = data['mold_pic']    ? picApiUrl + data['mold_pic'] : '' ;
+	var picProduct = data['product_pic'] ? picApiUrl + data['product_pic'] : '' ;
+	moldPicUploadBlock.setImageOriginalSrc(picMold);
+	productPicUploadBlock.setImageOriginalSrc(picProduct);
 }
 
 function getInfoValue() {

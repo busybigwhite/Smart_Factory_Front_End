@@ -132,10 +132,12 @@ function showInitView() {
 
 	api.getWorkOrderInfo(workorderID)
 		.done(function(data) {
-			console.log("GET Workorder res: ", data);
-			//get init data and store it
-			backupJdata = data;
-			$.each(data, fillList);
+			if (data.length > 0) {
+				console.log("GET Workorder res: ", data[0]);
+				//get init data and store it
+				backupJdata = data[0];
+				$.each(data[0], fillList);
+			}
 		})
 		 .fail(function(err) {
 		 	console.log("GET Workorder error: ", err);

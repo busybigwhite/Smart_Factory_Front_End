@@ -112,7 +112,7 @@ function createData(url, data) {
 }
 
 function deleteData(url, data) {
-	return ajax('DELETE', url);
+	return ajax('DELETE', url, data);
 }
 
 function ajax(method, url, data) {
