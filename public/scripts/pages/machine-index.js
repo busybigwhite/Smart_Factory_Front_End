@@ -15,8 +15,13 @@ initialize();
 
 function initialize() {
 	header.include();
-	getInitialData();
 	bindEvents();
+}
+
+function bindEvents() {
+	factoryDropdown.emitter.on('factoryChanged', getInitialData);
+	$machineNewBtn.on('click', gotoMachineNewInfoPage);
+	$machineTable.on('click', '.detail-info-button', gotoMachineDetailInfoPage);
 }
 
 function getInitialData() {
@@ -26,12 +31,6 @@ function getInitialData() {
 	api.getMachineList()
 		 .done(getAvailabilityRateAddIntoArray)
 		 .fail(function(err) { console.log("GET Machine List error: ", err); });
-}
-
-function bindEvents() {
-	$machineNewBtn.on('click', gotoMachineNewInfoPage);
-	$machineTable.on('click', '.detail-info-button', gotoMachineDetailInfoPage);
-	factoryDropdown.emitter.on('factoryChanged', getInitialData);
 }
 
 function gotoMachineNewInfoPage() {
