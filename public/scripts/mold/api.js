@@ -87,7 +87,7 @@ function createMoldRecord(id, array) {
 
 function deleteMoldRecord(id, array) {
 	var pArray = array.map(function(obj) {
-		return deleteData(moldApiUrl + '/' + id + '/maintain', obj);
+		return deleteData(moldApiUrl + '/' + id + '/maintain/' + obj.id, obj);
 	});
 
 	return $.when(pArray);
