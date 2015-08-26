@@ -156,7 +156,7 @@ function ajax(method, url, data) {
 	var ajaxOpts = /*isContainPics ? assign(opts, picOpt, beforeSendOpt) : */assign(opts, beforeSendOpt) ;
 
 	$.ajaxSetup({
-        headers: { 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content') }
+        headers: { 'X-CSRF-TOKEN': csrfToken }
     });
 
 	return $.ajax(ajaxOpts);
