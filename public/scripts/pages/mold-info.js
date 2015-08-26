@@ -161,7 +161,10 @@ function preventSubmitOnInputEnter(e) {
 	}
 }
 
-function saveData() {
+function saveData(e) {
+
+	e.preventDefault();
+
 	if (isEditMode && !isCreateMode) {
 
 		$.when( saveChangedData(), saveNewRecord(), saveDeleteRecord() )
