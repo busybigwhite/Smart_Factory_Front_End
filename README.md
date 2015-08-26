@@ -6,7 +6,8 @@ npm install
 
 sudo npm install -g gulp
 
-// build css
+// build css * 2
+gulp less
 gulp less
 
 // build js

@@ -166,10 +166,18 @@ function displayImageBlock(infos, type) {
 }
 
 function getHeatmap(id) {
+	var group = [];
 
 	$.get(config.APIUrl + 'pic/heatmap/list/' + id)
-	 .done(function(response){
-	 	var heatmap = templates.renderHeatmap({ heatmapUrls: response });
+	 .done(function(res){
+
+	 	if( _.isArray(res) ){
+            group = res;
+        }else {
+            group.push(res);
+        }
+
+	 	var heatmap = templates.renderHeatmap({ heatmapUrls: group });
 
 		$imageBlock.append( heatmap ).removeClass('hidden');
 

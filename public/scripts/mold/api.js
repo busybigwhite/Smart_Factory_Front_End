@@ -129,7 +129,7 @@ function ajax(method, url, data) {
 	var opts = {
 		method: method,
 		url: url,
-		data: data,
+		data: data
 		// cache: false, //aviod ie bug if necessary
 		// timeout: 30000, //ms
 	};
