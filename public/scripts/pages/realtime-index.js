@@ -4,6 +4,7 @@ var _ = require('lodash');
 var header = require('../includes/header');
 var userId = require('../config/auth');
 var config = require('../config/url');
+var commonConfig = require('../config/common');
 var queryParameter = require('../lib/helper/query-parameter');
 var redirect = require('../lib/helper/redirect');
 var factoryDropdown = require('../lib/component/dropdown-factory');
@@ -13,7 +14,7 @@ var templates = require('../realtime/templates');
 var isImageMode;
 var focusFactoryId = undefined;
 var spinner;
-
+var reloadTimer;
 
 /* DOM */
 var $modeFocus = $('#realtime-mode-focus');
@@ -34,6 +35,7 @@ function initialize() {
 	initializeLoadingSpinner();
 	bindEvents();
 	setViewMode();
+	setReloadTimer();
 
 	$filterItem.eq(0).trigger('click');
 }
@@ -148,4 +150,8 @@ function redirectToPicPage() {
 function setViewMode() {
 	queryParameter.get('image_view') === "1" ? $imageModeSwitcher.trigger('click')
 											 : $tableModeSwitcher.trigger('click');
+}
+
+function setReloadTimer() {
+	setTimeout(function(){ window.location.reload() }, commonConfig.realtimeReloadTime);
 }

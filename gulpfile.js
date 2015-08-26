@@ -13,15 +13,15 @@ var minifyCss = require('gulp-minify-css');
 var base = 'public/';
 
 var paths = {
-    lessGlob: base + 'styles/less/**/*.less',
-	mainLess: base + 'styles/less/style.less',
-    mainCssDir: base + 'styles',
-    cssGlob: base + 'styles/*.css',
-	destDir: base + 'build',
-	destCssDir: base + 'build',
-	jsGlob: base + 'scripts/pages/*.js',
-	destJsDir: base + 'build/bundle',
-	destJsGlob: base + 'build/bundle/*.js'
+  lessGlob: base + 'styles/less/**/*.less',
+  mainLess: base + 'styles/less/style.less',
+  mainCssDir: base + 'styles',
+  cssGlob: base + 'styles/*.css',
+  destDir: base + 'build',
+  destCssDir: base + 'build',
+  jsGlob: base + 'scripts/pages/*.js',
+  destJsDir: base + 'build/bundle',
+  destJsGlob: base + 'build/bundle/*.js'
 };
 
 gulp.task('connect', function () {

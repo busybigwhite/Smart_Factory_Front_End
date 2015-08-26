@@ -19,19 +19,6 @@ var portDisplay   = (port === 80) ? '' : ':' + port;
 
 var base          = exports.baseUrl = `${protocol}://${hostname}${portDisplay}`;
 
-// var projectName   = exports.projectName = 'backend';
-
-// var restNamespace = exports.restNamespace = 'rest';
-
-// exports.usersUrl     = `${base}/${projectName}/${restNamespace}/users/`;
-// exports.membersUrl   = `${base}/${projectName}/${restNamespace}/members/`;
-// exports.productsUrl  = `${base}/${projectName}/${restNamespace}/products/`;
-// exports.devicesUrl   = `${base}/${projectName}/${restNamespace}/devices/`;
-// exports.firmwaresUrl = `${base}/${projectName}/${restNamespace}/firmwares/`;
-// exports.languagesUrl = `${base}/${projectName}/${restNamespace}/languages/`;
-// exports.eventsUrl    = `${base}/${projectName}/${restNamespace}/events/`;
-// exports.publishesUrl = `${base}/${projectName}/${restNamespace}/publishes/`;
-
 exports.loginUrl  		= `${base}/login/`;
 exports.realtimeUrl  	= `${base}/realtime/`;
 exports.realtimePicUrl  = `${base}/realtime/listpic`;

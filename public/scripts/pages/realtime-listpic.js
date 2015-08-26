@@ -5,6 +5,7 @@ var _ = require('lodash');
 var auth = require('../config/auth');
 var header = require('../includes/header');
 var config = require('../config/url');
+var commonConfig = require('../config/common');
 var templates = require('../realtime/templates');
 var queryParameter = require('../lib/helper/query-parameter');
 var redirect = require('../lib/helper/redirect');
@@ -16,7 +17,9 @@ require('fancybox')($);
 /* DOM */
 var $livePicBlock = $('#realtime-pic-block');
 var $navTitle = $('#realtime-pic-title');
+
 var spinner;
+var reloadTimer;
 var token = auth.getToken();
 
 exports = module.exports = {};
@@ -28,6 +31,7 @@ function initialize() {
     initializeLoadingSpinner();
     bindEvents();
     getPictureListAndRenderRow();
+    setReloadTimer();
 }
 
 function initializeLoadingSpinner() {
@@ -118,4 +122,12 @@ function renderPictureRows(pictures) {
     var picList = templates.renderPicList({ pictures : pictures });
 
     $('.realtime-pic-item-block').last().append( picList );
+}
+
+function setReloadTimer() {
+
+    var type = queryParameter.get('type');
+
+    type === 'current' &&
+        setTimeout(function(){ window.location.reload() }, commonConfig.currentPicReloadTime);
 }
