@@ -114,7 +114,7 @@ function deleteData(url, data) {
 function ajax(method, url, data) {
 	var data = assign({}, data); // prevent data is undefined
 	data.factory_id = factoryId;
-	data['_token'] = token;
+	// data['_token'] = token;
 
 	// var isContainPics = (!!data['mold_pic']) || (!!data['product_pic']);
 
@@ -154,6 +154,14 @@ function ajax(method, url, data) {
 	};
 	// isContainPics = false;
 	var ajaxOpts = /*isContainPics ? assign(opts, picOpt, beforeSendOpt) : */assign(opts, beforeSendOpt) ;
+
+	// $('#csrf-token').attr('content', token);
+
+	$.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    });
 
 	return $.ajax(ajaxOpts);
 }
