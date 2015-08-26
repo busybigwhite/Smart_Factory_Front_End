@@ -118,12 +118,12 @@ function ajax(method, url, data) {
 
 	var isContainPics = (!!data['mold_pic']) || (!!data['product_pic']);
 
-	var processedData = new FormData();
+	/*var processedData = new FormData();
 
 	// lodash forEach(collection, function(value, index|key, collection))
 	_.forEach(data, function(value, key) {
 	  processedData.append(key, value);
-	});
+	});*/
 
 
 	var opts = {
@@ -134,12 +134,12 @@ function ajax(method, url, data) {
 		// timeout: 30000, //ms
 	};
 
-	var picOpt = {
+	/*var picOpt = {
 		contentType: false,
 		processData: false,
 		dataType: 'json',
-		data: processedData
-	};
+		data: processedData,
+	};*/
 
 	var beforeSendOpt = {
 		beforeSend: function() {
@@ -152,7 +152,7 @@ function ajax(method, url, data) {
 			console.log('--------------------------');
 		}
 	};
-	// isContainPics = false;
+	isContainPics = false;
 	var ajaxOpts = isContainPics ? assign(opts, picOpt, beforeSendOpt) : assign(opts, beforeSendOpt) ;
 
 	return $.ajax(ajaxOpts);
