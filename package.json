@@ -29,7 +29,6 @@
     "lodash": "^3.10.1",
     "mkdirp": "^0.5.1",
     "object-assign": "^3.0.0",
-    "path": "^0.11.14",
     "qs": "^4.0.0",
     "rectimage": "^0.2.0",
     "run-sequence": "^1.1.2",
