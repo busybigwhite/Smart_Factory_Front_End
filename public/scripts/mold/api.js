@@ -156,8 +156,8 @@ function ajax(method, url, data) {
 	var ajaxOpts = /*isContainPics ? assign(opts, picOpt, beforeSendOpt) : */assign(opts, beforeSendOpt) ;
 
 	$.get( config.baseUrl + "/api/token" )
-  	 .done(function(xsrfToken) {
-    	data['_token'] = xsrfToken;
+  	 .done(function(res) {
+    	data['_token'] = res.csrf_token;
 
     	return $.ajax(ajaxOpts);
   	 });
