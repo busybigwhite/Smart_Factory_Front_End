@@ -26,6 +26,7 @@ exports = module.exports = {
 	editMoldInfo: editMoldInfo,
 	createMoldRecord: createMoldRecord,
 	deleteMoldRecord: deleteMoldRecord,
+	refreshToken: refreshToken,
 };
 
 function setFactoryId(id) {
@@ -155,12 +156,19 @@ function ajax(method, url, data) {
 	// isContainPics = false;
 	var ajaxOpts = /*isContainPics ? assign(opts, picOpt, beforeSendOpt) : */assign(opts, beforeSendOpt) ;
 
+  	 return $.ajax(ajaxOpts);
+}
+
+function refreshToken() {
+	var defer = $.Deferred();
+
 	$.get( config.baseUrl + "/api/token" )
   	 .done(function(res) {
-    	data['_token'] = res.csrf_token;
-
-    	return $.ajax(ajaxOpts);
+  	 	token = res.csrf_token;
+    	defer.resolve();
   	 });
+
+  	 return deferred.promise();
 }
 
 function mockAjax(response) {

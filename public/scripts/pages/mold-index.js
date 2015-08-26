@@ -28,9 +28,12 @@ function getInitialData() {
 	var ID = getFactoryId();
 	console.log('FactoryId : ' + ID);
 	api.setFactoryId(ID);
-	api.getMoldList()
-		 .done(initialView)
-		 .fail(function(err) { console.log("GET Mold List error: ", err); });
+	$.when(api.refreshToken())
+	 .then(function() {
+	 	api.getMoldList()
+	 	 .done(initialView)
+	 	 .fail(function(err) { console.log("GET Mold List error: ", err); });
+	 });
 }
 
 function gotoMoldNewInfoPage() {
