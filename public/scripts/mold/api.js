@@ -116,14 +116,14 @@ function ajax(method, url, data) {
 	data.factory_id = factoryId;
 	data['_token'] = token;
 
-	var isContainPics = (!!data['mold_pic']) || (!!data['product_pic']);
+	// var isContainPics = (!!data['mold_pic']) || (!!data['product_pic']);
 
-	var processedData = new FormData();
+	/*var processedData = new FormData();
 
 	// lodash forEach(collection, function(value, index|key, collection))
 	_.forEach(data, function(value, key) {
 	  processedData.append(key, value);
-	});
+	});*/
 
 
 	var opts = {
@@ -134,26 +134,26 @@ function ajax(method, url, data) {
 		// timeout: 30000, //ms
 	};
 
-	var picOpt = {
+	/*var picOpt = {
 		contentType: false,
 		processData: false,
 		dataType: 'json',
-		data: processedData
-	};
+		data: processedData,
+	};*/
 
 	var beforeSendOpt = {
 		beforeSend: function() {
 			console.log('AJAX INFO ----------------');
 			console.log('method: ', method);
 			console.log('url: ', url);
-			console.log('contentType: ', picOpt.contentType);
-			console.log('processData: ', picOpt.processData);
-			console.log('data: ', isContainPics ? processedData : data);
+			// console.log('contentType: ', picOpt.contentType);
+			// console.log('processData: ', picOpt.processData);
+			console.log('data: ', /*isContainPics ? processedData :*/ data);
 			console.log('--------------------------');
 		}
 	};
 	// isContainPics = false;
-	var ajaxOpts = isContainPics ? assign(opts, picOpt, beforeSendOpt) : assign(opts, beforeSendOpt) ;
+	var ajaxOpts = /*isContainPics ? assign(opts, picOpt, beforeSendOpt) : */assign(opts, beforeSendOpt) ;
 
 	return $.ajax(ajaxOpts);
 }
