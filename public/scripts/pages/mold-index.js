@@ -15,8 +15,13 @@ initialize();
 
 function initialize() {
 	header.include();
-	getInitialData();
 	bindEvents();
+}
+
+function bindEvents() {
+	factoryDropdown.emitter.on('factoryChanged', getInitialData);
+	$moldNewBtn.on('click', gotoMoldNewInfoPage);
+	$moldTable.on('click', '.detail-info-button', gotoMoldDetailInfoPage);
 }
 
 function getInitialData() {
@@ -26,12 +31,6 @@ function getInitialData() {
 	api.getMoldList()
 		 .done(initialView)
 		 .fail(function(err) { console.log("GET Mold List error: ", err); });
-}
-
-function bindEvents() {
-	$moldNewBtn.on('click', gotoMoldNewInfoPage);
-	$moldTable.on('click', '.detail-info-button', gotoMoldDetailInfoPage);
-	factoryDropdown.emitter.on('factoryChanged', getInitialData);
 }
 
 function gotoMoldNewInfoPage() {
