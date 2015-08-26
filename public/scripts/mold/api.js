@@ -155,11 +155,12 @@ function ajax(method, url, data) {
 	// isContainPics = false;
 	var ajaxOpts = /*isContainPics ? assign(opts, picOpt, beforeSendOpt) : */assign(opts, beforeSendOpt) ;
 
-	$.ajaxSetup({
-        headers: { 'X-CSRF-TOKEN': csrfToken }
-    });
+	$.get( config.baseUrl + "/api/token" )
+  	 .done(function(xsrfToken) {
+    	data['_token'] = xsrfToken;
 
-	return $.ajax(ajaxOpts);
+    	return $.ajax(ajaxOpts);
+  	 });
 }
 
 function mockAjax(response) {
