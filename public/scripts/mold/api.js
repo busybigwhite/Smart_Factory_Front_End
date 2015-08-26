@@ -146,9 +146,9 @@ function ajax(method, url, data) {
 			console.log('AJAX INFO ----------------');
 			console.log('method: ', method);
 			console.log('url: ', url);
-			console.log('contentType: ', picOpt.contentType);
-			console.log('processData: ', picOpt.processData);
-			console.log('data: ', isContainPics ? processedData : data);
+			// console.log('contentType: ', picOpt.contentType);
+			// console.log('processData: ', picOpt.processData);
+			console.log('data: ', /*isContainPics ? processedData :*/ data);
 			console.log('--------------------------');
 		}
 	};
