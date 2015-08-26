@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name="csrf-token" content="<?php echo csrf_token() ?>"/>
 	<title>Smart Factory</title>
 	<link rel="stylesheet" type="text/css" href="../../../build/style.css">
 </head>
@@ -9,8 +10,8 @@
 
 <div id="header"></div>
 <div class="detail-page-container" id="mold-detail-page">
-<!-- <form class="detail-page-container" id="mold-detail-page" method="post"> -->
-	<div class="base-action-panel">
+
+<form class="detail-page-container" id="mold-detail-page" method="post">
 		<button type="button" class="info-delete-button" id="mold-delete-button">刪除</button>
 		<button type="button" class="info-edit-button" id="mold-edit-button">編輯</button>
 		<button type="submit" class="info-save-button" id="mold-save-button">儲存</button>
@@ -172,8 +173,8 @@
 			</li>
 		</ul>
 	</section>
-<!-- </form> -->
-</div>
+</form>
+
 <script src="../../../build/bundle/mold-info.js"></script>
 
 </body>
