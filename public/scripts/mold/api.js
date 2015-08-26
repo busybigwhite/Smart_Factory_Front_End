@@ -116,7 +116,7 @@ function ajax(method, url, data) {
 	data.factory_id = factoryId;
 	data['_token'] = token;
 
-	var isContainPics = (!!data['mold_pic']) || (!!data['product_pic']);
+	// var isContainPics = (!!data['mold_pic']) || (!!data['product_pic']);
 
 	/*var processedData = new FormData();
 
@@ -152,8 +152,8 @@ function ajax(method, url, data) {
 			console.log('--------------------------');
 		}
 	};
-	isContainPics = false;
-	var ajaxOpts = isContainPics ? assign(opts, picOpt, beforeSendOpt) : assign(opts, beforeSendOpt) ;
+	// isContainPics = false;
+	var ajaxOpts = /*isContainPics ? assign(opts, picOpt, beforeSendOpt) : */assign(opts, beforeSendOpt) ;
 
 	return $.ajax(ajaxOpts);
 }
