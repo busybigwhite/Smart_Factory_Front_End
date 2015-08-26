@@ -49,7 +49,7 @@ function initialView(data) {
 
 	if (noticedId) {
 		_.forEach(data, function(value, key) {
-			if (key === noticedId) {
+			if (value.id === noticedId) {
 				setSelectedName(value.name);
 				return;
 			}
