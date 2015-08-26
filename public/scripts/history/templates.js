@@ -30,8 +30,8 @@ exports.renderTableList = function(infos) {
         <div class="table-col"><%= info.machine_serial_num %></div>
         <div class="table-col"><%= info.mold_serial_num %></div>
         <div class="table-col"><%= info.customer_name %></div>
-        <div class="table-col"><%= info.work_st %></div>
-        <div class="table-col"><%= info.work_et %></div>
+        <div class="table-col"><%= info.work_start_time %></div>
+        <div class="table-col"><%= info.work_end_time %></div>
         <div class="table-col-sm"><%= info.sample_num %></div>
         <div class="table-col-sm"><%= info.error_num %></div>
     <% if(info['availability'] !== undefined){      %>
