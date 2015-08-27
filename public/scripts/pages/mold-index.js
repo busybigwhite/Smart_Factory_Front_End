@@ -28,11 +28,12 @@ function getInitialData() {
 	var ID = getFactoryId();
 	console.log('FactoryId : ' + ID);
 	api.setFactoryId(ID);
+
 	$.when(api.refreshToken())
 	 .then(function() {
 	 	api.getMoldList()
-	 	 .done(initialView)
-	 	 .fail(function(err) { console.log("GET Mold List error: ", err); });
+	 	   .done(initialView)
+	 	   .fail(function(err) { console.log("GET Mold List error: ", err); });
 	 });
 }
 
