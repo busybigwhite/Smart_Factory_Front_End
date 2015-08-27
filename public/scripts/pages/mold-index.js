@@ -31,7 +31,7 @@ function getInitialData() {
 	api.setFactoryId(ID);
 
 	$.when(auth.refreshToken())
-	 .then(api.refreshToken(newToken))
+	 .then(api.setToken)
 	 .then(function(){
 	 	api.getMoldList()
 	 	   .done(initialView)

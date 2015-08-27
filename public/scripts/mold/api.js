@@ -26,7 +26,7 @@ exports = module.exports = {
 	editMoldInfo: editMoldInfo,
 	createMoldRecord: createMoldRecord,
 	deleteMoldRecord: deleteMoldRecord,
-	refreshToken: refreshToken
+	setToken: setToken
 };
 
 function setFactoryId(id) {
@@ -162,7 +162,7 @@ function ajax(method, url, data) {
   	 return $.ajax(ajaxOpts);
 }
 
-function refreshToken(newToken) {
+function setToken(newToken) {
 	token = newToken;
 }
 
