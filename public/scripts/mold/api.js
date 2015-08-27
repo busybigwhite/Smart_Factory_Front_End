@@ -173,7 +173,7 @@ function refreshToken() {
   	 })
   	 .fail(function(){ console.log('refresh token failed') });
 
-  	 return deferred.promise();
+  	 return defer.promise();
 }
 
 function mockAjax(response) {
