@@ -53,7 +53,6 @@ function initialize() {
 	getInitialData();
 	bindEvents();
 
-	noticeedPersonDropdown.init();
 	checkRecordTable.init();
 	maintainRecordTable.init();
 	errorRecordTable.init();
@@ -65,7 +64,8 @@ function getInitialData() {
 	 .done(function(result1, result2, result3) {
 	 		initialView(result1[0]);
 	 		initialNoticedName(result2[0]);
-	 		initAvailabilityRate(result3[0].availability_rate)
+	 		initAvailabilityRate(result3[0].availability_rate);
+			noticeedPersonDropdown.init();
 	 })
 	 .fail(function(jqXHR, textStatus, errorThrown) {
 	 		console.log('machine info page get data error: ', jqXHR, textStatus, errorThrown );
