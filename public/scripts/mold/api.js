@@ -155,8 +155,6 @@ function ajax(method, url, data) {
 		}
 	};
 
-	isContainPics = false;
-
 	var ajaxOpts = isContainPics ? assign(opts, picOpt, beforeSendOpt) : assign(opts, beforeSendOpt) ;
 
   	 return $.ajax(ajaxOpts);
