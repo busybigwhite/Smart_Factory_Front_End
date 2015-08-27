@@ -2,6 +2,7 @@
 
 var $ = window.jQuery = require('jquery');
 var header = require('../includes/header');
+var auth = require('../config/auth');
 var api = require('../mold/api');
 var template = require('../mold/templates/index-list-template');
 var factoryDropdown = require('../lib/component/dropdown-factory');
@@ -29,8 +30,9 @@ function getInitialData() {
 	console.log('FactoryId : ' + ID);
 	api.setFactoryId(ID);
 
-	$.when(api.refreshToken())
-	 .then(function() {
+	$.when(auth.refreshToken())
+	 .then(api.refreshToken(newToken))
+	 .then(function(){
 	 	api.getMoldList()
 	 	   .done(initialView)
 	 	   .fail(function(err) { console.log("GET Mold List error: ", err); });

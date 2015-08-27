@@ -5,9 +5,9 @@ var _ = require('lodash');
 var qs = require('qs');
 var assign = require('object-assign');
 var config = require('../config/url');
-var token = require('../config/auth').getToken();
 
 var factoryId;
+var token;
 var moldApiUrl  = config.APIUrl + 'mold';
 var moldApiPicUrl = config.APIUrl + 'pic/mold/';
 var moldPageUrl = config.moldUrl;
@@ -51,7 +51,7 @@ function goToMoldInfo(type, data) {
 	window.location.href = moldPageUrl + 'info' + action;
 }
 
-function getMoldList() {
+function getMoldList(newToken) {
 	var fakeData = [{"id":1,"serial_num":"Tamara","name":"Morar","factory_id":4,"weight":225,"type":"\u91d1\u5c6c","mold_pic":"af98a11227e26e53dca2b575dda24ec7","product_pic":"a6133659937b2a2079665e3602720067","length":989,"width":526,"height":675,"admin_id":1,"manufacturer":"\u4e09\u83f1","maintain_period_unit":"time","maintain_period_value":35,"lifetime":500000,"current_usage":100,"created_at":"2015-08-19 02:59:38","updated_at":"2015-08-19 02:59:38"},{"id":2,"serial_num":"Miller","name":"Sawayn","factory_id":2,"weight":959,"type":"\u91d1\u5c6c","mold_pic":"920ce96d875980ca2ab17b3d3fa6fe45","product_pic":"fef630efec3f97a1f5fd3b3c038f8826","length":237,"width":817,"height":502,"admin_id":1,"manufacturer":"\u53f0\u4e2d\u7cbe\u6a5f","maintain_period_unit":"times","maintain_period_value":90,"lifetime":500000,"current_usage":100,"created_at":"2015-08-19 02:59:38","updated_at":"2015-08-19 02:59:38"},{"id":3,"serial_num":"Sabrina","name":"Herman","factory_id":4,"weight":410,"type":"\u91d1\u5c6c","mold_pic":"26fd2ac4d638b1a004e6cd13619d74e6","product_pic":"e34ef7bef73d64265f90a0af70810d82","length":388,"width":281,"height":796,"admin_id":1,"manufacturer":"\u53f0\u4e2d\u7cbe\u6a5f","maintain_period_unit":"time","maintain_period_value":73,"lifetime":500000,"current_usage":100,"created_at":"2015-08-19 02:59:38","updated_at":"2015-08-19 02:59:38"},{"id":4,"serial_num":"Javonte","name":"O'Kon","factory_id":2,"weight":352,"type":"\u91d1\u5c6c","mold_pic":"7bcac3faca21420120914d14aad89383","product_pic":"5eebcab9cf8bc63353477069e9b85fe9","length":660,"width":445,"height":812,"admin_id":1,"manufacturer":"\u53f0\u4e2d\u7cbe\u6a5f","maintain_period_unit":"time","maintain_period_value":4,"lifetime":500000,"current_usage":100,"created_at":"2015-08-19 02:59:38","updated_at":"2015-08-19 02:59:38"},{"id":5,"serial_num":"Osbaldo","name":"Vandervort","factory_id":2,"weight":924,"type":"\u91d1\u5c6c","mold_pic":"92f88775ffc85b39beeff37c215d0e3f","product_pic":"a4d1982b16e5c75c3769e7ace5227a20","length":980,"width":1000,"height":970,"admin_id":1,"manufacturer":"\u8c50\u7530","maintain_period_unit":"times","maintain_period_value":12,"lifetime":500000,"current_usage":100,"created_at":"2015-08-19 02:59:38","updated_at":"2015-08-19 02:59:38"},{"id":6,"serial_num":"Torey","name":"Hickle","factory_id":1,"weight":819,"type":"\u91d1\u5c6c","mold_pic":"178afbec3fe0f2f151480d9251799439","product_pic":"38b5bd03e21dafc30c7e967611f54ebd","length":337,"width":18,"height":345,"admin_id":1,"manufacturer":"\u53f0\u4e2d\u7cbe\u6a5f","maintain_period_unit":"times","maintain_period_value":1,"lifetime":500000,"current_usage":100,"created_at":"2015-08-19 02:59:38","updated_at":"2015-08-19 02:59:38"},{"id":7,"serial_num":"Emmett","name":"Senger","factory_id":2,"weight":683,"type":"\u5851\u81a0","mold_pic":"bb4a7c50c3654def67946e1ded5841e6","product_pic":"76d8565ef51081f56811c77bcadf043a","length":962,"width":588,"height":500,"admin_id":1,"manufacturer":"\u53f0\u4e2d\u7cbe\u6a5f","maintain_period_unit":"times","maintain_period_value":46,"lifetime":500000,"current_usage":100,"created_at":"2015-08-19 02:59:38","updated_at":"2015-08-19 02:59:38"},{"id":8,"serial_num":"Ewell","name":"Hahn","factory_id":2,"weight":259,"type":"\u5851\u81a0","mold_pic":"fdc3215fd42546ed4d17864d58a51bad","product_pic":"af26e1c1da7fed4e0d476f9278e12f1f","length":864,"width":866,"height":530,"admin_id":1,"manufacturer":"\u53f0\u4e2d\u7cbe\u6a5f","maintain_period_unit":"times","maintain_period_value":66,"lifetime":500000,"current_usage":100,"created_at":"2015-08-19 02:59:38","updated_at":"2015-08-19 02:59:38"},{"id":9,"serial_num":"Ana","name":"Johns","factory_id":3,"weight":33,"type":"\u5851\u81a0","mold_pic":"a2ea4b232089c2148cb52919bbb543c2","product_pic":"b0b72e6c51ec00ade7915a702922041d","length":12,"width":255,"height":468,"admin_id":1,"manufacturer":"\u8c50\u7530","maintain_period_unit":"times","maintain_period_value":82,"lifetime":500000,"current_usage":100,"created_at":"2015-08-19 02:59:38","updated_at":"2015-08-19 02:59:38"},{"id":10,"serial_num":"Sheridan","name":"Kshlerin","factory_id":2,"weight":955,"type":"\u91d1\u5c6c","mold_pic":"1c5bdd523e4a98587feba9b21ce10bcf","product_pic":"a850396a389681281c3a87c9e0b177a3","length":738,"width":266,"height":955,"admin_id":1,"manufacturer":"\u53f0\u4e2d\u7cbe\u6a5f","maintain_period_unit":"time","maintain_period_value":71,"lifetime":500000,"current_usage":100,"created_at":"2015-08-19 02:59:38","updated_at":"2015-08-19 02:59:38"}];
 	return isLocal ? mockAjax(fakeData) : getData(moldApiUrl + '/list');
 };
@@ -162,18 +162,8 @@ function ajax(method, url, data) {
   	 return $.ajax(ajaxOpts);
 }
 
-function refreshToken() {
-	var defer = $.Deferred();
-
-	$.get( config.baseUrl + "/api/token" )
-  	 .done(function(res) {
-  	 	token = res.csrf_token;
-  	 	console.log('refresh token: ', token);
-    	defer.resolve();
-  	 })
-  	 .fail(function(){ console.log('refresh token failed') });
-
-  	 return defer.promise();
+function refreshToken(newToken) {
+	token = newToken;
 }
 
 function mockAjax(response) {

@@ -39,7 +39,7 @@ function bindLogoutOnButton() {
 function logout() {
 	$.get(config.APIUrl + 'auth/logout')
 	 .done(function(res){
-	 		Auth.set('', '');
+	 		Auth.set('', '', '');
 			redirect('login');
 	 })
 	 .fail(function(err) { console.log("LOGOUT error: ", err); });

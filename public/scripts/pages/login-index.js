@@ -39,9 +39,14 @@ function userLogin(e){
 		//show validation msg
 	} else {
 		$.post(config.APIUrl + 'auth/login?name=' + $userName.val() + '&password=' + $userPassword.val() + '&_token=' + $csrfToken.val())
-		 .done(function(res){
-			Auth.set($userName.val(), $csrfToken.val());
-			setAuthority();
+		 .done(function(){
+
+		 	$.when( setAuthority() )
+		 	 .then(function(authority) {
+		 	 	Auth.set($userName.val(), $csrfToken.val(), authority);
+		 	 	redirect('realtime');
+		 	 })
+
 		 })
 		 .fail(function(res){
 		 	res.status === 404 && alert('請確認帳號/密碼輸入是否正確');
@@ -50,11 +55,14 @@ function userLogin(e){
 };
 
 function setAuthority() {
+	var defer = $.Deferred();
+
 	$.get(config.APIUrl + 'me')
 	 .done(function(res){
-	 	Auth.setAuthority(res.group);
-	 	redirect('realtime');
+	 	defer.resolve(res.group);
 	 })
+
+	return defer.promise();
 }
 
 function validateForm(){
