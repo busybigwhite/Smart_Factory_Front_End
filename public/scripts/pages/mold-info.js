@@ -3,6 +3,7 @@
 var $ = window.jQuery = require('jquery');
 var _ = require('lodash');
 var header = require('../includes/header');
+var auth = require('../config/auth');
 var api = require('../mold/api');
 var queryParameter = require('../lib/helper/query-parameter');
 require('eonasdan-bootstrap-datetimepicker');
@@ -91,13 +92,17 @@ function getInitialData() {
 		return;
 	}
 
-	$.when( api.getMoldInfo(moldId), api.getUserList())
-	 .done(function(result1, result2) {
-	 		initialView(result1[0]);
-	 		initialNoticedName(result2[0]);
-	 })
-	 .fail(function(jqXHR, textStatus, errorThrown) {
-	 		console.log('machine info page get data error: ', jqXHR, textStatus, errorThrown );
+	$.when(auth.refreshToken())
+	 .then(api.setToken)
+	 .then(function(){
+	 	$.when( api.getMoldInfo(moldId), api.getUserList())
+		 .done(function(result1, result2) {
+		 		initialView(result1[0]);
+		 		initialNoticedName(result2[0]);
+		 })
+		 .fail(function(jqXHR, textStatus, errorThrown) {
+		 		console.log('machine info page get data error: ', jqXHR, textStatus, errorThrown );
+		 });
 	 });
 }
 
@@ -165,29 +170,34 @@ function saveData(e) {
 
 	e.preventDefault();
 
-	if (isEditMode && !isCreateMode) {
+	$.when(auth.refreshToken())
+	 .then(api.setToken)
+	 .then(function(){
+		if (isEditMode && !isCreateMode) {
 
-		$.when( saveChangedData(), saveNewRecord(), saveDeleteRecord() )
-		 .done(function(result1, result2, result3) {
-				api.goToMoldIndex();
-			})
-		 .fail(function(jqXHR, textStatus, errorThrown) {
-		 		console.log('mold info page save data error: ', jqXHR, textStatus, errorThrown );
-		 });
+			$.when( saveChangedData(), saveNewRecord(), saveDeleteRecord() )
+			 .done(function(result1, result2, result3) {
+					api.goToMoldIndex();
+				})
+			 .fail(function(jqXHR, textStatus, errorThrown) {
+			 		console.log('mold info page save data error: ', jqXHR, textStatus, errorThrown );
+			 });
 
-	} else if (!isEditMode && isCreateMode) {
+		} else if (!isEditMode && isCreateMode) {
 
-		$.when( saveNewData(), saveNewRecord() )
-		 .done(function(result1, result2) {
-				api.goToMoldIndex();
-			})
-		 .fail(function(jqXHR, textStatus, errorThrown) {
-		 		console.log('mold info page save data error: ', jqXHR, textStatus, errorThrown );
-		 });
+			$.when( saveNewData(), saveNewRecord() )
+			 .done(function(result1, result2) {
+					api.goToMoldIndex();
+				})
+			 .fail(function(jqXHR, textStatus, errorThrown) {
+			 		console.log('mold info page save data error: ', jqXHR, textStatus, errorThrown );
+			 });
 
-	} else {
-		console.log('mold info page has error: Undefined Mode');
-	}
+		} else {
+			console.log('mold info page has error: Undefined Mode');
+		}
+	});
+
 	return false;
 }
 
