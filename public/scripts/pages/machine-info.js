@@ -124,6 +124,7 @@ function showCreateMode() {
 	checkPeriodDropdown.setDefault();
 	maintainPeriodDropdown.setDefault();
 	noticeedPersonDropdown.setDefault();
+	noticeedPersonDropdown.init();
 }
 
 function preventSubmitOnInputEnter(e) {
