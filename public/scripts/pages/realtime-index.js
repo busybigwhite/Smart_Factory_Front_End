@@ -105,6 +105,7 @@ function createQueryURL(filter, searchKey) {
 
 	data['factory_id'] = focusFactoryId;
 	data[filter] = searchKey;
+	data['realtime'] = 'yes';
 
 	return queryParameter.build(data);
 }
