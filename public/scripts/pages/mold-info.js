@@ -82,7 +82,6 @@ function initialize() {
 
 	moldPicUploadBlock.init();
 	productPicUploadBlock.init();
-	noticeedPersonDropdown.init();
 	maintainRecordTable.init();
 }
 
@@ -99,6 +98,7 @@ function getInitialData() {
 		 .done(function(result1, result2) {
 		 		initialView(result1[0]);
 		 		initialNoticedName(result2[0]);
+				noticeedPersonDropdown.init();
 		 })
 		 .fail(function(jqXHR, textStatus, errorThrown) {
 		 		console.log('machine info page get data error: ', jqXHR, textStatus, errorThrown );
