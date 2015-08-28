@@ -156,6 +156,7 @@ function showCreateMode() {
 	maintainRecordTable.setEditMode(false);
 	maintainPeriodDropdown.setDefault();
 	noticeedPersonDropdown.setDefault();
+	noticeedPersonDropdown.init();
 }
 
 function preventSubmitOnInputEnter(e) {
