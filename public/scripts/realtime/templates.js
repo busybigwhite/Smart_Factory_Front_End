@@ -128,11 +128,11 @@ exports.renderPicList = function(pictures) {
   var picTemp = _.template(
    `<% _.forEach(pictures, function(picture, key) {  %>
       <div class="realtime-pic-item">
-        <a class="thumbnail" title= <%= picture.current_time %> >
+        <a class="thumbnail" title= <%= picture.created_at %> >
           <img src= ../api/pic/ipc/<%= picture.ipc_id %>/<%= picture.work_order_id %>/<%= picture.camera_id %>/<%= picture.type %>/<%= picture.url %> onerror="this.parentElement.style.display='none'">
         </a>
         <div class="realtime-pic-label">
-          <span><%= picture.current_time %></span>
+          <span><%= picture.created_at %></span>
         </div>
       </div>
 
