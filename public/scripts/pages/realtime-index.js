@@ -17,6 +17,8 @@ var spinner;
 var reloadTimer;
 
 /* DOM */
+var $listBlock = $('#realtime-list-block');
+var $noDataBlock = $('#realtime-no-data-block');
 var $modeFocus = $('#realtime-mode-focus');
 var $tableListBlock = $('#realtime-table-mode');
 var $imageListBlock = $('#realtime-img-mode');
@@ -42,7 +44,7 @@ function initialize() {
 
 function initializeLoadingSpinner() {
 	spinner = loadingSpin();
-	spinner.init( $('#realtime-list-block')[0] );
+	spinner.init( $listBlock[0] );
 }
 
 function bindEvents() {
@@ -89,15 +91,29 @@ function getRealtimeListThenRenderRows(filter, searchKey) {
 
 	$.get(config.APIUrl + 'workorder/list?' + queryURL)
 	 .done(function(response){
-		var tableListRows = templates.renderTableList({ infos : response });
-		var imageListRows = templates.renderImageList({ infos : response });
+	 	if(response.length){
+			var tableListRows = templates.renderTableList({ infos : response });
+			var imageListRows = templates.renderImageList({ infos : response });
 
-		$tableBody.empty().append( tableListRows );
-		$imageListBlock.empty().html( imageListRows );
+			switchNoDataListBlock(true);
+
+			$tableBody.empty().append( tableListRows );
+			$imageListBlock.empty().html( imageListRows );
+		}else {
+			switchNoDataListBlock(false);
+		}
 	 })
-	 .always(function(){
-	 	spinner.stop();
-	 });
+	 .always(function(){ spinner.stop() });
+}
+
+function switchNoDataListBlock(hasData) {
+	if( hasData ){
+		$listBlock.removeClass('hidden');
+		$noDataBlock.addClass('hidden');
+	}else {
+		$listBlock.addClass('hidden');
+		$noDataBlock.removeClass('hidden');
+	}
 }
 
 function createQueryURL(filter, searchKey) {

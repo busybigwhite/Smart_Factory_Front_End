@@ -40,7 +40,7 @@ var liveinfos = [
     "produce_type": "\u5851\u81a0",
     "current_num": 33,
     "current_fail_num": 22,
-    "abnormal_num": 0,
+    "abnormal_num": null,
     "content": "test",
     "created_at": "2015-08-24 04:35:25",
     "updated_at": "2015-08-24 04:35:25",
@@ -58,7 +58,7 @@ var liveinfos = [
         "work_pause_period": 0,
         "created_at": "2015-08-24 04:35:25",
         "updated_at": "2015-08-24 04:35:25",
-        "machine_serial_num": "Melody",
+        "machine_serial_num": "",
         "mold_serial_num": "Laurine",
         "machine": {
           "id": 1,
@@ -852,6 +852,8 @@ var listpics = [{
         "updated_at": "2015-08-21 10:54:56"
     },
     {}]
+
+// var liveinfos = []
 
 var users = [
     {

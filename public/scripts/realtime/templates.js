@@ -12,15 +12,19 @@ exports.renderTableList = function(infos) {
         <div class="table-col"><%= info.serial_num %></div>
       	<div class="table-col">
 
-    <% if(info.work_order_records.length){ %>
+    <% if(info.work_order_records.length && info.work_order_records[0].machine_serial_num){ %>
             <%= info.work_order_records[0].machine_serial_num %>
+    <% } else {                            %>
+            未生產
     <% }                                   %>
 
         </div>
       	<div class="table-col">
 
-    <% if(info.work_order_records.length){ %>
+    <% if(info.work_order_records.length && info.work_order_records[0].mold_serial_num){ %>
             <%= info.work_order_records[0].mold_serial_num %>
+    <% } else {                            %>
+            未生產
     <% }                                   %>
 
         </div>
@@ -28,7 +32,13 @@ exports.renderTableList = function(infos) {
       	<div class="table-col-sm"><%= info.target_num %></div>
       	<div class="table-col text-right"><%= info.start_date %></div>
       	<div class="table-col-sm"><%= info.current_num %>/<%= info.current_fail_num %></div>
-      	<div class="table-col-sm"><%= info.abnormal_num %></div>
+      	<div class="table-col-sm">
+    <% if(info.abnormal_num){ %>
+            <%= info.abnormal_num %>
+    <% } else {                            %>
+            0
+    <% }                                   %>
+        </div>
       	<div class="table-col-lg">
 
     <% if(info.work_order_records.length){ %>
@@ -68,21 +78,31 @@ exports.renderImageList = function(infos) {
 
           <ul class="realtime-img-value">
             <li><%= info.serial_num %></li>
-
-    <% if(info.work_order_records.length){ %>
-            <li><%= info.work_order_records[0].machine_serial_num %></li>
+            <li>
+    <% if(info.work_order_records.length && info.work_order_records[0].machine_serial_num){ %>
+            <%= info.work_order_records[0].machine_serial_num %>
+    <% } else {                            %>
+            未生產
     <% }                                   %>
-
-
-    <% if(info.work_order_records.length){ %>
-            <li><%= info.work_order_records[0].mold_serial_num %></li>
+            </li>
+            <li>
+    <% if(info.work_order_records.length && info.work_order_records[0].mold_serial_num){ %>
+            <%= info.work_order_records[0].mold_serial_num %>
+    <% } else {                            %>
+            未生產
     <% }                                   %>
-
+            </li>
             <li><%= info.customer_name %></li>
             <li><%= info.target_num %></li>
             <li><%= info.start_date %></li>
             <li><%= info.current_num %>/<%= info.current_fail_num %></li>
-            <li><%= info.abnormal_num %></li>
+            <li>
+    <% if(info.abnormal_num){ %>
+            <%= info.abnormal_num %>
+    <% } else {                            %>
+            0
+    <% }                                   %>
+            </li>
           </ul>
           <div class="realtime-img-button-group">
     <% if(info.work_order_records.length){ %>
@@ -101,6 +121,12 @@ exports.renderImageList = function(infos) {
   );
 
   return imgTemp(infos);
+}
+
+exports.renderNoDataText = function(text) {
+  var nullTemp = _.template('<div id="no-pic-block"><span><%= text %></span></div>');
+
+  return nullTemp(text);
 }
 
 exports.renderPicTilte = function(title) {

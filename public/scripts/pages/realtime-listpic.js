@@ -85,21 +85,26 @@ function getPictureListAndRenderRow() {
      .done(function(res){
         resetBlockAndTitle(title);
 
-        if( _.isArray(res) ){
-            group = res;
+        if( _.isEmpty(res) ){
+            renderNoDataBlock(type);
+
         }else {
-            group.push(res);
+            if( _.isArray(res) ){
+                group = res;
+            }else {
+                group.push(res);
+            }
+
+            var cameraGroup = _.groupBy(group, function(n){ return n.camera_id });
+
+            _.forEach(cameraGroup, function(objects, cameraIds) {
+
+                if(cameraIds === "undefined") return;
+
+                renderPictureLabels(cameraIds);
+                renderPictureRows(objects);
+            });
         }
-
-        var cameraGroup = _.groupBy(group, function(n){ return n.camera_id });
-
-        _.forEach(cameraGroup, function(objects, cameraIds) {
-
-            if(cameraIds === "undefined") return;
-
-            renderPictureLabels(cameraIds);
-            renderPictureRows(objects);
-        });
      })
      .always(function(){
         spinner.stop();
@@ -110,6 +115,24 @@ function resetBlockAndTitle(title) {
     var titleLabel = templates.renderPicTilte({ title : title });
 
     $livePicBlock.empty().append( titleLabel );
+}
+
+function renderNoDataBlock(type) {
+    switch(type){
+        case "current":
+            var text = 'IPC未啟動/斷電中';
+        break;
+        case "normal":
+            var text = '未完成安全樣本建立';
+        break;
+        case "error":
+            var text = '未有異常樣本圖片';
+        break;
+    }
+
+    var noDataText = templates.renderNoDataText({ text : text });
+
+    $livePicBlock.append( noDataText );
 }
 
 function renderPictureLabels(cameraIds) {
