@@ -29,6 +29,7 @@ var $filterFocus = $('#realtime-filter-focus');
 var $filterItem = $('.filter-item');
 var $searchInput = $('#realtime-search-input');
 var $searchBtn = $('#realtime-search-btn');
+var $dateSortBtn = $('#realtime-date-sort-btn');
 
 initialize();
 
@@ -52,6 +53,7 @@ function bindEvents() {
 	bindSwitchViewModeOnDropdownMenu();
 	bindSelectFilterOnDropdownMenu();
 	bindSearchByFilterOnButton();
+	bindSortDateOnButton();
 	bindLinkToPicturesPageOnButton();
 }
 
@@ -70,6 +72,10 @@ function bindSelectFilterOnDropdownMenu() {
 
 function bindSearchByFilterOnButton() {
 	$searchBtn.on('click', searchByFilter);
+}
+
+function bindSortDateOnButton() {
+	$dateSortBtn.on('click', sortDate);
 }
 
 function bindLinkToPicturesPageOnButton() {
@@ -91,9 +97,13 @@ function getRealtimeListThenRenderRows(filter, searchKey) {
 
 	$.get(config.APIUrl + 'workorder/list?' + queryURL)
 	 .done(function(response){
-	 	if(response.length){
-			var tableListRows = templates.renderTableList({ infos : response });
-			var imageListRows = templates.renderImageList({ infos : response });
+	 	if( response.length ){
+	 		var infos = queryParameter.get('date_sort') === "asc"
+	 						? _.sortByOrder(response, 'start_date', 'asc')
+	 						: _.sortByOrder(response, 'start_date', 'desc');
+
+			var tableListRows = templates.renderTableList({ infos : infos });
+			var imageListRows = templates.renderImageList({ infos : infos });
 
 			switchNoDataListBlock(true);
 
@@ -153,6 +163,16 @@ function searchByFilter(){
 	var searchKey = $searchInput.val();
 
 	getRealtimeListThenRenderRows(type, searchKey)
+}
+
+function sortDate() {
+	var sortNow = queryParameter.get('date_sort') || 'desc';
+
+	if( sortNow === 'desc'){
+		$(this).attr('class','caret asc');
+	}else {
+		$(this).attr('class','caret desc');
+	}
 }
 
 function redirectToPicPage() {

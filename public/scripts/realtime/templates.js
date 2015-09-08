@@ -5,40 +5,37 @@ var _ = require('lodash');
 exports = module.exports = {};
 
 exports.renderTableList = function(infos) {
-
   var menuTemp = _.template(
-	 `<% _.forEach(infos, function(info) {  %>
+   `<% _.forEach(infos, function(info) {  %>
       <li class="table-item">
         <div class="table-col"><%= info.serial_num %></div>
-      	<div class="table-col">
 
+      	<div class="table-col">
     <% if(info.work_order_records.length && info.work_order_records[0].machine_serial_num){ %>
             <%= info.work_order_records[0].machine_serial_num %>
-    <% } else {                            %>
-            未生產
-    <% }                                   %>
-
+    <% } else { %> 未生產 <% }                                                              %>
         </div>
+
       	<div class="table-col">
-
-    <% if(info.work_order_records.length && info.work_order_records[0].mold_serial_num){ %>
+    <% if(info.work_order_records.length && info.work_order_records[0].mold_serial_num){    %>
             <%= info.work_order_records[0].mold_serial_num %>
-    <% } else {                            %>
-            未生產
-    <% }                                   %>
-
+    <% } else { %> 未生產 <% }                                                              %>
         </div>
+
       	<div class="table-col"><%= info.customer_name %></div>
       	<div class="table-col-sm"><%= info.target_num %></div>
       	<div class="table-col text-right"><%= info.start_date %></div>
       	<div class="table-col-sm"><%= info.current_num %>/<%= info.current_fail_num %></div>
+
       	<div class="table-col-sm">
-    <% if(info.abnormal_num){ %>
-            <%= info.abnormal_num %>
-    <% } else {                            %>
-            0
-    <% }                                   %>
+    <% if(info.status === "producing"){           %> 運作中
+    <% }else if(info.status === "stopping"){      %> 非運作中
+    <% }else if(info.status === "non-schedule"){  %> 未排程
+    <% }else if(info.status === "schedule"){      %> 已排程
+    <% }else if(info.status === "finish"){        %> 結案
+    <% }else {                                    %> 異常     <% } %>
         </div>
+
       	<div class="table-col-lg">
 
     <% if(info.work_order_records.length){ %>
@@ -73,36 +70,38 @@ exports.renderImageList = function(infos) {
             <li>預計生產總數</li>
             <li>本次開始生產時間</li>
             <li>正常/異常</li>
-            <li>不良品數</li>
+            <li>運作狀態</li>
           </ul>
 
           <ul class="realtime-img-value">
             <li><%= info.serial_num %></li>
+
             <li>
     <% if(info.work_order_records.length && info.work_order_records[0].machine_serial_num){ %>
             <%= info.work_order_records[0].machine_serial_num %>
-    <% } else {                            %>
-            未生產
-    <% }                                   %>
+    <% } else { %> 未生產 <% }                                                              %>
             </li>
+
             <li>
-    <% if(info.work_order_records.length && info.work_order_records[0].mold_serial_num){ %>
+    <% if(info.work_order_records.length && info.work_order_records[0].mold_serial_num){    %>
             <%= info.work_order_records[0].mold_serial_num %>
-    <% } else {                            %>
-            未生產
-    <% }                                   %>
+    <% } else { %> 未生產 <% }                                                              %>
             </li>
+
             <li><%= info.customer_name %></li>
             <li><%= info.target_num %></li>
             <li><%= info.start_date %></li>
             <li><%= info.current_num %>/<%= info.current_fail_num %></li>
+
             <li>
-    <% if(info.abnormal_num){ %>
-            <%= info.abnormal_num %>
-    <% } else {                            %>
-            0
-    <% }                                   %>
+    <% if(info.status === "producing"){           %> 運作中
+    <% }else if(info.status === "stopping"){      %> 非運作中
+    <% }else if(info.status === "non-schedule"){  %> 未排程
+    <% }else if(info.status === "schedule"){      %> 已排程
+    <% }else if(info.status === "finish"){        %> 結案
+    <% }else {                                    %> 異常     <% } %>
             </li>
+
           </ul>
           <div class="realtime-img-button-group">
     <% if(info.work_order_records.length){ %>

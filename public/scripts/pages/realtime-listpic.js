@@ -120,13 +120,13 @@ function resetBlockAndTitle(title) {
 function renderNoDataBlock(type) {
     switch(type){
         case "current":
-            var text = 'IPC未啟動/斷電中';
+            var text = '模內保護機未啟動或未連線';
         break;
         case "normal":
-            var text = '未完成安全樣本建立';
+            var text = '模內保護機未建立安全樣本';
         break;
         case "error":
-            var text = '未有異常樣本圖片';
+            var text = '模內保護機未產生異常圖像';
         break;
     }
 
