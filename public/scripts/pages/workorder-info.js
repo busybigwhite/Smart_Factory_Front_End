@@ -94,6 +94,7 @@ function showEditMode() {
 	isEditMode = true;
 	$editBtn  .hide();
 	$cancelBtn.show();
+	$cancelBtn[0].innerHTML = "取消";
 	$saveBtn  .show();
 	$deleteBtn.hide();
 	$viewModeCollection.addClass('editting');
@@ -105,6 +106,7 @@ function hideEditMode() {
 		isEditMode = false;
 		$editBtn  .show();
 		$cancelBtn.show();
+		$cancelBtn[0].innerHTML = "回列表";
 		$saveBtn  .hide();
 		$deleteBtn.show();
 		$viewModeCollection.removeClass('editting');

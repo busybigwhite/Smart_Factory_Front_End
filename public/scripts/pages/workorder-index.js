@@ -20,6 +20,12 @@ var spinner;
 var $tableBody = $('.workorder-table-body');
 var $tableListBlock = $('#workorder-table-mode');
 var $addWorkorderButton = $('#workorder-new-button');
+var $filterFocus = $('#workorder-filter-focus');
+var $filterItem = $('.filter-item');
+var $searchInput = $('#workorder-search-input');
+var $searchBtn = $('#workorder-search-btn');
+var $listBlock = $('#workorder-list-block');
+var $zeroBlock = $('#workorder-zero-block');
 
 initialize();
 
@@ -27,6 +33,10 @@ function initialize() {
 	header.include();
 	initializeLoadingSpinner();
 	bindEvents();
+
+	$listBlock.show();
+	$zeroBlock.hide();
+	$filterItem.eq(0).trigger('click');
 }
 
 function initializeLoadingSpinner() {
@@ -34,10 +44,17 @@ function initializeLoadingSpinner() {
 	spinner.init( $('#workorder-list-block')[0] );
 }
 
+/** Binding **/
+
+/**
+ * bind events 
+ */
 function bindEvents() {
 	bindFactoryChangedEventListener();
 	bindLinkToCreateWorkorderPageOnButton();
 	bindLinkToShowWorkorderInfoPageOnButton();
+	bindSelectFilterOnDropdownMenu();
+	bindSearchByFilterOnButton();
 }
 
 function bindFactoryChangedEventListener() {
@@ -52,25 +69,36 @@ function bindLinkToShowWorkorderInfoPageOnButton() {
 	$tableListBlock.on('click', '.workorder-showinfo-btn', redirectToShowWorkorderInfoPage);
 }
 
-function setFocusFactoryIdThenRenderRows(factoryId) {
-	focusFactoryId = factoryId;
-
-	createWorkorderListThenRenderRows();
+function bindSelectFilterOnDropdownMenu() {
+	$filterItem.on('click', selectFilter);
 }
 
-function createWorkorderListThenRenderRows(type, searchKey) {
+function bindSearchByFilterOnButton() {
+	$searchBtn.on('click', searchByFilter);
+}
+
+function setFocusFactoryIdThenRenderRows(factoryId) {
+	focusFactoryId = factoryId;
+	var fetchRequest = {};
+	fetchRequest['factory_id'] = focusFactoryId;
+
+	getWorkorderListThenRenderRows(fetchRequest);
+}
+
+function getWorkorderListThenRenderRows(fetchRequest) {
 	spinner.start();
 	
-	$.get(config.APIUrl + 'workorder/list/', {'factory_id': focusFactoryId}, function(workorderResponse) {
+	$.get(config.APIUrl + 'workorder/list/', fetchRequest, function(workorderResponse) {
 		var displayData = []
 
 		for (var i in workorderResponse) {
 			var dict = {}
-			dict['id'] = workorderResponse[i].id;
-			dict['serial_num'] = workorderResponse[i].serial_num;
-			dict['order_id'] = workorderResponse[i].order_id;
-			dict['customer_name'] = workorderResponse[i].customer_name;
-    		dict['factory_id'] = focusFactoryId;
+			dict['id'] = workorderResponse[i].id ? workorderResponse[i].id : '-';
+			dict['serial_num'] = workorderResponse[i].serial_num ? workorderResponse[i].serial_num : '-';
+			dict['order_id'] = workorderResponse[i].order_id ? workorderResponse[i].order_id : '-';
+			dict['customer_name'] = workorderResponse[i].customer_name ? workorderResponse[i].customer_name : '-';
+    		dict['factory_id'] = focusFactoryId ? focusFactoryId : '-';
+    		dict['input_date'] = '' ? '' : '-';
 
 			switch (workorderResponse[i].status) {
 				case "non-schedule":
@@ -85,7 +113,14 @@ function createWorkorderListThenRenderRows(type, searchKey) {
 				case "finish":
 					dict['status'] = "結案";
 				break;
+				case "stopping":
+					dict['status'] = "非運作中";
+				break;
+				case "error":
+					dict['status'] = "異常";
+				break;
 				default:
+					dict['status'] = "-";
 				break;
 			}
 
@@ -93,10 +128,61 @@ function createWorkorderListThenRenderRows(type, searchKey) {
 		}
 		spinner.stop();
 
-		var tableListRows = templates.renderTableList({ infos : displayData });
+		if (displayData.length > 0) {
+			$zeroBlock.hide();
+			$listBlock.show();
 
-		$tableBody.empty().append( tableListRows );
+			var tableListRows = templates.renderTableList({ infos : displayData });
+			$tableBody.empty().append( tableListRows );
+		} else {
+			$listBlock.hide();
+			$zeroBlock.show();
+		}
 	 });
+}
+
+function selectFilter(){
+	var filterName = $(this).text();
+	var filterType = $(this).data('id');
+
+	$filterFocus.data('type', filterType).text(filterName);
+}
+
+function searchByFilter(){
+	var type = $filterFocus.data('type');
+	var searchKey = $searchInput.val();
+	var fetchRequest = {};
+
+	if (type == "status") {
+		switch (searchKey) {
+			case "未排程":
+				fetchRequest[type] = "non-schedule";
+			break;
+			case "已排程":
+				fetchRequest[type] = "schedule";
+			break;
+			case "生產中":
+				fetchRequest[type] = "producing";
+			break;
+			case "結案":
+				fetchRequest[type] = "finish";
+			break;
+			case "非運作中":
+				fetchRequest[type] = "stopping";
+			break;
+			case "異常":
+				fetchRequest[type] = "error";
+			break;
+			default:
+				fetchRequest[type] = searchKey;
+			break;
+		}
+	} else {
+		fetchRequest['factory_id'] = focusFactoryId;
+		fetchRequest[type] = searchKey;
+	}
+
+	getWorkorderListThenRenderRows(fetchRequest);
 }
 
 function redirectToCreateWorkorderPage() {
