@@ -37,10 +37,8 @@ function initialize() {
 	header.include();
 	initializeLoadingSpinner();
 	bindEvents();
-	setViewMode();
+	resetStatus();
 	setReloadTimer();
-
-	$filterItem.eq(0).trigger('click');
 }
 
 function initializeLoadingSpinner() {
@@ -166,13 +164,11 @@ function searchByFilter(){
 }
 
 function sortDate() {
-	var sortNow = queryParameter.get('date_sort') || 'desc';
+	var pervSort = queryParameter.get('date_sort') || 'desc';
+	var nextSort = pervSort === 'desc' ? 'asc' : 'desc';
+	var queries = queryParameter.assign({ date_sort: nextSort });
 
-	if( sortNow === 'desc'){
-		$(this).attr('class','caret asc');
-	}else {
-		$(this).attr('class','caret desc');
-	}
+	redirect('realtime', queries);
 }
 
 function redirectToPicPage() {
@@ -180,8 +176,15 @@ function redirectToPicPage() {
 	var type = $(this).data('type');
 	var work_order_id = $(this).data('workid');
 	var image_view = isImageMode;
+	var factory_id = focusFactoryId;
 
-	redirect('realtimePic', { work_order_id, type, title, image_view });
+	redirect('realtimePic', { work_order_id, type, title, image_view, factory_id });
+}
+
+function resetStatus() {
+	setViewMode();
+	setFocusFacroty();
+	setDateSort();
 }
 
 function setViewMode() {
@@ -189,6 +192,22 @@ function setViewMode() {
 											 : $tableModeSwitcher.trigger('click');
 }
 
-function setReloadTimer() {
-	setTimeout(function(){ window.location.reload() }, commonConfig.realtimeReloadTime);
+function setFocusFacroty() {
+	queryParameter.get('factory_id') || $filterItem.eq(0).trigger('click');
 }
+
+function setDateSort() {
+	var sort = queryParameter.get('date_sort') || 'desc';
+	$dateSortBtn.attr('class','caret '+ sort );
+}
+
+function setReloadTimer() {
+	setTimeout(function(){
+		var query = queryParameter.assign({
+			factory_id: focusFactoryId,
+			image_view: isImageMode
+		});
+		redirect('realtime', query);
+	}, commonConfig.realtimeReloadTime);
+}
+

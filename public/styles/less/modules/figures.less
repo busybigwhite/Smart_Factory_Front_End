@@ -12,17 +12,17 @@
 }
 
 .caret {
-	border-top: 6px dashed;
-    border-right: 6px solid transparent;
+	border-right: 6px solid transparent;
     border-left: 6px solid transparent;
 	cursor: pointer;
 
-	&.desc,
+	&.desc {
+		border-top: 6px dashed;
+		border-bottom: 0;
+	}
+
 	&.asc {
-		-webkit-transform: rotate(180deg);
-		   -moz-transform: rotate(180deg);
-		    -ms-transform: rotate(180deg);
-		     -o-transform: rotate(180deg);
-		        transform: rotate(180deg);
+		border-top: 0;
+		border-bottom: 6px dashed;
 	}
 }

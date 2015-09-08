@@ -55,8 +55,9 @@ function bindFancyBoxEventOnPictures() {
 
 function backToList() {
     var image_view = queryParameter.get('image_view');
+    var factory_id = queryParameter.get('factory_id');
 
-    redirect('realtime', { image_view });
+    redirect('realtime', { image_view, factory_id });
 }
 
 function openFancyBoxManually() {

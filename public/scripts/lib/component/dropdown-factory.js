@@ -6,6 +6,7 @@ require('bootstrap/js/dropdown');
 var _ = require('lodash');
 var userId = require('../../config/auth');
 var config = require('../../config/url');
+var queryParameter = require('../helper/query-parameter');
 var EventEmitter = require('wolfy87-eventemitter');
 
 var selectedFactoryId;
@@ -54,7 +55,11 @@ function createFactoryListThenRenderRows() {
 
 		$factoryList.empty().html( factoryListRows );
 
-		setFocusNameBlock(response[0]);
+		var focusId = queryParameter.get('factory_id');
+		var focusIndex = searchFocusId(response, focusId);
+
+		(focusId === undefined || focusIndex === undefined)
+			? setFocusNameBlock( response[0] ) : setFocusNameBlock( response[focusIndex] );
 	 });
 }
 
@@ -70,3 +75,11 @@ function renderFactoryDropdown(factories) {
   return menuTemp(factories);
 }
 
+function searchFocusId(factories, id) {
+	for(var i in factories){
+		if(factories[i].id === id){
+			return i;
+		}
+	}
+	return undefined;
+}
