@@ -61,6 +61,12 @@ exports.renderHeatmap = function(heatmapUrls) {
 
 }
 
+exports.renderNoDataText = function() {
+  var nullTemp = _.template('<span class="no-heatmap-text">heatmap未產生</span>');
+
+  return nullTemp();
+}
+
 exports.renderChart = function() {
 
   var imgTemp = _.template(

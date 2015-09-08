@@ -853,7 +853,8 @@ var listpics = [{
     },
     {}]
 
-// var liveinfos = []
+// var liveinfos = [];
+var heatmapUrl = [];
 
 var users = [
     {
@@ -2189,7 +2190,7 @@ var historyInfos = [
   }
 ]
 
-var heatmapUrl = {"path":"mold\/heatmap\/1\/1\/1\/eff8f0f6565f3bcceb3d1b9d78442e42","work_order_serial_num":"511-14110358"}
+// var heatmapUrl = {"path":"mold\/heatmap\/1\/1\/1\/eff8f0f6565f3bcceb3d1b9d78442e42","work_order_serial_num":"511-14110358"}
 
 // var workorderInfo = {
 //     'workorder_id':'W001','order_id':'ORDER001','customer_name':'Moremote','factories':'台中梧棲',

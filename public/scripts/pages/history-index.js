@@ -13,6 +13,8 @@ var valueDropdown = require('../history/components/dropdown-filter-value');
 var datePicker = require('../history/components/date-picker');
 
 /* DOM */
+var $listBlock = $('#history-list-block');
+var $noDataBlock = $('#history-no-data-block');
 var $tableListBlock = $('#history-table-block');
 var $tableBody = $('#history-table-body');
 var $imageBlock = $('#history-img-block');
@@ -33,7 +35,7 @@ function initialize() {
 
 function initializeLoadingSpinner() {
     spinner = loadingSpin();
-    spinner.init( $('#history-list-block')[0] );
+    spinner.init( $listBlock[0] );
 }
 
 function bindEvents() {
@@ -87,24 +89,38 @@ function searchHistoryThenRenderRows(searchPeriod) {
 	$.get(config.APIUrl + 'history/list?' + queryURL)
 	 .done(function(response){
 
-	 	if(response.length === 0) return;
+	 	if( response.length ) {
+			var type = selectedFilter.split('_')[0];
 
-		var type = selectedFilter.split('_')[0];
+			if(type === 'machine'){
+				$.when( caculateAvailability(response) )
+				 .then(function(){
+				 	createTableList(response, type);
+					displayImageBlock(response, type);
+					switchNoDataListBlock(true);
+				 });
 
-		if(type === 'machine'){
-			$.when( caculateAvailability(response) )
-			 .then(function(){
-			 	createTableList(response, type);
+			}else {
+				createTableList(response, type);
 				displayImageBlock(response, type);
-			 });
-
+				switchNoDataListBlock(true);
+			}
 		}else {
-			createTableList(response, type);
-			displayImageBlock(response, type);
-		}
+			switchNoDataListBlock(false);
+	 	}
 	})
 	 .fail(function(err){ console.log('history list error:', err) })
 	 .always(function(){ spinner.stop() });
+}
+
+function switchNoDataListBlock(hasData) {
+	if( hasData ){
+		$listBlock.removeClass('hidden');
+		$noDataBlock.addClass('hidden');
+	}else {
+		$listBlock.addClass('hidden');
+		$noDataBlock.removeClass('hidden');
+	}
 }
 
 function cleanTableAndIamgeBlock() {
@@ -170,14 +186,18 @@ function getHeatmap(id) {
 
 	$.get(config.APIUrl + 'pic/heatmap/list/' + id)
 	 .done(function(res){
+	 	if( _.isEmpty(res) ){
+	 		var heatmap = templates.renderNoDataText();
 
-	 	if( _.isArray(res) ){
-            group = res;
         }else {
-            group.push(res);
-        }
+		 	if( _.isArray(res) ){
+	            group = res;
+	        }else {
+	            group.push(res);
+	        }
 
-	 	var heatmap = templates.renderHeatmap({ heatmapUrls: group });
+		 	var heatmap = templates.renderHeatmap({ heatmapUrls: group });
+		}
 
 		$imageBlock.append( heatmap ).removeClass('hidden');
 
