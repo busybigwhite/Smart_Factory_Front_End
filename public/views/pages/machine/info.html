@@ -40,7 +40,7 @@
 					<input class="edit-mode" type="text" name="weight" value="" pattern="[0-9]{1,10}" title="輸入數字" required>
 				</span>
 			</li>
-			<li>
+			<!-- <li>
 				<span class="info-name">機台稼動率</span>
 				<span class="info-value">
 					<span id="machine-availability-rate">
@@ -48,7 +48,7 @@
 					</span>
 					<span>%</span>
 				</span>
-			</li>
+			</li> -->
 		</ul>
 	</div>
 	<section class="production-resume-panel">
@@ -110,6 +110,7 @@
 				</div>
 				<ul class="record-changed-table-body" id="check-record-changed-table-body"></ul>
 				<ul class="record-table-body" id="check-record-table-body"></ul>
+				<ul class="record-table-body" id="check-record-last-table-body"></ul>
 			</div>
 			<li id="machine-maintain-period">
 				<span class="resume-name">大保養週期</span>
@@ -150,6 +151,7 @@
 				</div>
 				<ul class="record-changed-table-body" id="maintain-record-changed-table-body"></ul>
 				<ul class="record-table-body" id="maintain-record-table-body"></ul>
+				<ul class="record-table-body" id="maintain-record-last-table-body"></ul>
 			</div>
 			<div class="record-table" id="error-record-table">
 				<h4 class="record-header">異常維修紀錄<i class="fa fa-chevron-down pul-right"></i></h4>
@@ -168,6 +170,7 @@
 				</div>
 				<ul class="record-changed-table-body" id="error-record-changed-table-body"></ul>
 				<ul class="record-table-body" id="error-record-table-body"></ul>
+				<ul class="record-table-body" id="error-record-last-table-body"></ul>
 			</div>
 		</ul>
 	</section>
