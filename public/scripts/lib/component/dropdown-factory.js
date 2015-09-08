@@ -55,7 +55,7 @@ function createFactoryListThenRenderRows() {
 
 		$factoryList.empty().html( factoryListRows );
 
-		var focusId = queryParameter.get('factory_id');
+		var focusId = +queryParameter.get('factory_id');
 		var focusIndex = searchFocusId(response, focusId);
 
 		(focusId === undefined || focusIndex === undefined)

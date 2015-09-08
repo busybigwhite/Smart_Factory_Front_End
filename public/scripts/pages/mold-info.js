@@ -26,14 +26,15 @@ var $moldDetailPage  = $('#mold-detail-page');
 var $viewModeCollection = $moldDetailPage.find('.view-mode');
 var $editModeCollection = $moldDetailPage.find('.edit-mode');
 
-var $serialNumber  = $('#mold-serial-num');
-var $name          = $('#mold-name');
-var $createdAt     = $('#mold-created-at');
-var $weight        = $('#mold-weight');
-var $moldType      = $('#mold-type');
-var $manufacturer  = $('#mold-manufacturer');
-var $lifetime      = $('#mold-lifetime');
-var $currentUsage  = $('#mold-current-usage');
+var $serialNumber  		= $('#mold-serial-num');
+var $serialNumberInput 	= $('#mold-serial-num-input');
+var $name          		= $('#mold-name');
+var $createdAt     		= $('#mold-created-at');
+var $weight        		= $('#mold-weight');
+var $moldType      		= $('#mold-type');
+var $manufacturer  		= $('#mold-manufacturer');
+var $lifetime      		= $('#mold-lifetime');
+var $currentUsage  		= $('#mold-current-usage');
 
 var $noticeedPersonName = $('#mold-noticed-person').find('.view-mode');
 var noticedId;
@@ -113,6 +114,7 @@ function bindEvents() {
 	$backBtn  .on('click', api.goToMoldIndex);
 	$moldDetailPage.on('keypress', 'input', preventSubmitOnInputEnter);
 	$moldDetailPage.submit(saveData);
+	// $serialNumberInput.on('blur', checkSerialNumUniq);
 }
 
 function showEditMode() {
@@ -171,6 +173,8 @@ function saveData(e) {
 
 	e.preventDefault();
 
+	if( !checkSerialNumUniq() ) return;
+
 	$.when(auth.refreshToken())
 	 .then(api.setToken)
 	 .then(function(){
@@ -200,6 +204,14 @@ function saveData(e) {
 	});
 
 	return false;
+}
+
+function checkSerialNumUniq(input) {
+	if(input.value === 'test'){
+		input.setCustomValidity('serial number已使用');
+	}else {
+		input.setCustomValidity('');
+	}
 }
 
 function saveChangedData() {
