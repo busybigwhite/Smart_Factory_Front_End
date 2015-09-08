@@ -9,6 +9,7 @@ var $recordTable        = $('#check-record-table');
 var $tableHeader        = $recordTable.find('.record-header');
 var $tableBody          = $('#check-record-table-body');
 var $changedTable       = $('#check-record-changed-table-body');
+var $lastTable       	= $('#check-record-last-table-body');
 var $recordForm         = $('#check-record-form');
 var $datePicker         = $('#check-record-date-picker');
 var $contentInput       = $recordForm.find('.record-content-input');
@@ -39,11 +40,15 @@ exports = module.exports = {
 function initialize() {
 	bindEvents();
 	initializeDatetimePicker();
+	$lastTable.show();
 }
 
 function initialView(data) {
 	var tableListRows = template.render({ records : data });
 	$tableBody.empty().append( tableListRows );
+
+	var tableOneRow = template.render({ records : [data[data.length-1]] });
+	$lastTable.empty().append( tableOneRow );
 }
 
 function bindEvents() {
@@ -105,11 +110,13 @@ function toggleTable() {
 function openTable() {
 	$tableHeader.addClass('open');
 	$tableBody.show();
+	$lastTable.hide();
 }
 
 function closeTable() {
 	$tableHeader.removeClass('open');
 	$tableBody.hide();
+	$lastTable.show();
 }
 
 function clearInput() {

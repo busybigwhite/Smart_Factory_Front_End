@@ -28,7 +28,7 @@ var $editModeCollection = $machineDetailPage.find('.edit-mode');
 var $serialNumber = $('#machine-serial-num');
 var $name = $('#machine-name');
 var $weight = $('#machine-weight');
-var $availabilityRate = $('#machine-availability-rate');
+// var $availabilityRate = $('#machine-availability-rate');
 var $noticeedPersonName = $('#machine-noticed-person').find('.view-mode');
 var noticedId;
 var userList;
@@ -60,11 +60,12 @@ function initialize() {
 
 function getInitialData() {
 	if (!machineId) return;
-	$.when( api.getMachineInfo(machineId), api.getUserList(), api.getAvailabilityRate(machineId))
-	 .done(function(result1, result2, result3) {
-	 		initialView(result1[0]);
+	// $.when( api.getMachineInfo(machineId), api.getUserList(), api.getAvailabilityRate(machineId))
+	$.when( api.getMachineInfo(machineId), api.getUserList())
+	 .done(function(result1, result2) {
+	 		initialView(result1);
 	 		initialNoticedName(result2[0]);
-	 		initAvailabilityRate(result3[0].availability_rate);
+	 		// initAvailabilityRate(result3[0].availability_rate);
 			noticeedPersonDropdown.init();
 	 })
 	 .fail(function(jqXHR, textStatus, errorThrown) {
@@ -238,9 +239,9 @@ function initResumeInfo(data) {
 	errorRecordTable.initialView(data['maintain_record_error']);
 }
 
-function initAvailabilityRate(val) {
-	$availabilityRate.text(val);
-}
+// function initAvailabilityRate(val) {
+// 	$availabilityRate.text(val);
+// }
 
 function initialNoticedName(data) {
 	if (noticedId) {
