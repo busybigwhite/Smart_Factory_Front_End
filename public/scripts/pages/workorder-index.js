@@ -98,7 +98,7 @@ function getWorkorderListThenRenderRows(fetchRequest) {
 			dict['order_id'] = workorderResponse[i].order_id ? workorderResponse[i].order_id : '-';
 			dict['customer_name'] = workorderResponse[i].customer_name ? workorderResponse[i].customer_name : '-';
     		dict['factory_id'] = focusFactoryId ? focusFactoryId : '-';
-    		dict['input_date'] = '' ? '' : '-';
+    		dict['order_date'] = workorderResponse[i].order_date ? workorderResponse[i].order_date : '-';
 
 			switch (workorderResponse[i].status) {
 				case "non-schedule":

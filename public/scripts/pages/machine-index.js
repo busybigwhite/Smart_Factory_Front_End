@@ -77,7 +77,6 @@ function searchByFilter(){
 	var searchKey = $searchInput.val();
 	var fetchRequest = {};
 
-	fetchRequest['factory_id'] = focusFactoryId;
 	fetchRequest[type] = searchKey;
 
 	getInitialData(fetchRequest);
