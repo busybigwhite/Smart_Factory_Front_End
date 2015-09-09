@@ -119,7 +119,7 @@ function deleteData(url, data) {
 }
 
 function checkUniq(url, data) {
-	return ajax('POST', url, data);
+	return ajax('GET', url, data);
 }
 
 function ajax(method, url, data) {
