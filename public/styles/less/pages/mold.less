@@ -9,72 +9,80 @@
 			.filter-search-component(7);
 		}
 	}
-}
 
-#mold-table {
-	.custom-table;
+	#mold-list-block {
+		.base-list-panel();
 
-	.table-col {
+		#mold-table {
+			.custom-table;
 
-		&:nth-of-type(1),
-		&:nth-of-type(2) {
-			.custom-table-col(1.5);
-		}
+			.table-col {
 
-		&:nth-of-type(3),
-		&:nth-of-type(4) {
-			.custom-table-col(1.5);
-			display: flex;
-			align-items: center;
-		}
+				&:nth-of-type(1),
+				&:nth-of-type(2) {
+					.custom-table-col(1.5);
+				}
 
-		&:nth-of-type(5),
-		&:nth-of-type(6) {
-			.custom-table-col(2);
-			display: flex;
-			align-items: center;
-		}
+				&:nth-of-type(4) {
+					.custom-table-col(2.5);
+					display: flex;
+					align-items: center;
+					white-space: inherit;
+					line-height: 1em;
+    				word-break: break-all;
+				}
 
-		&:nth-of-type(7) {
-			.custom-table-col(1);
-			display: flex;
-			align-items: center;
-		}
+				&:nth-of-type(3),
+				&:nth-of-type(5),
+				&:nth-of-type(6) {
+					.custom-table-col(1.5);
+					display: flex;
+					align-items: center;
+				}
 
-		&:last-of-type {
-			.custom-table-col(1);
-			display: flex;
-			align-items: center;
-			text-align: center;
-		}
-	}
+				&:nth-of-type(7) {
+					.custom-table-col(1);
+					display: flex;
+					align-items: center;
+				}
 
-	.table-item {
-		height: 120px;
-	}
+				&:last-of-type {
+					.custom-table-col(1);
+					display: flex;
+					align-items: center;
+					text-align: center;
+				}
+			}
 
-	.pic-img {
-		width: 100px;
-		height: 100px;
-		margin: 10px auto;
-		background-color: lightgray;
-		color: darkgray;
-	}
+			.table-item {
+				height: 120px;
+			}
 
-	.index-list-size-length,
-	.index-list-size-width,
-	.index-list-size-height {
-		.make-xs-column(3);
-		padding: 0;
-		text-align: center;
-	}
+			.pic-img {
+				width: 100px;
+				height: 100px;
+				margin: 10px auto;
+				background-color: lightgray;
+				color: darkgray;
+			}
 
-	.index-list-size-length,
-	.index-list-size-width {
-		&:after {
-			content: "/";
-			position: absolute;
-			right: 0;
+			.index-list-size-length,
+			.index-list-size-width,
+			.index-list-size-height {
+				.make-xs-column(3);
+				padding: 0;
+				text-align: center;
+			}
+
+			.index-list-size-length,
+			.index-list-size-width {
+				&:after {
+					content: "/";
+					position: absolute;
+					right: 0;
+					margin: 0 -2px;
+				}
+			}
 		}
 	}
 }
