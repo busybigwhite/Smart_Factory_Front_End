@@ -209,7 +209,7 @@ function checkSerialNumUniq(input) {
 
 	$.when( api.checkSerialNumUniq(serialNum) )
 	 .done(function(result){
-	 	if(result === 'fail'){
+	 	if(result === 'Fail'){
 	 		$serialNumberInput[0].setCustomValidity('serial number已使用');
 			return false;
 	 	}else {
