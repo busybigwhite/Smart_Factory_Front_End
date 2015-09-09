@@ -31,6 +31,7 @@ exports.triggerClick = function(){
 
 exports.reset = function(){
 	$filterDropdown.find('.option-item').eq(0).trigger('click');
+	$searchInput.val('');
 }
 
 initialize();
@@ -57,6 +58,7 @@ function setFocusNameBlock() {
 	selectedFilter = $(this).data('id');
 
 	$filterFocusName.text(displayName).data('id', selectedFilter);
+	$searchInput.val('');
 }
 
 function searchByFilter(){
