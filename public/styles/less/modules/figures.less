@@ -26,3 +26,36 @@
 		border-bottom: 6px dashed;
 	}
 }
+
+.filter-search-component(@colNum) {
+	.make-xs-column(@colNum);
+
+	.input-group {
+		max-width: 250px;
+		height: 36px;
+		padding: 0;
+
+		.search-input {
+			.form-control();
+			height: inherit;
+			border-bottom-right-radius: 0;
+			border-top-right-radius: 0;
+		}
+
+		.input-group-btn {
+			height: inherit;
+
+			.search-btn {
+				.btn();
+				.btn-info();
+				height: inherit;
+				border-bottom-left-radius: 0;
+				border-top-left-radius: 0;
+
+				.fa {
+					font-size: @font-lg-size;
+				}
+			}
+		}
+	}
+}

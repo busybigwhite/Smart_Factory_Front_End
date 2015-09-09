@@ -6,6 +6,7 @@ var auth = require('../config/auth');
 var api = require('../mold/api');
 var template = require('../mold/templates/index-list-template');
 var factoryDropdown = require('../lib/component/dropdown-factory');
+var searchFilterComponent = require('../lib/component/search-filter-component');
 
 /* DOM */
 var $moldNewBtn    = $('#mold-new-button');
@@ -17,39 +18,48 @@ initialize();
 function initialize() {
 	header.include();
 	bindEvents();
+	bindDropdownsChangedEventListener();
+	searchFilterComponent.triggerClick();
 }
 
 function bindEvents() {
-	factoryDropdown.emitter.on('factoryChanged', getInitialData);
 	$moldNewBtn.on('click', gotoMoldNewInfoPage);
 	$moldTable.on('click', '.detail-info-button', gotoMoldDetailInfoPage);
 }
 
-function getInitialData() {
-	var ID = getFactoryId();
-	console.log('FactoryId : ' + ID);
-	api.setFactoryId(ID);
+function bindDropdownsChangedEventListener() {
+	factoryDropdown.emitter.on('factoryChanged', setFocusFactoryIdThenRenderRows);
+	searchFilterComponent.emitter.on('search', searchByFilter);
+}
 
-	$.when(auth.refreshToken())
-	 .then(api.setToken)
-	 .then(function(){
-	 	api.getMoldList()
-	 	   .done(initialView)
-	 	   .fail(function(err) { console.log("GET Mold List error: ", err); });
-	 });
+function setFocusFactoryIdThenRenderRows(factoryId) {
+	api.setFactoryId(factoryId);
+	searchFilterComponent.reset();
+
+	getMoldList();
+}
+
+function searchByFilter(searchObj){
+	getMoldList(searchObj);
 }
 
 function gotoMoldNewInfoPage() {
-	api.goToMoldInfo('new', {factoryId: getFactoryId()});
+	api.goToMoldInfo('new');
 }
 
 function gotoMoldDetailInfoPage() {
 	var ID = $(this).data('id');
-	api.goToMoldInfo('detail', {factoryId: getFactoryId(), ID: ID});
+	api.goToMoldInfo('detail', {ID: ID});
 }
 
-function getFactoryId() {
-	return factoryDropdown.getSelectedFactoryId();
+function getMoldList(searchObj) {
+	$.when(auth.refreshToken())
+	 .then(api.setToken)
+	 .then(function(){
+	 	api.getMoldList(searchObj)
+	 	   .done(initialView)
+	 	   .fail(function(err) { console.log("GET Mold List error: ", err); });
+	 });
 }
 
 function initialView(data) {

@@ -22,6 +22,13 @@ app.get('/login', function(req, res) { res.render('pages/login/main'); });
 app.get('/realtime', function(req, res) { res.render('pages/realtime/main'); });
 app.get('/realtime/listpic', function(req, res) { res.render('pages/realtime/listpic') });
 
+//mold
+app.get('/api/mold/list', function(req, res) {
+	res.send(data.moldList);
+});
+app.get('/api/mold/1', function(req, res) {
+	res.send(data.moldInfos);
+});
 app.post('/api/mold/check_unique', function(req, res) {
 	res.send('fail');
 });
@@ -70,6 +77,10 @@ app.get('/api/pic/heatmap/list/1', function(req, res) {
 
 app.get('/api/factory/list', function(req, res) {
 	res.send(data.factories);
+});
+
+app.get('/api/token', function(req, res) {
+	res.send('tempToken');
 });
 
 app.get('/user', function(req, res) { res.render('pages/user/main'); });

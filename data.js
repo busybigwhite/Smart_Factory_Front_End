@@ -2190,12 +2190,87 @@ var historyInfos = [
   }
 ]
 
-// var heatmapUrl = {"path":"mold\/heatmap\/1\/1\/1\/eff8f0f6565f3bcceb3d1b9d78442e42","work_order_serial_num":"511-14110358"}
+var moldList = [
+  {
+    "id":1,
+    "serial_num":"07-11776-000",
+    "name":"Left_Cover-Right_Cover",
+    "factory_id":1,
+    "weight":5809,
+    "type":"\u5851\u81a0",
+    "mold_pic":"default",
+    "product_pic":"default",
+    "length":1200,
+    "width":700,
+    "height":881,
+    "admin_id":3,
+    "manufacturer":"\u5b8f\u5851",
+    "maintain_period_unit":"times",
+    "maintain_period_value":95,
+    "lifetime":300000,
+    "current_usage":0,
+    "cave_num":10,
+    "content":"\u5099\u8a3b\u6e2c\u8a66",
+    "scrapped":"no",
+    "scrapped_date":null,
+    "created_at":"2015-09-09 12:25:25",
+    "updated_at":"2015-09-09 12:25:25"
+  },{
+    "id":2,
+    "serial_num":"MMMMM",
+    "name":"\u6a21\u5177test",
+    "factory_id":1,
+    "weight":4,
+    "type":"GG",
+    "mold_pic":"",
+    "product_pic":"",
+    "length":1,
+    "width":2,
+    "height":3,
+    "admin_id":1,
+    "manufacturer":"4444",
+    "maintain_period_unit":"time",
+    "maintain_period_value":3333,
+    "lifetime":999999,
+    "current_usage":0,
+    "cave_num":0,
+    "content":"",
+    "scrapped":"no",
+    "scrapped_date":null,
+    "created_at":"2015-09-09 12:25:43",
+    "updated_at":"2015-09-09 12:25:43"
+  }
+]
 
-// var workorderInfo = {
-//     'workorder_id':'W001','order_id':'ORDER001','customer_name':'Moremote','factories':'台中梧棲',
-//     'workorder_status':'finish'
-// };
+var moldInfos = {
+  "id":1,
+  "serial_num":"07-11776-000",
+  "name":"Left_Cover-Right_Cover",
+  "factory_id":1,
+  "weight":5809,
+  "type":"\u5851\u81a0",
+  "mold_pic":"default",
+  "product_pic":"default",
+  "length":1200,
+  "width":700,
+  "height":881,
+  "admin_id":3,
+  "manufacturer":"\u5b8f\u5851",
+  "maintain_period_unit":"times",
+  "maintain_period_value":95,
+  "lifetime":300000,
+  "current_usage":0,
+  "cave_num":10,
+  "content":"\u5099\u8a3b\u6e2c\u8a66",
+  "scrapped":"no",
+  "scrapped_date":null,
+  "created_at":"2015-09-09 12:25:25",
+  "updated_at":"2015-09-09 12:25:25",
+  "maintain_record_error":[],
+  "maintain_record_check":[],
+  "maintain_record_maintain":[],
+  "maintain_records":[]
+}
 
 var workorderInfo = {
   'serial_num': '3',
@@ -2224,6 +2299,8 @@ module.exports = {
       listpics: listpics,
       filters: filters,
       historyInfos: historyInfos,
+      moldList: moldList,
+      moldInfos: moldInfos,
       heatmapUrl: heatmapUrl,
       workorderInfo: workorderInfo,
       users: users,
