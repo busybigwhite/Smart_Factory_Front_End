@@ -63,7 +63,7 @@ function getInitialData() {
 	// $.when( api.getMachineInfo(machineId), api.getUserList(), api.getAvailabilityRate(machineId))
 	$.when( api.getMachineInfo(machineId), api.getUserList())
 	 .done(function(result1, result2) {
-	 		initialView(result1);
+	 		initialView(result1[0]);
 	 		initialNoticedName(result2[0]);
 	 		// initAvailabilityRate(result3[0].availability_rate);
 			noticeedPersonDropdown.init();
