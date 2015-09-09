@@ -76,10 +76,11 @@ function renderFactoryDropdown(factories) {
 }
 
 function searchFocusId(factories, id) {
+
 	for(var i in factories){
-		if(factories[i].id === id){
-			return i;
-		}
+
+		if(factories[i].id === id) return i;
 	}
+
 	return undefined;
 }

@@ -21,6 +21,11 @@ app.get('/login', function(req, res) { res.render('pages/login/main'); });
 // realtime
 app.get('/realtime', function(req, res) { res.render('pages/realtime/main'); });
 app.get('/realtime/listpic', function(req, res) { res.render('pages/realtime/listpic') });
+
+app.post('/api/mold/check_unique', function(req, res) {
+	res.send('fail');
+});
+
 app.get('/api/workorder/list', function(req, res) {
 	res.send(data.liveinfos);
 });

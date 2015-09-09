@@ -26,6 +26,7 @@ exports = module.exports = {
 	editMoldInfo: editMoldInfo,
 	createMoldRecord: createMoldRecord,
 	deleteMoldRecord: deleteMoldRecord,
+	checkSerialNumUniq: checkSerialNumUniq,
 	setToken: setToken
 };
 
@@ -94,6 +95,11 @@ function deleteMoldRecord(id, array) {
 	return $.when(pArray);
 }
 
+function checkSerialNumUniq(serialNum) {
+	var data = { 'serial_num': serialNum };
+
+	return checkUniq(moldApiUrl + '/check_unique', data);
+}
 
 /* private */
 function getData(url) {
@@ -112,6 +118,10 @@ function deleteData(url, data) {
 	return ajax('DELETE', url, data);
 }
 
+function checkUniq(url, data) {
+	return ajax('POST', url, data);
+}
+
 function ajax(method, url, data) {
 	var data = assign({}, data); // prevent data is undefined
 	data.factory_id = factoryId;
@@ -121,7 +131,6 @@ function ajax(method, url, data) {
 
 	var processedData = new FormData();
 
-	// lodash forEach(collection, function(value, index|key, collection))
 	_.forEach(data, function(value, key) {
 	  processedData.append(key, value);
 	});

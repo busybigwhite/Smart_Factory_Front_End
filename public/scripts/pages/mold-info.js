@@ -114,7 +114,7 @@ function bindEvents() {
 	$backBtn  .on('click', api.goToMoldIndex);
 	$moldDetailPage.on('keypress', 'input', preventSubmitOnInputEnter);
 	$moldDetailPage.submit(saveData);
-	// $serialNumberInput.on('blur', checkSerialNumUniq);
+	$serialNumberInput.on('blur', checkSerialNumUniq);
 }
 
 function showEditMode() {
@@ -173,8 +173,6 @@ function saveData(e) {
 
 	e.preventDefault();
 
-	if( !checkSerialNumUniq() ) return;
-
 	$.when(auth.refreshToken())
 	 .then(api.setToken)
 	 .then(function(){
@@ -207,11 +205,18 @@ function saveData(e) {
 }
 
 function checkSerialNumUniq(input) {
-	if(input.value === 'test'){
-		input.setCustomValidity('serial number已使用');
-	}else {
-		input.setCustomValidity('');
-	}
+	var serialNum = $serialNumberInput.val();
+
+	$.when( api.checkSerialNumUniq(serialNum) )
+	 .done(function(result){
+	 	if(result === 'fail'){
+	 		$serialNumberInput[0].setCustomValidity('serial number已使用');
+			return false;
+	 	}else {
+	 		$serialNumberInput[0].setCustomValidity('');
+			return true;
+	 	}
+	 })
 }
 
 function saveChangedData() {
