@@ -44,11 +44,18 @@ function initialize() {
 }
 
 function initialView(data) {
-	var tableListRows = template.render({ records : data });
-	$tableBody.empty().append( tableListRows );
+	if (data) {
+		var tableListRows = template.render({ records : data });
+		$tableBody.empty().append( tableListRows );
 
-	var tableOneRow = template.render({ records : [data[data.length-1]] });
-	$lastTable.empty().append( tableOneRow );
+		if (data.length > 1) {
+			var tableOneRow = template.render({ records : [data[data.length-1]] });
+			$lastTable.empty().append( tableOneRow );
+		} else {
+			var tableOneRow = template.render({ records : data });
+			$lastTable.empty().append( tableOneRow );
+		}
+	}
 }
 
 function bindEvents() {
