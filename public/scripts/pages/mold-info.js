@@ -32,6 +32,12 @@ var $name          		= $('#mold-name');
 var $createdAt     		= $('#mold-created-at');
 var $weight        		= $('#mold-weight');
 var $moldType      		= $('#mold-type');
+var $caveNum 			= $('#mold-cave-num');
+var $content 			= $('#mold-content');
+var $scrapped 			= $('#mold-scrapped');
+var $nonScrappedRadio 	= $('#non-scrapped-radio');
+var $scrappedRadio 		= $('#scrapped-radio');
+var $scrappedDate		= $('#mold-scrapped-date');
 var $manufacturer  		= $('#mold-manufacturer');
 var $lifetime      		= $('#mold-lifetime');
 var $currentUsage  		= $('#mold-current-usage');
@@ -45,7 +51,8 @@ var $width  = $('#mold-size').find('.width');
 var $height = $('#mold-size').find('.height');
 
 var $moldPicsBlock = $('#mold-pics-block');
-var $datePicker = $('#mold-create-at-date-picker');
+var $createDatePicker = $('#mold-create-at-date-picker');
+var $scrappedDatePicker = $('#mold-scrapped-date-picker');
 
 var today = new Date();
 var dateTimePickerOpt = {
@@ -54,6 +61,7 @@ var dateTimePickerOpt = {
 			vertical: 'bottom'
 		},
 		maxDate: today,
+		defaultDate: today,
 		ignoreReadonly: true,
 		sideBySide: true,
 	};
@@ -77,9 +85,10 @@ function initialize() {
 		showCreateMode();
 	}
 	moldId = queryParameter.get('ID');
-	api.setFactoryId(queryParameter.get('factoryId'));
+	api.setFactoryId(queryParameter.get('factory_id'));
 	getInitialData();
 	bindEvents();
+	initializeDatetimePickers();
 
 	moldPicUploadBlock.init();
 	productPicUploadBlock.init();
@@ -87,10 +96,8 @@ function initialize() {
 }
 
 function getInitialData() {
-	if (!moldId) {
-		initializeDatetimePicker();
-		return;
-	}
+
+	if( !moldId ) return;
 
 	$.when(auth.refreshToken())
 	 .then(api.setToken)
@@ -112,9 +119,22 @@ function bindEvents() {
 	$cancelBtn.on('click', hideEditMode);
 	$deleteBtn.on('click', deleteMold);
 	$backBtn  .on('click', api.goToMoldIndex);
+	$nonScrappedRadio.on('click', switchScrappedDateBlock);
+	$scrappedRadio.on('click', switchScrappedDateBlock);
 	$moldDetailPage.on('keypress', 'input', preventSubmitOnInputEnter);
 	$moldDetailPage.submit(saveData);
 	$serialNumberInput.on('blur', checkSerialNumUniq);
+}
+
+function initializeDatetimePickers() {
+	$createDatePicker.datetimepicker(dateTimePickerOpt);
+	$scrappedDatePicker.datetimepicker(dateTimePickerOpt);
+	$createDatePicker.on("dp.change", function(){
+		$('.bootstrap-datetimepicker-widget').hide();
+	});
+	$scrappedDatePicker.on("dp.change", function(){
+		$('.bootstrap-datetimepicker-widget').hide();
+	});
 }
 
 function showEditMode() {
@@ -267,13 +287,14 @@ function initialView(data) {
 	initBaseInfo(data);
 	initResumeInfo(data);
 	initPics(data);
-	initializeDatetimePicker(data);
+	setDatetimePickers(data);
 }
 
-function initializeDatetimePicker(data) {
-	var defaultDate = data && data['created_at'] ? data['created_at'] : today;
-	$datePicker.datetimepicker(dateTimePickerOpt);
-	$datePicker.data("DateTimePicker").defaultDate(defaultDate);
+function setDatetimePickers(data) {
+	if( data ){
+		data['created_at'] && $createDatePicker.data("DateTimePicker").defaultDate( data['created_at'] );
+		data['scrapped_date'] && $scrappedDatePicker.data("DateTimePicker").defaultDate( data['scrapped_date'] );
+	}
 }
 
 function resetViewData() {
@@ -304,6 +325,39 @@ function initBaseInfo(data) {
 
 	$moldType.find('.view-mode').text(data['type']);
 	$moldType.find('.edit-mode').val(data['type']);
+
+	$caveNum.find('.view-mode').text(data['cave_num']);
+	$caveNum.find('.edit-mode').val(data['cave_num']);
+
+	$content.find('.view-mode').text(data['content']);
+	$content.find('.edit-mode').val(data['content']);
+
+	$scrapped.find('.view-mode').text( showScrappedText(data['scrapped']) );
+	setScrappedRadioGroup( data['scrapped'] );
+
+	$scrappedDate.find('.view-mode').text(data['scrapped_date']);
+}
+
+function showScrappedText(status) {
+	var isNonScrapped = status === 'no';
+	var text = isNonScrapped ? '未報廢' : '已報廢';
+
+	switchScrappedDateBlock( isNonScrapped );
+
+	return text;
+}
+
+function setScrappedRadioGroup(status) {
+	var isNonScrapped = status === 'no';
+
+	isNonScrapped ? $nonScrappedRadio.trigger('click') : $scrappedRadio.trigger('click');
+}
+
+function switchScrappedDateBlock() {
+	var isNonScrapped = $(this).val() === 'no';
+
+	isNonScrapped ? $scrappedDate.addClass('hidden') : $scrappedDate.removeClass('hidden');
+	// isNonScrapped && $scrappedDatePicker.setDate('');
 }
 
 function initResumeInfo(data) {
@@ -352,7 +406,6 @@ function setUserName(name) {
 	$noticeedPersonName.text(name);
 }
 
-
 function initPics(data) {
 	var picApiUrl  = api.getMoldPicApiUrl();
 	var picMold    = data['mold_pic']    ? picApiUrl + data['mold_pic'] : '' ;
@@ -362,18 +415,29 @@ function initPics(data) {
 }
 
 function getInfoValue() {
+
 	var data = {};
+
 	$editModeCollection.each(function(index, el) {
 		var name  = $(el).attr('name');
 		var value = $(el).val();
 
-		if (name) {
+		if (name && name !== 'scrapped') {
 			value = value ? value : '';
 			data[name] = value;
 		}
 	});
+
 	data['admin_id']  = noticeedPersonDropdown.getId();
-	data['created_at'] = $datePicker.val();
+	data['created_at'] = $createDatePicker.val();
+
+	if( $nonScrappedRadio.is(':checked') ){
+		data['scrapped'] = 'no';
+		data['scrapped_date'] = null;
+	}else {
+		data['scrapped'] = 'yes';
+		data['scrapped_date'] = $scrappedDatePicker.val();
+	}
 
 	data['maintain_period_value'] = maintainPeriodDropdown.getValue();
 	data['maintain_period_unit']  = maintainPeriodDropdown.getType();

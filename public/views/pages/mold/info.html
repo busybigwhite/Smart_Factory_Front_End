@@ -39,7 +39,7 @@
 					<p class="view-mode"></p>
 					<div class="edit-mode">
 						<label for="mold-create-at-date-picker" class="fa fa-calendar"></label>
-						<input type="text" data-date-format="YYYY-MM-DD HH:mm:ss" id="mold-create-at-date-picker" name="created_at" readonly required/>
+						<input type="text" data-date-format="YYYY-MM-DD HH:mm:ss" id="mold-create-at-date-picker" name="created_at" readonly/>
 					</div>
 				</span>
 			</li>
@@ -66,6 +66,42 @@
 				<span class="info-value">
 					<p class="view-mode"></p>
 					<input class="edit-mode" type="text" name="type" value="" pattern="[A-Za-z0-9\-\_\s\u4e00-\u9fa5]{1,200}" title="輸入1~200個中英數字" required>
+				</span>
+			</li>
+			<li id="mold-cave-num">
+				<span class="info-name">穴數</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="cave_num" value="" pattern="[0-9]{1,4}" title="輸入數字" required>
+				</span>
+			</li>
+			<li id="mold-content">
+				<span class="info-name">備註</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="content" value="" pattern="[A-Za-z0-9\-\_\s\u4e00-\u9fa5]{1,200}" title="輸入1~200個中英數字" required>
+				</span>
+			</li>
+			<li id="mold-scrapped">
+				<span class="info-name">報廢</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<div class="edit-mode">
+						<input id="non-scrapped-radio" type="radio" name="scrapped" value="no" checked/>
+						<span>未報廢</span>
+						<input id="scrapped-radio" type="radio" name="scrapped" value="yes" />
+						<span>已報廢</span>
+					</div>
+				</span>
+			</li>
+			<li id="mold-scrapped-date" class="hidden">
+				<span class="info-name">報廢日期</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<div class="edit-mode">
+						<label for="mold-scrapped-date-picker" class="fa fa-calendar"></label>
+						<input type="text" data-date-format="YYYY-MM-DD HH:mm:ss" id="mold-scrapped-date-picker" name="created_at" readonly/>
+					</div>
 				</span>
 			</li>
 		</ul>
