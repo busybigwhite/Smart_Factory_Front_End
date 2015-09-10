@@ -81,12 +81,23 @@
                 }
             }
 
-            &:last-child {
+            &:nth-child(7) {
                 &.history {
                     .header-focus();
                 }
 
                 &.Manager,
+                &.Customer,
+                &.Employee {
+                    display: none;
+                }
+            }
+
+            &:last-child {
+                &.compare {
+                    .header-focus();
+                }
+
                 &.Customer,
                 &.Employee {
                     display: none;

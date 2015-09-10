@@ -429,14 +429,8 @@ function getInfoValue() {
 
 	data['admin_id']  = noticeedPersonDropdown.getId();
 	data['created_at'] = $createDatePicker.val();
-
-	if( $nonScrappedRadio.is(':checked') ){
-		data['scrapped'] = 'no';
-		data['scrapped_date'] = null;
-	}else {
-		data['scrapped'] = 'yes';
-		data['scrapped_date'] = $scrappedDatePicker.val();
-	}
+	data['scrapped'] = $nonScrappedRadio.is(':checked') ? 'no' : 'yes';
+	data['scrapped_date'] = $scrappedDatePicker.val();
 
 	data['maintain_period_value'] = maintainPeriodDropdown.getValue();
 	data['maintain_period_unit']  = maintainPeriodDropdown.getType();
