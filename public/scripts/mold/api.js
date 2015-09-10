@@ -7,7 +7,7 @@ var assign = require('object-assign');
 var config = require('../config/url');
 
 var factoryId;
-var scrappedType;
+var scrappedType = 'no';
 var token;
 var moldApiUrl  = config.APIUrl + 'mold';
 var moldApiPicUrl = config.APIUrl + 'pic/mold/';
