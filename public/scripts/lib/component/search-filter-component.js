@@ -55,7 +55,7 @@ function bindSearchByFilterOnButton() {
 }
 
 function bindSearchByFilterOnKeypress() {
-	$searchInput.on('keypress', searchByFilter);
+	$searchInput.on('keypress', searchByKeypress);
 }
 
 function setFocusNameBlock() {
@@ -66,14 +66,14 @@ function setFocusNameBlock() {
 	$searchInput.val('');
 }
 
-function searchByFilter(e){
+function searchByKeypress(e) {
 
-	if(e.type === 'keypress'){
-		var code = e.keyCode || e.which;
+	var code = e.keyCode || e.which;
 
-		if (code !== 13) return false;
-	}
+	code === 13 && searchByFilter();
+}
 
+function searchByFilter(){
 	var searchKey = $searchInput.val();
 	var data = {};
 	data[selectedFilter] = searchKey;
