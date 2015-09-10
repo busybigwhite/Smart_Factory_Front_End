@@ -97,7 +97,10 @@ function initialize() {
 
 function getInitialData() {
 
-	if( !moldId ) return;
+	if( !moldId ) {
+		$serialNumberInput.on('blur', checkSerialNumUniq);
+		return;
+	}
 
 	$.when(auth.refreshToken())
 	 .then(api.setToken)
@@ -123,7 +126,6 @@ function bindEvents() {
 	$scrappedRadio.on('click', switchScrappedDateBlock);
 	$moldDetailPage.on('keypress', 'input', preventSubmitOnInputEnter);
 	$moldDetailPage.submit(saveData);
-	$serialNumberInput.on('blur', checkSerialNumUniq);
 }
 
 function initializeDatetimePickers() {
