@@ -97,10 +97,7 @@ function initialize() {
 
 function getInitialData() {
 
-	if( !moldId ) {
-		$serialNumberInput.on('blur', checkSerialNumUniq);
-		return;
-	}
+	if( !moldId ) return;
 
 	$.when(auth.refreshToken())
 	 .then(api.setToken)
@@ -118,14 +115,15 @@ function getInitialData() {
 }
 
 function bindEvents() {
-	$editBtn  .on('click', showEditMode);
+	$editBtn.on('click', showEditMode);
 	$cancelBtn.on('click', hideEditMode);
 	$deleteBtn.on('click', deleteMold);
-	$backBtn  .on('click', api.goToMoldIndex);
+	$backBtn.on('click', api.goToMoldIndex);
 	$nonScrappedRadio.on('click', switchScrappedDateBlock);
 	$scrappedRadio.on('click', switchScrappedDateBlock);
 	$moldDetailPage.on('keypress', 'input', preventSubmitOnInputEnter);
 	$moldDetailPage.submit(saveData);
+	$serialNumberInput.on('blur', checkSerialNumUniq);
 }
 
 function initializeDatetimePickers() {

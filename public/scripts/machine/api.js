@@ -24,6 +24,7 @@ exports = module.exports = {
 	editMachineInfo: editMachineInfo,
 	createMachineRecord: createMachineRecord,
 	deleteMachineRecord: deleteMachineRecord,
+	checkSerialNumUniq: checkSerialNumUniq
 };
 
 function setFactoryId(id) {
@@ -100,6 +101,11 @@ function deleteMachineRecord(id, array) {
 	return $.when(pArray);
 }
 
+function checkSerialNumUniq(serialNum) {
+	var data = { 'serial_num': serialNum };
+
+	return checkUniq(machineApiUrl + '/check_unique', data);
+}
 
 /* private */
 function getData(url, data) {
@@ -116,6 +122,10 @@ function createData(url, data) {
 
 function deleteData(url, data) {
 	return ajax('DELETE', url, data);
+}
+
+function checkUniq(url, data) {
+	return ajax('GET', url, data);
 }
 
 function ajax(method, url, data) {

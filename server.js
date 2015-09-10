@@ -22,6 +22,10 @@ app.get('/login', function(req, res) { res.render('pages/login/main'); });
 app.get('/realtime', function(req, res) { res.render('pages/realtime/main'); });
 app.get('/realtime/listpic', function(req, res) { res.render('pages/realtime/listpic') });
 
+app.get('/api/machine/check_unique', function(req, res) {
+	res.send('Fail');
+});
+
 //mold
 app.get('/api/mold/list', function(req, res) {
 	res.send(data.moldList);
@@ -29,8 +33,8 @@ app.get('/api/mold/list', function(req, res) {
 app.get('/api/mold/1', function(req, res) {
 	res.send(data.moldInfos);
 });
-app.post('/api/mold/check_unique', function(req, res) {
-	res.send('fail');
+app.get('/api/mold/check_unique', function(req, res) {
+	res.send('Fail');
 });
 
 app.get('/api/workorder/list', function(req, res) {
@@ -48,6 +52,11 @@ app.get('/api/workorder', function(req, res) {
 app.get('/api/workorder/1', function(req, res) {
 	res.send(data.workorder);
 });
+
+app.get('/api/workorder/check_unique', function(req, res) {
+	res.send('Fail');
+});
+
 app.get('/api/user', function(req, res) {
 	res.send(data.users);
 });

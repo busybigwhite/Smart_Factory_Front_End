@@ -26,6 +26,7 @@ var $viewModeCollection = $machineDetailPage.find('.view-mode');
 var $editModeCollection = $machineDetailPage.find('.edit-mode');
 
 var $serialNumber = $('#machine-serial-num');
+var $serialNumberInput 	= $('#machine-serial-num-input');
 var $name = $('#machine-name');
 var $weight = $('#machine-weight');
 // var $availabilityRate = $('#machine-availability-rate');
@@ -59,7 +60,9 @@ function initialize() {
 }
 
 function getInitialData() {
-	if (!machineId) return;
+
+	if( !machineId ) return;
+
 	// $.when( api.getMachineInfo(machineId), api.getUserList(), api.getAvailabilityRate(machineId))
 	$.when( api.getMachineInfo(machineId), api.getUserList())
 	 .done(function(result1, result2) {
@@ -80,6 +83,7 @@ function bindEvents() {
 	$backBtn  .on('click', api.goToMachineIndex);
 	$machineDetailPage.on('keypress', 'input', preventSubmitOnInputEnter);
 	$machineDetailPage.submit(saveData);
+	$serialNumberInput.on('blur', checkSerialNumUniq);
 }
 
 function showEditMode() {
@@ -161,6 +165,21 @@ function saveData() {
 		console.log('machine info page has error: Undefined Mode');
 	}
 	return false;
+}
+
+function checkSerialNumUniq(input) {
+	var serialNum = $serialNumberInput.val();
+
+	$.when( api.checkSerialNumUniq(serialNum) )
+	 .done(function(result){
+	 	if(result === 'Fail'){
+	 		$serialNumberInput[0].setCustomValidity('serial number已使用');
+			return false;
+	 	}else {
+	 		$serialNumberInput[0].setCustomValidity('');
+			return true;
+	 	}
+	 })
 }
 
 function saveChangedData() {
