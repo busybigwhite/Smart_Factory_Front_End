@@ -102,8 +102,8 @@ function deleteMoldRecord(id, array) {
 	return $.when(pArray);
 }
 
-function checkSerialNumUniq(serialNum) {
-	var data = { 'serial_num': serialNum };
+function checkSerialNumUniq(serialNum, id) {
+	var data = { 'serial_num': serialNum, 'mold_id': id };
 
 	return checkUniq(moldApiUrl + '/check_unique', data);
 }

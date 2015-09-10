@@ -227,7 +227,7 @@ function saveData(e) {
 function checkSerialNumUniq(input) {
 	var serialNum = $serialNumberInput.val();
 
-	$.when( api.checkSerialNumUniq(serialNum) )
+	$.when( api.checkSerialNumUniq(serialNum, moldId) )
 	 .done(function(result){
 	 	if(result === 'Fail'){
 	 		$serialNumberInput[0].setCustomValidity('serial number已使用');
