@@ -7,7 +7,7 @@ var assign = require('object-assign');
 var config = require('../config/url');
 
 var factoryId;
-var scrappedType = 'no';
+var scrappedType;
 var token;
 var moldApiUrl  = config.APIUrl + 'mold';
 var moldApiPicUrl = config.APIUrl + 'pic/mold/';
@@ -132,8 +132,8 @@ function checkUniq(url, data) {
 function ajax(method, url, data) {
 	var data = assign({}, data); // prevent data is undefined
 	data['factory_id'] = factoryId;
-	data['scrapped'] = scrappedType;
-	// data['_token'] = token;
+
+	if(method === 'GET') data['scrapped'] = scrappedType;
 
 	var isContainPics = (!!data['mold_pic']) || (!!data['product_pic']);
 

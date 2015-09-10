@@ -357,7 +357,6 @@ function switchScrappedDateBlock() {
 	var isNonScrapped = $(this).val() === 'no';
 
 	isNonScrapped ? $scrappedDate.addClass('hidden') : $scrappedDate.removeClass('hidden');
-	// isNonScrapped && $scrappedDatePicker.setDate('');
 }
 
 function initResumeInfo(data) {
