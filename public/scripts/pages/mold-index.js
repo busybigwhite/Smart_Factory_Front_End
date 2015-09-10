@@ -6,6 +6,7 @@ var auth = require('../config/auth');
 var api = require('../mold/api');
 var template = require('../mold/templates/index-list-template');
 var factoryDropdown = require('../lib/component/dropdown-factory');
+var scrappedDropdown = require('../mold/modules/scrapped-dropdown');
 var searchFilterComponent = require('../lib/component/search-filter-component');
 
 /* DOM */
@@ -19,7 +20,8 @@ function initialize() {
 	header.include();
 	bindEvents();
 	bindDropdownsChangedEventListener();
-	searchFilterComponent.triggerClick();
+	// scrappedDropdown.triggerClick();
+	searchFilterComponent.setDefaultOption();
 }
 
 function bindEvents() {
@@ -29,11 +31,19 @@ function bindEvents() {
 
 function bindDropdownsChangedEventListener() {
 	factoryDropdown.emitter.on('factoryChanged', setFocusFactoryIdThenRenderRows);
+	scrappedDropdown.emitter.on('filterChanged', setScrappedTypeThenRenderRows);
 	searchFilterComponent.emitter.on('search', searchByFilter);
 }
 
 function setFocusFactoryIdThenRenderRows(factoryId) {
 	api.setFactoryId(factoryId);
+	searchFilterComponent.reset();
+
+	getMoldList();
+}
+
+function setScrappedTypeThenRenderRows(type) {
+	api.setScrappedType(type);
 	searchFilterComponent.reset();
 
 	getMoldList();

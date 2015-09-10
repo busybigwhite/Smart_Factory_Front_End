@@ -21,6 +21,17 @@
                     </button>
                     <ul class="factory-list dropdown-menu"></ul>
                 </div>
+                <div id="mold-scrapped-dropdown-filter">
+                    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span id="scrapped-focus-item-name" class="dropdown-focus-name"></span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="scrapped-option-item" data-id="no">未報廢</a></li>
+                        <li><a class="scrapped-option-item" data-id="yes">已報廢</a></li>
+                        <li><a class="scrapped-option-item" data-id="all">全部</a></li>
+                    </ul>
+                </div>
             </div>
             <div id="mold-filter-search">
                 <div class="input-group pull-right">
@@ -32,7 +43,7 @@
                     </span>
                 </div>
                 <div class="dropdown-filter pull-right">
-                    <button id="mold-filter" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                         <span id="filter-focus-item-name" class="dropdown-focus-name"></span>
                         <span class="caret"></span>
                     </button>

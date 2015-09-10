@@ -12,10 +12,8 @@ var selectedFilter;
 var emitter = new EventEmitter();
 
 /* DOM */
-var $filterDropdown = $('.dropdown-filter');
-var $filterFocusName = $('#filter-focus-item-name');
-var $searchInput = $('.search-input');
-var $searchBtn = $('.search-btn');
+var $filterDropdown = $('#mold-scrapped-dropdown-filter');
+var $filterFocusName = $('#scrapped-focus-item-name');
 
 exports = module.exports = {};
 
@@ -25,32 +23,23 @@ exports.getSelectedFilter = function(){
 	return selectedFilter;
 }
 
-exports.setDefaultOption = function(){
-	$filterDropdown.find('.option-item').eq(0).trigger('click');
-}
-
-exports.reset = function(){
-	$filterDropdown.find('.option-item').eq(0).trigger('click');
-	$searchInput.val('');
+exports.triggerClick = function(){
+	$filterDropdown.find('.scrapped-option-item').eq(0).trigger('click');
 }
 
 initialize();
 
 function initialize() {
 	bindEvents();
+	setDefault();
 }
 
 function bindEvents() {
 	bindSetFocusNameBlockEventOnSelector();
-	bindSearchByFilterOnButton();
 }
 
 function bindSetFocusNameBlockEventOnSelector() {
-	$filterDropdown.on('click', '.option-item', setFocusNameBlock);
-}
-
-function bindSearchByFilterOnButton() {
-	$searchBtn.on('click', searchByFilter);
+	$filterDropdown.on('click', '.scrapped-option-item', setFocusNameBlock);
 }
 
 function setFocusNameBlock() {
@@ -58,13 +47,14 @@ function setFocusNameBlock() {
 	selectedFilter = $(this).data('id');
 
 	$filterFocusName.text(displayName).data('id', selectedFilter);
-	$searchInput.val('');
+
+	emitter.emit('filterChanged', selectedFilter);
 }
 
-function searchByFilter(){
-	var searchKey = $searchInput.val();
-	var data = {};
-	data[selectedFilter] = searchKey;
+function setDefault() {
+	var $defaultItem = $filterDropdown.find('.scrapped-option-item').eq(0);
+	var displayName = $defaultItem.text();
+	selectedFilter = $defaultItem.data('id');
 
-	emitter.emit('search', data);
+	$filterFocusName.text(displayName).data(selectedFilter);
 }

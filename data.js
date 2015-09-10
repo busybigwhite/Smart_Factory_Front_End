@@ -2194,7 +2194,7 @@ var moldList = [
   {
     "id":1,
     "serial_num":"07-11776-000",
-    "name":"Left_Cover-Right_Cover_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "name":"Left_Cover-Right_Cover",
     "factory_id":1,
     "weight":5809,
     "type":"\u5851\u81a0",

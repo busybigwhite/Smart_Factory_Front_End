@@ -7,6 +7,7 @@ var assign = require('object-assign');
 var config = require('../config/url');
 
 var factoryId;
+var scrappedType;
 var token;
 var moldApiUrl  = config.APIUrl + 'mold';
 var moldApiPicUrl = config.APIUrl + 'pic/mold/';
@@ -16,6 +17,7 @@ var isLocal = window.location.hostname === 'localhost';
 exports = module.exports = {
 	getMoldPicApiUrl: function() { return moldApiPicUrl },
 	setFactoryId: setFactoryId,
+	setScrappedType: setScrappedType,
 	goToMoldIndex: goToMoldIndex,
 	goToMoldInfo: goToMoldInfo,
 	getMoldList: getMoldList,
@@ -32,6 +34,10 @@ exports = module.exports = {
 
 function setFactoryId(id) {
 	factoryId = id;
+}
+
+function setScrappedType(type) {
+	scrappedType = type;
 }
 
 function goToMoldIndex() {
@@ -125,7 +131,8 @@ function checkUniq(url, data) {
 
 function ajax(method, url, data) {
 	var data = assign({}, data); // prevent data is undefined
-	data.factory_id = factoryId;
+	data['factory_id'] = factoryId;
+	data['scrapped'] = scrappedType;
 	// data['_token'] = token;
 
 	var isContainPics = (!!data['mold_pic']) || (!!data['product_pic']);
@@ -135,7 +142,6 @@ function ajax(method, url, data) {
 	_.forEach(data, function(value, key) {
 	  processedData.append(key, value);
 	});
-
 
 	var opts = {
 		method: method,
