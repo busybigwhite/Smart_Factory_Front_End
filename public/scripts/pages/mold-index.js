@@ -20,7 +20,6 @@ function initialize() {
 	header.include();
 	bindEvents();
 	bindDropdownsChangedEventListener();
-	// scrappedDropdown.triggerClick();
 	searchFilterComponent.setDefaultOption();
 }
 

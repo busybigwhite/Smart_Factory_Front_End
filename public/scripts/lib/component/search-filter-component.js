@@ -43,6 +43,7 @@ function initialize() {
 function bindEvents() {
 	bindSetFocusNameBlockEventOnSelector();
 	bindSearchByFilterOnButton();
+	bindSearchByFilterOnKeypress();
 }
 
 function bindSetFocusNameBlockEventOnSelector() {
@@ -53,6 +54,10 @@ function bindSearchByFilterOnButton() {
 	$searchBtn.on('click', searchByFilter);
 }
 
+function bindSearchByFilterOnKeypress() {
+	$searchInput.on('keypress', searchByFilter);
+}
+
 function setFocusNameBlock() {
 	var displayName = $(this).text();
 	selectedFilter = $(this).data('id');
@@ -61,7 +66,14 @@ function setFocusNameBlock() {
 	$searchInput.val('');
 }
 
-function searchByFilter(){
+function searchByFilter(e){
+
+	if(e.type === 'keypress'){
+		var code = e.keyCode || e.which;
+
+		if (code !== 13) return false;
+	}
+
 	var searchKey = $searchInput.val();
 	var data = {};
 	data[selectedFilter] = searchKey;
