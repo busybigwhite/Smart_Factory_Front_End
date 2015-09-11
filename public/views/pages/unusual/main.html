@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Smart Factory</title>
 	<link rel="stylesheet" type="text/css" href="../../../build/style.css">
+    <link rel="stylesheet" type="text/css" href="../../../build/jquery-ui.css">
 </head>
 <body>
 
@@ -13,6 +14,10 @@
 
     <div id="unusual-panel">
     	<div id="unusual-setting-block">
+            <div class="unusual-setting-button-block">
+                <button id="unusual-save-btn">儲存設定</button>
+                <button id="unusual-cancel-btn">取消</button>
+            </div>
             <div class="unusual-setting-item">
         		<div class="unusual-title">
         			<span>機台維護設定</span>
@@ -92,6 +97,22 @@
                                     <ul class="dropdown-menu">
                                         <li><a class="option-item" data-id="mail">E-mail</a></li>
                                     </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="unusual-content-item">
+                            <span class="content-lebel">
+                                使用率達<span id="used-percentage-mold">80%</span>通知
+                            </span>
+                            <div class="content-option">
+                                <div class="slider-group">
+                                    <button class="alerts-slider-minus btn-slider">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                    <div id="slider-seekbar-mold"></div>
+                                    <button class="alerts-slider-plus btn-slider">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>

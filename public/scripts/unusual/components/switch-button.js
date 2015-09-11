@@ -1,13 +1,8 @@
 'use strict';
 
 var $ = window.jQuery = require('jquery');
-var EventEmitter = require('wolfy87-eventemitter');
-
-var emitter = new EventEmitter();
 
 exports = module.exports = {};
-
-exports.emitter = emitter;
 
 exports.set = function(id) {
 	var $el 	   	 = $('#' + id);
