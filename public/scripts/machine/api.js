@@ -101,8 +101,8 @@ function deleteMachineRecord(id, array) {
 	return $.when(pArray);
 }
 
-function checkSerialNumUniq(serialNum) {
-	var data = { 'serial_num': serialNum };
+function checkSerialNumUniq(serialNum, id) {
+	var data = { 'serial_num': serialNum, 'machine_id': id };
 
 	return checkUniq(machineApiUrl + '/check_unique', data);
 }

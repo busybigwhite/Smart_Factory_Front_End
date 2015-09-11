@@ -11,17 +11,93 @@
 
 <div class="main-container">
 
-    <div id="unusal-panel">
-    	<div id="unsual-setting-block">
-    		<h4>通知設定</h4>
-    		<div>
-    			<span>機台通知設定</span>
+    <div id="unusual-panel">
+    	<div id="unusual-setting-block">
+            <div class="unusual-setting-item">
+        		<div class="unusual-title">
+        			<span>機台維護設定</span>
+                    <hr>
+        		</div>
+                <div class="unusual-content">
+                    <div class="unusual-content-item">
+                        <span class="content-lebel">機台保養通知</span>
+                        <div id="machine-switch" class="content-option">
+                            <div class="switch-btn" id="machine">
+                                <div class="switch-bar"><span class="switch-bar-icon">| |</span></div>
+                                <span class="switch-tag on">On</span>
+                                <span class="switch-tag off">Off</span>
+                                <input type="checkbox" class="machine-alarm hidden" checked/>
+                            </div>
+                        </div>
+                    </div>
 
-    		</div>
-    		<div>
-    			<span>模具通知設定</span>
+                    <div id="unusual-content-machine" class="unusual-content-list">
+                        <div class="unusual-content-item">
+                            <span class="content-lebel">到期通知</span>
+                            <span class="content-option">保養到期前
+                            <input id="machine-notice-period" type="text" placeholder="1">
+                            日通知</span>
+                        </div>
+                        <div class="unusual-content-item">
+                            <span class="content-lebel">通知方式</span>
+                            <div class="content-option">
+                                <div id="machine-notice-method" class="notice-dropdown">
+                                    <button id="realtime-mode" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                        <span class="dropdown-focus-name">E-mail</span>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="option-item" data-id="mail">E-mail</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    		</div>
+            <div class="unusual-setting-item">
+        		<div class="unusual-title">
+        			<span>模具維護設定</span>
+                    <hr>
+        		</div>
+                <div class="unusual-content">
+                    <div class="unusual-content-item">
+                        <span class="content-lebel">模具保養通知</span>
+                        <div id="mold-switch" class="content-option">
+                            <div class="switch-btn" id="mold">
+                                <div class="switch-bar"><span class="switch-bar-icon">| |</span></div>
+                                <span class="switch-tag on">On</span>
+                                <span class="switch-tag off">Off</span>
+                                <input type="checkbox" class="mold-alarm hidden" checked/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="unusual-content-mold" class="unusual-content-list">
+                        <div class="unusual-content-item">
+                            <span class="content-lebel">到期通知</span>
+                            <span class="content-option">保養到期前
+                            <input id="mold-notice-period" type="text" placeholder="1">
+                            日通知</span>
+                        </div>
+                        <div class="unusual-content-item">
+                            <span class="content-lebel">通知方式</span>
+                            <div class="content-option">
+                                <div id="mold-notice-method" class="notice-dropdown">
+                                    <button id="realtime-mode" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                        <span class="dropdown-focus-name">E-mail</span>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="option-item" data-id="mail">E-mail</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
     	</div>
     </div>
 </div>
