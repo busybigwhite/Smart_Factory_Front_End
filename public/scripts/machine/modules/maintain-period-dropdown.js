@@ -13,8 +13,8 @@ var TYPE = {
 	time: '次',
 	times: '天',
 };
-var defaultType = 'time';
-var defaultTypeStirng = TYPE.time;
+var defaultType = 'times';
+var defaultTypeStirng = TYPE.times;
 
 
 exports.init     = initMaintainPeriod;
