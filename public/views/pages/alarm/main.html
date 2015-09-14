@@ -12,41 +12,41 @@
 
 <div class="main-container">
 
-    <div id="unusual-panel">
-    	<div id="unusual-setting-block">
-            <div class="unusual-setting-button-block">
-                <button id="unusual-save-btn">儲存設定</button>
-                <button id="unusual-cancel-btn">取消</button>
+    <div id="alarm-panel">
+    	<div id="alarm-setting-block">
+            <div class="alarm-setting-button-block">
+                <button id="alarm-save-btn">儲存設定</button>
+                <button id="alarm-cancel-btn">取消</button>
             </div>
-            <div class="unusual-setting-item">
-        		<div class="unusual-title">
+            <div class="alarm-setting-item">
+        		<div class="alarm-title">
         			<span>機台維護設定</span>
                     <hr>
         		</div>
-                <div class="unusual-content">
-                    <div class="unusual-content-item">
+                <div class="alarm-content">
+                    <div class="alarm-content-item">
                         <span class="content-lebel">機台保養通知</span>
                         <div id="machine-switch" class="content-option">
-                            <div class="switch-btn" id="machine">
+                            <div class="switch-btn" id="machine" data-key="machine_enable" data-type="enable">
                                 <div class="switch-bar"><span class="switch-bar-icon">| |</span></div>
                                 <span class="switch-tag on">On</span>
                                 <span class="switch-tag off">Off</span>
-                                <input type="checkbox" class="machine-alarm hidden" checked/>
+                                <input type="checkbox" class="hidden" />
                             </div>
                         </div>
                     </div>
 
-                    <div id="unusual-content-machine" class="unusual-content-list">
-                        <div class="unusual-content-item">
+                    <div id="alarm-content-machine" class="alarm-content-list">
+                        <div class="alarm-content-item">
                             <span class="content-lebel">到期通知</span>
                             <span class="content-option">保養到期前
-                            <input id="machine-notice-period" type="text" placeholder="1">
+                            <input class="alarm-date" data-key="machine_alarm_date" data-type="date" type="text" placeholder="1">
                             日通知</span>
                         </div>
-                        <div class="unusual-content-item">
+                        <div class="alarm-content-item">
                             <span class="content-lebel">通知方式</span>
                             <div class="content-option">
-                                <div id="machine-notice-method" class="notice-dropdown">
+                                <div class="alarm-type-dropdown" data-key="machine_alarm_type" data-type="type">
                                     <button id="realtime-mode" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                         <span class="dropdown-focus-name">E-mail</span>
                                         <span class="caret"></span>
@@ -61,35 +61,35 @@
                 </div>
             </div>
 
-            <div class="unusual-setting-item">
-        		<div class="unusual-title">
+            <div class="alarm-setting-item">
+        		<div class="alarm-title">
         			<span>模具維護設定</span>
                     <hr>
         		</div>
-                <div class="unusual-content">
-                    <div class="unusual-content-item">
+                <div class="alarm-content">
+                    <div class="alarm-content-item">
                         <span class="content-lebel">模具保養通知</span>
                         <div id="mold-switch" class="content-option">
-                            <div class="switch-btn" id="mold">
+                            <div class="switch-btn" id="mold" data-key="mold_enable" data-type="enable">
                                 <div class="switch-bar"><span class="switch-bar-icon">| |</span></div>
                                 <span class="switch-tag on">On</span>
                                 <span class="switch-tag off">Off</span>
-                                <input type="checkbox" class="mold-alarm hidden" checked/>
+                                <input type="checkbox" class="hidden"/>
                             </div>
                         </div>
                     </div>
 
-                    <div id="unusual-content-mold" class="unusual-content-list">
-                        <div class="unusual-content-item">
+                    <div id="alarm-content-mold" class="alarm-content-list">
+                        <div class="alarm-content-item">
                             <span class="content-lebel">到期通知</span>
                             <span class="content-option">保養到期前
-                            <input id="mold-notice-period" type="text" placeholder="1">
+                            <input class="alarm-date" type="text" placeholder="1" data-key="mold_alarm_date" data-type="date" >
                             日通知</span>
                         </div>
-                        <div class="unusual-content-item">
+                        <div class="alarm-content-item">
                             <span class="content-lebel">通知方式</span>
                             <div class="content-option">
-                                <div id="mold-notice-method" class="notice-dropdown">
+                                <div class="alarm-type-dropdown" data-key="mold_alarm_type" data-type="type">
                                     <button id="realtime-mode" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                         <span class="dropdown-focus-name">E-mail</span>
                                         <span class="caret"></span>
@@ -100,17 +100,19 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="unusual-content-item">
+                        <div class="alarm-content-item">
                             <span class="content-lebel">
-                                使用率達<span id="used-percentage-mold">80%</span>通知
+                                使用率達
+                                <span id="alarm-percentage-mold" data-id="mold" data-key="mold_alarm_percentage" data-type="percentage">80%</span>
+                                通知
                             </span>
                             <div class="content-option">
-                                <div class="slider-group">
-                                    <button class="alerts-slider-minus btn-slider">
+                                <div id="slider-group-mold" class="slider-group">
+                                    <button class="alarm-slider-minus btn-slider">
                                         <i class="fa fa-minus"></i>
                                     </button>
-                                    <div id="slider-seekbar-mold"></div>
-                                    <button class="alerts-slider-plus btn-slider">
+                                    <div id="slider-seekbar-mold" class="slider-seekbar" slider-id="mold"></div>
+                                    <button class="alarm-slider-plus btn-slider">
                                         <i class="fa fa-plus"></i>
                                     </button>
                                 </div>
@@ -123,7 +125,7 @@
     </div>
 </div>
 
-<script src="../../../build/bundle/unusual-index.js"></script>
+<script src="../../../build/bundle/alarm-index.js"></script>
 
 </body>
 </html>

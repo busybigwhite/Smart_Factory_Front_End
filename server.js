@@ -57,6 +57,11 @@ app.get('/api/workorder/check_unique', function(req, res) {
 	res.send('Fail');
 });
 
+app.get('/api/alarm/list', function(req, res) {
+	res.send(data.alarms);
+});
+app.put('/api/alarm/list', function(req, res) { res.sendStatus(200) });
+
 app.get('/api/user', function(req, res) {
 	res.send(data.users);
 });
@@ -68,7 +73,7 @@ app.get('/workorder/info', function(req, res) { res.render('pages/workorder/info
 app.get('/workorder/new', function(req, res) { res.render('pages/workorder/new'); });
 app.get('/mold', function(req, res) { res.render('pages/mold/main'); });
 app.get('/mold/info', function(req, res) { res.render('pages/mold/info'); });
-app.get('/unusual', function(req, res) { res.render('pages/unusual/main'); });
+app.get('/alarm', function(req, res) { res.render('pages/alarm/main'); });
 app.get('/member', function(req, res) { res.render('pages/member/main'); });
 app.get('/member/manage', function(req, res) { res.render('pages/member/manage'); });
 

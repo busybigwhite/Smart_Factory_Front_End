@@ -2292,6 +2292,17 @@ var workorderInfo = {
   'work_order_records': []
 };
 
+var alarms = {
+  "machine_enable": "on",
+  "machine_alarm_date": 2,
+  "machine_alarm_time": 12,
+  "machine_alarm_type": "E-mail",
+  "mold_enable": "on",
+  "mold_alarm_date": 3,
+  "mold_alarm_time": 12,
+  "mold_alarm_percentage": 90,
+  "mold_alarm_type": "E-mail"
+}
 
 module.exports = {
       factories: factories,
@@ -2305,5 +2316,6 @@ module.exports = {
       workorderInfo: workorderInfo,
       users: users,
       workorders: workorders,
-      workorder: workorder
+      workorder: workorder,
+      alarms: alarms
 };
