@@ -60,12 +60,13 @@ function updateAlarmSettings() {
 function getAlarmSettingsAndInitComponents() {
 	$.get(config.APIUrl + 'alarm/list')
 	 .done( function(res){
+
 	 	_.forEach(res, function(value, key){
+	 		data[key] = value;
+
 	 		var $el = $('*[data-key="' + key + '"]');
-
 	 		$el.data('value', value);
-
-	 		initComponents( $el );
+	 		initComponents($el);
 	 	})
 	 })
 }
