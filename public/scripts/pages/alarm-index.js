@@ -8,20 +8,29 @@ var token = require('../config/auth').getToken();
 var switchBtn = require('../alarm/components/switch-button');
 var alarmTypeDropdown = require('../alarm/components/alarm-type-dropdown');
 var alarmSlider = require('../alarm/components/alarm-slider');
+var loadingSpin = require('../lib/component/loading-spin');
 
 /* DOM */
+var $alarmBlock = $('#alarm-setting-block');
 var $alarmSaveBtn = $('#alarm-save-btn');
 var $alarmCancelBtn = $('#alarm-cancel-btn');
 var $alarmDateGroup = $('.alarm-date');
 
 var data = {};
+var spinner;
 
 initialize();
 
 function initialize() {
 	header.include();
+	initializeLoadingSpinner();
 	bindEvents();
 	getAlarmSettingsAndInitComponents();
+}
+
+function initializeLoadingSpinner() {
+	spinner = loadingSpin();
+	spinner.init( $('#alarm-panel')[0] );
 }
 
 function bindEvents() {
@@ -57,9 +66,11 @@ function updateAlarmSettings() {
 }
 
 function getAlarmSettingsAndInitComponents() {
+
+	spinner.start();
+
 	$.get(config.APIUrl + 'alarm/list')
 	 .done( function(res){
-
 	 	_.forEach(res, function(value, key){
 	 		data[key] = value;
 
@@ -68,6 +79,7 @@ function getAlarmSettingsAndInitComponents() {
 	 		initComponents($el);
 	 	})
 	 })
+	 .always(function(){ spinner.stop() });
 }
 
 function initComponents($el) {
