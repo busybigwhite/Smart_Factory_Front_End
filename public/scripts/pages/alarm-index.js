@@ -13,7 +13,6 @@ var alarmSlider = require('../alarm/components/alarm-slider');
 var $alarmSaveBtn = $('#alarm-save-btn');
 var $alarmCancelBtn = $('#alarm-cancel-btn');
 var $alarmDateGroup = $('.alarm-date');
-var $alarmTypeGroup = $('.alarm-type-dropdown');
 
 var data = {};
 
@@ -28,6 +27,7 @@ function initialize() {
 function bindEvents() {
 	bindUpdateAlarmSettingsOnButton();
 	bindResetAlarmSettingsOnButton();
+	bindUpdateAlarmDateOnInput();
 }
 
 function bindUpdateAlarmSettingsOnButton() {
@@ -36,6 +36,10 @@ function bindUpdateAlarmSettingsOnButton() {
 
 function bindResetAlarmSettingsOnButton() {
 	$alarmCancelBtn.on('click', function(){ window.location.reload() });
+}
+
+function bindUpdateAlarmDateOnInput() {
+	$alarmDateGroup.on('change', updateAlarmDateOnInput);
 }
 
 function updateAlarmSettings() {
@@ -49,7 +53,10 @@ function updateAlarmSettings() {
 	data['_token'] = token;
 
 	$.post(config.APIUrl + 'alarm', data)
-	 .done( function(){ window.location.reload() });
+	 .done( function(){
+	 	console.log(data);
+	 	// window.location.reload();
+	 });
 }
 
 function getAlarmSettingsAndInitComponents() {
@@ -84,4 +91,8 @@ function initComponents($el) {
 			alarmSlider.init( $el.data('id'), $el.data('value') );
 		break;
 	}
+}
+
+function updateAlarmDateOnInput() {
+	$(this).data('value', $(this).val());
 }

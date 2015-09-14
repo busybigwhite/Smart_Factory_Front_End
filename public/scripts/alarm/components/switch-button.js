@@ -41,11 +41,13 @@ function switchBtn() {
 	$el.children('input').trigger('click');
 
 	if(position === 0){
-		$el.attr('class','switch-btn on' );
+		$el.attr('class','switch-btn on' )
+		   .data('value', 'on');
 		animate('38px');
 		$switchBlock.removeClass('disappear');
 	}else {
-		$el.attr('class','switch-btn off');
+		$el.attr('class','switch-btn off')
+		   .data('value', 'off');
 		animate(0);
 		$switchBlock.addClass('disappear');
 	}

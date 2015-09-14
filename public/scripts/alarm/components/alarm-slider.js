@@ -47,5 +47,5 @@ function changeValueByBtn(id, method) {
 
 function updateValueLabel(id, value) {
     var $percentageText = $('#alarm-percentage-' + id);
-    $percentageText.text(value + '%');
+    $percentageText.data('value', value).text(value + '%');
 }
