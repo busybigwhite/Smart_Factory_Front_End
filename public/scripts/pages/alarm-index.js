@@ -47,10 +47,11 @@ function updateAlarmSettings() {
 		data[key] = value;
 	})
 
+	data['_token'] = token;
+
 	var opts = {
 		method: 'PUT',
 		url: config.APIUrl + 'alarm/list',
-		headers: { 'X-CSRF-Token': token },
 		data: data
 	};
 
