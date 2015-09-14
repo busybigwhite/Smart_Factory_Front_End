@@ -48,7 +48,7 @@ function updateAlarmSettings() {
 
 	data['_token'] = token;
 
-	$.post(config.APIUrl + 'alarm/list', data)
+	$.post(config.APIUrl + 'alarm', data)
 	 .done( function(){ window.location.reload() });
 }
 
