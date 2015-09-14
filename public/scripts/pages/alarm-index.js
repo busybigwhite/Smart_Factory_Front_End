@@ -6,8 +6,8 @@ var header = require('../includes/header');
 var config = require('../config/url');
 var token = require('../config/auth').getToken();
 var switchBtn = require('../alarm/components/switch-button');
+var alarmTypeDropdown = require('../alarm/components/alarm-type-dropdown');
 var alarmSlider = require('../alarm/components/alarm-slider');
-require('bootstrap/js/dropdown');
 
 /* DOM */
 var $alarmSaveBtn = $('#alarm-save-btn');
@@ -39,23 +39,17 @@ function bindResetAlarmSettingsOnButton() {
 }
 
 function updateAlarmSettings() {
-	var $el = $('*[data-key]');
-
-	$el.each( function(){
+	$('*[data-key]').each( function(){
 		var key = $(this).data('key');
 		var value = $(this).data('value');
+
 		data[key] = value;
 	})
 
 	data['_token'] = token;
 
-	var opts = {
-		method: 'PUT',
-		url: config.APIUrl + 'alarm/list',
-		data: data
-	};
-
-	$.ajax(opts).done( function(){ window.location.reload() });
+	$.post(config.APIUrl + 'alarm/list', data)
+	 .done( function(){ window.location.reload() });
 }
 
 function getAlarmSettingsAndInitComponents() {
@@ -84,7 +78,7 @@ function initComponents($el) {
 			$el.val( $el.data('value') );
 		break;
 		case "type":
-			$el.find('.dropdown-focus-name').text( $el.data('value') );
+			alarmTypeDropdown.init( $el.attr('id') );
 		break;
 		case "percentage":
 			alarmSlider.init( $el.data('id'), $el.data('value') );

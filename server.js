@@ -60,7 +60,7 @@ app.get('/api/workorder/check_unique', function(req, res) {
 app.get('/api/alarm/list', function(req, res) {
 	res.send(data.alarms);
 });
-app.put('/api/alarm/list', function(req, res) { res.sendStatus(200) });
+app.post('/api/alarm/list', function(req, res) { res.sendStatus(200) });
 
 app.get('/api/user', function(req, res) {
 	res.send(data.users);
