@@ -40,6 +40,42 @@
 					<input class="edit-mode" type="text" name="weight" value="" pattern="[0-9]{1,10}" title="輸入數字" required>
 				</span>
 			</li>
+			<li id="machine-production-capacity">
+				<span class="info-name">產能</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<input class="edit-mode" type="text" name="production-capacity" value="" pattern="[0-9]{1,10}" title="輸入數字" required>
+				</span>
+			</li>
+			<li id="machine-production-operator-num">
+				<span class="info-name">操作人員數</span>
+				<span class="info-value">
+					<p class="view-mode"></p>
+					<div class="edit-mode dropdown">
+						<button class="btn btn-default dropdown-toggle"
+										id="machine-production-operator-num-dropdown"
+										data-toggle="dropdown"
+										aria-haspopup="true"
+										aria-expanded="true">
+							<span class="selected-option"></span>
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="machine-production-operator-num-dropdown">
+							<li><a class="option" num=0>0</a></li>
+							<li><a class="option" num=1>1</a></li>
+							<li><a class="option" num=2>2</a></li>
+							<li><a class="option" num=3>3</a></li>
+							<li><a class="option" num=4>4</a></li>
+							<li><a class="option" num=5>5</a></li>
+							<li><a class="option" num=6>6</a></li>
+							<li><a class="option" num=7>7</a></li>
+							<li><a class="option" num=8>8</a></li>
+							<li><a class="option" num=9>9</a></li>
+							<li><a class="option" num=10>10</a></li>
+						</ul>
+					</div>
+				</span>
+			</li>
 			<!-- <li>
 				<span class="info-name">機台稼動率</span>
 				<span class="info-value">

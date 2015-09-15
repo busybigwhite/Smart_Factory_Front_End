@@ -114,7 +114,7 @@ function getWorkorderListThenRenderRows(fetchRequest) {
 					dict['status'] = "結案";
 				break;
 				case "stopping":
-					dict['status'] = "非運作中";
+					dict['status'] = "暫停運作";
 				break;
 				case "error":
 					dict['status'] = "異常";
@@ -167,7 +167,7 @@ function searchByFilter(){
 			case "結案":
 				fetchRequest[type] = "finish";
 			break;
-			case "非運作中":
+			case "暫停運作":
 				fetchRequest[type] = "stopping";
 			break;
 			case "異常":
