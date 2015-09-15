@@ -196,8 +196,6 @@ function saveChangedData(data) {
 		  });
 }
 
-
-
 function deleteWorkOrderInfo() {
 	var data={};
 	data._token = token;

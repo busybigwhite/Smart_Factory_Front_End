@@ -65,11 +65,12 @@ app.get('/api/workorder', function(req, res) {
 app.get('/api/workorder/1', function(req, res) {
 	res.send(data.workorder);
 });
-
 app.get('/api/workorder/check_unique', function(req, res) {
 	res.send('Fail');
 });
-
+app.get('/api/workorder/check_unique', function(req, res) {
+	res.send('Fail');
+});
 
 //alarm
 app.get('/alarm', function(req, res) { res.render('pages/alarm/main'); });

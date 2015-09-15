@@ -14,6 +14,7 @@ exports = module.exports = {
 	deleteWorkOrder: deleteWorkOrder,
 	getWorkOrderInfo: getWorkOrderInfo,
 	editWorkOrderInfo: editWorkOrderInfo,
+	checkSerialNumUniq: checkSerialNumUniq,
 	transferKeyC2S: transferKeyC2S,
 	transferKeyS2C: transferKeyS2C
 };
@@ -56,6 +57,11 @@ function editWorkOrderInfo(id, data) {
 	return editData(wordorderApiUrl + id, data);//include token
 }
 
+function checkSerialNumUniq(serialNum) {
+	var data = { 'serial_num': serialNum };
+
+	return checkUniq(wordorderApiUrl + 'check_unique', data);
+}
 
 /* private */
 function getData(url) {
@@ -72,6 +78,10 @@ function createData(url, data) {
 
 function deleteData(url, token) {
 	return ajax('DELETE', url, token);
+}
+
+function checkUniq(url, data) {
+	return ajax('GET', url, data);
 }
 
 function ajax(method, url, data) {

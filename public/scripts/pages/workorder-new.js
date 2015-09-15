@@ -21,6 +21,7 @@ var $inputDateDatePicker = $('#workorder-inputDate-date-picker');
 var $reserveDatePicker = $('#workorder-reserve-date-picker');
 var $realProduceDatePicker = $('#workorder-real-produce-date-picker');
 var $realFinishDatePicker = $('#workorder-real-finish-date-picker');
+var $serialNumberInput = $('#workorder-serial-num-input');
 
 var token = auth.getToken();
 
@@ -44,6 +45,7 @@ function initialize() {
 function bindEvents() {
 	$cancelBtn.on('click', backToList);
 	$workorderForm.submit(createData);
+	$serialNumberInput.on('blur', checkSerialNumUniq);
 }
 
 
@@ -67,14 +69,29 @@ function createData() {
 	return false;
 }
 
+function checkSerialNumUniq(input) {
+	var serialNum = $serialNumberInput.val();
+
+	$.when( api.checkSerialNumUniq(serialNum) )
+	 .done(function(result){
+	 	if(result === 'Fail'){
+	 		$serialNumberInput[0].setCustomValidity('serial number已使用');
+			return false;
+	 	}else {
+	 		$serialNumberInput[0].setCustomValidity('');
+			return true;
+	 	}
+	 })
+}
+
 function saveNewData(data) {
 	api.createWorkOrder(data)
-		 .done(function(data) { 
-		 	console.log("CREATE workorder done: ", data); 
+		 .done(function(data) {
+		 	console.log("CREATE workorder done: ", data);
 		 	api.goToWorkOrderIndex();
 		 })
-		 .fail(function(err) { 
-		 	console.log("CREATE workorder error: ", err); 
+		 .fail(function(err) {
+		 	console.log("CREATE workorder error: ", err);
 		 	//TODO ??
 		 });
 }
@@ -130,7 +147,7 @@ function getChangedData() {
 			if(selectedValue != "disable" && selectedValue!=""){
 				newData[selectedName] = selectedValue;
 			}
-			
+
 
 		} else {
 			console.log('getChangedData error: missing some value');
