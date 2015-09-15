@@ -21,7 +21,9 @@ var statusListContent = [
 				{'key': 'non-schedule','displayName': '未排程'},
     		 	{'key': 'schedule','displayName': '已排程'},
     		 	{'key': 'producing','displayName': '生產中'},
-    		 	{'key': 'finish','displayName': '結案'}];
+    		 	{'key': 'finish','displayName': '結案'},
+    		 	{'key': 'stopping','displayName': '暫停運作'},
+    		 	{'key': 'error','displayName': '異常'}];
 
 exports = module.exports = {};
 

@@ -9,6 +9,7 @@ var queryParameter = require('../lib/helper/query-parameter');
 var noticeedPersonDropdown = require('../machine/modules/noticed-person-dropdown');
 var checkPeriodDropdown    = require('../machine/modules/check-period-dropdown');
 var maintainPeriodDropdown = require('../machine/modules/maintain-period-dropdown');
+var productionOperatorNumDropdown = require('../machine/modules/production-operator-num-dropdown');
 
 var checkRecordTable    = require('../machine/modules/check-record-table');
 var maintainRecordTable = require('../machine/modules/maintain-record-table');
@@ -29,6 +30,7 @@ var $serialNumber = $('#machine-serial-num');
 var $serialNumberInput 	= $('#machine-serial-num-input');
 var $name = $('#machine-name');
 var $weight = $('#machine-weight');
+var $production_capacity = $('#machine-production-capacity');
 // var $availabilityRate = $('#machine-availability-rate');
 var $noticeedPersonName = $('#machine-noticed-person').find('.view-mode');
 var noticedId;
@@ -127,6 +129,7 @@ function showCreateMode() {
 	maintainRecordTable.setEditMode(false);
 	errorRecordTable.setEditMode(false);
 	checkPeriodDropdown.setDefault();
+	productionOperatorNumDropdown.setDefault();
 	maintainPeriodDropdown.setDefault();
 	noticeedPersonDropdown.setDefault();
 	noticeedPersonDropdown.init();
@@ -244,6 +247,9 @@ function initBaseInfo(data) {
 
 	$weight.find('.view-mode').text(data['weight']);
 	$weight.find('.edit-mode').val(data['weight']);
+
+	$production_capacity.find('.view-mode').text(data['production_capacity']);
+	$production_capacity.find('.edit-mode').val(data['production_capacity']);
 }
 
 function initResumeInfo(data) {
@@ -251,6 +257,7 @@ function initResumeInfo(data) {
 	setNoticedId(noticedId);
 	noticeedPersonDropdown.setNoticeedPerson(noticedId);
 	checkPeriodDropdown   .init(data['check_period_value'], data['check_period_unit']);
+	productionOperatorNumDropdown   .init(data['production_operator_num']);
 	maintainPeriodDropdown.init(data['maintain_period_value'], data['maintain_period_unit']);
 
 	checkRecordTable.initialView(data['maintain_record_check']);
@@ -302,6 +309,7 @@ function getInfoValue() {
 	data['admin_id']  = noticeedPersonDropdown.getId();
 	data['check_period_value']    = checkPeriodDropdown.getValue();
 	data['check_period_unit']     = checkPeriodDropdown.getType();
+	data['production_operator_num']     = productionOperatorNumDropdown.getNum();
 	data['maintain_period_value'] = maintainPeriodDropdown.getValue();
 	data['maintain_period_unit']  = maintainPeriodDropdown.getType();
 	return data;
