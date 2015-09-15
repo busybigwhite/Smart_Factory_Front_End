@@ -11,58 +11,51 @@
 	    box-shadow: 0 0 12px 1px rgba(0, 0, 0, .3);
 	    overflow: auto;
 
-	    .member-setting-button-block {
+	    .member-button-block {
     	    height: 50px;
 		    padding: 10px 60px 0;
 		    text-align: right;
 	    }
-	}
 
-	#member-table {
-		.custom-table();
+	    #member-table {
+			.custom-table();
 
-		.table-col {
-			.custom-table-col(2);
+			.table-col {
+				.custom-table-col(1.5);
 
-			&:nth-of-type(1),
-			&:nth-of-type(2) {
-				.custom-table-col(4);
+				&:nth-of-type(1){
+					.custom-table-col(3);
+				}
+
+				&:nth-of-type(2) {
+					.custom-table-col(6);
+				}
 			}
 		}
 
+	    #manage-form {
+	    	padding: 0 20%;
+	    	margin: 5% 0;
+
+	    	.form-group {
+				margin-bottom: 25px;
+
+				input {
+					border: #FFF 1px solid;
+					box-shadow: inset 0 1px 1px rgba(0,0,0,0);
+					border-bottom: @silver 1px solid;
+					border-radius: 0;
+
+					&:required:invalid,
+					&:focus:invalid {
+						border-bottom: @alizarin 1px solid;
+						-moz-box-shadow: none;
+					}
+				}
+			}
+	    }
 	}
 }
 
-#member-manage > .row {
-
-	.form-group {
-    margin-bottom: 25px;
-	}
-
-	input {
-		border: #FFF 1px solid;
-		box-shadow: inset 0 1px 1px rgba(0,0,0,0);
-		border-bottom: @silver 1px solid;
-		border-radius: 0;
-
-		&:required:invalid, &:focus:invalid {
-		  border-bottom: @alizarin 1px solid;
-		  -moz-box-shadow: none;
-		}
-	}
-
-	#member-add-btn {
-		.btn;
-		.btn-warning;
-	}
-	#member-edit-btn {
-		.btn;
-		.btn-info;
-	}
-	#member-delete-btn{
-		.btn;
-		.btn-danger;
-	}
-}
 
 

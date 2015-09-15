@@ -15,12 +15,12 @@ exports.render = function(infos) {
           <div class="table-col"><%= info.name %></div>
           <div class="table-col"><%= info.email %></div>
           <div class="table-col"><%= info.group %></div>`+
-          `<div class="table-col">
+          `<div class="table-col text-center">
               <button class="member-edit-button" data-id="<%= info.id %>">編輯</button>
           </div>
         </li>
      <% };
-      
+
      }); %>`
 	);
 
