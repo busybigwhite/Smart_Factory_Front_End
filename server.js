@@ -18,15 +18,23 @@ app.engine('html', hbs.__express);
 app.get('/', function(req, res) { res.render('index') });
 app.get('/login', function(req, res) { res.render('pages/login/main'); });
 
+
 // realtime
 app.get('/realtime', function(req, res) { res.render('pages/realtime/main'); });
 app.get('/realtime/listpic', function(req, res) { res.render('pages/realtime/listpic') });
 
+
+//machine
+app.get('/machine', function(req, res) { res.render('pages/machine/main'); });
+app.get('/machine/info', function(req, res) { res.render('pages/machine/info'); });
 app.get('/api/machine/check_unique', function(req, res) {
 	res.send('Fail');
 });
 
+
 //mold
+app.get('/mold', function(req, res) { res.render('pages/mold/main'); });
+app.get('/mold/info', function(req, res) { res.render('pages/mold/info'); });
 app.get('/api/mold/list', function(req, res) {
 	res.send(data.moldList);
 });
@@ -37,6 +45,11 @@ app.get('/api/mold/check_unique', function(req, res) {
 	res.send('Fail');
 });
 
+
+//workorder
+app.get('/workorder', function(req, res) { res.render('pages/workorder/main'); });
+app.get('/workorder/info', function(req, res) { res.render('pages/workorder/info'); });
+app.get('/workorder/new', function(req, res) { res.render('pages/workorder/new'); });
 app.get('/api/workorder/list', function(req, res) {
 	res.send(data.liveinfos);
 });
@@ -57,6 +70,9 @@ app.get('/api/workorder/check_unique', function(req, res) {
 	res.send('Fail');
 });
 
+
+//alarm
+app.get('/alarm', function(req, res) { res.render('pages/alarm/main'); });
 app.get('/api/alarm/list', function(req, res) {
 	res.send(data.alarms);
 });
@@ -66,16 +82,11 @@ app.get('/api/user', function(req, res) {
 	res.send(data.users);
 });
 
-app.get('/machine', function(req, res) { res.render('pages/machine/main'); });
-app.get('/machine/info', function(req, res) { res.render('pages/machine/info'); });
-app.get('/workorder', function(req, res) { res.render('pages/workorder/main'); });
-app.get('/workorder/info', function(req, res) { res.render('pages/workorder/info'); });
-app.get('/workorder/new', function(req, res) { res.render('pages/workorder/new'); });
-app.get('/mold', function(req, res) { res.render('pages/mold/main'); });
-app.get('/mold/info', function(req, res) { res.render('pages/mold/info'); });
-app.get('/alarm', function(req, res) { res.render('pages/alarm/main'); });
+
+//member
 app.get('/member', function(req, res) { res.render('pages/member/main'); });
 app.get('/member/manage', function(req, res) { res.render('pages/member/manage'); });
+
 
 // history
 app.get('/history', function(req, res) { res.render('pages/history/main') });
@@ -89,6 +100,12 @@ app.get('/api/pic/heatmap/list/1', function(req, res) {
 	res.send(data.heatmapUrl);
 });
 
+
+//compare
+app.get('/compare', function(req, res) { res.render('pages/compare/main') });
+
+
+//public
 app.get('/api/factory/list', function(req, res) {
 	res.send(data.factories);
 });

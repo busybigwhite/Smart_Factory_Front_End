@@ -10,22 +10,23 @@
 <div id="header"></div>
 
 <div class="main-container">
-  <div class="row">
-    <div class="col-xs-12">
+    <div id="member-panel">
+        <div id="member-setting-block">
+            <div class="member-setting-button-block">
+                <button class="new-button" id="member-new-button">新增使用者</button>
+            </div>
 
-      <button class="new-button pull-right" id="member-new-button">新增使用者</button>
-
-      <ul id="member-table">
-        <li class="table-header">
-          <div class="table-col">帳號</div>
-          <div class="table-col">信箱</div>
-          <div class="table-col">身份</div>
-          <div class="table-col"></div>
-        </li>
-        <div id="member-table-body"></div>
-      </ul>
+            <ul id="member-table">
+                <li class="table-header">
+                    <div class="table-col">帳號</div>
+                    <div class="table-col">信箱</div>
+                    <div class="table-col">身份</div>
+                    <div class="table-col text-right"></div>
+                </li>
+                <div id="member-table-body"></div>
+            </ul>
+        </div>
     </div>
-  </div>
 </div>
 
 <script src="../../../build/bundle/member-index.js"></script>

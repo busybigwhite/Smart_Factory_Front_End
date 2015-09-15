@@ -1,0 +1,63 @@
+#compare-panel {
+	.make-row();
+	min-width: 1320px;
+
+	#compare-select-block {
+		.base-select-panel();
+
+		#compare-filter-search {
+			.filter-search-component(12);
+		}
+	}
+
+	#compare-list-block {
+		.base-list-panel();
+
+		#foreshot-table,
+		#smartfac-table {
+			.custom-table;
+
+			// .table-col {
+
+			// 	&:nth-of-type(1),
+			// 	&:nth-of-type(2) {
+			// 		.custom-table-col(1.5);
+			// 	}
+
+			// 	&:nth-of-type(4) {
+			// 		.custom-table-col(2.5);
+			// 		display: flex;
+			// 		align-items: center;
+			// 		white-space: inherit;
+			// 		line-height: 1em;
+   //  				word-break: break-all;
+			// 	}
+
+			// 	&:nth-of-type(3),
+			// 	&:nth-of-type(5),
+			// 	&:nth-of-type(6) {
+			// 		.custom-table-col(1.5);
+			// 		display: flex;
+			// 		align-items: center;
+			// 	}
+
+			// 	&:nth-of-type(7) {
+			// 		.custom-table-col(1);
+			// 		display: flex;
+			// 		align-items: center;
+			// 	}
+
+			// 	&:last-of-type {
+			// 		.custom-table-col(1);
+			// 		display: flex;
+			// 		align-items: center;
+			// 		text-align: center;
+			// 	}
+			// }
+		}
+	}
+
+	#compare-no-data-block {
+		.no-data-panel();
+	}
+}
