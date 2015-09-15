@@ -5,7 +5,7 @@ var _ = require('lodash');
 var header = require('../includes/header');
 var config = require('../config/url');
 var templates = require('../compare/templates');
-
+require('bootstrap/js/dropdown');
 
 /* DOM */
 var $listBlock = $('#compare-list-block');
