@@ -1,13 +1,14 @@
 'use strict';
 var $ = window.jQuery = require('jquery');
 var _ = require('lodash');
+var assign = require('object-assign');
 var header = require('../includes/header');
-var userId = require('../config/auth');
 var config = require('../config/url');
 var commonConfig = require('../config/common');
 var queryParameter = require('../lib/helper/query-parameter');
 var redirect = require('../lib/helper/redirect');
 var factoryDropdown = require('../lib/component/dropdown-factory');
+var searchFilterComponent = require('../lib/component/search-filter-component');
 var loadingSpin = require('../lib/component/loading-spin');
 var templates = require('../realtime/templates');
 
@@ -25,10 +26,6 @@ var $imageListBlock = $('#realtime-img-mode');
 var $tableBody = $('.realtime-table-body');
 var $tableModeSwitcher = $('#table-mode-switcher');
 var $imageModeSwitcher = $('#image-mode-switcher');
-var $filterFocus = $('#realtime-filter-focus');
-var $filterItem = $('.filter-item');
-var $searchInput = $('#realtime-search-input');
-var $searchBtn = $('#realtime-search-btn');
 var $dateSortBtn = $('#realtime-date-sort-btn');
 
 initialize();
@@ -38,6 +35,7 @@ function initialize() {
 	initializeLoadingSpinner();
 	bindEvents();
 	resetStatus();
+	searchFilterComponent.setDefaultOption();
 	setReloadTimer();
 }
 
@@ -49,7 +47,6 @@ function initializeLoadingSpinner() {
 function bindEvents() {
 	bindFactoryChangedEventListener();
 	bindSwitchViewModeOnDropdownMenu();
-	bindSelectFilterOnDropdownMenu();
 	bindSearchByFilterOnButton();
 	bindSortDateOnButton();
 	bindLinkToPicturesPageOnButton();
@@ -64,12 +61,8 @@ function bindSwitchViewModeOnDropdownMenu() {
 	$imageModeSwitcher.on('click', switchViewMode);
 }
 
-function bindSelectFilterOnDropdownMenu() {
-	$filterItem.on('click', selectFilter);
-}
-
 function bindSearchByFilterOnButton() {
-	$searchBtn.on('click', searchByFilter);
+	searchFilterComponent.emitter.on('search', searchByFilter);
 }
 
 function bindSortDateOnButton() {
@@ -87,11 +80,11 @@ function setFocusFactoryIdThenRenderRows(factoryId) {
 	getRealtimeListThenRenderRows();
 }
 
-function getRealtimeListThenRenderRows(filter, searchKey) {
+function getRealtimeListThenRenderRows(searchObj) {
 
 	spinner.start();
 
-	var queryURL = createQueryURL(filter, searchKey);
+	var queryURL = createQueryURL(searchObj);
 
 	$.get(config.APIUrl + 'workorder/list?' + queryURL)
 	 .done(function(response){
@@ -103,15 +96,21 @@ function getRealtimeListThenRenderRows(filter, searchKey) {
 			var tableListRows = templates.renderTableList({ infos : infos });
 			var imageListRows = templates.renderImageList({ infos : infos });
 
-			switchNoDataListBlock(true);
-
 			$tableBody.empty().append( tableListRows );
 			$imageListBlock.empty().html( imageListRows );
-		}else {
-			switchNoDataListBlock(false);
 		}
+
+		switchNoDataListBlock(response.length > 0);
 	 })
 	 .always(function(){ spinner.stop() });
+}
+
+function createQueryURL(data) {
+	var data = assign({}, data); // prevent data is undefined
+	data['factory_id'] = focusFactoryId;
+	data['realtime'] = 'yes';
+
+	return queryParameter.build(data);
 }
 
 function switchNoDataListBlock(hasData) {
@@ -122,16 +121,6 @@ function switchNoDataListBlock(hasData) {
 		$listBlock.addClass('hidden');
 		$noDataBlock.removeClass('hidden');
 	}
-}
-
-function createQueryURL(filter, searchKey) {
-	var data = {};
-
-	data['factory_id'] = focusFactoryId;
-	data[filter] = searchKey;
-	data['realtime'] = 'yes';
-
-	return queryParameter.build(data);
 }
 
 function switchViewMode(){
@@ -149,18 +138,8 @@ function switchViewMode(){
 	}
 }
 
-function selectFilter(){
-	var filterName = $(this).text();
-	var filterType = $(this).data('id');
-
-	$filterFocus.data('type', filterType).text(filterName);
-}
-
-function searchByFilter(){
-	var type = $filterFocus.data('type');
-	var searchKey = $searchInput.val();
-
-	getRealtimeListThenRenderRows(type, searchKey)
+function searchByFilter(searchObj){
+	getRealtimeListThenRenderRows(searchObj)
 }
 
 function sortDate() {
@@ -193,7 +172,7 @@ function setViewMode() {
 }
 
 function setFocusFacroty() {
-	queryParameter.get('factory_id') || $filterItem.eq(0).trigger('click');
+	queryParameter.get('factory_id') || searchFilterComponent.reset();
 }
 
 function setDateSort() {
