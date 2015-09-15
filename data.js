@@ -1086,71 +1086,29 @@ var workorders = [
     }
 ]
 
-var workorder = {
-    "id": 4,
-    "customer_id": 1,
-    "order_id": "S74",
-    "target_num": 100,
-    "order_date": "2015-08-19 02:59:38",
-    "status": "non-schedule",
-    "schedule_date": "2015-08-19 02:59:38",
-    "start_date": "2015-08-19 02:59:39",
-    "finish_date": "2015-08-19 05:55:39",
-    "produce_type": "塑膠",
-    "current_num": 35,
-    "current_fail_num": 14,
+var workorder = [
+  {
+    "id": 1,
+    "serial_num": "511-14110358",
+    "customer_name": "Teresa\u5d29\u6f70\u4e2d",
+    "order_id": "Teresa\u9003\u8d70\u4e2d",
+    "factory_id": 1,
+    "target_num": 35505,
+    "order_date": "2015-09-09 12:25:25",
+    "status": "stopping",
+    "schedule_date": "2015-09-09 12:25:25",
+    "start_date": "2015-09-09 12:25:25",
+    "finish_date": "2015-09-09 12:25:25",
+    "produce_type": "\u5851\u81a0",
+    "current_num": 0,
+    "current_fail_num": 0,
     "abnormal_num": 0,
-    "content": "test",
-    "created_at": "2015-08-19 02:59:38",
-    "updated_at": "2015-08-19 02:59:39",
-    "work_order_records": [
-        {
-            "id": 7,
-            "work_order_id": 4,
-            "factory_id": "F001",
-            "machine_id": 2,
-            "mold_id": 1,
-            "ipc_id": 1,
-            "sample_num": 6,
-            "error_num": 0,
-            "work_start_time": "2015-08-19 02:59:39",
-            "work_end_time": "2015-08-19 03:38:39",
-            "work_pause_period": 0,
-            "created_at": "2015-08-19 02:59:39",
-            "updated_at": "2015-08-19 02:59:39"
-        },
-        {
-            "id": 8,
-            "work_order_id": 4,
-            "factory_id": "F002",
-            "machine_id": 2,
-            "mold_id": 3,
-            "ipc_id": 3,
-            "sample_num": 8,
-            "error_num": 2,
-            "work_start_time": "2015-08-19 02:59:39",
-            "work_end_time": "2015-08-19 05:03:39",
-            "work_pause_period": 0,
-            "created_at": "2015-08-19 02:59:39",
-            "updated_at": "2015-08-19 02:59:39"
-        },
-        {
-            "id": 11,
-            "work_order_id": 4,
-            "factory_id": "F003",
-            "machine_id": 2,
-            "mold_id": 1,
-            "ipc_id": 1,
-            "sample_num": 8,
-            "error_num": 2,
-            "work_start_time": "2015-08-19 02:59:39",
-            "work_end_time": "2015-08-19 04:23:39",
-            "work_pause_period": 0,
-            "created_at": "2015-08-19 02:59:39",
-            "updated_at": "2015-08-19 02:59:39"
-        }
-    ]
-}
+    "content": "\u7279\u745e\u838e\u8aaa\u662f\u4e00\u822c\u5de5\u55ae",
+    "created_at": "2015-09-09 12:25:25",
+    "updated_at": "2015-09-10 11:19:33",
+    "work_order_records": []
+  }
+]
 
 var filters = {
   "workorders": [

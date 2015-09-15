@@ -27,31 +27,35 @@
     	<div class="divide-line"></div>
 
         <div id="compare-list-block" class="hidden">
-        	<!-- <ul id="foreshot-table">
-				<li class="table-header">
-					<div class="table-col-lg">工單編號</div>
-                	<div class="table-col-lg">訂單編號</div>
-                	<div class="table-col">客戶名稱</div>
-                	<div class="table-col">工單狀態</div>
-                	<div class="table-col">輸入日期</div>
-                	<div class="table-col"></div>
-				</li>
-				<div class="foreshot-table-body"></div>
-			</ul>
-			<ul id="smartfac-table">
-				<li class="table-header">
-					<div class="table-col-lg">工單編號</div>
-                	<div class="table-col-lg">訂單編號</div>
-                	<div class="table-col">客戶名稱</div>
-                	<div class="table-col">工單狀態</div>
-                	<div class="table-col">輸入日期</div>
-                	<div class="table-col"></div>
-				</li>
-				<div class="smartfac-table-body"></div>
-			</ul> -->
+        	<div id="list-header">
+        		<ul id="label-header"></ul>
+        		<ul id="smartfac-header" >Smart Factory Database</ul>
+        		<ul id="foreshot-header" >Foreshot Database</ul>
+        	</div>
+        	<div id="list-content">
+	        	<ul id="label-list" class="text-right">
+	        		<li>工單編號</li>
+	        		<li>訂單編號</li>
+	        		<li>客戶名稱</li>
+	        		<li>生產廠區別</li>
+	        		<li>工單狀態</li>
+	        		<li>訂單輸入日期</li>
+	        		<li>說明</li>
+	        		<li>預定排程日期</li>
+	        		<li>目標生產數量</li>
+	        		<li>生產類型</li>
+	        		<li>實際開工日期</li>
+	        		<li>目前完成次數</li>
+	        		<li>目前異常次數</li>
+	        		<li>異常品數量</li>
+	        		<li>實際完成日期</li>
+	        	</ul>
+	    		<ul id="smartfac-list"></ul>
+				<ul id="foreshot-list"></ul>
+			</div>
         </div>
-        <div id="compare-no-data-block">
-        	無資料顯示
+        <div id="compare-dafault-block">
+        	請輸入搜尋工單編號
         </div>
     </div>
 </div>

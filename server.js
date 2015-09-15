@@ -103,7 +103,9 @@ app.get('/api/pic/heatmap/list/1', function(req, res) {
 
 //compare
 app.get('/compare', function(req, res) { res.render('pages/compare/main') });
-
+app.get('/api/compare/list', function(req, res) {
+	res.send(data.workorder);
+});
 
 //public
 app.get('/api/factory/list', function(req, res) {
