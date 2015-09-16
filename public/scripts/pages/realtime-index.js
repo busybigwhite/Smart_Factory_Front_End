@@ -63,7 +63,7 @@ function bindSwitchViewModeOnDropdownMenu() {
 }
 
 function bindSearchByFilterOnButton() {
-	searchFilterComponent.emitter.on('search', searchByFilter);
+	searchFilterComponent.emitter.on('search', getRealtimeListThenRenderRows);
 }
 
 function bindSortDateOnButton() {
@@ -146,10 +146,6 @@ function switchViewMode(){
 	}
 }
 
-function searchByFilter(searchObj){
-	getRealtimeListThenRenderRows(searchObj)
-}
-
 function sortDate() {
 	var pervSort = queryParameter.get('date_sort') || 'desc';
 	var nextSort = pervSort === 'desc' ? 'asc' : 'desc';
@@ -159,7 +155,6 @@ function sortDate() {
 }
 
 function redirectToPicPage() {
-	console.log($(this).data('info'))
 	var info = $(this).data('info');
 	info['type'] = $(this).data('type');
 	info['image_view'] = isImageMode;
@@ -190,10 +185,6 @@ function setDateSort() {
 
 function setReloadTimer() {
 	setTimeout(function(){
-		var query = queryParameter.assign({
-			factory_id: focusFactoryId,
-			image_view: isImageMode
-		});
-		redirect('realtime', query);
+		redirect('realtime', { factory_id: focusFactoryId, image_view: isImageMode });
 	}, commonConfig.realtimeReloadTime);
 }
