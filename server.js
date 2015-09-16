@@ -51,7 +51,8 @@ app.get('/workorder', function(req, res) { res.render('pages/workorder/main'); }
 app.get('/workorder/info', function(req, res) { res.render('pages/workorder/info'); });
 app.get('/workorder/new', function(req, res) { res.render('pages/workorder/new'); });
 app.get('/api/workorder/list', function(req, res) {
-	res.send(data.liveinfos);
+	console.log(req.query);
+	req.query.work_order_serial_num ? res.send(data.workorder) : res.send(data.liveinfos);
 });
 app.get('/api/workorder/info', function(req, res) {
 	res.send(data.workorderInfo);
@@ -64,9 +65,6 @@ app.get('/api/workorder', function(req, res) {
 });
 app.get('/api/workorder/1', function(req, res) {
 	res.send(data.workorder);
-});
-app.get('/api/workorder/check_unique', function(req, res) {
-	res.send('Fail');
 });
 app.get('/api/workorder/check_unique', function(req, res) {
 	res.send('Fail');

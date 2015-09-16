@@ -1,3 +1,4 @@
+/* public buttons */
 .btn {
 	font-size: @font-size;
 }
@@ -21,7 +22,40 @@
 	.btn-warning;
 }
 
-/* detail info page button */
+.date-picker-btn {
+	margin: 0 15px 0 -35px;
+	cursor: pointer;
+	pointer-events: none;
+}
+
+
+/* button in realtime page */
+.realtime-showpic-btn {
+	.btn;
+	.btn-success;
+	padding: 4px 6px;
+
+	&:first-child {
+		.btn-info;
+	}
+
+	&:last-child {
+		.btn-danger;
+	}
+
+	&.img-mode {
+		padding: 5px 10px;
+    	margin-bottom: 10px;
+	}
+}
+
+.realtime-back-btn {
+	.custom-default;
+	.btn-default;
+}
+
+
+/* button in detail info page */
 .info-save-button {
 	.custom-default;
 	.btn-default;
@@ -49,6 +83,8 @@
 	.btn-default;
 }
 
+
+/* button in record and member page */
 .record-new-button,
 #member-edit-btn,
 #member-add-btn {
@@ -71,12 +107,13 @@
 	min-width: 100px;
 }
 
-.date-picker-btn {
-	margin: 0 15px 0 -35px;
-	cursor: pointer;
-	pointer-events: none;
+.member-edit-button {
+	.btn;
+	.btn-info;
 }
 
+
+/* button in workorder page */
 .workerorder-date-picker-btn {
 	margin: 0 0 0 -25px;
 	cursor: pointer;
@@ -84,7 +121,6 @@
 	position: absolute;
     top: 3px;
 }
-
 
 .workorder-info-save-button {
 	.custom-default;
@@ -112,30 +148,8 @@
 	.btn-default;
 }
 
-.realtime-showpic-btn {
-	.btn;
-	.btn-success;
-	padding: 4px 6px;
 
-	&:first-child {
-		.btn-info;
-	}
-
-	&:last-child {
-		.btn-danger;
-	}
-
-	&.img-mode {
-		padding: 5px 10px;
-    	margin-bottom: 10px;
-	}
-}
-
-.realtime-back-btn {
-	.custom-default;
-	.btn-default;
-}
-
+/* button in alarm page */
 .switch-btn {
     width: 80px;
     height: 30px;
@@ -217,7 +231,3 @@
 	line-height: inherit;
 }
 
-.member-edit-button {
-	.btn;
-	.btn-info;
-}

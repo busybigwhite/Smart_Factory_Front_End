@@ -45,7 +45,7 @@ function searchBySerialNum() {
 }
 
 function renderSmartDatabaseInfos(serialNum) {
-	$.get(config.APIUrl + 'compare/list?work_order_serial_num=' + serialNum)
+	$.get(config.APIUrl + 'workorder/list?work_order_serial_num=' + serialNum)
 	 .done( function(res){
 	 	if( res.length ){
 	 		res[0]['factory_name'] = mappingFactoryName(res.factory_id);
@@ -92,5 +92,20 @@ function displayListBlock() {
 
 function getFactoryList() {
 	$.get(config.APIUrl + 'factory/list')
-	 .done(function(res){ factoryList = res || [] });
+	 .done(function(res){
+	 	if( res.length ){
+		 	factoryList = res || [];
+		 	getDefaultWorkorderItem();
+		 }
+	 });
+}
+
+function getDefaultWorkorderItem() {
+	$.get(config.APIUrl + 'workorder/list?factory_id=' + factoryList[0].id)
+	 .done(function(res){
+	 	if( res.length ){
+	 		renderSmartDatabaseInfos( res[0].serial_num );
+	 		renderForeshotDatabaseInfos( res[0].serial_num );
+	 	}
+	 });
 }
