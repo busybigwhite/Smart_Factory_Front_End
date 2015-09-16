@@ -69,7 +69,7 @@ exports.renderImageList = function(infos) {
             <li>客戶名稱</li>
             <li>預計生產總數</li>
             <li>本次開始生產時間</li>
-            <li>正常/異常</li>
+            <li>模具合模/異常合模(次)</li>
             <li>運作狀態</li>
           </ul>
 
