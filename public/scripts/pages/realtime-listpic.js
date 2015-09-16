@@ -76,18 +76,16 @@ function openFancyBoxManually() {
 
 function getPictureListAndRenderRow() {
     var group = [];
-    var workorderId = queryParameter.get('work_order_id');
-    var type = queryParameter.get('type');
-    var title = queryParameter.get('title');
 
-    $.post(config.APIUrl + 'workorder/listpic?work_order_id=' + workorderId + '&type=' + type,
-        { _token: token })
+    var data = queryParameter.all();
+    data['_token'] = token;
 
+    $.post(config.APIUrl + 'workorder/listpic', data)
      .done(function(res){
-        resetBlockAndTitle(title);
+        resetBlockAndTitle(data.title);
 
         if( _.isEmpty(res) ){
-            renderNoDataBlock(type);
+            renderNoDataBlock(data.type);
 
         }else {
             if( _.isArray(res) ){

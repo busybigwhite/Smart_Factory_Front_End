@@ -35,6 +35,14 @@ function initialize() {
 
 function bindEvents() {
 	$searchBtn.on('click', searchBySerialNum);
+	$searchInput.on('keypress', searchByKeypress);
+}
+
+function searchByKeypress(e) {
+
+	var code = e.keyCode || e.which;
+
+	code === 13 && searchBySerialNum();
 }
 
 function searchBySerialNum() {
@@ -51,7 +59,7 @@ function renderSmartDatabaseInfos(serialNum) {
 	 		res[0]['factory_name'] = mappingFactoryName(res.factory_id);
 	 		res[0]['status_show'] = mappingStatus(res.status);
 
-	 		var infos = templates.renderList({ infos: res });
+	 		var infos = templates.renderList({ info: res[0] });
 	 	}else {
 	 		var infos = templates.renderNoDataText(false);
 	 	}

@@ -10,6 +10,7 @@ var redirect = require('../lib/helper/redirect');
 var factoryDropdown = require('../lib/component/dropdown-factory');
 var searchFilterComponent = require('../lib/component/search-filter-component');
 var loadingSpin = require('../lib/component/loading-spin');
+var mappingHelper = require('../realtime/helper/display-name');
 var templates = require('../realtime/templates');
 
 var isImageMode;
@@ -83,22 +84,29 @@ function setFocusFactoryIdThenRenderRows(factoryId) {
 function getRealtimeListThenRenderRows(searchObj) {
 
 	spinner.start();
+	$tableBody.empty();
+	$imageListBlock.empty();
 
 	var queryURL = createQueryURL(searchObj);
 
 	$.get(config.APIUrl + 'workorder/list?' + queryURL)
 	 .done(function(response){
-	 	if( response.length ){
-	 		var infos = queryParameter.get('date_sort') === "asc"
-	 						? _.sortByOrder(response, 'start_date', 'asc')
-	 						: _.sortByOrder(response, 'start_date', 'desc');
 
-			var tableListRows = templates.renderTableList({ infos : infos });
-			var imageListRows = templates.renderImageList({ infos : infos });
+	 	if( !response.length ) return;
 
-			$tableBody.empty().append( tableListRows );
-			$imageListBlock.empty().html( imageListRows );
-		}
+ 		var infos = queryParameter.get('date_sort') === "asc"
+ 						? _.sortByOrder(response, 'start_date', 'asc')
+ 						: _.sortByOrder(response, 'start_date', 'desc');
+
+ 		_.forEach(infos, function(info){
+ 			info['display'] = mappingHelper.createDisplayData(info);
+
+ 			var tableListItem = templates.renderTableListItem({ info : info });
+			var imageListItem = templates.renderImageListItem({ info : info });
+
+			$tableBody.append( tableListItem );
+			$imageListBlock.append( imageListItem );
+ 		})
 
 		switchNoDataListBlock(response.length > 0);
 	 })
@@ -151,13 +159,13 @@ function sortDate() {
 }
 
 function redirectToPicPage() {
-	var title = $(this).data('info');
-	var type = $(this).data('type');
-	var work_order_id = $(this).data('workid');
-	var image_view = isImageMode;
-	var factory_id = focusFactoryId;
+	console.log($(this).data('info'))
+	var info = $(this).data('info');
+	info['type'] = $(this).data('type');
+	info['image_view'] = isImageMode;
+	info['factory_id'] = focusFactoryId;
 
-	redirect('realtimePic', { work_order_id, type, title, image_view, factory_id });
+	redirect('realtimePic', info);
 }
 
 function resetStatus() {
@@ -189,4 +197,3 @@ function setReloadTimer() {
 		redirect('realtime', query);
 	}, commonConfig.realtimeReloadTime);
 }
-
