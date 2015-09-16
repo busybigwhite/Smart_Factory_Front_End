@@ -14,7 +14,7 @@ exports.renderTableListItem = function(info) {
       <div class="table-col"><%= info.customer_name %></div>
       <div class="table-col-sm"><%= info.target_num %></div>
       <div class="table-col text-right"><%= info.start_date %></div>
-      <div class="table-col-sm"><%= info.sample_num %>/<%= info.error_num %></div>
+      <div class="table-col-sm"><%= info.display.sample_num %>/<%= info.display.error_num %></div>
       <div class="table-col-sm"><%= info.display.status %></div>
       <div class="table-col-lg">
         <input class="realtime-showpic-btn" value="即時" type="button" data-type="current" data-info=<%- info.display.info %> />
@@ -50,7 +50,7 @@ exports.renderImageListItem = function(info) {
           <li><%= info.customer_name %></li>
           <li><%= info.target_num %></li>
           <li><%= info.start_date %></li>
-          <li><%= info.sample_num %>/<%= info.error_num %></li>
+          <li><%= info.display.sample_num %>/<%= info.display.error_num %></li>
           <li><%= info.display.status %></li>
         </ul>
         <div class="realtime-img-button-group">

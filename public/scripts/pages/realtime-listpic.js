@@ -105,9 +105,7 @@ function getPictureListAndRenderRow() {
             });
         }
      })
-     .always(function(){
-        spinner.stop();
-     });
+     .always(function(){ spinner.stop() });
 }
 
 function resetBlockAndTitle(title) {

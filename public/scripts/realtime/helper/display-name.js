@@ -28,6 +28,8 @@ exports.createDisplayData = function(data) {
 function createDisplayName() {
 	display['machine_serial_num'] = itemInfo.machine_serial_num || '未生產';
 	display['mold_serial_num'] = itemInfo.mold_serial_num || '未生產';
+	display['sample_num'] = itemInfo.sample_num || 0;
+	display['error_num'] = itemInfo.error_num || 0;
 }
 
 function mappingStatus() {
